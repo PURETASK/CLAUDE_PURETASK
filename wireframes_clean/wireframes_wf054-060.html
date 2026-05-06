@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PureTask Wireframes — Batch 7 (Admin)</title>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --bg-darker: #ebebe8;
+    --surface: #ffffff;
+    --border: #e2e2df;
+    --border-light: #ececea;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6b68;
+    --text-tertiary: #a0a09d;
+    --success: #1d9e75;
+    --success-bg: #e8f7f2;
+    --warning: #b45309;
+    --warning-bg: #fef3c7;
+    --danger: #993c1d;
+    --danger-bg: #fef5f2;
+    --info: #1d5fa0;
+    --info-bg: #eff6ff;
+    --gold: #b88716;
+    --gold-bg: #fef6e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 40px 24px 60px;
+    color: var(--text-primary);
+  }
+  h1 {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 16px;
+  }
+  .session-note {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+  .session-note strong { color: var(--text-primary); }
+
+  .batch-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin: 32px 0 12px; padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .screen-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-tertiary); margin-bottom: 8px;
+  }
+  .desktop {
+    width: 920px; max-width: 100%;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 200px;
+    background: var(--bg-darker);
+    border-right: 0.5px solid var(--border);
+    padding: 16px 12px;
+    flex-shrink: 0;
+  }
+  .sidebar-brand {
+    font-size: 13px; font-weight: 700;
+    padding: 6px 10px 16px;
+    color: var(--text-primary);
+  }
+  .sidebar-section {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-tertiary);
+    padding: 8px 10px 4px;
+  }
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 1px;
+  }
+  .nav-item.active {
+    background: var(--surface);
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .nav-badge {
+    font-size: 10px;
+    padding: 1px 6px;
+    background: var(--text-primary);
+    color: white;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .nav-badge.danger { background: var(--danger); }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .topbar {
+    padding: 14px 22px;
+    border-bottom: 0.5px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar h2 {
+    font-size: 16px; font-weight: 700;
+  }
+  .topbar-meta {
+    display: flex; gap: 14px; align-items: center;
+    font-size: 12px; color: var(--text-secondary);
+  }
+  .content {
+    padding: 22px;
+    flex: 1;
+  }
+
+  /* KPI cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .kpi {
+    padding: 14px;
+    border: 0.5px solid var(--border-light);
+    border-radius: 8px;
+  }
+  .kpi-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .kpi-delta {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .kpi-delta.up { color: var(--success); }
+  .kpi-delta.down { color: var(--danger); }
+
+  /* Sections */
+  .section-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .section-h h3 {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .section-h-action {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* Tables */
+  .table {
+    width: 100%;
+    border: 0.5px solid var(--border-light);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .thead {
+    display: grid;
+    background: var(--bg);
+    padding: 9px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .trow {
+    display: grid;
+    padding: 11px 14px;
+    font-size: 12px;
+    align-items: center;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .trow:last-child { border-bottom: none; }
+  .trow:hover { background: var(--bg); }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .pill-warning { background: var(--warning-bg); color: var(--warning); }
+  .pill-success { background: var(--success-bg); color: var(--success); }
+  .pill-danger { background: var(--danger-bg); color: var(--danger); }
+  .pill-info { background: var(--info-bg); color: var(--info); }
+  .pill-neutral { background: var(--bg); color: var(--text-secondary); }
+
+  .btn-primary-sm {
+    padding: 6px 12px;
+    background: var(--text-primary);
+    color: white;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+  }
+  .btn-secondary-sm {
+    padding: 6px 12px;
+    border: 0.5px solid var(--border);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-block;
+    color: var(--text-primary);
+  }
+  .btn-danger-sm {
+    padding: 6px 12px;
+    border: 0.5px solid #f2c4b8;
+    background: var(--danger-bg);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+    color: var(--danger);
+  }
+  .btn-success-sm {
+    padding: 6px 12px;
+    background: var(--success);
+    color: white;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  .activity-row {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    font-size: 12px;
+  }
+  .activity-row:last-child { border-bottom: none; }
+  .activity-time {
+    width: 60px;
+    font-size: 10px;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .activity-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 22px;
+  }
+
+  /* Sparkline */
+  .spark {
+    height: 60px;
+    margin-top: 8px;
+  }
+
+  .input-stub {
+    padding: 8px 12px;
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    background: var(--surface);
+  }
+
+  /* Dispute mediation specifics */
+  .photo-thumb {
+    aspect-ratio: 1;
+    background: var(--bg);
+    border-radius: 4px;
+    border: 0.5px solid var(--border-light);
+  }
+  .photo-thumb-flagged {
+    border: 1.5px solid var(--warning);
+  }
+  .msg-bubble {
+    max-width: 78%;
+    padding: 9px 11px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .msg-bubble.customer {
+    background: var(--info-bg);
+    color: var(--info);
+    align-self: flex-start;
+    border-radius: 12px 12px 12px 4px;
+  }
+  .msg-bubble.cleaner {
+    background: var(--bg);
+    color: var(--text-primary);
+    align-self: flex-end;
+    border-radius: 12px 12px 4px 12px;
+  }
+
+  /* Score history mini chart */
+  .score-history {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 60px;
+    padding: 6px 0;
+  }
+  .bar {
+    flex: 1;
+    background: var(--text-primary);
+    opacity: 0.7;
+    border-radius: 1px 1px 0 0;
+    min-height: 4px;
+  }
+</style>
+</head>
+<body>
+
+<h1>PureTask · Wireframes 54–60 · Admin tools</h1>
+
+<div class="session-note">
+  <strong>Layout shift.</strong> These admin screens are desktop-only. They're internal tools you use at a computer to operate the platform — review applications, mediate disputes, look up bookings. Function over form. Same design system, different shape: sidebar navigation, table-heavy, dense information.
+</div>
+
+<div class="batch-label">Batch 7 — Admin tools</div>
+
+<!-- W54: Admin dashboard / daily metrics -->
+<div class="screen-label">54 · Admin dashboard · daily metrics</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item active">Dashboard <span></span></div>
+    <div class="nav-item">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item">Bookings <span></span></div>
+    <div class="nav-item">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item">Cleaners</div>
+    <div class="nav-item">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>Dashboard</h2>
+      <div class="topbar-meta">
+        <span>Today · Mon Nov 7, 2026</span>
+        <span style="color: var(--text-primary); font-weight: 600;">Nathan C.</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Bookings today</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-delta up">↑ 3 vs yesterday</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">GMV today</div>
+          <div class="kpi-value">$1,463</div>
+          <div class="kpi-delta up">↑ $312 vs yesterday</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">New cleaners</div>
+          <div class="kpi-value">2</div>
+          <div class="kpi-delta">7 pending review</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Active disputes</div>
+          <div class="kpi-value" style="color: var(--danger);">3</div>
+          <div class="kpi-delta down">1 needs response</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+
+        <div>
+          <div class="section-h">
+            <h3>Last 14 days</h3>
+            <div class="section-h-action">Export →</div>
+          </div>
+          <div style="padding: 16px; border: 0.5px solid var(--border-light); border-radius: 8px; margin-bottom: 22px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+              <div>
+                <div style="font-size: 11px; color: var(--text-secondary);">GMV trend</div>
+                <div style="font-size: 18px; font-weight: 700;">$14,820 this period</div>
+              </div>
+              <div style="font-size: 11px; color: var(--success);">↑ 18% vs prior 14d</div>
+            </div>
+            <svg class="spark" viewBox="0 0 400 60" preserveAspectRatio="none" style="width: 100%;">
+              <polyline points="0,42 30,38 60,40 90,32 120,30 150,28 180,22 210,24 240,18 270,20 300,15 330,12 360,8 400,10" fill="none" stroke="var(--text-primary)" stroke-width="1.5"/>
+              <polyline points="0,42 30,38 60,40 90,32 120,30 150,28 180,22 210,24 240,18 270,20 300,15 330,12 360,8 400,10 400,60 0,60" fill="var(--text-primary)" opacity="0.06"/>
+            </svg>
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-tertiary); margin-top: 4px;">
+              <span>Oct 24</span><span>Oct 31</span><span>Nov 7</span>
+            </div>
+          </div>
+
+          <div class="section-h">
+            <h3>Recent activity</h3>
+          </div>
+          <div style="border: 0.5px solid var(--border-light); border-radius: 8px; padding: 4px 14px;">
+            <div class="activity-row">
+              <div class="activity-time">2 min ago</div>
+              <div class="activity-dot" style="background: var(--success);"></div>
+              <div>Booking <strong>#PT-4921</strong> approved by Sarah K. · $125.99 captured · Maria L. paid Friday</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-time">14 min</div>
+              <div class="activity-dot" style="background: var(--warning);"></div>
+              <div>Dispute opened on <strong>#PT-4918</strong> · quality concern · cleaner James K. responded with re-clean offer</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-time">38 min</div>
+              <div class="activity-dot"></div>
+              <div>New cleaner application · <strong>Diego A.</strong> · Sacramento · awaiting background check</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-time">1 hr</div>
+              <div class="activity-dot" style="background: var(--success);"></div>
+              <div>Booking <strong>#PT-4915</strong> auto-approved at 24h · $98 captured</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-time">2 hr</div>
+              <div class="activity-dot"></div>
+              <div>Linda P. tier promoted · Proven Specialist → Top Performer · 14-day score band sustained</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-h">
+            <h3>Needs your attention</h3>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px;">
+            <div style="padding: 12px; border: 0.5px solid #f2c4b8; background: var(--danger-bg); border-radius: 8px;">
+              <div style="font-size: 11px; font-weight: 600; color: var(--danger); margin-bottom: 4px;">Dispute escalated to Tier 2</div>
+              <div style="font-size: 11px; color: var(--danger); line-height: 1.5; margin-bottom: 8px;">Booking #PT-4918 · stalemate after 48h · review evidence and propose resolution</div>
+              <div class="btn-danger-sm">Mediate now</div>
+            </div>
+            <div style="padding: 12px; border: 0.5px solid #fcd34d; background: var(--warning-bg); border-radius: 8px;">
+              <div style="font-size: 11px; font-weight: 600; color: var(--warning); margin-bottom: 4px;">7 applications waiting</div>
+              <div style="font-size: 11px; color: var(--warning); line-height: 1.5; margin-bottom: 8px;">Oldest pending 4 days · risk of cleaner drop-off</div>
+              <div class="btn-secondary-sm" style="border-color: #fcd34d; color: var(--warning);">Review queue →</div>
+            </div>
+            <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+              <div style="font-size: 11px; font-weight: 600; margin-bottom: 4px;">Friday payout review</div>
+              <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">23 cleaners · $4,892 total · runs in 2 days</div>
+              <div class="btn-secondary-sm">Preview batch →</div>
+            </div>
+          </div>
+
+          <div class="section-h">
+            <h3>This week's funnel</h3>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px;"><span style="color: var(--text-secondary);">Cleaner page visits</span><span>1,847</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px;"><span style="color: var(--text-secondary);">Booking flow started</span><span>312 · 17%</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px;"><span style="color: var(--text-secondary);">Reached payment</span><span>89 · 29%</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px;"><span style="color: var(--text-secondary);">Bookings confirmed</span><span style="font-weight: 600;">76 · 85%</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0 2px; font-size: 11px; border-top: 0.5px solid var(--border-light); margin-top: 6px;"><span style="font-weight: 600;">Visit → booking</span><span style="font-weight: 600;">4.1%</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- W55: Cleaner application queue -->
+<div class="screen-label">55 · Cleaner application queue</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item active">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item">Bookings</div>
+    <div class="nav-item">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item">Cleaners</div>
+    <div class="nav-item">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>Cleaner applications</h2>
+      <div class="topbar-meta">
+        <div class="input-stub" style="width: 200px;">Search by name or email…</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div style="display: flex; gap: 6px; margin-bottom: 16px;">
+        <span class="pill" style="background: var(--text-primary); color: white; padding: 5px 14px;">Pending · 7</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">In review · 2</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Approved · 23</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Rejected · 4</span>
+      </div>
+
+      <div class="table">
+        <div class="thead" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>Applicant</div>
+          <div>Submitted</div>
+          <div>Location</div>
+          <div>ID & BG check</div>
+          <div>Days waiting</div>
+          <div></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Diego A. Ramirez</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">diego.ramirez@example.com</div>
+          </div>
+          <div>Nov 3 · 9:42 AM</div>
+          <div>Sacramento</div>
+          <div><span class="pill pill-success">Both clear</span></div>
+          <div style="color: var(--danger); font-weight: 600;">4 days</div>
+          <div><span class="btn-primary-sm">Review →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Tara Whitfield</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">tara.w@example.com</div>
+          </div>
+          <div>Nov 4 · 2:18 PM</div>
+          <div>Roseville</div>
+          <div><span class="pill pill-success">Both clear</span></div>
+          <div>3 days</div>
+          <div><span class="btn-primary-sm">Review →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Chen Liu</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">cliu87@example.com</div>
+          </div>
+          <div>Nov 5 · 11:30 AM</div>
+          <div>Davis</div>
+          <div><span class="pill pill-warning">BG pending</span></div>
+          <div>2 days</div>
+          <div><span class="btn-secondary-sm">View →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Yolanda Brooks</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">y.brooks@example.com</div>
+          </div>
+          <div>Nov 5 · 4:51 PM</div>
+          <div>East Sac</div>
+          <div><span class="pill pill-success">Both clear</span></div>
+          <div>2 days</div>
+          <div><span class="btn-primary-sm">Review →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Rajiv Patel</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">rpatel@example.com</div>
+          </div>
+          <div>Nov 6 · 8:15 AM</div>
+          <div>Folsom</div>
+          <div><span class="pill pill-danger">BG flag · review</span></div>
+          <div>1 day</div>
+          <div><span class="btn-secondary-sm" style="border-color: #f2c4b8; color: var(--danger);">Review →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Maria Gonzalez</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">mariag@example.com</div>
+          </div>
+          <div>Nov 6 · 12:42 PM</div>
+          <div>Land Park</div>
+          <div><span class="pill pill-warning">BG pending</span></div>
+          <div>1 day</div>
+          <div><span class="btn-secondary-sm">View →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1fr 1.2fr;">
+          <div>
+            <div style="font-weight: 600;">Aisha Williams</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">aishawill@example.com</div>
+          </div>
+          <div>Nov 7 · 9:08 AM</div>
+          <div>Curtis Park</div>
+          <div><span class="pill pill-warning">ID pending</span></div>
+          <div>0 days</div>
+          <div><span class="btn-secondary-sm">View →</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; font-size: 11px; color: var(--text-tertiary);">
+        Tip: Diego A. Ramirez has been waiting 4 days. Cleaner applications older than 5 days have a 30% drop-off risk.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- W56: Active disputes list -->
+<div class="screen-label">56 · Active disputes list</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item">Bookings</div>
+    <div class="nav-item active">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item">Cleaners</div>
+    <div class="nav-item">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>Disputes</h2>
+      <div class="topbar-meta">
+        <span>SLA: Tier 2 (4-12h) · Tier 3 (24h)</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div style="display: flex; gap: 6px; margin-bottom: 16px;">
+        <span class="pill" style="background: var(--text-primary); color: white; padding: 5px 14px;">Active · 3</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Direct resolution · 4</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Resolved · 18</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">All</span>
+      </div>
+
+      <div class="table">
+        <div class="thead" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1.2fr 1fr 1fr 1.2fr;">
+          <div>Booking</div>
+          <div>Customer</div>
+          <div>Cleaner</div>
+          <div>Type</div>
+          <div>Stage</div>
+          <div>Open for</div>
+          <div></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1.2fr 1fr 1fr 1.2fr; background: var(--danger-bg);">
+          <div style="font-weight: 600;">#PT-4918</div>
+          <div>
+            <div>Sarah K.</div>
+            <div style="font-size: 10px; color: var(--text-secondary);">Good standing</div>
+          </div>
+          <div>
+            <div>James K.</div>
+            <div style="font-size: 10px; color: var(--text-secondary);">Top Performer · 4.8</div>
+          </div>
+          <div><span class="pill pill-warning">Quality</span></div>
+          <div><span class="pill pill-danger">Tier 2 · escalated</span></div>
+          <div style="color: var(--danger); font-weight: 600;">2d 4h</div>
+          <div><span class="btn-danger-sm">Mediate →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1.2fr 1fr 1fr 1.2fr;">
+          <div style="font-weight: 600;">#PT-4905</div>
+          <div>
+            <div>Marcus T.</div>
+            <div style="font-size: 10px; color: var(--text-secondary);">Trusted · regular</div>
+          </div>
+          <div>
+            <div>Linda P.</div>
+            <div style="font-size: 10px; color: var(--text-secondary);">All-Star · 4.9</div>
+          </div>
+          <div><span class="pill pill-danger">Damage</span></div>
+          <div><span class="pill pill-info">Tier 1 · in progress</span></div>
+          <div>1d 8h</div>
+          <div><span class="btn-secondary-sm">View →</span></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1.2fr 1fr 1fr 1.2fr;">
+          <div style="font-weight: 600;">#PT-4892</div>
+          <div>
+            <div>Patricia M.</div>
+            <div style="font-size: 10px; color: var(--text-secondary);">Good standing</div>
+          </div>
+          <div>
+            <div>Maria L.</div>
+            <div style="font-size: 10px; color: var(--text-secondary);">All-Star · 4.9</div>
+          </div>
+          <div><span class="pill pill-warning">Quality</span></div>
+          <div><span class="pill pill-info">Tier 1 · in progress</span></div>
+          <div>14h</div>
+          <div><span class="btn-secondary-sm">View →</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 22px;">
+        <div class="section-h">
+          <h3>Recently resolved</h3>
+          <div class="section-h-action">View all</div>
+        </div>
+        <div class="table">
+          <div class="thead" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1fr 1.2fr 1fr;">
+            <div>Booking</div>
+            <div>Parties</div>
+            <div>Resolution</div>
+            <div>Outcome</div>
+            <div>Resolved</div>
+            <div></div>
+          </div>
+          <div class="trow" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1fr 1.2fr 1fr;">
+            <div style="font-weight: 600;">#PT-4881</div>
+            <div>Brian M. ↔ Linda P.</div>
+            <div>Direct · re-clean accepted</div>
+            <div><span class="pill pill-success">Customer satisfied</span></div>
+            <div>Yesterday</div>
+            <div><span class="btn-secondary-sm">View</span></div>
+          </div>
+          <div class="trow" style="grid-template-columns: 0.8fr 1.4fr 1.4fr 1fr 1.2fr 1fr;">
+            <div style="font-weight: 600;">#PT-4870</div>
+            <div>Olivia C. ↔ Diego A.</div>
+            <div>Mediation · 50% refund</div>
+            <div><span class="pill pill-info">Both accepted</span></div>
+            <div>2 days ago</div>
+            <div><span class="btn-secondary-sm">View</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- W57: Dispute mediation interface -->
+<div class="screen-label">57 · Dispute mediation interface</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item">Bookings</div>
+    <div class="nav-item active">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item">Cleaners</div>
+    <div class="nav-item">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div style="font-size: 11px; color: var(--text-secondary);"><span style="cursor: pointer;">← Disputes</span></div>
+        <h2 style="margin-top: 2px;">#PT-4918 · Quality dispute</h2>
+      </div>
+      <div class="topbar-meta">
+        <span class="pill pill-danger" style="padding: 5px 14px;">Tier 2 · 2d 4h</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="kpi-grid" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom: 22px;">
+        <div class="kpi">
+          <div class="kpi-label">Customer</div>
+          <div style="font-size: 14px; font-weight: 700;">Sarah K.</div>
+          <div class="kpi-delta">Good standing · 12 bookings · 0 prior disputes</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Cleaner</div>
+          <div style="font-size: 14px; font-weight: 700;">James K.</div>
+          <div class="kpi-delta">Top Performer · 178 cleanings · 2 prior disputes (1 won, 1 lost)</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Booking</div>
+          <div style="font-size: 14px; font-weight: 700;">$125.99</div>
+          <div class="kpi-delta">Standard · Nov 5 · 2 hrs</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="grid-template-columns: 1.2fr 1fr;">
+
+        <div>
+          <div class="section-h">
+            <h3>Customer's claim</h3>
+          </div>
+          <div style="padding: 14px; background: var(--info-bg); border-radius: 8px; margin-bottom: 14px;">
+            <div style="font-size: 12px; line-height: 1.6;">"The kitchen counters look great but the bathroom shower had soap scum still on the glass when I checked. I think it was missed."</div>
+            <div style="font-size: 10px; color: var(--info); margin-top: 8px; font-weight: 600;">Outcome wanted: Free re-clean of bathroom</div>
+          </div>
+
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px;">CUSTOMER PHOTOS · 3</div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 18px;">
+            <div class="photo-thumb photo-thumb-flagged"></div>
+            <div class="photo-thumb"></div>
+            <div class="photo-thumb"></div>
+            <div></div>
+          </div>
+
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px;">CLEANER PHOTOS · 16 ACROSS 4 ROOMS</div>
+          <div style="margin-bottom: 8px;">
+            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">Main bathroom · 4 photos</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+              <div class="photo-thumb"></div>
+              <div class="photo-thumb"></div>
+              <div class="photo-thumb"></div>
+              <div class="photo-thumb"></div>
+            </div>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">Kitchen · 4 photos</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+              <div class="photo-thumb"></div>
+              <div class="photo-thumb"></div>
+              <div class="photo-thumb"></div>
+              <div class="photo-thumb"></div>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: var(--text-secondary); cursor: pointer;">+ 2 more rooms (8 photos)</div>
+
+          <div class="section-h" style="margin-top: 22px;">
+            <h3>Direct resolution thread</h3>
+            <div class="section-h-action">All messages</div>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px; display: flex; flex-direction: column;">
+            <div class="msg-bubble customer">"Cleaning was mostly great but the shower glass still has soap scum. Photo attached. Can we sort this?"</div>
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 10px;">Sarah K. · 2 days ago</div>
+
+            <div class="msg-bubble cleaner">"Sorry to hear that, Sarah. Looking at my photos the glass looked clean when I left. I'm happy to come back and re-clean — would tomorrow morning work?"</div>
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 10px; align-self: flex-end;">James K. · 2 days ago</div>
+
+            <div class="msg-bubble customer">"It really wasn't clean. I shouldn't have to wait another day. I want a partial refund instead."</div>
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 10px;">Sarah K. · 1 day ago</div>
+
+            <div class="msg-bubble cleaner">"My photos show the glass was clean. I stand by my work but I escalated to PureTask for a fair review."</div>
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 6px; align-self: flex-end;">James K. · 1 day ago</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-h">
+            <h3>Your decision</h3>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px; margin-bottom: 14px;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 10px;">Resolve in favor of</div>
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
+              <div style="padding: 10px; border: 0.5px solid var(--border-light); border-radius: 6px; font-size: 12px;">
+                <div style="font-weight: 600;">Cleaner stands</div>
+                <div style="color: var(--text-secondary); font-size: 11px; margin-top: 2px; line-height: 1.45;">Photos show clean shower. Customer pays full $125.99.</div>
+              </div>
+              <div style="padding: 10px; border: 1.5px solid var(--text-primary); border-radius: 6px; font-size: 12px; background: var(--bg);">
+                <div style="font-weight: 600;">Partial refund</div>
+                <div style="color: var(--text-secondary); font-size: 11px; margin-top: 2px; line-height: 1.45;">Refund 25% ($31.50). Cleaner keeps the rest. Goodwill gesture.</div>
+              </div>
+              <div style="padding: 10px; border: 0.5px solid var(--border-light); border-radius: 6px; font-size: 12px;">
+                <div style="font-weight: 600;">Full refund</div>
+                <div style="color: var(--text-secondary); font-size: 11px; margin-top: 2px; line-height: 1.45;">Customer pays $0. Cleaner gets a strike on score.</div>
+              </div>
+            </div>
+
+            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">Decision rationale (visible to both)</div>
+            <div style="padding: 9px 11px; border: 0.5px solid var(--border); border-radius: 6px; min-height: 60px; font-size: 11px; color: var(--text-tertiary); line-height: 1.5;">Photo evidence shows clean shower glass at clock-out. Customer photos taken later. Goodwill 25% refund offered to acknowledge dissatisfaction without penalizing James's documented work.</div>
+
+            <div style="display: flex; gap: 6px; margin-top: 12px;">
+              <div class="btn-primary-sm" style="flex: 1; text-align: center;">Submit decision</div>
+              <div class="btn-secondary-sm">Save draft</div>
+            </div>
+          </div>
+
+          <div class="section-h">
+            <h3>Timeline</h3>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 11px;">
+              <div style="display: flex; gap: 8px; padding: 6px 0;"><span style="color: var(--text-tertiary); width: 70px;">Nov 5 11:02</span><span>Job clocked in</span></div>
+              <div style="display: flex; gap: 8px; padding: 6px 0;"><span style="color: var(--text-tertiary); width: 70px;">Nov 5 13:04</span><span>Job clocked out · 16 photos uploaded</span></div>
+              <div style="display: flex; gap: 8px; padding: 6px 0;"><span style="color: var(--text-tertiary); width: 70px;">Nov 5 15:42</span><span>Customer approved & paid</span></div>
+              <div style="display: flex; gap: 8px; padding: 6px 0;"><span style="color: var(--text-tertiary); width: 70px;">Nov 5 18:30</span><span>Customer opened dispute · quality concern</span></div>
+              <div style="display: flex; gap: 8px; padding: 6px 0;"><span style="color: var(--text-tertiary); width: 70px;">Nov 5 19:14</span><span>Cleaner offered re-clean</span></div>
+              <div style="display: flex; gap: 8px; padding: 6px 0;"><span style="color: var(--text-tertiary); width: 70px;">Nov 6 09:22</span><span>Customer rejected, requested refund</span></div>
+              <div style="display: flex; gap: 8px; padding: 6px 0; color: var(--danger); font-weight: 600;"><span style="color: var(--danger); width: 70px;">Nov 6 10:48</span><span>Escalated to Tier 2 mediation</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- W58: Booking lookup -->
+<div class="screen-label">58 · Booking lookup & detail</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item active">Bookings</div>
+    <div class="nav-item">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item">Cleaners</div>
+    <div class="nav-item">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>Bookings</h2>
+      <div class="topbar-meta">
+        <div class="input-stub" style="width: 240px;">⚲  Search by ID, customer, cleaner, address…</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div style="display: flex; gap: 6px; margin-bottom: 16px; align-items: center;">
+        <span class="pill" style="background: var(--text-primary); color: white; padding: 5px 14px;">All · 1,247</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Today · 12</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Active · 23</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">In dispute · 3</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Completed · 1,209</span>
+        <span class="pill pill-neutral" style="padding: 5px 14px;">Refunded · 12</span>
+        <div style="margin-left: auto; font-size: 11px; color: var(--text-secondary);">Filters · Date range · Service type · Status</div>
+      </div>
+
+      <div class="table">
+        <div class="thead" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr;">
+          <div>ID</div>
+          <div>Customer</div>
+          <div>Cleaner</div>
+          <div>Service</div>
+          <div>When</div>
+          <div>Total</div>
+          <div>Status</div>
+          <div></div>
+        </div>
+
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr;">
+          <div style="font-weight: 600;">#PT-4923</div>
+          <div>Olivia C.</div>
+          <div>Maria L.</div>
+          <div>Standard · 2h</div>
+          <div>Nov 9 · 11 AM</div>
+          <div>$125.99</div>
+          <div><span class="pill pill-info">Confirmed</span></div>
+          <div><span class="btn-secondary-sm">View</span></div>
+        </div>
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr; background: var(--bg);">
+          <div style="font-weight: 600;">#PT-4922</div>
+          <div>Marcus T.</div>
+          <div>Linda P.</div>
+          <div>Deep · 4h</div>
+          <div>Today · 9 AM</div>
+          <div>$267.99</div>
+          <div><span class="pill pill-warning">In progress</span></div>
+          <div><span class="btn-secondary-sm">Track →</span></div>
+        </div>
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr;">
+          <div style="font-weight: 600;">#PT-4921</div>
+          <div>Sarah K.</div>
+          <div>Maria L.</div>
+          <div>Standard · 2h</div>
+          <div>Today · 9 AM</div>
+          <div>$125.99</div>
+          <div><span class="pill pill-success">Approved</span></div>
+          <div><span class="btn-secondary-sm">View</span></div>
+        </div>
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr; background: var(--danger-bg);">
+          <div style="font-weight: 600;">#PT-4918</div>
+          <div>Sarah K.</div>
+          <div>James K.</div>
+          <div>Standard · 2h</div>
+          <div>Nov 5 · 11 AM</div>
+          <div>$125.99</div>
+          <div><span class="pill pill-danger">Disputed</span></div>
+          <div><span class="btn-danger-sm">Mediate</span></div>
+        </div>
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr;">
+          <div style="font-weight: 600;">#PT-4917</div>
+          <div>Brian M.</div>
+          <div>Linda P.</div>
+          <div>Standard · 3h</div>
+          <div>Nov 5 · 2 PM</div>
+          <div>$162.99</div>
+          <div><span class="pill pill-success">Approved</span></div>
+          <div><span class="btn-secondary-sm">View</span></div>
+        </div>
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr;">
+          <div style="font-weight: 600;">#PT-4915</div>
+          <div>Lily R.</div>
+          <div>Maria L.</div>
+          <div>Airbnb · 3h</div>
+          <div>Nov 4 · 10 AM</div>
+          <div>$144.99</div>
+          <div><span class="pill pill-success">Auto-approved</span></div>
+          <div><span class="btn-secondary-sm">View</span></div>
+        </div>
+        <div class="trow" style="grid-template-columns: 0.9fr 1.4fr 1.4fr 0.9fr 1fr 0.8fr 0.9fr 1.1fr;">
+          <div style="font-weight: 600;">#PT-4912</div>
+          <div>Robert N.</div>
+          <div>Diego A.</div>
+          <div>Standard · 2h</div>
+          <div>Nov 3 · 1 PM</div>
+          <div>$69.99</div>
+          <div><span class="pill pill-neutral">Refunded</span></div>
+          <div><span class="btn-secondary-sm">View</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-secondary);">
+        <span>Showing 7 of 1,247</span>
+        <div style="display: flex; gap: 6px;">
+          <span class="btn-secondary-sm">← Prev</span>
+          <span class="btn-secondary-sm">Next →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- W59: Cleaner detail view -->
+<div class="screen-label">59 · Cleaner detail view</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item">Bookings</div>
+    <div class="nav-item">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item active">Cleaners</div>
+    <div class="nav-item">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div style="font-size: 11px; color: var(--text-secondary);">← Cleaners</div>
+        <h2 style="margin-top: 2px; display: flex; align-items: center; gap: 8px;">
+          Maria Lopez
+          <span class="pill pill-info">All-Star</span>
+          <span class="pill pill-success">Active</span>
+        </h2>
+      </div>
+      <div class="topbar-meta">
+        <span class="btn-secondary-sm">Message</span>
+        <span class="btn-secondary-sm">Impersonate (read-only)</span>
+        <span class="btn-danger-sm">Suspend</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Score</div>
+          <div class="kpi-value">82</div>
+          <div class="kpi-delta up">+2 last 7 days</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Lifetime jobs</div>
+          <div class="kpi-value">247</div>
+          <div class="kpi-delta">5 this week</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Lifetime earnings</div>
+          <div class="kpi-value">$28,447</div>
+          <div class="kpi-delta">$386 this week</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Avg rating</div>
+          <div class="kpi-value">4.9</div>
+          <div class="kpi-delta">From 198 reviews</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="grid-template-columns: 1.4fr 1fr;">
+
+        <div>
+          <div class="section-h">
+            <h3>Score history · 90 days</h3>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px; margin-bottom: 22px;">
+            <div class="score-history">
+              <div class="bar" style="height: 60%;"></div>
+              <div class="bar" style="height: 62%;"></div>
+              <div class="bar" style="height: 58%;"></div>
+              <div class="bar" style="height: 65%;"></div>
+              <div class="bar" style="height: 70%;"></div>
+              <div class="bar" style="height: 72%;"></div>
+              <div class="bar" style="height: 75%;"></div>
+              <div class="bar" style="height: 78%;"></div>
+              <div class="bar" style="height: 80%;"></div>
+              <div class="bar" style="height: 82%;"></div>
+              <div class="bar" style="height: 81%;"></div>
+              <div class="bar" style="height: 79%;"></div>
+              <div class="bar" style="height: 80%;"></div>
+              <div class="bar" style="height: 82%;"></div>
+              <div class="bar" style="height: 84%;"></div>
+              <div class="bar" style="height: 80%;"></div>
+              <div class="bar" style="height: 78%;"></div>
+              <div class="bar" style="height: 76%;"></div>
+              <div class="bar" style="height: 78%;"></div>
+              <div class="bar" style="height: 80%;"></div>
+              <div class="bar" style="height: 82%;"></div>
+              <div class="bar" style="height: 82%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-tertiary); margin-top: 4px;">
+              <span>Aug 9</span><span>Sep 23</span><span>Nov 7</span>
+            </div>
+          </div>
+
+          <div class="section-h">
+            <h3>Recent bookings</h3>
+            <div class="section-h-action">All bookings →</div>
+          </div>
+          <div class="table">
+            <div class="thead" style="grid-template-columns: 0.8fr 1fr 1fr 0.8fr 0.7fr 0.7fr;">
+              <div>ID</div>
+              <div>Customer</div>
+              <div>Date</div>
+              <div>Total</div>
+              <div>Rating</div>
+              <div>Status</div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.8fr 0.7fr 0.7fr;">
+              <div style="font-weight: 600;">#PT-4923</div>
+              <div>Olivia C.</div>
+              <div>Nov 9</div>
+              <div>$125.99</div>
+              <div>—</div>
+              <div><span class="pill pill-info">Upcoming</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.8fr 0.7fr 0.7fr;">
+              <div style="font-weight: 600;">#PT-4921</div>
+              <div>Sarah K.</div>
+              <div>Nov 7</div>
+              <div>$125.99</div>
+              <div>★ 5.0</div>
+              <div><span class="pill pill-success">Done</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.8fr 0.7fr 0.7fr;">
+              <div style="font-weight: 600;">#PT-4915</div>
+              <div>Lily R.</div>
+              <div>Nov 4</div>
+              <div>$144.99</div>
+              <div>★ 4.8</div>
+              <div><span class="pill pill-success">Done</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.8fr 0.7fr 0.7fr;">
+              <div style="font-weight: 600;">#PT-4892</div>
+              <div>Patricia M.</div>
+              <div>Nov 1</div>
+              <div>$98.00</div>
+              <div>—</div>
+              <div><span class="pill pill-warning">Disputed</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-h"><h3>Status & flags</h3></div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Tier</span><span style="font-weight: 600;">All-Star Expert</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Background check</span><span style="color: var(--success);">Cleared · renews Sep 2026</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">ID verified</span><span style="color: var(--success);">Yes</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Insurance</span><span style="color: var(--success);">Verified · Mar 2026</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">No-shows (90d)</span><span>0</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Disputes (90d)</span><span>2 · 1 won, 1 ongoing</span></div>
+          </div>
+
+          <div class="section-h"><h3>Manual actions</h3></div>
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Adjust score manually</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Override tier</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Issue manual payout</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Reset password</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Flag for review</div>
+          </div>
+
+          <div class="section-h"><h3>Internal notes</h3></div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 11px; line-height: 1.55; padding: 6px 0; border-bottom: 0.5px solid var(--border-light);">
+              <span style="color: var(--text-tertiary);">Sep 12, Nathan:</span> Excellent founding cleaner. Great communicator. Handles unique requests well.
+            </div>
+            <div style="font-size: 11px; line-height: 1.55; padding: 6px 0;">
+              <span style="color: var(--text-tertiary);">Oct 28, Nathan:</span> Won previous dispute on photo evidence. Good documentation habits.
+            </div>
+            <div style="margin-top: 8px;">
+              <div style="font-size: 11px; padding: 9px; border: 0.5px solid var(--border); border-radius: 5px; color: var(--text-tertiary);">+ Add note (only visible to admins)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- W60: Customer detail view -->
+<div class="screen-label">60 · Customer detail view</div>
+<div class="desktop">
+  <div class="sidebar">
+    <div class="sidebar-brand">PureTask · Admin</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Applications <span class="nav-badge">7</span></div>
+    <div class="nav-item">Bookings</div>
+    <div class="nav-item">Disputes <span class="nav-badge danger">3</span></div>
+    <div class="sidebar-section">DIRECTORY</div>
+    <div class="nav-item">Cleaners</div>
+    <div class="nav-item active">Customers</div>
+    <div class="sidebar-section">FINANCE</div>
+    <div class="nav-item">Payouts</div>
+    <div class="nav-item">Refunds</div>
+    <div class="sidebar-section">SYSTEM</div>
+    <div class="nav-item">Settings</div>
+    <div class="nav-item">Logs</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div style="font-size: 11px; color: var(--text-secondary);">← Customers</div>
+        <h2 style="margin-top: 2px; display: flex; align-items: center; gap: 8px;">
+          Sarah Kessler
+          <span class="pill pill-success">Good standing</span>
+        </h2>
+      </div>
+      <div class="topbar-meta">
+        <span class="btn-secondary-sm">Send email</span>
+        <span class="btn-secondary-sm">Flag account</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Reliability score</div>
+          <div class="kpi-value">88</div>
+          <div class="kpi-delta">Good standing band</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Lifetime bookings</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-delta">3 this month</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Lifetime spend</div>
+          <div class="kpi-value">$1,512</div>
+          <div class="kpi-delta">$378 this month</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Disputes filed</div>
+          <div class="kpi-value">1</div>
+          <div class="kpi-delta">In progress · #PT-4918</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="grid-template-columns: 1.4fr 1fr;">
+
+        <div>
+          <div class="section-h">
+            <h3>Booking history</h3>
+            <div class="section-h-action">All bookings →</div>
+          </div>
+          <div class="table">
+            <div class="thead" style="grid-template-columns: 0.8fr 1fr 1fr 0.7fr 0.8fr 0.8fr;">
+              <div>ID</div>
+              <div>Cleaner</div>
+              <div>Date</div>
+              <div>Total</div>
+              <div>Rated</div>
+              <div>Status</div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.7fr 0.8fr 0.8fr;">
+              <div style="font-weight: 600;">#PT-4923</div>
+              <div>Maria L.</div>
+              <div>Nov 9</div>
+              <div>$125.99</div>
+              <div>—</div>
+              <div><span class="pill pill-info">Upcoming</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.7fr 0.8fr 0.8fr;">
+              <div style="font-weight: 600;">#PT-4921</div>
+              <div>Maria L.</div>
+              <div>Nov 7</div>
+              <div>$125.99</div>
+              <div>★ 5.0</div>
+              <div><span class="pill pill-success">Done</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.7fr 0.8fr 0.8fr; background: var(--danger-bg);">
+              <div style="font-weight: 600;">#PT-4918</div>
+              <div>James K.</div>
+              <div>Nov 5</div>
+              <div>$125.99</div>
+              <div>—</div>
+              <div><span class="pill pill-danger">Disputed</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.7fr 0.8fr 0.8fr;">
+              <div style="font-weight: 600;">#PT-4901</div>
+              <div>Maria L.</div>
+              <div>Oct 24</div>
+              <div>$125.99</div>
+              <div>★ 5.0</div>
+              <div><span class="pill pill-success">Done</span></div>
+            </div>
+            <div class="trow" style="grid-template-columns: 0.8fr 1fr 1fr 0.7fr 0.8fr 0.8fr;">
+              <div style="font-weight: 600;">#PT-4878</div>
+              <div>Maria L.</div>
+              <div>Oct 10</div>
+              <div>$125.99</div>
+              <div>★ 5.0</div>
+              <div><span class="pill pill-success">Done</span></div>
+            </div>
+          </div>
+
+          <div class="section-h" style="margin-top: 22px;">
+            <h3>Reliability breakdown</h3>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Honor commitments</span><span>100% · 0 cancellations within 24h</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Payment reliability</span><span>100% · No failed payments</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Cleaner ratings of customer</span><span>4.9 avg · From 11 cleaners</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Communication</span><span>92% · Avg response 38 min</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Dispute pattern</span><span>1 filed · in progress</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-h"><h3>Account details</h3></div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Email</span><span>sarah@example.com</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Phone</span><span>(415) ••• 4421</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Member since</span><span>Jul 2024</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Sign-in method</span><span>Google</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Saved addresses</span><span>2</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Payment method</span><span>Visa ••• 4421</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Recurring active</span><span>Yes · biweekly w/ Maria L.</span></div>
+          </div>
+
+          <div class="section-h"><h3>Manual actions</h3></div>
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Issue refund</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Adjust reliability score</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Send credit ($X)</div>
+            <div class="btn-secondary-sm" style="text-align: left; padding: 9px 12px;">Restrict to request-to-book</div>
+            <div class="btn-danger-sm" style="text-align: left; padding: 9px 12px;">Suspend account</div>
+          </div>
+
+          <div class="section-h"><h3>Internal notes</h3></div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 11px; color: var(--text-secondary); padding: 6px 0;">No notes yet.</div>
+            <div style="margin-top: 4px;">
+              <div style="font-size: 11px; padding: 9px; border: 0.5px solid var(--border); border-radius: 5px; color: var(--text-tertiary);">+ Add note</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="margin-top: 40px; padding: 16px; background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); max-width: 920px;">
+  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px;">Session progress</div>
+  <div style="font-size: 13px; color: var(--text-primary);">Wireframes 54–60 complete · <span style="color: var(--text-secondary);">60 of ~70 total</span></div>
+  <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">All major screens shipped. Remaining ~10 are minor states and variants.</div>
+</div>
+
+</body>
+</html>

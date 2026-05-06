@@ -8,7 +8,7 @@
 
 ## How to use this document
 
-This is a **reference** document, not a tutorial. It captures *what was decided* and *why*, plus the corrected build plan. When you (or Claude Code) start working on something:
+This is a **reference** document, not a tutorial. It captures _what was decided_ and _why_, plus the corrected build plan. When you (or Claude Code) start working on something:
 
 1. Open this document
 2. Find the relevant section
@@ -67,15 +67,16 @@ This is the master record of every decision we agreed to. **Do not deviate witho
 
 ### Cleaner commissions (tier-scaled)
 
-| Tier | Commission |
-|---|---|
-| Rising Pro (during first 6 jobs) | **12%** |
-| Rising Pro (post-graduation) | 15% |
-| Proven Specialist | 13% |
-| Top Performer | 11% |
-| All-Star Expert | 10% |
+| Tier                             | Commission |
+| -------------------------------- | ---------- |
+| Rising Pro (during first 6 jobs) | **12%**    |
+| Rising Pro (post-graduation)     | 15%        |
+| Proven Specialist                | 13%        |
+| Top Performer                    | 11%        |
+| All-Star Expert                  | 10%        |
 
 **Why tier-scaled commission matters:**
+
 - Tier promotion = commission goes down (real reward)
 - Tier drop = commission goes up (real cost)
 - This reinforces the tier narrative with a financial signal in both directions
@@ -113,14 +114,14 @@ This is the master record of every decision we agreed to. **Do not deviate witho
 
 A nightly cron job at 2:00 AM Pacific computes each cleaner's score from the previous 90 days of data.
 
-| Metric | Weight | What it measures |
-|---|---|---|
-| On-time arrival | 25% | Clock-in within 5 min of `scheduled_at`, partial credit at 6–15 min and 16–30 min, no-show penalty separate |
-| Job completion | 20% | % of accepted bookings that reach approved/auto_approved |
-| Customer rating | 20% | Weighted average of 1–5 star ratings, 3.8 floor for deduction |
-| Photo compliance | 15% | First photo within 15 min, all required-room photos before clock-out |
-| Communication response | 10% | 4-hour SLA on in-app messages during active bookings (phases 1–5) |
-| Reschedule rate | 10% | % of accepted bookings rescheduled by cleaner; 20% considered "perfect," penalty above |
+| Metric                 | Weight | What it measures                                                                                            |
+| ---------------------- | ------ | ----------------------------------------------------------------------------------------------------------- |
+| On-time arrival        | 25%    | Clock-in within 5 min of `scheduled_at`, partial credit at 6–15 min and 16–30 min, no-show penalty separate |
+| Job completion         | 20%    | % of accepted bookings that reach approved/auto_approved                                                    |
+| Customer rating        | 20%    | Weighted average of 1–5 star ratings, 3.8 floor for deduction                                               |
+| Photo compliance       | 15%    | First photo within 15 min, all required-room photos before clock-out                                        |
+| Communication response | 10%    | 4-hour SLA on in-app messages during active bookings (phases 1–5)                                           |
+| Reschedule rate        | 10%    | % of accepted bookings rescheduled by cleaner; 20% considered "perfect," penalty above                      |
 
 ### 90-day window — locked
 
@@ -135,6 +136,7 @@ Slower to respond to changes (good or bad), but cleaners trust it because random
 ### Probation states
 
 When a cleaner's score drops to a warning band, the dashboard shifts to a probation state with:
+
 - Warning banner at top
 - Score widget in warning colors
 - Metric breakdown showing which areas crashed
@@ -145,18 +147,19 @@ When a cleaner's score drops to a warning band, the dashboard shifts to a probat
 
 ## 2.3 — Badges (~25 total across 6 categories)
 
-| Category | Examples |
-|---|---|
-| Trust | ID Verified, Background Checked, Insurance Verified |
-| Performance | High Rating, Streak (consecutive 5-stars), Photo Pro |
-| Customer Relationship | Repeat Favorite, Quick Responder |
-| ZIP-locked | Trusted by Neighbors, Top-rated in [ZIP], Customer favorite in [ZIP] |
-| Specialty | Deep Clean Specialist, Move-out Specialist, Airbnb Pro, Pet-friendly Home Pro |
-| Veteran | 1-Year Pro, 100-job Milestone, etc. |
+| Category              | Examples                                                                      |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Trust                 | ID Verified, Background Checked, Insurance Verified                           |
+| Performance           | High Rating, Streak (consecutive 5-stars), Photo Pro                          |
+| Customer Relationship | Repeat Favorite, Quick Responder                                              |
+| ZIP-locked            | Trusted by Neighbors, Top-rated in [ZIP], Customer favorite in [ZIP]          |
+| Specialty             | Deep Clean Specialist, Move-out Specialist, Airbnb Pro, Pet-friendly Home Pro |
+| Veteran               | 1-Year Pro, 100-job Milestone, etc.                                           |
 
 ### ZIP-locked badges — full mechanics
 
 **Trusted by Neighbors** (any tier):
+
 - 10+ completed jobs in that ZIP
 - 4.5+ average rating across those jobs
 - All within last 12 months
@@ -164,9 +167,11 @@ When a cleaner's score drops to a warning band, the dashboard shifts to a probat
 - Displayed for 6 months, auto-renews on rolling 12-month window
 
 **Top-rated in [ZIP]** (Top Performer or above):
+
 - 25+ jobs in ZIP, 4.7+ rating
 
 **Customer favorite in [ZIP]** (All-Star Expert):
+
 - 5+ active recurring customers in ZIP
 
 A cleaner can hold multiple badges across multiple ZIPs. Badges fade to "Inactive" if criteria slip, then disappear after another 30 days. Cleaner gets notified at each transition.
@@ -353,14 +358,14 @@ A marketplace cold-start mechanism. New cleaners get a temporary visibility boos
 
 ## The 6 logical groups
 
-| Group | Theme | Approx. tables |
-|---|---|---|
-| B1 | Core identity + accounts | 6 |
-| B2 | Bookings + lifecycle events | ~10 |
-| B3 | Trust mechanics (scoring, tiers, badges) | ~10 |
-| B4 | Photos + GPS + messaging | ~6 |
-| B5 | Money (payouts, fees, disputes, refunds) | ~10 |
-| B6 | Admin + audit + jobs queue | ~12 |
+| Group | Theme                                    | Approx. tables |
+| ----- | ---------------------------------------- | -------------- |
+| B1    | Core identity + accounts                 | 6              |
+| B2    | Bookings + lifecycle events              | ~10            |
+| B3    | Trust mechanics (scoring, tiers, badges) | ~10            |
+| B4    | Photos + GPS + messaging                 | ~6             |
+| B5    | Money (payouts, fees, disputes, refunds) | ~10            |
+| B6    | Admin + audit + jobs queue               | ~12            |
 
 > **Note:** Exact table list is captured in `puretask_schema_overview.md` (the planning doc Claude Code generated). The corrected SQL files (B2/B5/B8 dumps) need to be re-emitted before deploy — that's a Pre-Phase 1 task.
 
@@ -395,17 +400,17 @@ B5 is the catch-all: drill into any specific table you're worried about.
 
 ## Batch structure
 
-| Batch | Theme | Status | Screens |
-|---|---|---|---|
-| 1 (v3) | Core dashboards & trust UX | ✅ Designed | 14 |
-| 2 | Onboarding flow (cleaner) | ⏳ Not yet designed | 7 |
-| 3a | Customer signup/discovery | ⏳ Not yet designed | ~6 |
-| 3b | Customer settings & profile | ✅ Designed | 5 |
-| 4 | Booking flow + active job | ✅ Designed | 8 |
-| 5 | Trust & reliability | ✅ Designed | 6 |
-| 6 | Onboarding & explainers | ✅ Designed | 6 |
-| 7 | Admin tools | ✅ Designed | 7 |
-| 8 | Edge cases & support | ✅ Designed | ~6 |
+| Batch  | Theme                       | Status              | Screens |
+| ------ | --------------------------- | ------------------- | ------- |
+| 1 (v3) | Core dashboards & trust UX  | ✅ Designed         | 14      |
+| 2      | Onboarding flow (cleaner)   | ⏳ Not yet designed | 7       |
+| 3a     | Customer signup/discovery   | ⏳ Not yet designed | ~6      |
+| 3b     | Customer settings & profile | ✅ Designed         | 5       |
+| 4      | Booking flow + active job   | ✅ Designed         | 8       |
+| 5      | Trust & reliability         | ✅ Designed         | 6       |
+| 6      | Onboarding & explainers     | ✅ Designed         | 6       |
+| 7      | Admin tools                 | ✅ Designed         | 7       |
+| 8      | Edge cases & support        | ✅ Designed         | ~6      |
 
 ## Notable screens worth re-reading before build
 
@@ -493,23 +498,28 @@ These run **alongside** Phase 1, not before. Don't block coding on them.
 This is the hardest phase. **Half your bugs will live here.** Sub-phases must be respected.
 
 ### 6a — Stripe customer payment (~1 week)
+
 26. Stripe customer payment method setup
 27. Booking flow UI (selecting service, time, cleaner, address)
 28. Booking creation transaction (insert booking + booking_state_event + Stripe authorize)
 
 ### 6b — In-app messaging infrastructure (~1 week)
+
 29. Encrypted in-app messaging (booking-scoped)
 30. 4-hour response SLA tracking
 
 ### 6c — Cleaner-side acceptance (~3 days)
+
 31. Cleaner-side booking acceptance (WF 3, 4-hour SLA, expiration)
 
 ### 6d — GPS and "On my way" infrastructure (~1 week)
+
 32. GPS ping system (3-min cadence during transit)
 33. Geofence trigger for clock-in (100m radius)
 34. "On my way" page state machine (2hr enable, entry instruction reveal, push notification)
 
 ### 6e — Active job tracking + photo system (~1.5 weeks)
+
 35. Active job tracking (WF 4, 5, 9 — arrived, in progress, completing)
 36. Photo upload system (with 15-min first-photo rule)
 37. Photo encryption at rest, 90-day deletion job
@@ -517,10 +527,12 @@ This is the hardest phase. **Half your bugs will live here.** Sub-phases must be
 39. Customer photo opt-out flow (with dispute waiver acknowledgment)
 
 ### 6f — Approve and pay (~3 days)
+
 40. Approve and pay flow (WF 10) with Stripe charge capture
 41. 24-hour auto-approval cron job
 
 ### 6g — Recurring bookings (~1 week)
+
 42. Recurring booking setup (WF 21, 22)
 43. Smart cadence defaults by service type
 44. Cleaner-side recurring stream
@@ -648,13 +660,13 @@ The booking transaction phase touches: Stripe (multi-step charge flow), the data
 
 54 tables is a lot for a solo founder. The schema reflects everything we designed because we designed thoroughly. But it's also an option to **scope down to a simpler V1**:
 
-| Drop for V1 | Adds back in V2 |
-|---|---|
-| ZIP-locked badges (use general "Trusted" badge only) | ZIP-locked logic |
-| Recurring bookings | Recurring schema + UI |
-| New cleaner spotlight | Cold-start boost |
-| Multi-tier badge variants (one badge per category) | Tier-locked variants |
-| Specialty endorsements | Specialty system |
+| Drop for V1                                          | Adds back in V2       |
+| ---------------------------------------------------- | --------------------- |
+| ZIP-locked badges (use general "Trusted" badge only) | ZIP-locked logic      |
+| Recurring bookings                                   | Recurring schema + UI |
+| New cleaner spotlight                                | Cold-start boost      |
+| Multi-tier badge variants (one badge per category)   | Tier-locked variants  |
+| Specialty endorsements                               | Specialty system      |
 
 A scoped-down V1 lands in 4–5 months. The full plan lands in 9–12. **The schema supports both paths** — you can launch with most tables empty and fill them in V2.
 

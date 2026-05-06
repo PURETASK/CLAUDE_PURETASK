@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PureTask Wireframes — Batch 8 (Final)</title>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --border: #e2e2df;
+    --border-light: #ececea;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6b68;
+    --text-tertiary: #a0a09d;
+    --success: #1d9e75;
+    --success-bg: #e8f7f2;
+    --warning: #b45309;
+    --warning-bg: #fef3c7;
+    --danger: #993c1d;
+    --danger-bg: #fef5f2;
+    --info: #1d5fa0;
+    --info-bg: #eff6ff;
+    --gold: #b88716;
+    --gold-bg: #fef6e0;
+    --phone-w: 320px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 40px 24px 60px;
+    color: var(--text-primary);
+  }
+  h1 {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 16px;
+  }
+  .session-note {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+  .session-note strong { color: var(--text-primary); }
+
+  .batch-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin: 32px 0 16px; padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .row {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    margin-bottom: 12px; align-items: flex-start;
+  }
+  .phone {
+    width: var(--phone-w);
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 24px; overflow: hidden;
+  }
+  .desktop {
+    width: 720px; max-width: 100%;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .screen-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-tertiary); margin-bottom: 8px;
+  }
+  .phone-wrap { display: flex; flex-direction: column; }
+
+  .hdr {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 16px;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .hdr-back { font-size: 15px; color: var(--text-secondary); }
+  .hdr-title { font-weight: 600; font-size: 14px; }
+  .hdr-action { margin-left: auto; font-size: 12px; color: var(--text-secondary); }
+
+  .section { padding: 14px 16px; }
+  .section + .section { border-top: 0.5px solid var(--border-light); }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+  }
+  .pill-info { background: var(--info-bg); color: var(--info); }
+  .pill-success { background: var(--success-bg); color: var(--success); }
+  .pill-warning { background: var(--warning-bg); color: var(--warning); }
+  .pill-gold { background: var(--gold-bg); color: var(--gold); }
+  .pill-neutral { background: var(--bg); color: var(--text-secondary); }
+
+  .card {
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+  }
+
+  .btn-primary {
+    display: block; width: 100%;
+    padding: 11px; border-radius: 8px;
+    background: var(--text-primary); color: white;
+    font-size: 13px; font-weight: 600; text-align: center;
+  }
+  .btn-secondary {
+    display: block; width: 100%;
+    padding: 11px; border-radius: 8px;
+    border: 0.5px solid var(--border); background: var(--surface);
+    font-size: 13px; text-align: center;
+  }
+  .btn-danger {
+    display: block; width: 100%;
+    padding: 11px; border-radius: 8px;
+    background: var(--danger); color: white;
+    font-size: 13px; font-weight: 600; text-align: center;
+  }
+
+  .map-stub {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #ebebe8 0%, #f0f0ed 50%, #e8e8e5 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-stub::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+      linear-gradient(rgba(160,160,157,0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(160,160,157,0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .map-pin {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  .map-pulse {
+    position: absolute;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--info);
+    opacity: 0.25;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(0.6); opacity: 0.4; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .map-route {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .stripe-bar {
+    height: 4px; background: var(--text-primary);
+  }
+  .badge-hero {
+    aspect-ratio: 1;
+    width: 88px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-shield {
+    width: 40px; height: 40px;
+  }
+</style>
+</head>
+<body>
+
+<h1>PureTask · Wireframes 61–70 · Final batch</h1>
+
+<div class="session-note">
+  <strong>Final batch.</strong> These are minor screens completing the set: the standalone "On my way" page, refund processing, Stripe Connect onboarding wrapper, badge detail pages, and the press kit. Most of these are variations of patterns we've established — kept tight on purpose.
+</div>
+
+<div class="batch-label">Batch 8 — Final misc screens</div>
+
+<div class="row">
+
+  <!-- W61: "On my way" detail page (cleaner-side, full-screen during transit) -->
+  <div class="phone-wrap">
+    <div class="screen-label">61 · Cleaner · "On my way" detail</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">En route</span>
+        <span class="hdr-action">End trip</span>
+      </div>
+
+      <div class="map-stub" style="aspect-ratio: 4/3;">
+        <div class="map-route">
+          <svg width="100%" height="100%" viewBox="0 0 320 240" preserveAspectRatio="none" style="position: absolute; inset: 0;">
+            <path d="M 60 200 Q 110 180 140 140 Q 170 100 230 60" fill="none" stroke="var(--info)" stroke-width="3" stroke-linecap="round" stroke-dasharray="6,4"/>
+          </svg>
+        </div>
+        <div class="map-pulse" style="left: 52px; top: 192px;"></div>
+        <div class="map-pin" style="left: 60px; top: 200px;"></div>
+        <div class="map-pin" style="left: 230px; top: 60px; background: var(--info);"></div>
+        <div style="position: absolute; left: 60px; top: 218px; font-size: 9px; padding: 2px 6px; background: var(--surface); border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); white-space: nowrap;">You</div>
+        <div style="position: absolute; left: 234px; top: 78px; font-size: 9px; padding: 2px 6px; background: var(--surface); border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); white-space: nowrap;">Sarah K.</div>
+      </div>
+
+      <div style="padding: 16px 16px 12px; border-bottom: 0.5px solid var(--border-light);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 2px;">Estimated arrival</div>
+            <div style="font-size: 18px; font-weight: 700;">10:58 AM</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 11px; color: var(--success); font-weight: 600;">2 min early</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">4.2 mi · 14 min</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">Going to <strong style="color: var(--text-primary);">4234 Mission St, Apt 3B</strong>. Sarah has been notified you're on the way.</div>
+      </div>
+
+      <div style="padding: 14px 16px; border-bottom: 0.5px solid var(--border-light);">
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Entry instructions</div>
+        <div style="padding: 12px; background: var(--bg); border-radius: 8px;">
+          <div style="font-size: 12px; line-height: 1.55;">"I'll be home. Buzz #3B — there's a doorman who'll let you up. Friendly cat (Milo) will be roaming."</div>
+          <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 6px;">Sarah K. · added at booking</div>
+        </div>
+      </div>
+
+      <div style="padding: 14px 16px;">
+        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+          <div class="btn-secondary" style="flex: 1; padding: 10px; font-size: 12px;">Call Sarah</div>
+          <div class="btn-secondary" style="flex: 1; padding: 10px; font-size: 12px;">Message</div>
+        </div>
+        <div class="btn-secondary" style="padding: 10px; font-size: 12px; color: var(--warning); border-color: #fcd34d; background: var(--warning-bg);">Running late?</div>
+      </div>
+
+      <div style="padding: 12px 16px; background: var(--bg); border-top: 0.5px solid var(--border-light);">
+        <div style="font-size: 10px; color: var(--text-tertiary); line-height: 1.5;">Location pings every 3 min during transit. Sarah can see your ETA but not your live location. Clock-in available within 100m of her address.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W62: Refund processing screen (admin) -->
+  <div class="phone-wrap">
+    <div class="screen-label">62 · Admin · Refund processing</div>
+    <div class="desktop" style="width: 480px;">
+      <div style="padding: 18px 22px; border-bottom: 0.5px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 11px; color: var(--text-secondary);">← Booking #PT-4870</div>
+          <div style="font-size: 16px; font-weight: 700; margin-top: 2px;">Issue refund</div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary);">Olivia C. ↔ Diego A.</div>
+      </div>
+
+      <div style="padding: 18px 22px; border-bottom: 0.5px solid var(--border-light);">
+        <div style="padding: 14px; background: var(--bg); border-radius: 8px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; padding: 3px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Booking total</span><span>$125.99</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 3px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Cleaner earned (already paid)</span><span>$98.01</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 3px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Platform fee</span><span>$27.98</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 0 3px; border-top: 0.5px solid var(--border-light); font-size: 12px; margin-top: 4px; font-weight: 600;"><span>Already paid by customer</span><span>$125.99</span></div>
+        </div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Refund type</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; display: flex; gap: 10px; align-items: center;">
+            <div style="width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Full refund · $125.99</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">Cleaner refunds the platform $98.01 from next payout</div>
+            </div>
+          </div>
+          <div style="padding: 12px; border: 1.5px solid var(--text-primary); border-radius: 8px; display: flex; gap: 10px; align-items: center; background: var(--bg);">
+            <div style="width: 14px; height: 14px; border: 1.5px solid var(--text-primary); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 6px; height: 6px; background: var(--text-primary); border-radius: 50%;"></div>
+            </div>
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Partial refund · 50%</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">$62.99 to customer · $49.00 deducted from cleaner's next payout</div>
+            </div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; display: flex; gap: 10px; align-items: center;">
+            <div style="width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Custom amount</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">Specify split between platform and cleaner</div>
+            </div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; display: flex; gap: 10px; align-items: center;">
+            <div style="width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Goodwill credit (no cleaner deduction)</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">Platform absorbs the cost. Cleaner unaffected.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 18px 22px; border-bottom: 0.5px solid var(--border-light);">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Reason for refund (visible to both parties)</div>
+        <div style="font-size: 12px; padding: 10px; border: 0.5px solid var(--border); border-radius: 6px; min-height: 60px; line-height: 1.5;">Mediation outcome: cleaner photos show partial completion. 50% refund balances responsibilities.</div>
+      </div>
+
+      <div style="padding: 18px 22px;">
+        <div style="display: flex; gap: 8px;">
+          <div class="btn-primary" style="flex: 1; padding: 11px;">Process refund · $62.99</div>
+          <div class="btn-secondary" style="width: auto; padding: 11px 18px;">Cancel</div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 10px; line-height: 1.5;">Customer card refund: 5–10 business days · Cleaner deduction: applied to next Friday's payout · Both parties notified by email</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row" style="margin-top: 20px;">
+
+  <!-- W63: Stripe Connect onboarding wrapper -->
+  <div class="phone-wrap">
+    <div class="screen-label">63 · Stripe Connect onboarding wrapper</div>
+    <div class="phone">
+      <div class="stripe-bar"></div>
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Set up payouts</span>
+        <span class="hdr-action">Save & exit</span>
+      </div>
+
+      <div style="padding: 22px 18px 16px;">
+        <div style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; background: var(--bg); border-radius: 999px; margin-bottom: 14px;">
+          <div style="width: 16px; height: 16px; background: #635BFF; border-radius: 4px;"></div>
+          <span style="font-size: 11px; color: var(--text-secondary);">Powered by Stripe</span>
+        </div>
+        <h2 style="font-size: 18px; font-weight: 700; line-height: 1.25; margin-bottom: 8px;">Connect your bank account.</h2>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.55;">Stripe handles payouts and tax forms. Your bank info goes directly to Stripe — PureTask never sees it.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 10px;">Step 3 of 5</div>
+        <div style="height: 4px; background: var(--bg); border-radius: 2px; margin-bottom: 14px;">
+          <div style="height: 100%; width: 60%; background: var(--text-primary); border-radius: 2px;"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; background: var(--success-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 12px; font-weight: 600;">Personal info</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">Name, address, DOB</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; background: var(--success-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 12px; font-weight: 600;">Tax info (SSN/EIN)</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">For 1099 reporting</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; padding: 12px; border: 1.5px solid var(--text-primary); border-radius: 8px; background: var(--bg);">
+            <div style="width: 18px; height: 18px; border-radius: 50%; background: var(--text-primary); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 700;">3</div>
+            <div style="flex: 1;">
+              <div style="font-size: 12px; font-weight: 600;">Bank account</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">Where you'll receive payouts</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 8px; opacity: 0.5;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); font-size: 10px;">4</div>
+            <div style="flex: 1;">
+              <div style="font-size: 12px;">Verify identity (ID upload)</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">Stripe Identity</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 8px; opacity: 0.5;">
+            <div style="width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); font-size: 10px;">5</div>
+            <div style="flex: 1;">
+              <div style="font-size: 12px;">Review & accept terms</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">Stripe Services Agreement</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Routing number</div>
+        <div style="font-size: 13px; padding: 9px 11px; border: 0.5px solid var(--border); border-radius: 6px; margin-bottom: 12px; color: var(--text-tertiary);">9 digits</div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Account number</div>
+        <div style="font-size: 13px; padding: 9px 11px; border: 0.5px solid var(--border); border-radius: 6px; margin-bottom: 12px; color: var(--text-tertiary);">Account number</div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Confirm account number</div>
+        <div style="font-size: 13px; padding: 9px 11px; border: 0.5px solid var(--border); border-radius: 6px; color: var(--text-tertiary);">Re-enter</div>
+      </div>
+
+      <div class="section">
+        <div style="padding: 12px; background: var(--bg); border-radius: 8px;">
+          <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">Stripe verifies your account by sending two small deposits within 1–2 business days. Until verified, you can take bookings but payouts will hold.</div>
+        </div>
+      </div>
+
+      <div style="padding: 18px;">
+        <div class="btn-primary" style="margin-bottom: 8px;">Continue to identity verification</div>
+        <div style="font-size: 11px; color: var(--text-tertiary); text-align: center;">PureTask doesn't store your bank details. <span style="color: var(--text-primary);">Stripe's privacy policy</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W64: Background-checked badge / trust page -->
+  <div class="phone-wrap">
+    <div class="screen-label">64 · Background-checked trust page</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Trust at PureTask</span>
+      </div>
+
+      <div style="padding: 28px 18px 18px; text-align: center; border-bottom: 0.5px solid var(--border-light);">
+        <div class="badge-hero" style="background: var(--info-bg);">
+          <svg class="icon-shield" viewBox="0 0 40 40" fill="none">
+            <path d="M20 4 L34 9 V20 C34 28 28 34 20 36 C12 34 6 28 6 20 V9 Z" fill="var(--info)" opacity="0.15" stroke="var(--info)" stroke-width="1.5"/>
+            <polyline points="13,20 18,25 27,15" fill="none" stroke="var(--info)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="font-size: 18px; font-weight: 700; margin-top: 14px; margin-bottom: 6px;">Every cleaner is verified.</div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Background check, identity verification, ongoing performance scoring. We don't take shortcuts on who you let into your home.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 12px;">What we verify</div>
+
+        <div style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border-light);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--info-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="3" stroke="var(--info)" stroke-width="1.5"/><path d="M2 12c1-2 3-3 5-3s4 1 5 3" stroke="var(--info)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Identity verified</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55;">Government ID confirmed via Stripe Identity. Selfie matched to ID.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border-light);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--info-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="9" rx="1" stroke="var(--info)" stroke-width="1.5"/><line x1="2" y1="6" x2="12" y2="6" stroke="var(--info)" stroke-width="1.5"/><line x1="5" y1="9" x2="9" y2="9" stroke="var(--info)" stroke-width="1.5"/></svg>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Background check passed</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55;">National criminal database, sex offender registry, global watchlists. Run by Checkr. Renews every 12 months.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border-light);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--info-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="var(--info)" stroke-width="1.5"/><polyline points="5,7 7,9 9,5" fill="none" stroke="var(--info)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Performance scored daily</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55;">On-time arrival, photo compliance, customer ratings tracked continuously. Cleaners falling below standard pause from new bookings.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; padding: 12px 0;">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--info-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="var(--info)" stroke-width="1.5"/><line x1="7" y1="4" x2="7" y2="7" stroke="var(--info)" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="7" x2="9" y2="8" stroke="var(--info)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">GPS-verified arrivals</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55;">Cleaners check in via geo-fence. You see exact arrival and departure times.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">What we don't do</div>
+        <div style="padding: 12px; background: var(--bg); border-radius: 8px;">
+          <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">We don't read your messages. We don't track cleaners' GPS during the cleaning itself. We don't share your address with cleaners we haven't matched you with. We don't hide our verification process — every step above is auditable.</div>
+        </div>
+      </div>
+
+      <div style="padding: 18px; background: var(--bg); text-align: center;">
+        <div style="font-size: 11px; color: var(--text-tertiary); line-height: 1.6;">Have a concern about a cleaner? <span style="color: var(--text-primary); font-weight: 600;">Report safety issue →</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row" style="margin-top: 20px;">
+
+  <!-- W65: ZIP-locked badge detail page -->
+  <div class="phone-wrap">
+    <div class="screen-label">65 · ZIP-locked badge detail</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Top-rated in 94110</span>
+      </div>
+
+      <div style="padding: 28px 18px 18px; text-align: center; border-bottom: 0.5px solid var(--border-light);">
+        <div class="badge-hero" style="background: var(--gold-bg); border: 2px solid var(--gold);">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <path d="M18 3 L22 12 L32 13 L24 20 L26 30 L18 25 L10 30 L12 20 L4 13 L14 12 Z" fill="var(--gold)" opacity="0.2" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/>
+            <text x="18" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="var(--gold)">94110</text>
+          </svg>
+        </div>
+        <div style="font-size: 18px; font-weight: 700; margin-top: 14px; margin-bottom: 6px;">Top-rated in 94110</div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">A neighborhood-specific badge earned by maintaining excellence in a single ZIP code.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">How it's earned</div>
+        <div class="card" style="margin-bottom: 12px;">
+          <div style="display: flex; gap: 10px; padding: 4px 0; align-items: center;">
+            <div style="width: 14px; height: 14px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; font-weight: 700; flex-shrink: 0;">1</div>
+            <div style="font-size: 12px;">Complete <strong>25+ cleanings</strong> in one ZIP</div>
+          </div>
+          <div style="display: flex; gap: 10px; padding: 4px 0; align-items: center;">
+            <div style="width: 14px; height: 14px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; font-weight: 700; flex-shrink: 0;">2</div>
+            <div style="font-size: 12px;">Maintain <strong>4.7+ rating</strong> on those cleanings</div>
+          </div>
+          <div style="display: flex; gap: 10px; padding: 4px 0; align-items: center;">
+            <div style="width: 14px; height: 14px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; font-weight: 700; flex-shrink: 0;">3</div>
+            <div style="font-size: 12px;">Active in the <strong>past 90 days</strong></div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55;">Badge displays for 6 months, then re-evaluates. Cleaners who let standards slip lose the badge until they earn it again.</div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Why it exists</div>
+        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.65;">A cleaner who's great in one neighborhood may not be in another — different home types, different expectations, different commute patterns. ZIP-locked badges reward sustained local excellence rather than a single overall rating.</div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Other ZIP-locked badges</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+              <div style="font-size: 12px; font-weight: 600;">Trusted by neighbors</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">10+ jobs, 4.5+</div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">First milestone for ZIP-specific reputation</div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+              <div style="font-size: 12px; font-weight: 600;">Customer favorite in 94110</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">5+ recurring</div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">For cleaners with deep recurring relationships</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W66: Specialty endorsement page -->
+  <div class="phone-wrap">
+    <div class="screen-label">66 · Specialty endorsement detail</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Eco-friendly verified</span>
+      </div>
+
+      <div style="padding: 28px 18px 18px; text-align: center; border-bottom: 0.5px solid var(--border-light);">
+        <div class="badge-hero" style="background: var(--success-bg); border: 2px solid var(--success);">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <path d="M18 6 C24 6 30 10 30 18 C30 24 26 28 18 30 C10 28 6 24 6 18 C6 10 12 6 18 6 Z" fill="var(--success)" opacity="0.15"/>
+            <path d="M12 22 C12 16 18 12 24 12 C24 18 18 22 12 22 Z" fill="var(--success)"/>
+            <line x1="12" y1="22" x2="22" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div style="font-size: 18px; font-weight: 700; margin-top: 14px; margin-bottom: 6px;">Eco-friendly verified</div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Earned by cleaners who consistently use eco-friendly products and have it confirmed by customers.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">How it's earned</div>
+        <div class="card">
+          <div style="font-size: 12px; line-height: 1.65;">A specialty badge unlocks when <strong>15+ customers</strong> tag a cleaner with the matching trait in reviews. The cleaner's own profile must also list the capability.</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">All specialty badges</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; text-align: center;">
+            <div style="font-size: 18px; margin-bottom: 6px;">🌿</div>
+            <div style="font-size: 11px; font-weight: 600;">Eco-friendly</div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; text-align: center;">
+            <div style="font-size: 18px; margin-bottom: 6px;">🐈</div>
+            <div style="font-size: 11px; font-weight: 600;">Pet-friendly</div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; text-align: center;">
+            <div style="font-size: 18px; margin-bottom: 6px;">📦</div>
+            <div style="font-size: 11px; font-weight: 600;">Move-out specialist</div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; text-align: center;">
+            <div style="font-size: 18px; margin-bottom: 6px;">🏠</div>
+            <div style="font-size: 11px; font-weight: 600;">Airbnb expert</div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; text-align: center;">
+            <div style="font-size: 18px; margin-bottom: 6px;">🤧</div>
+            <div style="font-size: 11px; font-weight: 600;">Allergen-aware</div>
+          </div>
+          <div style="padding: 12px; border: 0.5px solid var(--border-light); border-radius: 8px; text-align: center;">
+            <div style="font-size: 18px; margin-bottom: 6px;">⏰</div>
+            <div style="font-size: 11px; font-weight: 600;">On-time pro</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="background: var(--info-bg);">
+          <div style="font-size: 11px; color: var(--info); line-height: 1.6;">Specialty badges aren't permanent. If customer reviews stop confirming a trait, the badge fades after 90 days of misalignment. They reflect what cleaners actually deliver, not just what they claim.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row" style="margin-top: 20px;">
+
+  <!-- W67: Press kit / launch page -->
+  <div class="phone-wrap">
+    <div class="screen-label">67 · Press kit / launch announcement</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Press</span>
+      </div>
+
+      <div style="padding: 28px 18px 18px;">
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px;">PURETASK · PRESS KIT</div>
+        <h2 style="font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 10px;">A trustworthy cleaning marketplace, finally.</h2>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">PureTask launched in Sacramento on March 1, 2026 with a single bet: that home cleaning could be both fairly priced for customers and fairly compensated for cleaners — without sacrificing trust.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">By the numbers</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 2px;">85–90%</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">cleaner take-home</div>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 2px;">$9.99</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">flat customer fee</div>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 2px;">100%</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">background-checked</div>
+          </div>
+          <div style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 2px;">48 hr</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">dispute window</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">What makes us different</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="padding: 10px 12px; background: var(--bg); border-radius: 6px;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Photo proof, every job</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">Required rooms photographed before and after</div>
+          </div>
+          <div style="padding: 10px 12px; background: var(--bg); border-radius: 6px;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Pay only when satisfied</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">Escrow-based, customer approves before payment captures</div>
+          </div>
+          <div style="padding: 10px 12px; background: var(--bg); border-radius: 6px;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Lowest commission in market</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">10–15% tier-based, vs industry-standard 25–35%</div>
+          </div>
+          <div style="padding: 10px 12px; background: var(--bg); border-radius: 6px;">
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px;">Transparent matching</div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">No black-box ranking. Cleaners see why they're placed where they are</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Founder</div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <div style="width: 56px; height: 56px; border-radius: 28px; background: var(--bg); flex-shrink: 0;"></div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600;">Nathan Chiaratti</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.55;">Solo founder, builder, and operator of PureTask. Available for interviews.</div>
+            <div style="font-size: 11px; color: var(--text-primary); font-weight: 600; margin-top: 6px;">nathan@puretask.co</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Brand assets</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 6px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Logo pack</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">SVG, PNG · light & dark</div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-primary); font-weight: 600;">Download ↓</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 6px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Product screenshots</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">High-res, transparent backgrounds</div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-primary); font-weight: 600;">Download ↓</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 0.5px solid var(--border-light); border-radius: 6px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 600;">Brand guidelines</div>
+              <div style="font-size: 10px; color: var(--text-secondary);">PDF · colors, typography, tone</div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-primary); font-weight: 600;">Download ↓</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 18px; background: var(--bg); text-align: center;">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Press inquiries</div>
+        <div style="font-size: 13px; font-weight: 600;">press@puretask.co</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W68: Cleaner: lateness flag / running late -->
+  <div class="phone-wrap">
+    <div class="screen-label">68 · Cleaner · running late flag</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Running late</span>
+      </div>
+
+      <div style="padding: 22px 18px 18px;">
+        <h2 style="font-size: 17px; font-weight: 700; line-height: 1.3; margin-bottom: 6px;">Notify Sarah you'll be late</h2>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.55;">Telling the customer early reduces the score impact and protects your reliability standing. One free late notice per booking.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">How late?</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 14px;">
+          <div style="padding: 10px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 12px;">5 min</div>
+          <div style="padding: 10px; border: 1.5px solid var(--text-primary); background: var(--bg); border-radius: 6px; text-align: center; font-size: 12px; font-weight: 600;">10 min</div>
+          <div style="padding: 10px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 12px;">15 min</div>
+          <div style="padding: 10px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 12px;">20+ min</div>
+        </div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Reason (optional)</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;">
+          <div class="pill pill-neutral" style="cursor: pointer;">Traffic</div>
+          <div class="pill" style="background: var(--text-primary); color: white;">Previous job ran long</div>
+          <div class="pill pill-neutral">Parking</div>
+          <div class="pill pill-neutral">Personal</div>
+          <div class="pill pill-neutral">Other</div>
+        </div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Message to Sarah</div>
+        <div style="font-size: 12px; padding: 10px; border: 0.5px solid var(--border); border-radius: 6px; line-height: 1.55; min-height: 60px;">My previous job took longer than expected. I'll be there at 11:10 instead of 11:00. So sorry for the inconvenience.</div>
+      </div>
+
+      <div class="section">
+        <div class="card" style="background: var(--warning-bg);">
+          <div style="font-size: 12px; color: var(--warning); line-height: 1.6;">Late arrivals over <strong>15 minutes</strong> count as a score deduction even with notice. Late arrivals over <strong>30 minutes without notice</strong> count as a no-show.</div>
+        </div>
+      </div>
+
+      <div style="padding: 18px;">
+        <div class="btn-primary">Send notice now</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row" style="margin-top: 20px;">
+
+  <!-- W69: Customer: rebook same address / new cleaner -->
+  <div class="phone-wrap">
+    <div class="screen-label">69 · Customer · rebook same address</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Quick rebook</span>
+      </div>
+
+      <div style="padding: 22px 18px 16px;">
+        <h2 style="font-size: 17px; font-weight: 700; line-height: 1.3; margin-bottom: 6px;">Same place, same setup?</h2>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.55;">We'll pre-fill your address, service, and notes. You just pick the cleaner and time.</p>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Address</span><span>4234 Mission St, 3B</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Service</span><span>Standard · 2 hrs</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Entry</span><span>I'll be home</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px;"><span style="color: var(--text-secondary);">Notes</span><span style="text-align: right; max-width: 60%; line-height: 1.45;">Friendly cat (Milo)</span></div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-primary); font-weight: 600; margin-top: 10px;">Change anything →</div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600;">YOUR TEAM</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; gap: 10px; padding: 10px; border: 1.5px solid var(--text-primary); background: var(--bg); border-radius: 8px; align-items: center;">
+            <div style="width: 40px; height: 40px; border-radius: 20px; background: var(--surface); flex-shrink: 0;"></div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">Maria L.</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">Last cleaned today · ★ 5.0</div>
+            </div>
+            <div class="pill pill-info">Recommended</div>
+          </div>
+          <div style="display: flex; gap: 10px; padding: 10px; border: 0.5px solid var(--border-light); border-radius: 8px; align-items: center;">
+            <div style="width: 40px; height: 40px; border-radius: 20px; background: var(--bg); flex-shrink: 0;"></div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">James K.</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">Last cleaned 1 month ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600;">PICK A TIME</div>
+        <div style="display: flex; gap: 6px; margin-bottom: 8px; overflow-x: auto;">
+          <div style="min-width: 56px; text-align: center; padding: 8px 4px; border: 0.5px solid var(--border-light); border-radius: 6px; flex-shrink: 0;">
+            <div style="font-size: 9px; color: var(--text-secondary);">FRI</div>
+            <div style="font-size: 14px; font-weight: 600;">11</div>
+          </div>
+          <div style="min-width: 56px; text-align: center; padding: 8px 4px; background: var(--text-primary); color: var(--surface); border-radius: 6px; flex-shrink: 0;">
+            <div style="font-size: 9px;">SAT</div>
+            <div style="font-size: 14px; font-weight: 600;">12</div>
+          </div>
+          <div style="min-width: 56px; text-align: center; padding: 8px 4px; border: 0.5px solid var(--border-light); border-radius: 6px; flex-shrink: 0;">
+            <div style="font-size: 9px; color: var(--text-secondary);">SUN</div>
+            <div style="font-size: 14px; font-weight: 600;">13</div>
+          </div>
+          <div style="min-width: 56px; text-align: center; padding: 8px 4px; border: 0.5px solid var(--border-light); border-radius: 6px; flex-shrink: 0;">
+            <div style="font-size: 9px; color: var(--text-secondary);">MON</div>
+            <div style="font-size: 14px; font-weight: 600;">14</div>
+          </div>
+          <div style="min-width: 56px; text-align: center; padding: 8px 4px; border: 0.5px solid var(--border-light); border-radius: 6px; flex-shrink: 0;">
+            <div style="font-size: 9px; color: var(--text-secondary);">TUE</div>
+            <div style="font-size: 14px; font-weight: 600;">15</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div style="font-size: 12px; padding: 8px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center;">9 AM</div>
+          <div style="font-size: 12px; padding: 8px; background: var(--text-primary); color: var(--surface); border-radius: 6px; text-align: center; font-weight: 600;">11 AM</div>
+          <div style="font-size: 12px; padding: 8px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center;">2 PM</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="btn-primary">Book Maria · Sat 11 AM · $125.99</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W70: Customer: post-launch waitlist signup -->
+  <div class="phone-wrap">
+    <div class="screen-label">70 · Customer · waitlist signup</div>
+    <div class="phone">
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Join waitlist</span>
+      </div>
+
+      <div style="padding: 32px 18px 22px; text-align: center;">
+        <div style="width: 64px; height: 64px; border-radius: 16px; background: var(--bg); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--text-primary)" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="14" r="11"/><polyline points="14,7 14,14 19,17"/></svg>
+        </div>
+        <div style="font-size: 18px; font-weight: 700; margin-bottom: 6px; line-height: 1.25;">PureTask isn't here yet.</div>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">We're growing carefully. Tell us where you'd want PureTask and we'll let you know the moment we launch.</p>
+      </div>
+
+      <div class="section">
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">Email</div>
+        <div style="font-size: 13px; padding: 10px 12px; border: 0.5px solid var(--border); border-radius: 6px; margin-bottom: 12px; color: var(--text-tertiary);">you@example.com</div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">ZIP code</div>
+        <div style="font-size: 13px; padding: 10px 12px; border: 0.5px solid var(--border); border-radius: 6px; margin-bottom: 12px; color: var(--text-tertiary);">94102</div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">What service interests you?</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;">
+          <div class="pill" style="background: var(--text-primary); color: white; padding: 5px 11px;">Standard</div>
+          <div class="pill pill-neutral" style="padding: 5px 11px;">Deep clean</div>
+          <div class="pill pill-neutral" style="padding: 5px 11px;">Move-out</div>
+          <div class="pill pill-neutral" style="padding: 5px 11px;">Airbnb</div>
+        </div>
+
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">How often might you book? (optional)</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div style="font-size: 11px; padding: 8px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center;">One-off</div>
+          <div style="font-size: 11px; padding: 8px; background: var(--text-primary); color: white; border-radius: 6px; text-align: center; font-weight: 600;">Monthly</div>
+          <div style="font-size: 11px; padding: 8px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center;">Biweekly+</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="padding: 12px; background: var(--info-bg); border-radius: 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: var(--info); margin-bottom: 4px;">First-100 perk</div>
+          <div style="font-size: 11px; color: var(--info); line-height: 1.55;">If you're one of the first 100 customers in your ZIP, you get $25 off your first booking when we launch.</div>
+        </div>
+      </div>
+
+      <div style="padding: 18px;">
+        <div class="btn-primary" style="margin-bottom: 8px;">Join waitlist</div>
+        <div style="font-size: 11px; color: var(--text-tertiary); text-align: center; line-height: 1.5;">No spam. We'll only email you about your area's launch and the perk.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div style="margin-top: 40px; padding: 20px; background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); max-width: 720px;">
+  <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px;">WIREFRAME SET COMPLETE</div>
+  <div style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">70 of 70 wireframes shipped.</div>
+  <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Every customer-facing surface, every cleaner-facing surface, every admin tool. This is a complete UX specification. The remaining work is visual design (logo, colors, photography), backend implementation (Direction B: database schema, next session), legal documentation (Direction C), and cleaner recruitment (Direction D).</div>
+</div>
+
+</body>
+</html>

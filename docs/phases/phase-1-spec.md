@@ -43,12 +43,12 @@ These come later. Don't get pulled into them:
 
 Before Task 1, make sure your environment is ready:
 
-| Tool | Version | Install / verify command |
-|---|---|---|
-| Node.js | 20 LTS or 22 LTS | `node --version` |
-| pnpm | latest | `npm install -g pnpm` then `pnpm --version` |
-| git | any modern | `git --version` |
-| Cursor or VS Code | latest | open and sign in |
+| Tool              | Version          | Install / verify command                    |
+| ----------------- | ---------------- | ------------------------------------------- |
+| Node.js           | 20 LTS or 22 LTS | `node --version`                            |
+| pnpm              | latest           | `npm install -g pnpm` then `pnpm --version` |
+| git               | any modern       | `git --version`                             |
+| Cursor or VS Code | latest           | open and sign in                            |
 
 Also create accounts for (free tiers fine):
 
@@ -92,11 +92,13 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 7. Stop the server (`Ctrl+C`).
 
 **Verify:**
+
 - `pnpm dev` works.
 - The page renders.
 - `tsconfig.json` includes `"paths": { "@/*": ["./src/*"] }`.
 
 **Common mistakes:**
+
 - Saying No to `src/` — sets up a worse structure.
 - Saying No to TypeScript — irreversible cost down the line.
 - Running `npm install` somewhere by accident — creates a `package-lock.json` that fights `pnpm`. Delete it if it appears.
@@ -124,10 +126,12 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 7. Refresh GitHub — your code is there.
 
 **Verify:**
+
 - Repo exists on GitHub.
 - Latest commit shows up on `main`.
 
 **Common mistakes:**
+
 - Initializing the GitHub repo with a README first — causes a merge conflict on first push.
 - Committing `node_modules/` because you accidentally deleted `.gitignore`. (Next.js's default `.gitignore` is correct; don't touch it.)
 
@@ -152,9 +156,11 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 3. If your `tsconfig.json` doesn't have these, add them.
 
 **Verify:**
+
 - Run `pnpm exec tsc --noEmit` — should pass with no errors.
 
 **Common mistakes:**
+
 - Setting strict to `false` later when you hit your first type error. **Don't.** Fix the type error.
 - Adding `// @ts-ignore` or `// @ts-expect-error` to silence things. Use sparingly with a comment explaining why.
 
@@ -197,10 +203,12 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 **Verify:**
+
 - `ls src/` shows all expected folders.
 - `git status` shows the new structure.
 
 **Common mistakes:**
+
 - Forgetting `.gitkeep` files — empty dirs aren't tracked by git, so the structure disappears for the next clone.
 - Putting `AGENTS.md` inside `docs/` instead of at repo root. AI tools look for it at the root.
 
@@ -252,12 +260,14 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 6. Run `pnpm format` once to format everything.
 
 **Verify:**
+
 - `pnpm lint` passes.
 - `pnpm typecheck` passes.
 - `pnpm format:check` passes.
 - Open a `.tsx` file, save it in your editor, and confirm it auto-formats (you may need to install the Prettier extension for Cursor / VS Code and enable "Format on Save").
 
 **Common mistakes:**
+
 - Skipping `eslint-config-prettier` — leads to ESLint and Prettier fighting over style.
 - Forgetting to enable Format on Save — defeats the whole point.
 
@@ -272,6 +282,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 **Steps:**
 
 1. Create `.editorconfig` at repo root:
+
    ```
    root = true
 
@@ -288,6 +299,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 **Verify:**
+
 - File exists. That's it.
 
 ---
@@ -306,6 +318,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    - `service_role` `secret` key → `SUPABASE_SERVICE_ROLE_KEY` (treat as a password)
 
 2. Create `.env.local` at repo root (will be gitignored):
+
    ```
    NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGc...
@@ -314,6 +327,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 3. Create `.env.example` (committed):
+
    ```
    NEXT_PUBLIC_SUPABASE_URL=
    NEXT_PUBLIC_SUPABASE_ANON_KEY=
@@ -326,6 +340,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 5. Install zod: `pnpm add zod`
 
 6. Create `src/lib/env.ts`:
+
    ```ts
    import { z } from 'zod';
 
@@ -352,10 +367,12 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 **Verify:**
+
 - `pnpm dev` starts cleanly.
 - Temporarily comment out one var in `.env.local` and run `pnpm dev` — server should crash with a clear error. Re-add the var.
 
 **Common mistakes:**
+
 - Committing `.env.local` accidentally. Never. Run `git status` before every commit.
 - Putting the `service_role` key behind `NEXT_PUBLIC_` prefix. It would leak to every browser. Disaster.
 
@@ -370,11 +387,13 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 **Steps:**
 
 1. Install Supabase libraries:
+
    ```
    pnpm add @supabase/supabase-js @supabase/ssr
    ```
 
 2. Create `src/lib/supabase/server.ts`:
+
    ```ts
    import { createServerClient } from '@supabase/ssr';
    import { cookies } from 'next/headers';
@@ -408,6 +427,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 3. Create `src/lib/supabase/browser.ts`:
+
    ```ts
    import { createBrowserClient } from '@supabase/ssr';
    import { env } from '@/lib/env';
@@ -422,6 +442,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 4. Create `src/lib/supabase/middleware.ts`:
+
    ```ts
    import { createServerClient } from '@supabase/ssr';
    import { NextResponse, type NextRequest } from 'next/server';
@@ -472,10 +493,12 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    (We'll generate the real types in a later phase. For Phase 1, this placeholder is enough.)
 
 **Verify:**
+
 - `pnpm typecheck` passes.
 - The three files exist with no TypeScript errors.
 
 **Common mistakes:**
+
 - Importing the server client into a Client Component — leaks the cookie handler to the browser. Watch for this in error messages.
 - Mixing the older `@supabase/auth-helpers-nextjs` package with `@supabase/ssr`. They're incompatible. Use `@supabase/ssr` only — `auth-helpers` is deprecated.
 
@@ -490,6 +513,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 **Steps:**
 
 1. In Supabase dashboard, open the SQL editor and run a quick test table:
+
    ```sql
    CREATE TABLE public.smoke_test (
      id bigint generated always as identity primary key,
@@ -507,6 +531,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 2. In your repo, replace `src/app/page.tsx` with:
+
    ```tsx
    import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -534,10 +559,12 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 4. You should see the smoke_test row JSON.
 
 **Verify:**
+
 - The page shows your smoke_test row, no error.
 - `pnpm typecheck` passes.
 
 **Common mistakes:**
+
 - Forgetting RLS policy — you'll get an empty array. The query "succeeds" but returns nothing.
 - Calling `createSupabaseServerClient()` without `await` — common TypeScript gotcha now that `cookies()` is async.
 
@@ -554,6 +581,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 **Steps:**
 
 1. Push your latest changes to GitHub:
+
    ```
    git add -A
    git commit -m "chore: phase 1 foundation"
@@ -581,10 +609,12 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 7. Visit the URL Vercel gives you. You should see your home page.
 
 **Verify:**
+
 - Production URL loads.
 - Smoke test data shows up there too.
 
 **Common mistakes:**
+
 - Forgetting to add env vars to Vercel — build succeeds, runtime crashes.
 - Pasting the `NEXT_PUBLIC_SITE_URL` with `http://localhost:3000` in production. Update it after first deploy.
 - Not realizing Vercel automatically deploys on every push to `main`. This is intentional and correct, but be aware: from now on, every push to main is a production deploy.
@@ -615,11 +645,13 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
 6. Click the preview URL — should show "PureTask — Preview" while production still shows "PureTask".
 
 **Verify:**
+
 - Preview URL works.
 - Production unchanged.
 - Closing the PR without merging is fine — this was just a test.
 
 **Cleanup:**
+
 - Close the PR (don't merge).
 - `git checkout main`
 - `git branch -D test/preview-deploy`
@@ -650,6 +682,7 @@ When you (or Claude Code, or Cursor's agent) are working a task, treat it as one
    ```
 
 **Verify:**
+
 - All 4 files visible on GitHub.
 - AGENTS.md at repo root, not in `docs/`.
 

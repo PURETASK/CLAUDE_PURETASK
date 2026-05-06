@@ -22,23 +22,23 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Scripts
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm dev` | Dev server (Turbopack) |
-| `pnpm build` / `pnpm start` | Production build locally |
-| `pnpm lint` | ESLint |
-| `pnpm typecheck` | TypeScript (`tsc --noEmit`) |
+| Command                     | Purpose                     |
+| --------------------------- | --------------------------- |
+| `pnpm dev`                  | Dev server (Turbopack)      |
+| `pnpm build` / `pnpm start` | Production build locally    |
+| `pnpm lint`                 | ESLint                      |
+| `pnpm typecheck`            | TypeScript (`tsc --noEmit`) |
 
 ## Layout
 
-| Path | Contents |
-| --- | --- |
-| `AGENTS.md` | Rules for AI assistants and humans |
-| `docs/` | Product guide, decisions, handoffs, phase specs |
-| `docs/phases/` | Phase specs (e.g. `phase-1-spec.md`) |
+| Path             | Contents                                         |
+| ---------------- | ------------------------------------------------ |
+| `AGENTS.md`      | Rules for AI assistants and humans               |
+| `docs/`          | Product guide, decisions, handoffs, phase specs  |
+| `docs/phases/`   | Phase specs (e.g. `phase-1-spec.md`)             |
 | `db/migrations/` | Numbered Postgres migrations (`0001_` … `0008_`) |
-| `db/seed.sql` | Optional dev seed (empty placeholder) |
-| `src/` | Next.js App Router application code |
+| `db/seed.sql`    | Optional dev seed (empty placeholder)            |
+| `src/`           | Next.js App Router application code              |
 
 ## Docs
 

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PureTask Wireframes — WF 21–27 · Recurring + post-job</title>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --border: #e2e2df;
+    --border-light: #ececea;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6b68;
+    --text-tertiary: #a0a09d;
+    --success: #1d9e75;
+    --success-bg: #e8f7f2;
+    --warning: #b45309;
+    --warning-bg: #fef3c7;
+    --danger: #993c1d;
+    --danger-bg: #fef5f2;
+    --info: #1d5fa0;
+    --info-bg: #eff6ff;
+    --purple: #6d28d9;
+    --purple-bg: #ede9fe;
+    --phone-w: 320px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 40px 24px 60px;
+    color: var(--text-primary);
+  }
+  h1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .v-note {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .batch-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .phone {
+    width: var(--phone-w);
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .screen-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+  .phone-wrap { display: flex; flex-direction: column; }
+
+  .hdr {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 16px;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .hdr-back { font-size: 15px; color: var(--text-secondary); }
+  .hdr-title { font-weight: 600; font-size: 14px; }
+  .hdr-action { margin-left: auto; font-size: 12px; color: var(--text-secondary); }
+
+  .section { padding: 14px 16px; }
+  .section + .section { border-top: 0.5px solid var(--border-light); }
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-tertiary);
+    margin-bottom: 10px;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+  }
+  .pill-success { background: var(--success-bg); color: var(--success); }
+  .pill-warning { background: var(--warning-bg); color: var(--warning); }
+  .pill-info { background: var(--info-bg); color: var(--info); }
+  .pill-danger { background: var(--danger-bg); color: var(--danger); }
+  .pill-neutral { background: var(--bg); color: var(--text-secondary); }
+  .pill-purple { background: var(--purple-bg); color: var(--purple); }
+
+  .btn-primary {
+    display: block; width: 100%;
+    padding: 11px; border-radius: 8px;
+    background: var(--text-primary); color: white;
+    font-size: 13px; font-weight: 600; text-align: center;
+    cursor: pointer; border: none;
+  }
+  .btn-primary:disabled { background: var(--border); color: var(--text-tertiary); cursor: not-allowed; }
+  .btn-secondary {
+    display: block; width: 100%;
+    padding: 11px; border-radius: 8px;
+    border: 0.5px solid var(--border); background: var(--surface);
+    font-size: 13px; text-align: center; color: var(--text-primary);
+    cursor: pointer;
+  }
+  .btn-danger {
+    display: block; width: 100%;
+    padding: 11px; border-radius: 8px;
+    border: 0.5px solid #f2c4b8; background: var(--danger-bg);
+    font-size: 13px; text-align: center; color: var(--danger);
+  }
+
+  .input-field {
+    width: 100%; padding: 9px 10px;
+    border: 0.5px solid var(--border); border-radius: 6px;
+    font-size: 13px; color: var(--text-primary);
+    background: var(--surface);
+    margin-bottom: 12px;
+  }
+  .input-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-green { background: var(--success); }
+  .dot-amber { background: #d97706; }
+  .dot-red { background: #dc2626; }
+
+  /* score ring with breakdown */
+  .score-ring {
+    width: 56px; height: 56px; border-radius: 50%;
+    flex-shrink: 0; position: relative;
+    background: conic-gradient(var(--success) 0% 92%, var(--border-light) 92% 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-ring-inner {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--surface);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .score-num { font-size: 16px; font-weight: 700; line-height: 1; }
+  .score-label-tiny { font-size: 7px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+
+  /* tier badges - green is universal "good standing", tiers use neutral or category colors */
+  .tier-badge {
+    display: inline-block;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+  }
+  .tier-rising { background: var(--bg); color: var(--text-secondary); border: 0.5px solid var(--border); }
+  .tier-proven { background: var(--info-bg); color: var(--info); }
+  .tier-top { background: var(--purple-bg); color: var(--purple); }
+  .tier-allstar { background: #1a1a18; color: white; }
+
+  /* bottom nav */
+  .nav-bar {
+    display: flex; border-top: 0.5px solid var(--border);
+    background: var(--surface);
+  }
+  .nav-item {
+    flex: 1; padding: 10px 4px; text-align: center;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .nav-item.active { color: var(--text-primary); }
+  .nav-icon { width: 18px; height: 18px; margin: 0 auto 4px; border: 1.5px solid currentColor; border-radius: 4px; }
+
+  /* IMPROVED photo placeholders - outlined, not gradient-filled */
+  .photo-box {
+    width: 100%; aspect-ratio: 1;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .photo-box::before {
+    content: '';
+    position: absolute;
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+  }
+  .photo-box::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--border);
+    border-radius: 50%;
+    top: 30%; left: 30%;
+  }
+  .photo-label {
+    position: absolute;
+    bottom: 6px; left: 6px;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    background: var(--surface);
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 1;
+  }
+  .photo-box.dashed { border: 1px dashed var(--border); }
+  .photo-box.dashed::before, .photo-box.dashed::after { opacity: 0.4; }
+  .photo-box.done {
+    border-color: var(--success);
+    background: var(--success-bg);
+  }
+  .photo-box.done::before, .photo-box.done::after { display: none; }
+  .photo-box.done .photo-label {
+    background: var(--success);
+    color: white;
+  }
+  .photo-box.done-check {
+    color: var(--success);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  /* avatar - flat outlined style not gradient */
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary); font-size: 12px; font-weight: 600;
+  }
+  .avatar-lg { width: 48px; height: 48px; font-size: 14px; }
+
+  /* job card */
+  .job-card {
+    border: 0.5px solid var(--border-light);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: var(--surface);
+  }
+  .job-card.urgent { border-color: #f2c4b8; background: var(--danger-bg); }
+  .job-card.recurring { border-left: 3px solid var(--info); }
+
+  /* progress bar */
+  .progress-track {
+    height: 4px; background: var(--border-light);
+    border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--success); }
+  .progress-fill.amber { background: #d97706; }
+
+  /* status banner */
+  .status-banner {
+    background: var(--success-bg);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+    color: var(--success);
+    font-weight: 500;
+  }
+  .status-banner.warning { background: var(--warning-bg); color: var(--warning); }
+  .status-banner.info { background: var(--info-bg); color: var(--info); }
+
+  /* IMPROVED booking widget */
+  .booking-widget {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  .widget-field {
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 12px;
+    margin-bottom: 8px;
+    background: var(--bg);
+  }
+  .widget-field-label { color: var(--text-tertiary); font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .widget-field-value { color: var(--text-primary); font-weight: 500; font-size: 13px; margin-top: 2px; }
+  .widget-field-placeholder { color: var(--text-tertiary); font-size: 13px; margin-top: 2px; }
+  .widget-field-row { display: flex; align-items: center; }
+  .widget-caret {
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  /* cleaner card on homepage */
+  .cleaner-card {
+    width: 140px; flex-shrink: 0;
+    border: 0.5px solid var(--border-light);
+    border-radius: 12px;
+    padding: 10px;
+    background: var(--surface);
+  }
+  .cleaner-card .cleaner-photo {
+    width: 100%; aspect-ratio: 1.1; margin-bottom: 8px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 0.5px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+  }
+  .cleaner-card .cleaner-photo::before {
+    content: '';
+    position: absolute;
+    width: 32px; height: 32px;
+    background: var(--border);
+    border-radius: 50%;
+    top: 30%; left: 50%;
+    transform: translateX(-50%);
+  }
+  .cleaner-card .cleaner-photo::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 30px;
+    background: var(--border);
+    border-radius: 30px 30px 0 0;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* horizontal scroll row */
+  .scroll-row {
+    display: flex; gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* badges row */
+  .badges-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* trust pill in hero */
+  .micro-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 9px; border-radius: 999px;
+    background: var(--bg); color: var(--text-secondary);
+    font-size: 10px; font-weight: 600;
+    border: 0.5px solid var(--border);
+  }
+  .micro-pill svg { width: 9px; height: 9px; }
+
+  /* metric breakdown rows */
+  .metric-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+    font-size: 12px;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-label { color: var(--text-secondary); }
+  .metric-bar {
+    width: 60px; height: 4px;
+    background: var(--border-light);
+    border-radius: 2px;
+    margin: 0 8px;
+    overflow: hidden;
+  }
+  .metric-bar-fill { height: 100%; background: var(--success); }
+
+  /* empty-state icon */
+  .empty-icon {
+    width: 56px; height: 56px; border-radius: 14px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .empty-block { padding: 36px 18px; text-align: center; }
+  .empty-block h2 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .empty-block p { font-size: 12px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 14px; }
+
+  /* mini map placeholder */
+  .map-stub {
+    width: 100%; height: 140px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-stub::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border-light) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.6;
+  }
+  .map-pin {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--text-primary);
+  }
+  .map-route {
+    position: absolute;
+    top: 50%; left: 20%;
+    width: 60%; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--text-primary) 0, var(--text-primary) 4px, transparent 4px, transparent 8px);
+  }
+
+  /* entry instructions card */
+  .entry-card {
+    background: #fffbeb;
+    border: 0.5px solid #fde68a;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .entry-card-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--warning);
+    margin-bottom: 8px;
+  }
+</style>
+
+</head>
+
+<body>
+
+<h1>PureTask · Wireframes 21–27 · Batch 4 (recurring + post-job)</h1>
+<div class="v-note">Seven screens covering the lifetime-value engine: recurring booking setup with smart defaults by service type, recurring management with skip/pause/change/end controls, standalone tip prompt for post-review tipping, auto-rebook nudge triggered 24h after positive review, customer favorites management, cleaner profile editor, and cleaner availability calendar with weekly schedule + buffer time + booking lead time. All screens follow locked rules: 2-week default cadence, "charged per cleaning not upfront," 14-day cleaner-side cancellation notice for recurring.</div>
+
+<!-- ============================================================
+     WIREFRAME 21 - RECURRING BOOKING SETUP
+     ============================================================ -->
+<div class="batch-label">Batch 4A — Recurring booking setup (cadence · day/time · pricing disclosure)</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">21 · Set up recurring · standard · every 2 weeks</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Set up recurring</span>
+        <span class="hdr-action">Cancel</span>
+      </div>
+
+      <!-- Cleaner header -->
+      <div style="padding: 14px 16px; background: var(--bg); border-bottom: 0.5px solid var(--border-light);">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--surface); border: 0.5px solid var(--border); flex-shrink: 0; position: relative; overflow: hidden;">
+            <div style="position: absolute; width: 18px; height: 18px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+            <div style="position: absolute; width: 30px; height: 16px; background: var(--border); border-radius: 15px 15px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 700;">Maria S.</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 1px;">All-Star Expert · 4.9 ★ · 8 cleanings together</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service type -->
+      <div class="section">
+        <div class="section-label">Service</div>
+        <div style="padding: 12px; border: 0.5px solid var(--border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Standard cleaning</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">2 hours · $65/hr</div>
+          </div>
+          <span style="font-size: 14px; color: var(--text-tertiary);">▾</span>
+        </div>
+      </div>
+
+      <!-- Cadence -->
+      <div class="section">
+        <div class="section-label">How often</div>
+
+        <!-- Weekly -->
+        <div style="padding: 14px; border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 600;">Every week</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">$139.99 / cleaning · 4 per month</div>
+          </div>
+          <span style="font-size: 16px; color: var(--text-tertiary);">○</span>
+        </div>
+
+        <!-- Every 2 weeks - SELECTED, MOST POPULAR -->
+        <div style="padding: 14px; border: 1.5px solid var(--text-primary); border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; background: var(--bg); position: relative;">
+          <div style="position: absolute; top: -8px; right: 12px; padding: 2px 8px; background: var(--info); color: white; border-radius: 999px; font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;">Most popular</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Every 2 weeks</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">$139.99 / cleaning · 2 per month</div>
+          </div>
+          <span style="font-size: 16px;">●</span>
+        </div>
+
+        <!-- Every 4 weeks -->
+        <div style="padding: 14px; border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 600;">Every 4 weeks</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">$139.99 / cleaning · 1 per month</div>
+          </div>
+          <span style="font-size: 16px; color: var(--text-tertiary);">○</span>
+        </div>
+      </div>
+
+      <!-- Day of week -->
+      <div class="section">
+        <div class="section-label">Day of week · Maria's availability</div>
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
+          <div style="padding: 8px 0; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 10px; color: var(--text-tertiary); background: var(--bg);">Sun</div>
+          <div style="padding: 8px 0; border: 0.5px solid var(--border); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 600;">Mon</div>
+          <div style="padding: 8px 0; border: 0.5px solid var(--border); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 600;">Tue</div>
+          <div style="padding: 8px 0; border: 0.5px solid var(--border); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 600;">Wed</div>
+          <div style="padding: 8px 0; border: 0.5px solid var(--border); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 600;">Thu</div>
+          <div style="padding: 8px 0; border: 0.5px solid var(--border); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 600;">Fri</div>
+          <div style="padding: 8px 0; border: 1.5px solid var(--text-primary); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 700; background: var(--text-primary); color: white;">Sat</div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 8px;">Greyed days are unavailable. Maria offers Mon–Sat.</div>
+      </div>
+
+      <!-- Time -->
+      <div class="section">
+        <div class="section-label">Time of day · open slots</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div style="padding: 10px 8px; border: 0.5px solid var(--border); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 600;">8:00 AM</div>
+          <div style="padding: 10px 8px; border: 0.5px solid var(--border); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 600;">9:00 AM</div>
+          <div style="padding: 10px 8px; border: 1.5px solid var(--text-primary); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 700; background: var(--text-primary); color: white;">10:00 AM</div>
+          <div style="padding: 10px 8px; border: 0.5px solid var(--border); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 600;">11:00 AM</div>
+          <div style="padding: 10px 8px; border: 0.5px solid var(--border); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 600;">1:00 PM</div>
+          <div style="padding: 10px 8px; border: 0.5px solid var(--border); border-radius: 8px; text-align: center; font-size: 12px; font-weight: 600;">2:00 PM</div>
+        </div>
+      </div>
+
+      <!-- Start date -->
+      <div class="section">
+        <div class="section-label">Start date</div>
+        <div style="padding: 12px; border: 0.5px solid var(--border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Sat, Oct 5</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">First cleaning · then every 2 weeks</div>
+          </div>
+          <span style="font-size: 14px; color: var(--text-tertiary);">▾</span>
+        </div>
+      </div>
+
+      <!-- Pricing trust card -->
+      <div class="section">
+        <div style="background: var(--success-bg); border-radius: 10px; padding: 14px; border: 0.5px solid #c7e8d8;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--success); margin-bottom: 6px;">Charged per cleaning, not upfront</div>
+          <div style="font-size: 11px; color: var(--success); line-height: 1.5;">
+            $139.99 holds on your card 24 hours before each cleaning. No charge if you skip or pause.
+          </div>
+        </div>
+      </div>
+
+      <!-- Cancellation policy -->
+      <div class="section">
+        <div style="font-size: 11px; color: var(--text-secondary); padding: 12px; background: var(--bg); border-radius: 8px; line-height: 1.5;">
+          <strong style="color: var(--text-primary);">Pause, skip, or end any time.</strong> If Maria can't continue, you'll get 14 days' notice and help finding a new regular.
+        </div>
+      </div>
+
+      <!-- Action -->
+      <div style="padding: 14px 16px; border-top: 0.5px solid var(--border); background: var(--surface);">
+        <button class="btn-primary">Start recurring · first cleaning Sat Oct 5</button>
+        <div style="font-size: 10px; color: var(--text-tertiary); text-align: center; margin-top: 8px;">
+          Maria has 4 hours to confirm the first booking
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     WIREFRAME 22 - RECURRING MANAGEMENT
+     ============================================================ -->
+<div class="batch-label">Batch 4B — Recurring management (skip · pause · change · end)</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">22 · Manage recurring · active · Maria · biweekly</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Your recurring schedule</span>
+        <span></span>
+      </div>
+
+      <!-- Active status -->
+      <div style="padding: 14px 16px; background: var(--success-bg); border-bottom: 0.5px solid #c7e8d8;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--success);"></div>
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--success);">Active recurring · with Maria S.</div>
+            <div style="font-size: 11px; color: var(--success); margin-top: 1px;">Standard clean · 2 hr · every 2 weeks · Sat 10 AM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cleaner card -->
+      <div style="padding: 12px 16px; background: var(--surface); border-bottom: 0.5px solid var(--border-light);">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); flex-shrink: 0; position: relative; overflow: hidden;">
+            <div style="position: absolute; width: 16px; height: 16px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+            <div style="position: absolute; width: 26px; height: 14px; background: var(--border); border-radius: 13px 13px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 700;">Maria S.</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 1px;">Started Sep 7 · 4 cleanings completed</div>
+          </div>
+          <span style="font-size: 11px; color: var(--info); font-weight: 600;">Message</span>
+        </div>
+      </div>
+
+      <!-- Upcoming cleanings -->
+      <div class="section">
+        <div class="section-label">Upcoming · next 3 cleanings</div>
+
+        <!-- Next: Oct 19 -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 10px; padding: 12px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Sat, Oct 19 · 10:00 AM</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">$139.99 holds Fri Oct 18</div>
+            </div>
+            <span style="font-size: 11px; color: var(--info); font-weight: 600;">Skip →</span>
+          </div>
+        </div>
+
+        <!-- Nov 2 -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 10px; padding: 12px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Sat, Nov 2 · 10:00 AM</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">$139.99 holds Fri Nov 1</div>
+            </div>
+            <span style="font-size: 11px; color: var(--info); font-weight: 600;">Skip →</span>
+          </div>
+        </div>
+
+        <!-- Nov 16 -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 10px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Sat, Nov 16 · 10:00 AM</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">$139.99 holds Fri Nov 15</div>
+            </div>
+            <span style="font-size: 11px; color: var(--info); font-weight: 600;">Skip →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manage schedule actions -->
+      <div class="section">
+        <div class="section-label">Manage schedule</div>
+
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Pause for a while</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Resume any time · no fees</div>
+          </div>
+          <span style="font-size: 16px; color: var(--text-tertiary);">→</span>
+        </div>
+
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Change frequency</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Currently every 2 weeks</div>
+          </div>
+          <span style="font-size: 16px; color: var(--text-tertiary);">→</span>
+        </div>
+
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Change day or time</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Currently Sat 10:00 AM</div>
+          </div>
+          <span style="font-size: 16px; color: var(--text-tertiary);">→</span>
+        </div>
+
+        <!-- End recurring - destructive -->
+        <div style="border: 0.5px solid #f2c4b8; border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: center; background: var(--danger-bg);">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--danger);">End recurring</div>
+            <div style="font-size: 11px; color: var(--danger); margin-top: 2px;">Existing bookings stay scheduled</div>
+          </div>
+          <span style="font-size: 16px; color: var(--danger);">→</span>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="section">
+        <div class="section-label">This recurring</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+          <div style="text-align: center; padding: 12px 8px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 16px; font-weight: 700;">4</div>
+            <div style="font-size: 9px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px;">Completed</div>
+          </div>
+          <div style="text-align: center; padding: 12px 8px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 16px; font-weight: 700;">$560</div>
+            <div style="font-size: 9px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px;">Total spent</div>
+          </div>
+          <div style="text-align: center; padding: 12px 8px; border: 0.5px solid var(--border-light); border-radius: 8px;">
+            <div style="font-size: 16px; font-weight: 700;">5.0★</div>
+            <div style="font-size: 9px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px;">Avg rating</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     WIREFRAME 23 - TIP PROMPT (STANDALONE)
+     ============================================================ -->
+<div class="batch-label">Batch 4C — Tip prompt (standalone · post-review · "100% goes to her")</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">23 · Tip prompt · standalone · skipped tip earlier</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span></span>
+        <span class="hdr-title">Add a tip?</span>
+        <span class="hdr-action">Skip</span>
+      </div>
+
+      <!-- Cleaner card hero -->
+      <div style="padding: 28px 20px 16px; text-align: center; background: var(--surface);">
+        <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); margin: 0 auto 12px; position: relative; overflow: hidden;">
+          <div style="position: absolute; width: 32px; height: 32px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+          <div style="position: absolute; width: 54px; height: 28px; background: var(--border); border-radius: 27px 27px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+        </div>
+        <div style="font-size: 16px; font-weight: 700;">Tip Maria for Saturday's clean?</div>
+        <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">You rated her 5 stars · Standard clean · 2 hr</div>
+      </div>
+
+      <!-- Why tip -->
+      <div class="section">
+        <div style="background: var(--info-bg); border-radius: 10px; padding: 14px; border: 0.5px solid #c7dafd;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--info); margin-bottom: 6px;">100% goes to Maria</div>
+          <div style="font-size: 11px; color: var(--info); line-height: 1.5;">
+            PureTask doesn't take a cut of tips. Maria gets every dollar, paid out with her next weekly payout on Friday.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tip amount picker - bigger than review version -->
+      <div class="section">
+        <div class="section-label">Choose an amount</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div style="padding: 16px 6px; border: 0.5px solid var(--border); border-radius: 10px; text-align: center;">
+            <div style="font-size: 18px; font-weight: 700;">$5</div>
+            <div style="font-size: 9px; color: var(--text-tertiary); margin-top: 2px;">~4%</div>
+          </div>
+          <div style="padding: 16px 6px; border: 1.5px solid var(--text-primary); border-radius: 10px; text-align: center; background: var(--text-primary); color: white;">
+            <div style="font-size: 18px; font-weight: 700;">$10</div>
+            <div style="font-size: 9px; opacity: 0.7; margin-top: 2px;">~8% · DEFAULT</div>
+          </div>
+          <div style="padding: 16px 6px; border: 0.5px solid var(--border); border-radius: 10px; text-align: center;">
+            <div style="font-size: 18px; font-weight: 700;">$20</div>
+            <div style="font-size: 9px; color: var(--text-tertiary); margin-top: 2px;">~15%</div>
+          </div>
+        </div>
+
+        <!-- Custom row -->
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <div style="flex: 1; padding: 12px; border: 0.5px solid var(--border); border-radius: 8px; font-size: 12px; color: var(--text-tertiary);">Custom amount…</div>
+          <span style="padding: 12px 14px; border: 0.5px solid var(--border); border-radius: 8px; font-size: 12px; font-weight: 600;">No tip</span>
+        </div>
+      </div>
+
+      <!-- Optional message -->
+      <div class="section">
+        <div class="section-label">Note for Maria · optional</div>
+        <div style="border: 0.5px solid var(--border); border-radius: 8px; padding: 12px; min-height: 56px; background: var(--bg); font-size: 12px; color: var(--text-tertiary); line-height: 1.5;">
+          Thanks Maria! See you in two weeks…
+        </div>
+      </div>
+
+      <!-- Charge summary -->
+      <div class="section">
+        <div style="padding: 12px; background: var(--bg); border-radius: 8px;">
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px;">
+            <span style="color: var(--text-secondary);">Tip amount</span>
+            <span style="font-weight: 600;">$10.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; border-top: 0.5px solid var(--border-light);">
+            <span style="color: var(--text-secondary);">Maria receives</span>
+            <span style="font-weight: 700; color: var(--success);">$10.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Send -->
+      <div style="padding: 14px 16px; border-top: 0.5px solid var(--border); background: var(--surface);">
+        <button class="btn-primary">Send $10 tip to Maria</button>
+        <div style="font-size: 10px; color: var(--text-tertiary); text-align: center; margin-top: 8px;">
+          Charged to Visa ending 4422
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     WIREFRAME 24 - AUTO-REBOOK NUDGE
+     ============================================================ -->
+<div class="batch-label">Batch 4D — Auto-rebook nudge (24h after positive review · convert to recurring)</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">24 · Rebook nudge · 24h after 5-star review</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span></span>
+        <span class="hdr-title">Loved your cleaning?</span>
+        <span class="hdr-action">Maybe later</span>
+      </div>
+
+      <!-- Hero -->
+      <div style="padding: 28px 20px 16px; text-align: center; background: var(--surface);">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); margin: 0 auto 12px; position: relative; overflow: hidden;">
+          <div style="position: absolute; width: 28px; height: 28px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+          <div style="position: absolute; width: 48px; height: 26px; background: var(--border); border-radius: 24px 24px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+        </div>
+        <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Book Maria again?</div>
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5; max-width: 240px; margin: 0 auto;">
+          You rated Maria 5 stars yesterday. Same address, same service — pre-filled below.
+        </div>
+      </div>
+
+      <!-- Pre-filled summary -->
+      <div class="section">
+        <div style="border: 0.5px solid var(--border-light); border-radius: 10px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px;">
+            <span style="color: var(--text-secondary);">Cleaner</span>
+            <span style="font-weight: 600;">Maria S.</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-top: 0.5px solid var(--border-light);">
+            <span style="color: var(--text-secondary);">Service</span>
+            <span style="font-weight: 600;">Standard · 2 hr</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-top: 0.5px solid var(--border-light);">
+            <span style="color: var(--text-secondary);">Address</span>
+            <span style="font-weight: 600;">2847 Folsom St #4</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-top: 0.5px solid var(--border-light);">
+            <span style="color: var(--text-secondary);">Total</span>
+            <span style="font-weight: 700;">$139.99</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- When -->
+      <div class="section">
+        <div class="section-label">When?</div>
+
+        <!-- 2 weeks - default -->
+        <div style="padding: 14px; border: 1.5px solid var(--text-primary); border-radius: 10px; margin-bottom: 6px; background: var(--bg);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Sat, Oct 19 · 10:00 AM</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">In 2 weeks · most popular cadence</div>
+            </div>
+            <span style="font-size: 16px;">●</span>
+          </div>
+        </div>
+
+        <!-- 4 weeks -->
+        <div style="padding: 14px; border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 600;">Sat, Nov 2 · 10:00 AM</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">In 4 weeks</div>
+            </div>
+            <span style="font-size: 16px; color: var(--text-tertiary);">○</span>
+          </div>
+        </div>
+
+        <!-- Custom date -->
+        <div style="padding: 14px; border: 0.5px solid var(--border); border-radius: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 600;">Pick a different date</div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">See all of Maria's open slots</div>
+            </div>
+            <span style="font-size: 16px; color: var(--text-tertiary);">○</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recurring upgrade -->
+      <div class="section">
+        <div style="background: var(--info-bg); border-radius: 10px; padding: 14px; border: 0.5px solid #c7dafd;">
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <div style="width: 18px; height: 18px; border-radius: 4px; background: var(--info); display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;">✓</div>
+            <div style="flex: 1;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--info); margin-bottom: 4px;">Make this recurring · save the slot</div>
+              <div style="font-size: 11px; color: var(--info); line-height: 1.5;">
+                Maria stays your regular every 2 weeks. Pause, skip, or end any time, no fees. Charged per cleaning.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action -->
+      <div style="padding: 14px 16px; border-top: 0.5px solid var(--border); background: var(--surface);">
+        <button class="btn-primary">Book Sat Oct 19 + recurring</button>
+        <button class="btn-secondary" style="margin-top: 8px;">Just book Oct 19 · no recurring</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     WIREFRAME 25 - CUSTOMER FAVORITES MANAGEMENT
+     ============================================================ -->
+<div class="batch-label">Batch 4E — Customer favorites (regulars · saved · book again)</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">25 · Favorites · 3 saved cleaners</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Your favorites</span>
+        <span></span>
+      </div>
+
+      <!-- Tabs -->
+      <div style="padding: 8px 16px; border-bottom: 0.5px solid var(--border-light); background: var(--surface); display: flex; gap: 8px;">
+        <div style="padding: 6px 14px; background: var(--text-primary); color: white; border-radius: 999px; font-size: 11px; font-weight: 600;">All · 3</div>
+        <div style="padding: 6px 14px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Regulars · 1</div>
+        <div style="padding: 6px 14px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Saved · 2</div>
+      </div>
+
+      <!-- Regular section -->
+      <div class="section">
+        <div class="section-label">Your regular · recurring</div>
+
+        <!-- Maria - active recurring -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 12px; padding: 14px;">
+          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+            <div style="position: relative;">
+              <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); position: relative; overflow: hidden;">
+                <div style="position: absolute; width: 24px; height: 24px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+                <div style="position: absolute; width: 42px; height: 22px; background: var(--border); border-radius: 21px 21px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+              </div>
+              <div style="position: absolute; top: -2px; right: -2px; width: 22px; height: 22px; background: var(--surface); border: 1.5px solid var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--danger);">♥</div>
+            </div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 14px; font-weight: 700;">Maria S.</span>
+                <span class="pill pill-success" style="font-size: 9px; padding: 2px 6px;">● Active recurring</span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">All-Star Expert · 4.9 ★ · 8 cleanings</div>
+              <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px;">Every 2 weeks · Sat 10 AM</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-secondary" style="flex: 1; padding: 8px; font-size: 11px;">Manage recurring</button>
+            <button class="btn-secondary" style="flex: 1; padding: 8px; font-size: 11px;">Message</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Saved section -->
+      <div class="section">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;">
+          <div class="section-label" style="margin: 0;">Saved cleaners</div>
+          <span style="font-size: 11px; color: var(--text-secondary);">From past bookings</span>
+        </div>
+
+        <!-- Sofia -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 12px; padding: 14px; margin-bottom: 8px;">
+          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
+            <div style="position: relative;">
+              <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); position: relative; overflow: hidden;">
+                <div style="position: absolute; width: 24px; height: 24px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+                <div style="position: absolute; width: 42px; height: 22px; background: var(--border); border-radius: 21px 21px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+              </div>
+              <div style="position: absolute; top: -2px; right: -2px; width: 22px; height: 22px; background: var(--surface); border: 1.5px solid var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--danger);">♥</div>
+            </div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 14px; font-weight: 700;">Sofia P.</span>
+                <span class="tier-badge tier-top" style="font-size: 8px; padding: 1px 6px;">Top Performer</span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">4.8 ★ · 2 cleanings · Bernal Hts</div>
+              <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px;">Last booked Sep 7 · Deep clean</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-primary" style="flex: 1; padding: 8px; font-size: 11px;">Book again</button>
+            <button class="btn-secondary" style="padding: 8px 14px; font-size: 11px;">Profile</button>
+          </div>
+        </div>
+
+        <!-- Aaliyah - Rising Pro -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 12px; padding: 14px;">
+          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
+            <div style="position: relative;">
+              <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--bg); border: 0.5px solid var(--border); position: relative; overflow: hidden;">
+                <div style="position: absolute; width: 24px; height: 24px; background: var(--border); border-radius: 50%; top: 22%; left: 50%; transform: translateX(-50%);"></div>
+                <div style="position: absolute; width: 42px; height: 22px; background: var(--border); border-radius: 21px 21px 0 0; bottom: 0; left: 50%; transform: translateX(-50%);"></div>
+              </div>
+              <div style="position: absolute; top: -2px; right: -2px; width: 22px; height: 22px; background: var(--surface); border: 1.5px solid var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--danger);">♥</div>
+            </div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 14px; font-weight: 700;">Aaliyah J.</span>
+                <span class="tier-badge tier-rising" style="font-size: 8px; padding: 1px 6px;">Rising Pro</span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">5.0 ★ · 1 cleaning · Bernal Hts</div>
+              <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px;">Last booked Aug 18 · Standard</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-primary" style="flex: 1; padding: 8px; font-size: 11px;">Book again</button>
+            <button class="btn-secondary" style="padding: 8px 14px; font-size: 11px;">Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state hint at bottom (informational) -->
+      <div style="padding: 14px 16px; border-top: 0.5px solid var(--border-light); text-align: center; background: var(--surface);">
+        <div style="font-size: 11px; color: var(--text-tertiary); line-height: 1.5;">
+          Tap the heart on any cleaner's profile to add them here.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     WIREFRAME 26 - CLEANER PROFILE EDITOR
+     ============================================================ -->
+<div class="batch-label">Batch 4F — Cleaner profile editor (rate · bio · services · area)</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">26 · Profile editor · All-Star Expert · rate within range</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Edit profile</span>
+        <span class="hdr-action">Save</span>
+      </div>
+
+      <!-- Tabs -->
+      <div style="padding: 8px 16px; border-bottom: 0.5px solid var(--border-light); background: var(--surface); display: flex; gap: 6px; overflow-x: auto;">
+        <div style="flex-shrink: 0; padding: 6px 12px; background: var(--text-primary); color: white; border-radius: 999px; font-size: 11px; font-weight: 600;">Rates</div>
+        <div style="flex-shrink: 0; padding: 6px 12px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Bio</div>
+        <div style="flex-shrink: 0; padding: 6px 12px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Services</div>
+        <div style="flex-shrink: 0; padding: 6px 12px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Service area</div>
+        <div style="flex-shrink: 0; padding: 6px 12px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Photo</div>
+      </div>
+
+      <!-- Tier band header -->
+      <div style="padding: 14px 16px; background: var(--bg); border-bottom: 0.5px solid var(--border-light);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Your tier</div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+              <span class="tier-badge tier-allstar">All-Star Expert</span>
+              <span style="font-size: 11px; color: var(--text-secondary);">Score 92</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em;">Rate range</div>
+            <div style="font-size: 13px; font-weight: 700; margin-top: 2px;">$60–80/hr</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Standard rate -->
+      <div class="section">
+        <div class="section-label">Standard cleaning rate</div>
+        <div style="padding: 14px; border: 0.5px solid var(--border); border-radius: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+            <span style="font-size: 11px; color: var(--text-secondary);">$/hour</span>
+            <span style="font-size: 22px; font-weight: 700;">$65</span>
+          </div>
+
+          <!-- Slider track visual -->
+          <div style="position: relative; height: 4px; background: var(--border-light); border-radius: 2px; margin: 8px 0 14px;">
+            <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 25%; background: var(--text-primary); border-radius: 2px;"></div>
+            <div style="position: absolute; left: 25%; top: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background: var(--text-primary); border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.15);"></div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-tertiary);">
+            <span>$60 (min)</span>
+            <span>$70</span>
+            <span>$80 (max)</span>
+          </div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 8px; line-height: 1.5;">
+          Within All-Star Expert range. To charge above $80, you'd need to drop to a lower tier — not recommended.
+        </div>
+      </div>
+
+      <!-- Other services -->
+      <div class="section">
+        <div class="section-label">Other service rates</div>
+
+        <div style="border: 0.5px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700;">Deep clean</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 1px;">2-hr min · specialty endorsement</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 14px; font-weight: 700;">$70/hr</div>
+            <div style="font-size: 9px; color: var(--info);">Edit</div>
+          </div>
+        </div>
+
+        <div style="border: 0.5px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700;">Move-out</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 1px;">2-hr min · specialty endorsement</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 14px; font-weight: 700;">$75/hr</div>
+            <div style="font-size: 9px; color: var(--info);">Edit</div>
+          </div>
+        </div>
+
+        <div style="border: 0.5px solid var(--border); border-radius: 8px; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700;">Airbnb turnover</div>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 1px;">2-hr min</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 14px; font-weight: 700;">$70/hr</div>
+            <div style="font-size: 9px; color: var(--info);">Edit</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Earnings preview -->
+      <div class="section">
+        <div style="background: var(--bg); border-radius: 10px; padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 8px;">Earnings preview · 2hr standard</div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px;">
+            <span style="color: var(--text-secondary);">Customer pays</span>
+            <span style="font-weight: 600;">$139.99</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; border-top: 0.5px solid var(--border-light);">
+            <span style="color: var(--text-secondary);">Subtotal · 2hr × $65</span>
+            <span style="font-weight: 600;">$130.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; border-top: 0.5px solid var(--border-light);">
+            <span style="color: var(--text-secondary);">Platform fee · 10%</span>
+            <span style="font-weight: 600;">−$13.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0 0; font-size: 13px; font-weight: 700; border-top: 0.5px solid var(--border);">
+            <span>You earn</span>
+            <span style="color: var(--success);">$117.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier impact warning -->
+      <div class="section">
+        <div style="font-size: 11px; color: var(--text-secondary); padding: 12px; background: var(--info-bg); border-radius: 8px; line-height: 1.5; border: 0.5px solid #c7dafd;">
+          <strong style="color: var(--info);">Existing recurring bookings keep their original rate.</strong> Rate changes apply to new bookings only.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     WIREFRAME 27 - CLEANER AVAILABILITY CALENDAR
+     ============================================================ -->
+<div class="batch-label">Batch 4G — Cleaner availability calendar (weekly · buffer · lead time · time off)</div>
+<div class="row">
+
+  <div class="phone-wrap">
+    <div class="screen-label">27 · Availability · weekly schedule + buffers</div>
+    <div class="phone">
+
+      <div class="hdr">
+        <span class="hdr-back">←</span>
+        <span class="hdr-title">Your availability</span>
+        <span class="hdr-action">Save</span>
+      </div>
+
+      <!-- Tabs -->
+      <div style="padding: 8px 16px; border-bottom: 0.5px solid var(--border-light); background: var(--surface); display: flex; gap: 8px;">
+        <div style="padding: 6px 14px; background: var(--text-primary); color: white; border-radius: 999px; font-size: 11px; font-weight: 600;">Weekly schedule</div>
+        <div style="padding: 6px 14px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Time off</div>
+        <div style="padding: 6px 14px; background: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--border);">Settings</div>
+      </div>
+
+      <!-- Subtitle -->
+      <div style="padding: 10px 16px; background: var(--bg); border-bottom: 0.5px solid var(--border-light);">
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
+          Set your typical week. The system spawns availability automatically. Use Time off for specific date overrides.
+        </div>
+      </div>
+
+      <!-- Weekly schedule -->
+      <div class="section">
+        <div class="section-label">Default weekly schedule</div>
+
+        <!-- Sunday OFF -->
+        <div style="border: 0.5px solid var(--border-light); border-radius: 10px; padding: 12px 14px; margin-bottom: 6px; opacity: 0.5;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Sunday</div>
+              <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px;">Off</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--border); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monday -->
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Monday</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">8:00 AM – 5:00 PM</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--success); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <div style="flex: 1; padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 11px; font-weight: 600;">8:00 AM</div>
+            <span style="font-size: 11px; color: var(--text-tertiary); align-self: center;">to</span>
+            <div style="flex: 1; padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 11px; font-weight: 600;">5:00 PM</div>
+          </div>
+        </div>
+
+        <!-- Tuesday -->
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Tuesday</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">8:00 AM – 5:00 PM</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--success); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Wednesday</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">8:00 AM – 5:00 PM</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--success); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thursday -->
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Thursday</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">8:00 AM – 5:00 PM</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--success); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Friday -->
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Friday</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">8:00 AM – 3:00 PM</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--success); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saturday -->
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Saturday</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">9:00 AM – 4:00 PM</div>
+            </div>
+            <div style="width: 36px; height: 22px; background: var(--success); border-radius: 11px; position: relative;">
+              <div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: white; border-radius: 50%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buffer between bookings -->
+      <div class="section">
+        <div class="section-label">Buffer between bookings</div>
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">60 minutes</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">Travel time + setup between jobs</div>
+            </div>
+            <span style="font-size: 14px; color: var(--text-tertiary);">▾</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px;">
+            <div style="padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 10px;">30 min</div>
+            <div style="padding: 7px; border: 1.5px solid var(--text-primary); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 700; background: var(--text-primary); color: white;">60 min</div>
+            <div style="padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 10px;">90 min</div>
+            <div style="padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 10px;">2 hr</div>
+          </div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 8px; line-height: 1.5;">
+          The system blocks customers from booking back-to-back jobs that don't honor your buffer. Recommended: 60 min minimum.
+        </div>
+      </div>
+
+      <!-- Booking lead time -->
+      <div class="section">
+        <div class="section-label">Booking lead time</div>
+        <div style="border: 0.5px solid var(--border); border-radius: 10px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">24 hours</div>
+              <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">Customers can't book closer than this</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;">
+            <div style="padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 10px;">2 hr · same-day</div>
+            <div style="padding: 7px; border: 1.5px solid var(--text-primary); border-radius: 6px; text-align: center; font-size: 10px; font-weight: 700; background: var(--text-primary); color: white;">24 hr</div>
+            <div style="padding: 7px; border: 0.5px solid var(--border-light); border-radius: 6px; text-align: center; font-size: 10px;">48 hr</div>
+          </div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 8px; line-height: 1.5;">
+          Shorter lead times mean more last-minute bookings but less prep time. Most cleaners pick 24 hours.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

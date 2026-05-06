@@ -1,0 +1,1966 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PureTask Wireframes — Batch 4B + 5A</title>
+    <style>
+      :root {
+        --bg: #f5f5f3;
+        --surface: #ffffff;
+        --border: #e2e2df;
+        --border-light: #ececea;
+        --text-primary: #1a1a18;
+        --text-secondary: #6b6b68;
+        --text-tertiary: #a0a09d;
+        --success: #1d9e75;
+        --success-bg: #e8f7f2;
+        --info: #1d5fa0;
+        --info-bg: #eff6ff;
+        --phone-w: 320px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        padding: 40px 24px 60px;
+        color: var(--text-primary);
+      }
+      h1 {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+      }
+      .batch-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin: 40px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        align-items: flex-start;
+      }
+      .phone {
+        width: var(--phone-w);
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      .screen-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: 8px;
+      }
+      .phone-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hdr {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 16px;
+        border-bottom: 0.5px solid var(--border-light);
+      }
+      .hdr-back {
+        font-size: 15px;
+        color: var(--text-secondary);
+      }
+      .hdr-title {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .hdr-action {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .section {
+        padding: 14px 16px;
+      }
+      .section + .section {
+        border-top: 0.5px solid var(--border-light);
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 600;
+      }
+      .pill-info {
+        background: var(--info-bg);
+        color: var(--info);
+      }
+      .pill-success {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .pill-neutral {
+        background: var(--bg);
+        color: var(--text-secondary);
+      }
+
+      .card {
+        padding: 12px 14px;
+        background: var(--bg);
+        border-radius: 8px;
+      }
+
+      .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 11px;
+        border-radius: 8px;
+        background: var(--text-primary);
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+      }
+      .btn-secondary {
+        display: block;
+        width: 100%;
+        padding: 11px;
+        border-radius: 8px;
+        border: 0.5px solid var(--border);
+        background: var(--surface);
+        font-size: 13px;
+        text-align: center;
+      }
+
+      /* Skeleton shimmer */
+      .skeleton {
+        background: linear-gradient(90deg, #ececea 25%, #f5f5f3 50%, #ececea 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: 4px;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+      .skel {
+        display: block;
+      }
+      .skel-text {
+        height: 12px;
+        margin-bottom: 6px;
+        border-radius: 3px;
+      }
+      .skel-text-sm {
+        height: 10px;
+        margin-bottom: 4px;
+        border-radius: 3px;
+      }
+      .skel-circle {
+        border-radius: 50%;
+      }
+      .skel-block {
+        border-radius: 8px;
+      }
+
+      /* SEO + marketing helpers */
+      .hero {
+        padding: 28px 18px 22px;
+      }
+      .hero h2 {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        letter-spacing: -0.01em;
+      }
+      .hero p {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.55;
+        margin-bottom: 14px;
+      }
+      .booking-mini {
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        margin: 0 18px 24px;
+      }
+      .input-stub {
+        padding: 9px 11px;
+        border: 0.5px solid var(--border-light);
+        border-radius: 6px;
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .star-row {
+        color: #d97706;
+        font-size: 13px;
+      }
+
+      .accordion-item {
+        border-bottom: 0.5px solid var(--border-light);
+        padding: 14px 0;
+      }
+      .accordion-q {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .accordion-a {
+        font-size: 12px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-top: 8px;
+      }
+
+      .cat-card {
+        padding: 14px;
+        border: 0.5px solid var(--border-light);
+        border-radius: 10px;
+        margin-bottom: 8px;
+      }
+      .cat-card-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .cat-card-sub {
+        font-size: 11px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PureTask · Wireframes 40–46</h1>
+
+    <!-- BATCH 4B -->
+    <div class="batch-label">Batch 4B — Loading states</div>
+    <div class="row">
+      <!-- W40a: Loading - cleaner dashboard -->
+      <div class="phone-wrap">
+        <div class="screen-label">40a · Cleaner dashboard loading</div>
+        <div class="phone">
+          <div class="hdr">
+            <div>
+              <span class="skel skel-text-sm" style="width: 60px"></span>
+              <span class="skel skel-text" style="width: 80px; height: 14px; margin: 0"></span>
+            </div>
+            <div style="margin-left: auto; display: flex; gap: 12px">
+              <span class="skel skel-text-sm" style="width: 30px"></span>
+              <span class="skel skel-text-sm" style="width: 30px"></span>
+            </div>
+          </div>
+
+          <div style="padding: 18px 18px 12px">
+            <div style="display: flex; gap: 10px; margin-bottom: 14px">
+              <div
+                style="
+                  flex: 1;
+                  padding: 14px 12px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 10px;
+                "
+              >
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px">
+                  <span class="skel skel-circle" style="width: 44px; height: 44px"></span>
+                  <div style="flex: 1">
+                    <span class="skel skel-text-sm" style="width: 60px"></span>
+                    <span class="skel skel-text-sm" style="width: 40px"></span>
+                  </div>
+                </div>
+                <span class="skel skel-text-sm" style="width: 70%"></span>
+              </div>
+              <div
+                style="
+                  flex: 1;
+                  padding: 14px 12px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 10px;
+                "
+              >
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px">
+                  <span class="skel skel-block" style="width: 44px; height: 44px"></span>
+                  <div style="flex: 1">
+                    <span class="skel skel-text-sm" style="width: 30px"></span>
+                    <span class="skel skel-text-sm" style="width: 65px"></span>
+                  </div>
+                </div>
+                <span class="skel skel-text-sm" style="width: 80%"></span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin: 0 18px 24px;
+              padding: 14px;
+              border-left: 3px solid var(--border-light);
+              background: var(--bg);
+              border-radius: 0 8px 8px 0;
+            "
+          >
+            <span class="skel skel-text-sm" style="width: 50%"></span>
+            <span class="skel skel-text" style="width: 75%; height: 14px; margin: 4px 0"></span>
+            <span class="skel skel-text-sm" style="width: 60%"></span>
+            <div style="display: flex; gap: 6px; margin-top: 10px">
+              <span class="skel skel-block" style="width: 70px; height: 26px"></span>
+              <span class="skel skel-block" style="width: 70px; height: 26px"></span>
+              <span class="skel skel-block" style="width: 60px; height: 26px"></span>
+            </div>
+          </div>
+
+          <div style="padding: 0 18px 24px">
+            <span class="skel skel-text" style="width: 30%; margin-bottom: 12px"></span>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px">
+              <div style="background: var(--bg); border-radius: 8px; padding: 10px">
+                <span class="skel skel-text-sm" style="width: 70%"></span>
+                <span class="skel skel-text" style="width: 50%; height: 16px"></span>
+              </div>
+              <div style="background: var(--bg); border-radius: 8px; padding: 10px">
+                <span class="skel skel-text-sm" style="width: 70%"></span>
+                <span class="skel skel-text" style="width: 50%; height: 16px"></span>
+              </div>
+              <div style="background: var(--bg); border-radius: 8px; padding: 10px">
+                <span class="skel skel-text-sm" style="width: 70%"></span>
+                <span class="skel skel-text" style="width: 50%; height: 16px"></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 0 18px 24px">
+            <span class="skel skel-text" style="width: 35%; margin-bottom: 12px"></span>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  padding: 10px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 8px;
+                "
+              >
+                <div>
+                  <span class="skel skel-text-sm" style="width: 30px"></span>
+                  <span class="skel skel-text" style="width: 30px; height: 18px"></span>
+                </div>
+                <div style="flex: 1">
+                  <span class="skel skel-text-sm" style="width: 65%"></span>
+                  <span class="skel skel-text-sm" style="width: 80%"></span>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  padding: 10px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 8px;
+                "
+              >
+                <div>
+                  <span class="skel skel-text-sm" style="width: 30px"></span>
+                  <span class="skel skel-text" style="width: 30px; height: 18px"></span>
+                </div>
+                <div style="flex: 1">
+                  <span class="skel skel-text-sm" style="width: 70%"></span>
+                  <span class="skel skel-text-sm" style="width: 75%"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- W40b: Loading - cleaner list -->
+      <div class="phone-wrap">
+        <div class="screen-label">40b · Cleaner list loading</div>
+        <div class="phone">
+          <div class="hdr">
+            <span class="hdr-back">←</span>
+            <div>
+              <span class="skel skel-text" style="width: 130px"></span>
+              <span class="skel skel-text-sm" style="width: 100px"></span>
+            </div>
+          </div>
+
+          <div
+            style="
+              padding: 12px 18px;
+              border-bottom: 0.5px solid var(--border-light);
+              display: flex;
+              gap: 6px;
+            "
+          >
+            <span class="skel skel-block" style="width: 80px; height: 28px"></span>
+            <span class="skel skel-block" style="width: 70px; height: 28px"></span>
+            <span class="skel skel-block" style="width: 70px; height: 28px"></span>
+            <span class="skel skel-block" style="width: 60px; height: 28px"></span>
+          </div>
+
+          <div style="padding: 16px 18px 8px">
+            <span class="skel skel-text" style="width: 50%"></span>
+          </div>
+
+          <div style="padding: 8px 18px 16px; display: flex; gap: 10px">
+            <div
+              style="
+                min-width: 130px;
+                max-width: 130px;
+                border: 0.5px solid var(--border-light);
+                border-radius: 10px;
+                overflow: hidden;
+              "
+            >
+              <span class="skel" style="display: block; aspect-ratio: 4/5"></span>
+              <div style="padding: 8px">
+                <span class="skel skel-text-sm" style="width: 60%"></span>
+                <span class="skel skel-text-sm" style="width: 80%"></span>
+              </div>
+            </div>
+            <div
+              style="
+                min-width: 130px;
+                max-width: 130px;
+                border: 0.5px solid var(--border-light);
+                border-radius: 10px;
+                overflow: hidden;
+              "
+            >
+              <span class="skel" style="display: block; aspect-ratio: 4/5"></span>
+              <div style="padding: 8px">
+                <span class="skel skel-text-sm" style="width: 60%"></span>
+                <span class="skel skel-text-sm" style="width: 80%"></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 16px 18px 8px; border-top: 0.5px solid var(--border-light)">
+            <span class="skel skel-text" style="width: 55%"></span>
+            <span class="skel skel-text-sm" style="width: 70%"></span>
+          </div>
+
+          <div style="padding: 8px 18px 16px">
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                padding: 12px;
+                border: 0.5px solid var(--border-light);
+                border-radius: 12px;
+                margin-bottom: 8px;
+              "
+            >
+              <span class="skel skel-block" style="width: 64px; height: 64px"></span>
+              <div style="flex: 1">
+                <span class="skel skel-text" style="width: 50%"></span>
+                <span class="skel skel-text-sm" style="width: 75%"></span>
+                <div style="display: flex; gap: 4px; margin-top: 8px">
+                  <span class="skel skel-block" style="width: 60px; height: 18px"></span>
+                  <span class="skel skel-block" style="width: 80px; height: 18px"></span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                padding: 12px;
+                border: 0.5px solid var(--border-light);
+                border-radius: 12px;
+              "
+            >
+              <span class="skel skel-block" style="width: 64px; height: 64px"></span>
+              <div style="flex: 1">
+                <span class="skel skel-text" style="width: 50%"></span>
+                <span class="skel skel-text-sm" style="width: 75%"></span>
+                <div style="display: flex; gap: 4px; margin-top: 8px">
+                  <span class="skel skel-block" style="width: 60px; height: 18px"></span>
+                  <span class="skel skel-block" style="width: 80px; height: 18px"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 16px 18px 8px; border-top: 0.5px solid var(--border-light)">
+            <span class="skel skel-text" style="width: 30%"></span>
+          </div>
+
+          <div style="padding: 8px 18px 18px">
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                padding: 12px 0;
+                border-bottom: 0.5px solid var(--border-light);
+              "
+            >
+              <span class="skel skel-block" style="width: 56px; height: 56px"></span>
+              <div style="flex: 1">
+                <span class="skel skel-text" style="width: 40%"></span>
+                <span class="skel skel-text-sm" style="width: 70%"></span>
+                <span
+                  class="skel skel-block"
+                  style="width: 70px; height: 16px; margin-top: 4px"
+                ></span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 12px 0">
+              <span class="skel skel-block" style="width: 56px; height: 56px"></span>
+              <div style="flex: 1">
+                <span class="skel skel-text" style="width: 40%"></span>
+                <span class="skel skel-text-sm" style="width: 70%"></span>
+                <span
+                  class="skel skel-block"
+                  style="width: 70px; height: 16px; margin-top: 4px"
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- W40c: Loading - active job photo upload -->
+      <div class="phone-wrap">
+        <div class="screen-label">40c · Photo upload progress</div>
+        <div class="phone">
+          <div class="hdr">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <div style="width: 8px; height: 8px; background: #d85a30; border-radius: 50%"></div>
+              <div>
+                <div style="font-size: 11px; color: var(--text-secondary)">Active job</div>
+                <div style="font-weight: 600; font-size: 14px">Standard · Sarah K.</div>
+              </div>
+            </div>
+            <div class="hdr-action">Help</div>
+          </div>
+
+          <div
+            style="
+              padding: 14px 18px;
+              background: var(--bg);
+              border-bottom: 0.5px solid var(--border-light);
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                margin-bottom: 6px;
+              "
+            >
+              <div style="font-size: 12px; color: var(--text-secondary)">
+                Clocked in 11:02 AM · Working
+              </div>
+              <div style="font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums">
+                01:14:08
+              </div>
+            </div>
+            <div
+              style="height: 4px; background: var(--surface); border-radius: 2px; overflow: hidden"
+            >
+              <div style="height: 100%; width: 65%; background: var(--text-primary)"></div>
+            </div>
+          </div>
+
+          <div style="padding: 18px 18px 12px">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Photo documentation
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+              <div
+                style="
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 8px;
+                  overflow: hidden;
+                "
+              >
+                <div style="padding: 8px 10px 6px; border-bottom: 0.5px solid var(--border-light)">
+                  <div style="font-size: 12px; font-weight: 600">Kitchen</div>
+                  <div
+                    style="
+                      font-size: 10px;
+                      color: var(--success);
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                    "
+                  >
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 6px;
+                        height: 6px;
+                        background: var(--success);
+                        border-radius: 50%;
+                      "
+                    ></span>
+                    Uploaded
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 6px">
+                  <div style="aspect-ratio: 1; background: var(--bg); border-radius: 3px"></div>
+                  <div style="aspect-ratio: 1; background: var(--bg); border-radius: 3px"></div>
+                </div>
+              </div>
+
+              <div
+                style="
+                  border: 0.5px solid var(--text-primary);
+                  border-radius: 8px;
+                  overflow: hidden;
+                "
+              >
+                <div style="padding: 8px 10px 6px; border-bottom: 0.5px solid var(--border-light)">
+                  <div style="font-size: 12px; font-weight: 600">Main bathroom</div>
+                  <div
+                    style="
+                      font-size: 10px;
+                      color: var(--text-primary);
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 8px;
+                        height: 8px;
+                        border: 1.5px solid var(--text-primary);
+                        border-top-color: transparent;
+                        border-radius: 50%;
+                        animation: spin 0.8s linear infinite;
+                      "
+                    ></div>
+                    Uploading… 78%
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 6px">
+                  <div style="aspect-ratio: 1; background: var(--bg); border-radius: 3px"></div>
+                  <div
+                    style="
+                      aspect-ratio: 1;
+                      position: relative;
+                      border-radius: 3px;
+                      overflow: hidden;
+                    "
+                  >
+                    <span class="skel" style="position: absolute; inset: 0"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="border: 0.5px dashed var(--border); border-radius: 8px; overflow: hidden">
+                <div style="padding: 8px 10px 6px; border-bottom: 0.5px dashed var(--border-light)">
+                  <div style="font-size: 12px; font-weight: 600">Living room</div>
+                  <div style="font-size: 10px; color: var(--text-secondary)">
+                    Required · Pending
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 6px">
+                  <div
+                    style="
+                      aspect-ratio: 1;
+                      background: var(--bg);
+                      border-radius: 3px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 16px;
+                      color: var(--text-tertiary);
+                    "
+                  >
+                    +
+                  </div>
+                  <div
+                    style="
+                      aspect-ratio: 1;
+                      background: var(--bg);
+                      border-radius: 3px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 16px;
+                      color: var(--text-tertiary);
+                    "
+                  >
+                    +
+                  </div>
+                </div>
+              </div>
+
+              <div style="border: 0.5px dashed var(--border); border-radius: 8px; overflow: hidden">
+                <div style="padding: 8px 10px 6px; border-bottom: 0.5px dashed var(--border-light)">
+                  <div style="font-size: 12px; font-weight: 600">Master bedroom</div>
+                  <div style="font-size: 10px; color: var(--text-secondary)">
+                    Required · Pending
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 6px">
+                  <div
+                    style="
+                      aspect-ratio: 1;
+                      background: var(--bg);
+                      border-radius: 3px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 16px;
+                      color: var(--text-tertiary);
+                    "
+                  >
+                    +
+                  </div>
+                  <div
+                    style="
+                      aspect-ratio: 1;
+                      background: var(--bg);
+                      border-radius: 3px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 16px;
+                      color: var(--text-tertiary);
+                    "
+                  >
+                    +
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 12px 18px 18px">
+            <div
+              style="
+                padding: 10px 12px;
+                background: var(--info-bg);
+                border-radius: 8px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+              "
+            >
+              <div
+                style="
+                  width: 14px;
+                  height: 14px;
+                  border: 1.5px solid var(--info);
+                  border-top-color: transparent;
+                  border-radius: 50%;
+                  animation: spin 0.8s linear infinite;
+                  flex-shrink: 0;
+                "
+              ></div>
+              <div style="font-size: 11px; color: var(--info); line-height: 1.4">
+                Uploading 1 photo · Will retry automatically if connection drops
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes spin {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <!-- BATCH 5A: SEO + marketing pages -->
+    <div class="batch-label">Batch 5A — SEO and marketing pages</div>
+    <div class="row">
+      <!-- W41: City × Service SEO landing -->
+      <div class="phone-wrap">
+        <div class="screen-label">41 · City × service SEO landing</div>
+        <div class="phone">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 13px 16px;
+              border-bottom: 0.5px solid var(--border-light);
+            "
+          >
+            <div style="font-weight: 600; font-size: 15px">PureTask</div>
+            <div style="font-size: 12px; color: var(--text-secondary)">Sign in</div>
+          </div>
+
+          <div class="hero">
+            <div
+              style="
+                display: inline-block;
+                padding: 3px 10px;
+                background: var(--bg);
+                border-radius: 999px;
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                margin-bottom: 12px;
+                letter-spacing: 0.04em;
+              "
+            >
+              SACRAMENTO · STANDARD CLEANING
+            </div>
+            <h2>Standard cleaning in Sacramento.</h2>
+            <p>
+              Background-checked cleaners across midtown, East Sac, and Roseville. GPS check-in,
+              photo proof, pay only when satisfied.
+            </p>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 4px">
+              <div class="star-row">★★★★★</div>
+              <div style="font-size: 12px; color: var(--text-secondary)">
+                4.9 average · 312 cleanings in Sacramento
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-mini">
+            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px">
+              Your address
+            </div>
+            <div class="input-stub">
+              <span>ZIP code or full address</span
+              ><span style="color: var(--text-tertiary)">▾</span>
+            </div>
+            <div class="btn-primary" style="margin-top: 4px">See cleaners from $50</div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              Top-rated cleaners in Sacramento
+            </div>
+            <div style="display: flex; gap: 10px; overflow-x: auto">
+              <div
+                style="
+                  min-width: 130px;
+                  max-width: 130px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 10px;
+                  overflow: hidden;
+                "
+              >
+                <div style="aspect-ratio: 4/5; background: var(--bg)"></div>
+                <div style="padding: 8px">
+                  <div style="font-size: 12px; font-weight: 600">James K.</div>
+                  <div style="font-size: 11px; color: var(--text-secondary)">★ 4.8 · 178 jobs</div>
+                  <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px">
+                    Midtown · East Sac
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  min-width: 130px;
+                  max-width: 130px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 10px;
+                  overflow: hidden;
+                "
+              >
+                <div style="aspect-ratio: 4/5; background: var(--bg)"></div>
+                <div style="padding: 8px">
+                  <div style="font-size: 12px; font-weight: 600">Linda P.</div>
+                  <div style="font-size: 11px; color: var(--text-secondary)">★ 4.9 · 142 jobs</div>
+                  <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px">
+                    Roseville · Folsom
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  min-width: 130px;
+                  max-width: 130px;
+                  border: 0.5px solid var(--border-light);
+                  border-radius: 10px;
+                  overflow: hidden;
+                "
+              >
+                <div style="aspect-ratio: 4/5; background: var(--bg)"></div>
+                <div style="padding: 8px">
+                  <div style="font-size: 12px; font-weight: 600">Diego A.</div>
+                  <div style="font-size: 11px; color: var(--text-secondary)">★ 4.9 · 89 jobs</div>
+                  <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 2px">
+                    Land Park
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px">
+              What's included in a Sacramento standard cleaning
+            </div>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px"
+            >
+              <div class="card" style="margin: 0">
+                <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px">Kitchen</div>
+                <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5">
+                  Counters, sink, stovetop, microwave
+                </div>
+              </div>
+              <div class="card" style="margin: 0">
+                <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px">Bathrooms</div>
+                <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5">
+                  Toilet, shower, sink, mirrors
+                </div>
+              </div>
+              <div class="card" style="margin: 0">
+                <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px">
+                  Living areas
+                </div>
+                <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5">
+                  Surfaces, floors, vacuum, mop
+                </div>
+              </div>
+              <div class="card" style="margin: 0">
+                <div style="font-size: 12px; font-weight: 600; margin-bottom: 2px">Bedrooms</div>
+                <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5">
+                  Made beds, dusting, floors
+                </div>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55">
+              Typical 2-bedroom apartment in Sacramento takes 2–3 hours. Starting at $50.
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              Sacramento neighborhoods we serve
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <div class="pill pill-neutral">Midtown</div>
+              <div class="pill pill-neutral">East Sacramento</div>
+              <div class="pill pill-neutral">Land Park</div>
+              <div class="pill pill-neutral">Curtis Park</div>
+              <div class="pill pill-neutral">Oak Park</div>
+              <div class="pill pill-neutral">Tahoe Park</div>
+              <div class="pill pill-neutral">Pocket</div>
+              <div class="pill pill-neutral">Natomas</div>
+              <div class="pill pill-neutral">Roseville</div>
+              <div class="pill pill-neutral">Folsom</div>
+              <div class="pill pill-neutral">Davis</div>
+              <div class="pill pill-neutral">Elk Grove</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              From Sacramento customers
+            </div>
+            <div
+              style="
+                border-left: 2px solid var(--border-light);
+                padding: 4px 0 4px 12px;
+                margin-bottom: 12px;
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px">
+                ★★★★★ · Brian M. · East Sac
+              </div>
+              <div style="font-size: 12px; line-height: 1.5">
+                James was on time, thorough, and the photos showed exactly what he cleaned.
+              </div>
+            </div>
+            <div style="border-left: 2px solid var(--border-light); padding: 4px 0 4px 12px">
+              <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px">
+                ★★★★★ · Olivia C. · Midtown
+              </div>
+              <div style="font-size: 12px; line-height: 1.5">
+                Booked Linda twice, became a regular. The trust built into the platform actually
+                works.
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Common questions
+            </div>
+            <div class="accordion-item" style="padding: 10px 0">
+              <div class="accordion-q">
+                How much does cleaning in Sacramento cost? <span>+</span>
+              </div>
+            </div>
+            <div class="accordion-item" style="padding: 10px 0">
+              <div class="accordion-q">How does GPS check-in work? <span>+</span></div>
+            </div>
+            <div class="accordion-item" style="padding: 10px 0; border-bottom: none">
+              <div class="accordion-q">Are cleaners insured? <span>+</span></div>
+            </div>
+          </div>
+
+          <div style="padding: 24px 18px; background: var(--bg); text-align: center">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px">Ready to book?</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px">
+              Find a cleaner in Sacramento in under a minute.
+            </div>
+            <div class="btn-primary" style="max-width: 220px; margin: 0 auto">Book a cleaning</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- W42: Pricing page -->
+      <div class="phone-wrap">
+        <div class="screen-label">42 · Pricing page</div>
+        <div class="phone">
+          <div class="hdr">
+            <span class="hdr-back">←</span>
+            <span class="hdr-title">Pricing</span>
+          </div>
+
+          <div style="padding: 28px 18px 18px">
+            <h2 style="font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 8px">
+              Honest pricing.<br />No surprises.
+            </h2>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.55">
+              Cleaners set their rate within their tier. You pay their rate plus a flat $9.99
+              booking fee. That's it.
+            </p>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              Hourly rates by service
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div class="cat-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px">
+                  <div class="cat-card-title">Standard</div>
+                  <div style="font-size: 13px; font-weight: 600">$25–80/hr</div>
+                </div>
+                <div class="cat-card-sub">
+                  Surfaces, kitchen, bathrooms, vacuum, mop · 2–3 hr typical
+                </div>
+              </div>
+              <div class="cat-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px">
+                  <div class="cat-card-title">Deep clean</div>
+                  <div style="font-size: 13px; font-weight: 600">$30–80/hr</div>
+                </div>
+                <div class="cat-card-sub">
+                  Standard plus baseboards, inside oven, behind appliances · 4–6 hr
+                </div>
+              </div>
+              <div class="cat-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px">
+                  <div class="cat-card-title">Move-out</div>
+                  <div style="font-size: 13px; font-weight: 600">$35–80/hr</div>
+                </div>
+                <div class="cat-card-sub">Empty home, deep clean, deposit-ready · 5–8 hr</div>
+              </div>
+              <div class="cat-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px">
+                  <div class="cat-card-title">Airbnb turnover</div>
+                  <div style="font-size: 13px; font-weight: 600">$28–75/hr</div>
+                </div>
+                <div class="cat-card-sub">
+                  Same-day window, linen swap, photo confirmation · 2–4 hr
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px">A real example</div>
+            <div
+              style="
+                font-size: 12px;
+                color: var(--text-secondary);
+                line-height: 1.55;
+                margin-bottom: 12px;
+              "
+            >
+              2-hour standard cleaning with a Top Performer at $55/hr.
+            </div>
+            <div class="card">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 4px 0;
+                  font-size: 12px;
+                "
+              >
+                <span style="color: var(--text-secondary)">Cleaner's rate · 2 hrs</span
+                ><span>$110.00</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 4px 0;
+                  font-size: 12px;
+                "
+              >
+                <span style="color: var(--text-secondary)">Booking fee</span><span>$9.99</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0 4px;
+                  border-top: 0.5px solid var(--border-light);
+                  font-weight: 600;
+                  font-size: 13px;
+                "
+              >
+                <span>You pay</span><span>$119.99</span>
+              </div>
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                color: var(--text-secondary);
+                margin-top: 8px;
+                line-height: 1.55;
+              "
+            >
+              Authorized at booking, charged after you approve the cleaning.
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              What the booking fee covers
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div
+                  style="
+                    width: 4px;
+                    height: 4px;
+                    background: var(--text-primary);
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    margin-top: 7px;
+                  "
+                ></div>
+                <div style="font-size: 12px; line-height: 1.55">GPS verification and check-in</div>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div
+                  style="
+                    width: 4px;
+                    height: 4px;
+                    background: var(--text-primary);
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    margin-top: 7px;
+                  "
+                ></div>
+                <div style="font-size: 12px; line-height: 1.55">
+                  Before/after photo documentation
+                </div>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div
+                  style="
+                    width: 4px;
+                    height: 4px;
+                    background: var(--text-primary);
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    margin-top: 7px;
+                  "
+                ></div>
+                <div style="font-size: 12px; line-height: 1.55">Payment escrow and protection</div>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div
+                  style="
+                    width: 4px;
+                    height: 4px;
+                    background: var(--text-primary);
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    margin-top: 7px;
+                  "
+                ></div>
+                <div style="font-size: 12px; line-height: 1.55">
+                  Customer support and dispute resolution
+                </div>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div
+                  style="
+                    width: 4px;
+                    height: 4px;
+                    background: var(--text-primary);
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    margin-top: 7px;
+                  "
+                ></div>
+                <div style="font-size: 12px; line-height: 1.55">
+                  Background checks for every cleaner
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="card" style="background: var(--info-bg)">
+              <div
+                style="font-size: 13px; font-weight: 600; color: var(--info); margin-bottom: 6px"
+              >
+                Tips go 100% to your cleaner
+              </div>
+              <div style="font-size: 11px; color: var(--info); line-height: 1.55">
+                Optional after a 4+ star review. PureTask never takes a cut of tips.
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              What about taxes?
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.6">
+              Sales tax doesn't apply to residential cleaning services in California. The price you
+              see is the full price you pay.
+            </div>
+          </div>
+
+          <div style="padding: 24px 18px; background: var(--bg); text-align: center">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px">
+              See real prices for your area
+            </div>
+            <div class="btn-primary" style="max-width: 220px; margin: 0 auto">
+              Find cleaners near me
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- W43: About page -->
+      <div class="phone-wrap">
+        <div class="screen-label">43 · About page</div>
+        <div class="phone">
+          <div class="hdr">
+            <span class="hdr-back">←</span>
+            <span class="hdr-title">About PureTask</span>
+          </div>
+
+          <div style="padding: 28px 18px 18px">
+            <h2 style="font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 10px">
+              Cleaning, made trustworthy.
+            </h2>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6">
+              PureTask connects Northern California homes with verified independent cleaners —
+              backed by GPS check-in, photo proof, and pay-on-approval.
+            </p>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Why we built this
+            </div>
+            <div style="font-size: 13px; color: var(--text-primary); line-height: 1.65">
+              Booking a cleaner means letting a stranger into your home. The existing options either
+              ask you to take it on faith or hide the work behind opaque rules and fine print. We
+              thought there was room for something honest — a marketplace where every cleaning is
+              documented in real time, where cleaners keep most of what they earn, and where pricing
+              has no hidden lines.
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              How we're different
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div class="cat-card">
+                <div class="cat-card-title">Real photo proof</div>
+                <div class="cat-card-sub">
+                  Every required room photographed before and after. You see exactly what was done.
+                </div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-card-title">GPS-verified arrivals</div>
+                <div class="cat-card-sub">
+                  Cleaners check in via geo-fence. You know when they arrive and when they leave.
+                </div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-card-title">Pay only after you approve</div>
+                <div class="cat-card-sub">
+                  Payment held in escrow until you review the photos. 24-hour auto-approval if
+                  you're satisfied.
+                </div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-card-title">Cleaners keep 85–90%</div>
+                <div class="cat-card-sub">
+                  Lowest commission of any major cleaning marketplace. Better pay attracts better
+                  cleaners.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px">
+              Where we operate
+            </div>
+            <div
+              style="
+                font-size: 13px;
+                color: var(--text-secondary);
+                line-height: 1.6;
+                margin-bottom: 10px;
+              "
+            >
+              Northern California, from San Francisco to Reno. Sacramento is our home metro and our
+              largest cleaner network.
+            </div>
+            <div style="font-size: 12px; color: var(--text-primary); font-weight: 600">
+              See coverage →
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Built by Nathan Chiaratti
+            </div>
+            <div style="display: flex; gap: 14px; align-items: flex-start">
+              <div
+                style="
+                  width: 56px;
+                  height: 56px;
+                  border-radius: 28px;
+                  background: var(--bg);
+                  flex-shrink: 0;
+                "
+              ></div>
+              <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.6">
+                PureTask is independently built and operated. No venture capital, no
+                growth-at-all-costs playbook. Just a focused product that works for the people on
+                both sides of every booking.
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 24px 18px; background: var(--bg)">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <div style="font-size: 12px; color: var(--text-primary); font-weight: 600">
+                Press inquiries → press@puretask.co
+              </div>
+              <div style="font-size: 12px; color: var(--text-primary); font-weight: 600">
+                Cleaner partnerships → join@puretask.co
+              </div>
+              <div style="font-size: 12px; color: var(--text-primary); font-weight: 600">
+                General contact → hello@puretask.co
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 4px">
+      <!-- W44: Help center index -->
+      <div class="phone-wrap">
+        <div class="screen-label">44 · Help center</div>
+        <div class="phone">
+          <div class="hdr">
+            <span class="hdr-back">←</span>
+            <span class="hdr-title">Help center</span>
+          </div>
+
+          <div style="padding: 24px 18px 18px">
+            <h2 style="font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 14px">
+              How can we help?
+            </h2>
+            <div
+              class="input-stub"
+              style="background: var(--bg); border: 0.5px solid var(--border); padding: 12px 14px"
+            >
+              <span style="font-size: 13px; color: var(--text-tertiary)">Search articles…</span>
+              <span style="color: var(--text-tertiary)">⚲</span>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              Browse by topic
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+              <div class="cat-card" style="margin: 0">
+                <div style="font-size: 18px; margin-bottom: 8px">📅</div>
+                <div class="cat-card-title">Bookings</div>
+                <div class="cat-card-sub">12 articles</div>
+              </div>
+              <div class="cat-card" style="margin: 0">
+                <div style="font-size: 18px; margin-bottom: 8px">💳</div>
+                <div class="cat-card-title">Payments</div>
+                <div class="cat-card-sub">8 articles</div>
+              </div>
+              <div class="cat-card" style="margin: 0">
+                <div style="font-size: 18px; margin-bottom: 8px">🛡️</div>
+                <div class="cat-card-title">Trust & safety</div>
+                <div class="cat-card-sub">10 articles</div>
+              </div>
+              <div class="cat-card" style="margin: 0">
+                <div style="font-size: 18px; margin-bottom: 8px">📸</div>
+                <div class="cat-card-title">Photos & privacy</div>
+                <div class="cat-card-sub">6 articles</div>
+              </div>
+              <div class="cat-card" style="margin: 0">
+                <div style="font-size: 18px; margin-bottom: 8px">⚖️</div>
+                <div class="cat-card-title">Disputes</div>
+                <div class="cat-card-sub">7 articles</div>
+              </div>
+              <div class="cat-card" style="margin: 0">
+                <div style="font-size: 18px; margin-bottom: 8px">🧹</div>
+                <div class="cat-card-title">For cleaners</div>
+                <div class="cat-card-sub">18 articles</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Popular articles
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 12px 0;
+                  border-bottom: 0.5px solid var(--border-light);
+                "
+              >
+                <div style="font-size: 13px">How to reschedule a cleaning</div>
+                <div style="font-size: 12px; color: var(--text-tertiary)">›</div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 12px 0;
+                  border-bottom: 0.5px solid var(--border-light);
+                "
+              >
+                <div style="font-size: 13px">When does my cleaner get paid?</div>
+                <div style="font-size: 12px; color: var(--text-tertiary)">›</div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 12px 0;
+                  border-bottom: 0.5px solid var(--border-light);
+                "
+              >
+                <div style="font-size: 13px">What if I'm not happy with my cleaning?</div>
+                <div style="font-size: 12px; color: var(--text-tertiary)">›</div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 12px 0;
+                  border-bottom: 0.5px solid var(--border-light);
+                "
+              >
+                <div style="font-size: 13px">Cancellation and refund policy</div>
+                <div style="font-size: 12px; color: var(--text-tertiary)">›</div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 12px 0;
+                "
+              >
+                <div style="font-size: 13px">How does the photo system work?</div>
+                <div style="font-size: 12px; color: var(--text-tertiary)">›</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="card">
+              <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px">
+                Can't find what you need?
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  color: var(--text-secondary);
+                  margin-bottom: 10px;
+                  line-height: 1.55;
+                "
+              >
+                Our support team responds within 4 hours during business hours.
+              </div>
+              <div class="btn-secondary" style="background: var(--surface)">Contact support</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- W45: FAQ page -->
+      <div class="phone-wrap">
+        <div class="screen-label">45 · FAQ page</div>
+        <div class="phone">
+          <div class="hdr">
+            <span class="hdr-back">←</span>
+            <span class="hdr-title">Common questions</span>
+          </div>
+
+          <div style="padding: 24px 18px 18px">
+            <h2 style="font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 8px">
+              Frequently asked.
+            </h2>
+            <p style="font-size: 12px; color: var(--text-secondary)">
+              If your question isn't here, our support team is one tap away.
+            </p>
+          </div>
+
+          <div class="section">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text-tertiary);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+              "
+            >
+              BOOKING & PAYMENT
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">When am I charged? <span>−</span></div>
+              <div class="accordion-a">
+                Payment is authorized when you book but only captured after you approve the
+                cleaning. If a cleaning is auto-approved at the 24-hour mark, payment is released to
+                the cleaner then. You're never charged before the work is done.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">What if I need to cancel? <span>+</span></div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">Can I reschedule for free? <span>+</span></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text-tertiary);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+              "
+            >
+              TRUST & SAFETY
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">Are cleaners background checked? <span>−</span></div>
+              <div class="accordion-a">
+                Yes. Every cleaner passes a Checkr background check (national criminal database, sex
+                offender registry, identity verification) before they can take bookings. Checks
+                renew annually.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">What if a cleaner damages something? <span>+</span></div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">How are disputes resolved? <span>+</span></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text-tertiary);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+              "
+            >
+              PHOTOS & PRIVACY
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">Why do cleaners take photos? <span>+</span></div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">Can I opt out of photos? <span>+</span></div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">How long are photos stored? <span>+</span></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text-tertiary);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+              "
+            >
+              FOR CLEANERS
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">How much do cleaners earn? <span>+</span></div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-q">When do payouts happen? <span>+</span></div>
+            </div>
+
+            <div class="accordion-item" style="border-bottom: none">
+              <div class="accordion-q">How does the tier system work? <span>+</span></div>
+            </div>
+          </div>
+
+          <div style="padding: 18px; background: var(--bg); text-align: center">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px">
+              Still have questions?
+            </div>
+            <div
+              class="btn-secondary"
+              style="background: var(--surface); max-width: 200px; margin: 0 auto"
+            >
+              Contact support
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- W46: Coverage page -->
+      <div class="phone-wrap">
+        <div class="screen-label">46 · Coverage page</div>
+        <div class="phone">
+          <div class="hdr">
+            <span class="hdr-back">←</span>
+            <span class="hdr-title">Where we operate</span>
+          </div>
+
+          <div style="padding: 24px 18px 18px">
+            <h2 style="font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 8px">
+              Northern California, from SF to Reno.
+            </h2>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6">
+              We're growing carefully. Each metro launches when we have enough verified cleaners to
+              serve the area well.
+            </p>
+          </div>
+
+          <div style="padding: 0 18px 18px">
+            <div
+              style="
+                aspect-ratio: 16/10;
+                background: var(--bg);
+                border-radius: 12px;
+                position: relative;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  left: 18%;
+                  top: 38%;
+                  width: 12px;
+                  height: 12px;
+                  background: var(--text-primary);
+                  border-radius: 50%;
+                  box-shadow: 0 0 0 4px rgba(26, 26, 24, 0.15);
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  left: 50%;
+                  top: 32%;
+                  width: 14px;
+                  height: 14px;
+                  background: var(--success);
+                  border-radius: 50%;
+                  box-shadow: 0 0 0 6px rgba(29, 158, 117, 0.2);
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  left: 78%;
+                  top: 28%;
+                  width: 10px;
+                  height: 10px;
+                  background: var(--border);
+                  border: 1.5px dashed var(--text-tertiary);
+                  border-radius: 50%;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  bottom: 10px;
+                  left: 12px;
+                  font-size: 10px;
+                  color: var(--text-tertiary);
+                  display: flex;
+                  gap: 12px;
+                "
+              >
+                <span style="display: flex; align-items: center; gap: 4px"
+                  ><span
+                    style="width: 8px; height: 8px; background: var(--success); border-radius: 50%"
+                  ></span>
+                  Active</span
+                >
+                <span style="display: flex; align-items: center; gap: 4px"
+                  ><span
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      background: var(--text-primary);
+                      border-radius: 50%;
+                    "
+                  ></span>
+                  Launching soon</span
+                >
+                <span style="display: flex; align-items: center; gap: 4px"
+                  ><span
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      background: var(--border);
+                      border: 1px dashed var(--text-tertiary);
+                      border-radius: 50%;
+                    "
+                  ></span>
+                  Waitlist</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">Active metros</div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div
+                style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 10px"
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: baseline;
+                    margin-bottom: 4px;
+                  "
+                >
+                  <div style="font-size: 13px; font-weight: 600">Sacramento metro</div>
+                  <div class="pill pill-success">Active</div>
+                </div>
+                <div
+                  style="
+                    font-size: 11px;
+                    color: var(--text-secondary);
+                    margin-bottom: 8px;
+                    line-height: 1.55;
+                  "
+                >
+                  Sacramento, Roseville, Folsom, Davis, Elk Grove · 23 verified cleaners
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px">
+                  <div class="pill pill-neutral">Midtown</div>
+                  <div class="pill pill-neutral">East Sac</div>
+                  <div class="pill pill-neutral">Land Park</div>
+                  <div class="pill pill-neutral">Roseville</div>
+                  <div class="pill pill-neutral">Folsom</div>
+                  <div class="pill pill-neutral">Davis</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">Launching soon</div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div
+                style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 10px"
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: baseline;
+                    margin-bottom: 4px;
+                  "
+                >
+                  <div style="font-size: 13px; font-weight: 600">Bay Area</div>
+                  <div class="pill pill-info">Q2 2026</div>
+                </div>
+                <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55">
+                  San Francisco, Oakland, Berkeley, San Jose · Recruiting cleaners now
+                </div>
+                <div
+                  style="
+                    margin-top: 10px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                  "
+                >
+                  Get notified when we launch →
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px">
+              Future expansion
+            </div>
+            <div
+              style="padding: 14px; border: 0.5px solid var(--border-light); border-radius: 10px"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: baseline;
+                  margin-bottom: 4px;
+                "
+              >
+                <div style="font-size: 13px; font-weight: 600">Reno / Sparks</div>
+                <div class="pill pill-neutral">Waitlist</div>
+              </div>
+              <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.55">
+                Join the waitlist and we'll let you know when we launch.
+              </div>
+              <div
+                style="
+                  margin-top: 10px;
+                  font-size: 12px;
+                  font-weight: 600;
+                  color: var(--text-primary);
+                "
+              >
+                Join Reno waitlist →
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 24px 18px; background: var(--bg); text-align: center">
+            <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px">
+              Don't see your area?
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 12px">
+              Tell us where you'd want PureTask — it helps us prioritize.
+            </div>
+            <div
+              class="btn-secondary"
+              style="background: var(--surface); max-width: 220px; margin: 0 auto"
+            >
+              Suggest a city
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="
+        margin-top: 40px;
+        padding: 16px;
+        background: var(--surface);
+        border-radius: 10px;
+        border: 0.5px solid var(--border);
+      "
+    >
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--text-tertiary);
+          margin-bottom: 6px;
+        "
+      >
+        Session progress
+      </div>
+      <div style="font-size: 13px; color: var(--text-primary)">
+        Wireframes 40–46 complete ·
+        <span style="color: var(--text-secondary)">46 of ~70 total</span>
+      </div>
+      <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px">
+        Next: Batch 5B — Contact/Support page, then Batch 6 (onboarding + explainers)
+      </div>
+    </div>
+  </body>
+</html>

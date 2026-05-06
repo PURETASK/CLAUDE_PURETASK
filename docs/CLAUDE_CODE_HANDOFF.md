@@ -24,6 +24,7 @@ These rules exist because LLM agents (you) tend to drift from instructions over 
 The files have cross-batch foreign key dependencies. Running B5 before B1 will fail.
 
 **Required order** (under `db/migrations/`):
+
 1. `0001_b1_core_identity.sql`
 2. `0002_b2_booking_lifecycle.sql`
 3. `0003_b3_trust_evidence.sql`
@@ -66,7 +67,9 @@ Every table has Row Level Security enabled. If your seed scripts or test queries
 Brief table-level summary. The SQL files have detailed comments on every column.
 
 ### B1 — Core Identity + Accounts (8 tables, 761 lines)
+
 Foundation. Every other table FKs back to these.
+
 - `users` — central identity, Clerk-authenticated
 - `customer_profiles` — customer data
 - `cleaner_profiles` — cleaner data including denormalized aggregates
@@ -79,7 +82,9 @@ Foundation. Every other table FKs back to these.
 Enables Postgres extensions: `pgcrypto`, `citext`, `btree_gist`.
 
 ### B2 — Booking Lifecycle (10 tables, 908 lines)
+
 The transactional spine.
+
 - `services` — Standard, Deep, Move-out, Airbnb (seeded)
 - `bookings` — with immutable pricing snapshot
 - `booking_state_events` — append-only state log (22-state machine)
@@ -91,7 +96,9 @@ The transactional spine.
 Includes the **EXCLUSION CONSTRAINT preventing cleaner double-booking** (modified by B8 to include 60-min buffer).
 
 ### B3 — Trust + Evidence (8 tables, 777 lines)
+
 The differentiator features.
+
 - `messages` — in-app, 4hr post-booking auto-purge
 - `traits` (seeded with 8 trait chips)
 - `reviews` — immutable post-submission
@@ -101,7 +108,9 @@ The differentiator features.
 - `dispute_messages` + `dispute_resolutions`
 
 ### B4 — Cleaner Operations (10 tables, 879 lines)
+
 The reliability ecosystem.
+
 - `reliability_events` — append-only, drives scoring
 - `reliability_score_snapshots` — daily computed scores
 - `tier_assignments` — tier change history
@@ -112,7 +121,9 @@ The reliability ecosystem.
 - `customer_reliability_events` — schema day-1, UI Phase 2
 
 ### B5 — Money (8 tables, 740 lines)
+
 Stripe Connect mirror.
+
 - `payment_methods` (mirror of Stripe)
 - `charges` (with idempotency keys)
 - `refunds`
@@ -124,7 +135,9 @@ Stripe Connect mirror.
 Wires up deferred FKs from B1 and B3.
 
 ### B6 — Platform Operations (6 tables, 711 lines)
+
 Plumbing.
+
 - `notifications` (90-day retention, 63-value type enum)
 - `notification_preferences` (cascade logic, quiet hours columns)
 - `notification_deliveries` (per-channel attempt log)
@@ -132,14 +145,18 @@ Plumbing.
 - `support_tickets` + `support_ticket_messages`
 
 ### B7 — Onboarding & Verification (4 tables, 547 lines)
+
 The cleaner application pipeline.
+
 - `cleaner_applications` — distinct from cleaner_profiles
 - `background_checks` — Checkr-managed, 2-year renewal
 - `identity_verifications` — Stripe Identity sessions
 - `waitlist_signups` — pre-launch ZIP signups
 
 ### B8 — Audit Fixes (281 lines)
+
 Patches 4 blocking issues found in post-build audit.
+
 1. `charges.total_refunded_cents` INTEGER → BIGINT
 2. Adds 60-min buffer to cleaner double-booking exclusion constraint (via generated columns)
 3. Trigger cascading recurring_schedule end → unspawned occurrences cancelled
@@ -182,6 +199,7 @@ For each file in order (B1 through B8):
 7. **If any error occurs, STOP.** Do not proceed to the next file. Report the error to the user. Do not attempt to debug or modify the SQL on your own.
 
 Common errors and what they mean:
+
 - `extension "btree_gist" is not available` → Phase 1 wasn't completed properly. Enable the extension first.
 - `relation "X" does not exist` → A previous batch was skipped or failed. Check earlier batches.
 - `permission denied` → You're using the wrong credentials. Use the project owner's connection string, not the anon key.
@@ -191,23 +209,29 @@ Common errors and what they mean:
 After all 8 files run successfully, run these verification queries in the Supabase SQL Editor:
 
 **Verify table count:**
+
 ```sql
 SELECT COUNT(*) FROM information_schema.tables
 WHERE table_schema = 'public';
 ```
+
 **Expected:** 54
 
 **Verify enum count:**
+
 ```sql
 SELECT COUNT(*) FROM pg_type WHERE typtype = 'e';
 ```
+
 **Expected:** 42
 
 **Verify index count is reasonable:**
+
 ```sql
 SELECT COUNT(*) FROM pg_indexes
 WHERE schemaname = 'public';
 ```
+
 **Expected:** ~190 (some are auto-generated for primary keys and unique constraints; total will be higher than the 188 explicitly created).
 
 **Verify B8 fixes are in place:**
@@ -237,6 +261,7 @@ WHERE conname = 'notifications_recipient_user_id_fkey';
 ```
 
 **Verify seeded data:**
+
 ```sql
 SELECT service_type, display_name FROM services ORDER BY display_order;
 -- Expected 4 rows: standard, deep, move_out, airbnb
@@ -256,6 +281,7 @@ If ALL verification queries return expected results, the schema is deployed corr
 ### Phase 4 — Report Back
 
 Tell the user:
+
 - Which Supabase project the schema was deployed to (project name + URL)
 - That all 8 batches ran successfully
 - That all verification queries returned expected results
@@ -276,6 +302,7 @@ This document is for SCHEMA SETUP. After running B1-B8, you'll have a working em
 ### ❌ Do not modify the SQL to "improve" it
 
 Examples of "improvements" you might be tempted to make that are wrong:
+
 - "I'll add an index on X" — every necessary index has been considered. Don't add more.
 - "I'll combine these two tables" — separation is intentional.
 - "I'll change CASCADE to RESTRICT here" — the cascade behavior was carefully chosen per table.
