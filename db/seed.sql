@@ -1,0 +1,3 @@
+-- PureTask dev seed data (optional).
+-- Add INSERT statements here once migrations are applied in Supabase.
+-- Do not put real secrets or production-like PII in committed seeds.
