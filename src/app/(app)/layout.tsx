@@ -10,11 +10,16 @@ const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
           <Link href="/app" className="font-semibold">
             PureTask
           </Link>
-          <form action={signOutAction}>
-            <button type="submit" className="rounded border px-3 py-1.5 text-sm">
-              Sign out
-            </button>
-          </form>
+          <nav className="flex items-center gap-4">
+            <Link href="/app/settings" className="text-sm text-zinc-600 hover:text-zinc-900">
+              Settings
+            </Link>
+            <form action={signOutAction}>
+              <button type="submit" className="rounded border px-3 py-1.5 text-sm">
+                Sign out
+              </button>
+            </form>
+          </nav>
         </div>
       </header>
       <div className="mx-auto w-full max-w-5xl px-4 py-8">{children}</div>
