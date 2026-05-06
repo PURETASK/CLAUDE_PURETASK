@@ -60,3 +60,17 @@ pnpm-debug.log*
 # Supabase local (optional)
 .branches/
 .temp/
+
+# Prevent accidental root clutter (archive instead under docs/archive/)
+/B*_*.sql
+/Screenshot*.png
+/wireframes_batch*.html
+/wireframes_batch*.htm
+/customer_*_v*.html
+/cleaner_*_v*.html
+/become_a_cleaner_*.html
+/messaging_thread*.html
+/notification_center*.html
+/puretask_mobile_homepage*.html
+/phase-1-spec.md
+/puretask-decisions.md
