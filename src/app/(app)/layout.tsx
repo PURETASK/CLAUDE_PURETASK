@@ -11,6 +11,9 @@ const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
             PureTask
           </Link>
           <nav className="flex items-center gap-4">
+            <Link href="/app/cleaners" className="text-sm text-zinc-600 hover:text-zinc-900">
+              Find a Cleaner
+            </Link>
             <Link href="/app/settings" className="text-sm text-zinc-600 hover:text-zinc-900">
               Settings
             </Link>
