@@ -1,0 +1,105 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useActionState, useEffect, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { resetPasswordAction, type AuthActionState } from '@/features/auth/actions';
+import { type ResetPasswordValues, resetPasswordSchema } from '@/features/auth/validation';
+
+const INITIAL_STATE: AuthActionState = { ok: false, error: null };
+
+export const ResetPasswordForm = () => {
+  const [state, formAction] = useActionState(resetPasswordAction, INITIAL_STATE);
+  const [isPending, startTransition] = useTransition();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<ResetPasswordValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  useEffect(() => {
+    if (state.error) {
+      setError('root', { message: state.error });
+      return;
+    }
+
+    if (state.ok) {
+      reset();
+    }
+  }, [reset, setError, state.error, state.ok]);
+
+  const onSubmit = (values: ResetPasswordValues) => {
+    const formData = new FormData();
+    formData.set('password', values.password);
+    formData.set('confirmPassword', values.confirmPassword);
+
+    startTransition(() => {
+      formAction(formData);
+    });
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex w-full max-w-md flex-col gap-4 rounded border p-6"
+    >
+      <h1 className="text-2xl font-semibold">Set a new password</h1>
+
+      <label className="flex flex-col gap-1">
+        <span>New password</span>
+        <input
+          type="password"
+          autoComplete="new-password"
+          className="rounded border px-3 py-2"
+          {...register('password')}
+        />
+        {errors.password ? (
+          <span className="text-sm text-red-600">{errors.password.message}</span>
+        ) : null}
+      </label>
+
+      <label className="flex flex-col gap-1">
+        <span>Confirm password</span>
+        <input
+          type="password"
+          autoComplete="new-password"
+          className="rounded border px-3 py-2"
+          {...register('confirmPassword')}
+        />
+        {errors.confirmPassword ? (
+          <span className="text-sm text-red-600">{errors.confirmPassword.message}</span>
+        ) : null}
+      </label>
+
+      {errors.root ? (
+        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
+      ) : null}
+      {state.ok && state.message ? (
+        <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
+      ) : null}
+
+      <button
+        type="submit"
+        disabled={isPending}
+        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
+      >
+        {isPending ? 'Updating...' : 'Update password'}
+      </button>
+
+      <Link className="text-sm underline" href="/auth/sign-in">
+        Go to sign in
+      </Link>
+    </form>
+  );
+};
