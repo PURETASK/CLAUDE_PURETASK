@@ -14,7 +14,7 @@ const eslintConfig = [
   ...compat.extends('next/core-web-vitals'),
   ...compat.extends('plugin:prettier/recommended'),
   {
-    ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+    ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'src/types/database.types.ts'],
   },
 ];
 
