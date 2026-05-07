@@ -38,23 +38,27 @@ const AppHomePage = async () => {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-950">
           {me?.full_name ? `Welcome back, ${me.full_name.split(' ')[0]}` : 'Welcome to PureTask'}
         </h1>
-        <p className="mt-1 text-sm text-zinc-500">Find a vetted cleaner in Northern California.</p>
+        <p className="mt-2 text-base text-slate-700">
+          Find a vetted cleaner in Northern California.
+        </p>
       </div>
 
       <div>
-        <p className="mb-3 text-sm font-medium text-zinc-500">What do you need?</p>
+        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-600">
+          What do you need?
+        </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {SERVICE_CARDS.map((s) => (
             <Link
               key={s.type}
               href={`/app/cleaners?service=${s.type}`}
-              className="flex flex-col gap-1 rounded border bg-white p-4 transition-shadow hover:shadow-sm"
+              className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
-              <span className="font-medium">{s.label}</span>
-              <span className="text-xs text-zinc-500">{s.desc}</span>
+              <span className="font-semibold text-slate-900">{s.label}</span>
+              <span className="text-sm text-slate-600">{s.desc}</span>
             </Link>
           ))}
         </div>
@@ -62,7 +66,7 @@ const AppHomePage = async () => {
 
       <Link
         href="/app/cleaners"
-        className="self-start rounded bg-black px-6 py-2.5 text-sm text-white hover:bg-zinc-800"
+        className="self-start rounded-md bg-slate-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
       >
         Browse all cleaners
       </Link>

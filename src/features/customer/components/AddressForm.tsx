@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useActionState, useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -15,13 +16,14 @@ type ExistingAddress = AddressValues & { id: string };
 
 type Props = {
   existing?: ExistingAddress;
-  onSuccess: () => void;
-  onCancel: () => void;
+  onSuccessPath: string;
+  onCancelPath: string;
 };
 
 const INITIAL_STATE: CustomerActionState = { ok: false, error: null };
 
-export const AddressForm = ({ existing, onSuccess, onCancel }: Props) => {
+export const AddressForm = ({ existing, onSuccessPath, onCancelPath }: Props) => {
+  const router = useRouter();
   const action = existing ? updateAddressAction : addAddressAction;
   const [state, formAction] = useActionState(action, INITIAL_STATE);
   const [isPending, startTransition] = useTransition();
@@ -37,8 +39,11 @@ export const AddressForm = ({ existing, onSuccess, onCancel }: Props) => {
   });
 
   useEffect(() => {
-    if (state.ok) onSuccess();
-  }, [onSuccess, state.ok]);
+    if (state.ok) {
+      router.push(onSuccessPath);
+      router.refresh();
+    }
+  }, [onSuccessPath, router, state.ok]);
 
   useEffect(() => {
     if (state.error) setError('root', { message: state.error });
@@ -158,7 +163,11 @@ export const AddressForm = ({ existing, onSuccess, onCancel }: Props) => {
         >
           {isPending ? 'Saving...' : existing ? 'Save changes' : 'Add address'}
         </button>
-        <button type="button" onClick={onCancel} className="rounded border px-4 py-2 text-sm">
+        <button
+          type="button"
+          onClick={() => router.push(onCancelPath)}
+          className="rounded border px-4 py-2 text-sm"
+        >
           Cancel
         </button>
       </div>
