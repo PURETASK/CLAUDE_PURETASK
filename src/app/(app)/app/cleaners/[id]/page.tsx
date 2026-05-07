@@ -133,6 +133,13 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
           hasZipFilter={false}
         />
       </section>
+
+      <Link
+        href={`/app/cleaners/${cleaner.id}/book`}
+        className="self-start rounded bg-black px-6 py-2.5 text-sm text-white hover:bg-zinc-800"
+      >
+        Book this cleaner
+      </Link>
     </div>
   );
 };
