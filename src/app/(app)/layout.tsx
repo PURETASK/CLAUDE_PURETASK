@@ -14,6 +14,12 @@ const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
             <Link href="/app/cleaners" className="text-sm text-zinc-600 hover:text-zinc-900">
               Find a Cleaner
             </Link>
+            <Link href="/app/bookings" className="text-sm text-zinc-600 hover:text-zinc-900">
+              My Bookings
+            </Link>
+            <Link href="/app/cleaner" className="text-sm text-zinc-600 hover:text-zinc-900">
+              Dashboard
+            </Link>
             <Link href="/app/settings" className="text-sm text-zinc-600 hover:text-zinc-900">
               Settings
             </Link>
