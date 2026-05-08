@@ -5,6 +5,8 @@ import { toggleInstantPayoutAction } from '@/features/payments/actions';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
+import { BioEditForm } from './BioEditForm';
+
 export default async function CleanerSettingsPage() {
   const supabase = await createSupabaseServerClient();
   const {
@@ -81,16 +83,7 @@ export default async function CleanerSettingsPage() {
         <p className="mb-3 text-sm text-zinc-500">
           Your bio appears on your public profile page and is visible to potential customers.
         </p>
-        {profile.bio ? (
-          <p className="whitespace-pre-wrap rounded-lg bg-zinc-50 p-3 text-sm text-zinc-700">
-            {profile.bio}
-          </p>
-        ) : (
-          <p className="text-sm text-zinc-400">No bio set.</p>
-        )}
-        <p className="mt-3 text-xs text-zinc-400">
-          Bio editing coming soon. Contact support to update.
-        </p>
+        <BioEditForm currentBio={profile.bio} />
       </section>
 
       {/* Links */}
@@ -100,6 +93,12 @@ export default async function CleanerSettingsPage() {
           className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
         >
           View earnings
+        </Link>
+        <Link
+          href="/app/cleaner/availability"
+          className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+        >
+          Availability
         </Link>
         <Link
           href="/app/cleaner/connect-onboarding"
