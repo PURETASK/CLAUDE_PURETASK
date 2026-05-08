@@ -63,9 +63,15 @@ const CustomerDashboardPage = async () => {
       </section>
 
       <section className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="text-lg font-semibold text-slate-900">Recent cleaners</h2>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-lg font-semibold text-slate-900">Reliability record</h2>
+          <Link href="/app/dashboard/reliability" className="text-sm font-medium underline">
+            View
+          </Link>
+        </div>
         <p className="mt-1 text-sm text-slate-500">
-          This fills in after you complete bookings. Empty before Phase 6 booking flow is expected.
+          On-time arrivals and completed bookings build your reliability record, visible to cleaners
+          when they review your requests.
         </p>
       </section>
     </div>
