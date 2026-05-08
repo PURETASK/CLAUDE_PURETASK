@@ -6,11 +6,10 @@ import { redirect } from 'next/navigation';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
+import { COMMISSION_RATE, computeBookingPricing } from './pricing';
 import { createBookingSchema } from './validation';
 
 export type BookingActionState = { ok: boolean; error: string | null };
-
-const COMMISSION_RATE = 0.2;
 
 const generateBookingNumber = () => {
   const year = new Date().getFullYear();
@@ -72,10 +71,12 @@ export const createBookingAction = async (
   const startAt = new Date(parsed.data.start_at);
   const endAt = new Date(startAt.getTime() + parsed.data.duration_hours * 60 * 60 * 1000);
 
-  const cleanerSubtotal = hourlyRate * parsed.data.duration_hours;
-  const platformFee = Math.round(cleanerSubtotal * COMMISSION_RATE);
-  const totalCharge = cleanerSubtotal + platformFee;
-  const cleanerPayout = cleanerSubtotal;
+  const {
+    cleanerSubtotalCents: cleanerSubtotal,
+    platformFeeCents: platformFee,
+    totalChargeCents: totalCharge,
+    cleanerPayoutCents: cleanerPayout,
+  } = computeBookingPricing(hourlyRate, parsed.data.duration_hours);
 
   const bookingNumber = generateBookingNumber();
 
