@@ -75,9 +75,7 @@ const AppShellLayout = async ({ children }: { children: React.ReactNode }) => {
             >
               Settings
             </Link>
-            {user && (
-              <NotificationBell initialNotifications={notifications} userId={user.id} />
-            )}
+            {user && <NotificationBell initialNotifications={notifications} userId={user.id} />}
             <form action={signOutAction}>
               <button
                 type="submit"
