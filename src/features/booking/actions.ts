@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { sendEmail } from '@/lib/email/resend';
+import { bookingConfirmedEmail, newBookingRequestEmail } from '@/lib/email/templates';
 import { stripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
@@ -176,7 +178,40 @@ export const createBookingAction = async (
     reason: 'Customer created booking request.',
   });
 
-  void piId; // referenced above, satisfies linter
+  // Notify cleaner of new request (fire-and-forget)
+  void (async () => {
+    const { data: cleanerUser } = await admin
+      .from('users')
+      .select('email, full_name')
+      .eq(
+        'id',
+        (await admin.from('cleaner_profiles').select('user_id').eq('id', cleaner.id).single()).data
+          ?.user_id ?? '',
+      )
+      .single();
+    const { data: customerUser } = await supabase.auth.getUser();
+    const { data: customerProfile2 } = await admin
+      .from('users')
+      .select('full_name')
+      .eq('id', user.id)
+      .single();
+    if (cleanerUser?.email) {
+      const tmpl = newBookingRequestEmail({
+        cleanerName: cleanerUser.full_name ?? 'Cleaner',
+        customerName: customerProfile2?.full_name ?? customerUser.user?.email ?? 'Customer',
+        bookingNumber,
+        serviceDate: startAt.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        }),
+        bookingId: booking.id,
+      });
+      await sendEmail({ to: cleanerUser.email, ...tmpl });
+    }
+  })();
+
+  void piId;
   redirect(`/app/bookings/${booking.id}`);
 };
 
@@ -212,6 +247,50 @@ export const acceptBookingAction = async (bookingId: string): Promise<BookingAct
     triggered_by_user_id: user.id,
     reason: 'Cleaner accepted booking.',
   });
+
+  // Notify customer that booking is confirmed (fire-and-forget)
+  void (async () => {
+    const { data: fullBooking } = await admin
+      .from('bookings')
+      .select('booking_number, start_at, customer_id, cleaner_id')
+      .eq('id', bookingId)
+      .single();
+    if (!fullBooking) return;
+    const [{ data: customerProfile }, { data: cleanerProfile }] = await Promise.all([
+      admin.from('customer_profiles').select('user_id').eq('id', fullBooking.customer_id).single(),
+      admin
+        .from('cleaner_profiles')
+        .select('user_id')
+        .eq('id', fullBooking.cleaner_id ?? '')
+        .single(),
+    ]);
+    const [{ data: customerUser }, { data: cleanerUser }] = await Promise.all([
+      admin
+        .from('users')
+        .select('email, full_name')
+        .eq('id', customerProfile?.user_id ?? '')
+        .single(),
+      admin
+        .from('users')
+        .select('full_name')
+        .eq('id', cleanerProfile?.user_id ?? '')
+        .single(),
+    ]);
+    if (customerUser?.email) {
+      const tmpl = bookingConfirmedEmail({
+        customerName: customerUser.full_name ?? 'Customer',
+        cleanerName: cleanerUser?.full_name ?? 'Your cleaner',
+        bookingNumber: fullBooking.booking_number,
+        serviceDate: new Date(fullBooking.start_at).toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        }),
+        bookingId,
+      });
+      await sendEmail({ to: customerUser.email, ...tmpl });
+    }
+  })();
 
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
   revalidatePath('/app/cleaner');

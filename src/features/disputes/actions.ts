@@ -3,6 +3,13 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { sendEmail } from '@/lib/email/resend';
+import {
+  awaitingApprovalEmail,
+  disputeFiledEmail,
+  disputeResponseEmail,
+  payoutInitiatedEmail,
+} from '@/lib/email/templates';
 import { stripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
@@ -42,6 +49,45 @@ export const markJobCompleteAction = async (bookingId: string): Promise<DisputeA
     triggered_by_user_id: user.id,
     reason: 'Cleaner marked job complete.',
   });
+
+  // Notify customer to approve (fire-and-forget)
+  void (async () => {
+    const { data: fullBooking } = await admin
+      .from('bookings')
+      .select('booking_number, customer_id, cleaner_id')
+      .eq('id', bookingId)
+      .single();
+    if (!fullBooking) return;
+    const [{ data: custProfile }, { data: cleanerProfile }] = await Promise.all([
+      admin.from('customer_profiles').select('user_id').eq('id', fullBooking.customer_id).single(),
+      admin
+        .from('cleaner_profiles')
+        .select('user_id')
+        .eq('id', fullBooking.cleaner_id ?? '')
+        .single(),
+    ]);
+    const [{ data: custUser }, { data: cleanerUser }] = await Promise.all([
+      admin
+        .from('users')
+        .select('email, full_name')
+        .eq('id', custProfile?.user_id ?? '')
+        .single(),
+      admin
+        .from('users')
+        .select('full_name')
+        .eq('id', cleanerProfile?.user_id ?? '')
+        .single(),
+    ]);
+    if (custUser?.email) {
+      const tmpl = awaitingApprovalEmail({
+        customerName: custUser.full_name ?? 'Customer',
+        cleanerName: cleanerUser?.full_name ?? 'Your cleaner',
+        bookingNumber: fullBooking.booking_number,
+        bookingId,
+      });
+      await sendEmail({ to: custUser.email, ...tmpl });
+    }
+  })();
 
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
   return { ok: true, error: null };
@@ -216,6 +262,36 @@ export const fileDisputeAction = async (
     triggered_state_change: true,
   });
 
+  // Notify cleaner a dispute was filed (fire-and-forget)
+  void (async () => {
+    const [{ data: cleanerProfile }, { data: custUser }] = await Promise.all([
+      admin.from('cleaner_profiles').select('user_id').eq('id', booking.cleaner_id!).single(),
+      admin.from('users').select('full_name').eq('id', user.id).single(),
+    ]);
+    const { data: cleanerUser } = await admin
+      .from('users')
+      .select('email, full_name')
+      .eq('id', cleanerProfile?.user_id ?? '')
+      .single();
+    if (cleanerUser?.email) {
+      const { data: bk } = await admin
+        .from('bookings')
+        .select('booking_number')
+        .eq('id', parsed.data.booking_id)
+        .single();
+      await sendEmail({
+        to: cleanerUser.email,
+        ...disputeFiledEmail({
+          cleanerName: cleanerUser.full_name ?? 'Cleaner',
+          customerName: custUser?.full_name ?? 'Customer',
+          bookingNumber: bk?.booking_number ?? '',
+          issueCategory: parsed.data.issue_category.replace(/_/g, ' '),
+          disputeBookingId: parsed.data.booking_id,
+        }),
+      });
+    }
+  })();
+
   redirect(`/app/bookings/${parsed.data.booking_id}/dispute`);
 };
 
@@ -269,6 +345,42 @@ export const cleanerRespondAction = async (
     body: parsed.data.response_message,
     triggered_state_change: true,
   });
+
+  // Notify customer of cleaner response (fire-and-forget)
+  void (async () => {
+    const admin = createSupabaseAdminClient();
+    const { data: bkData } = await admin
+      .from('bookings')
+      .select('booking_number, customer_id')
+      .eq('id', dispute.booking_id)
+      .single();
+    if (!bkData) return;
+    const { data: custProfile } = await admin
+      .from('customer_profiles')
+      .select('user_id')
+      .eq('id', bkData.customer_id)
+      .single();
+    const [{ data: custUser }, { data: cleanerUser }] = await Promise.all([
+      admin
+        .from('users')
+        .select('email, full_name')
+        .eq('id', custProfile?.user_id ?? '')
+        .single(),
+      admin.from('users').select('full_name').eq('id', user.id).single(),
+    ]);
+    if (custUser?.email) {
+      await sendEmail({
+        to: custUser.email,
+        ...disputeResponseEmail({
+          customerName: custUser.full_name ?? 'Customer',
+          cleanerName: cleanerUser?.full_name ?? 'Your cleaner',
+          bookingNumber: bkData.booking_number,
+          responseType: parsed.data.response_type.replace(/_/g, ' '),
+          bookingId: dispute.booking_id,
+        }),
+      });
+    }
+  })();
 
   revalidatePath(`/app/cleaner/bookings/${dispute.booking_id}/dispute`);
   return { ok: true, error: null };

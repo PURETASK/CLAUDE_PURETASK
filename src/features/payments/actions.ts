@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 
 import { env } from '@/lib/env';
+import { sendEmail } from '@/lib/email/resend';
+import { payoutInitiatedEmail } from '@/lib/email/templates';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { stripe } from '@/lib/stripe/webhooks';
@@ -275,6 +277,29 @@ export const requestInstantPayoutAction = async (): Promise<PaymentActionState> 
       'id',
       lineItems.map((li) => li.id),
     );
+
+  // Notify cleaner of instant payout (fire-and-forget)
+  void (async () => {
+    const { data: cleanerUser } = await admin
+      .from('users')
+      .select('email, full_name')
+      .eq('id', user.id)
+      .single();
+    if (cleanerUser?.email) {
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(netCents / 100);
+      await sendEmail({
+        to: cleanerUser.email,
+        ...payoutInitiatedEmail({
+          cleanerName: cleanerUser.full_name ?? 'Cleaner',
+          amountFormatted: formatted,
+          isInstant: true,
+        }),
+      });
+    }
+  })();
 
   revalidatePath('/app/cleaner/earnings');
   return { ok: true, error: null };

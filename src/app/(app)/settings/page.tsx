@@ -31,16 +31,29 @@ const SettingsLandingPage = async () => {
           </Link>
         </div>
 
-        <StubCard
-          title="Notifications"
-          description="Push, email, and SMS notification preferences."
-          phaseBadge="Coming in Phase 10"
-        />
-        <StubCard
-          title="Payment Methods"
-          description="Add and manage cards for booking."
-          phaseBadge="Coming in Phase 6a"
-        />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
+          <p className="mt-2 text-sm text-slate-700">
+            Email notification preferences for bookings and disputes.
+          </p>
+          <Link
+            href="/settings/notifications"
+            className="mt-3 inline-block rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-800 hover:bg-slate-50"
+          >
+            Manage notifications
+          </Link>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-slate-900">Payment Methods</h3>
+          <p className="mt-2 text-sm text-slate-700">Add and manage cards for booking.</p>
+          <Link
+            href="/app/settings/payment-methods"
+            className="mt-3 inline-block rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-800 hover:bg-slate-50"
+          >
+            Manage cards
+          </Link>
+        </div>
         <StubCard
           title="Security"
           description="Two-factor auth and active session management."
