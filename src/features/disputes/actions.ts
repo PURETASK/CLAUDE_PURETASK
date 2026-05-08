@@ -168,7 +168,7 @@ export const approveBookingAction = async (bookingId: string): Promise<DisputeAc
   }
 
   revalidatePath(`/app/bookings/${bookingId}`);
-  return { ok: true, error: null };
+  redirect(`/app/bookings/${bookingId}/tip`);
 };
 
 export const fileDisputeAction = async (

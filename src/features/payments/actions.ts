@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 import { env } from '@/lib/env';
 import { sendEmail } from '@/lib/email/resend';
@@ -303,6 +304,130 @@ export const requestInstantPayoutAction = async (): Promise<PaymentActionState> 
 
   revalidatePath('/app/cleaner/earnings');
   return { ok: true, error: null };
+};
+
+// ── Tip payment ──────────────────────────────────────────────────────────
+
+export type TipActionState = { ok: boolean; error: string | null };
+
+export const addTipAction = async (
+  _prev: TipActionState,
+  formData: FormData,
+): Promise<TipActionState> => {
+  if (!env.STRIPE_SECRET_KEY) return { ok: false, error: 'Stripe not configured.' };
+
+  const bookingId = formData.get('booking_id') as string | null;
+  const rawAmount = formData.get('amount_cents') as string | null;
+  const amountCents = rawAmount ? parseInt(rawAmount, 10) : 0;
+
+  if (!bookingId) return { ok: false, error: 'Booking ID required.' };
+  if (!amountCents || amountCents < 100) return { ok: false, error: 'Minimum tip is $1.' };
+  if (amountCents > 10000) return { ok: false, error: 'Maximum tip is $100.' };
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: 'Not authenticated.' };
+
+  const admin = createSupabaseAdminClient();
+
+  const { data: profile } = await admin
+    .from('customer_profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .single();
+  if (!profile) return { ok: false, error: 'Customer profile not found.' };
+
+  const { data: pm } = await admin
+    .from('payment_methods')
+    .select('id, stripe_payment_method_id, stripe_customer_id')
+    .eq('customer_id', profile.id)
+    .eq('is_default', true)
+    .is('deleted_at', null)
+    .single();
+  if (!pm) return { ok: false, error: 'No default payment method on file.' };
+
+  const { data: booking } = await admin
+    .from('bookings')
+    .select('id, cleaner_id, state')
+    .eq('id', bookingId)
+    .single();
+  if (!booking) return { ok: false, error: 'Booking not found.' };
+  if (!['paid', 'approved', 'auto_approved'].includes(booking.state)) {
+    return { ok: false, error: 'Tips can only be added to approved bookings.' };
+  }
+  if (!booking.cleaner_id) return { ok: false, error: 'Booking has no assigned cleaner.' };
+
+  // Create tip record first so we have an ID for the charge link
+  const { data: tip, error: tipError } = await admin
+    .from('tips')
+    .insert({
+      booking_id: bookingId,
+      customer_id: profile.id,
+      cleaner_id: booking.cleaner_id,
+      amount_cents: amountCents,
+      currency: 'usd',
+      source: 'in_app',
+      status: 'pending',
+    })
+    .select('id')
+    .single();
+  if (tipError || !tip) return { ok: false, error: tipError?.message ?? 'Failed to record tip.' };
+
+  let piId: string;
+  try {
+    const pi = await stripe.paymentIntents.create({
+      amount: amountCents,
+      currency: 'usd',
+      customer: pm.stripe_customer_id,
+      payment_method: pm.stripe_payment_method_id,
+      confirm: true,
+      off_session: true,
+    });
+    piId = pi.id;
+  } catch (err: unknown) {
+    await admin.from('tips').delete().eq('id', tip.id);
+    return { ok: false, error: err instanceof Error ? err.message : 'Payment failed.' };
+  }
+
+  const now = new Date().toISOString();
+
+  const { data: charge } = await admin
+    .from('charges')
+    .insert({
+      booking_id: bookingId,
+      tip_id: tip.id,
+      customer_id: profile.id,
+      payment_method_id: pm.id,
+      stripe_payment_intent_id: piId,
+      idempotency_key: `tip_${tip.id}`,
+      amount_cents: amountCents,
+      application_fee_cents: 0,
+      currency: 'usd',
+      state: 'captured',
+      captured_at: now,
+    })
+    .select('id')
+    .single();
+
+  await admin
+    .from('tips')
+    .update({ charge_id: charge?.id ?? null, status: 'paid', paid_at: now })
+    .eq('id', tip.id);
+
+  await admin.from('payout_line_items').insert({
+    cleaner_id: booking.cleaner_id,
+    booking_id: bookingId,
+    amount_cents: amountCents,
+    description: `Tip for booking`,
+    earned_at: now,
+    currency: 'usd',
+    is_instant: false,
+  });
+
+  revalidatePath(`/app/bookings/${bookingId}`);
+  redirect(`/app/bookings/${bookingId}/receipt`);
 };
 
 // ── Instant payout toggle ─────────────────────────────────────────────────
