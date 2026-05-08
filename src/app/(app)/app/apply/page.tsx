@@ -31,10 +31,10 @@ const ApplyEntryPage = async () => {
       <div className="flex flex-col gap-3 rounded border p-5 text-sm">
         <p className="font-medium">What to expect</p>
         <ul className="flex flex-col gap-1.5 text-zinc-500">
-          <li>→ 5-step form covering your location, services, and background</li>
-          <li>→ Photo guidelines training (required)</li>
+          <li>→ 11-step onboarding form with draft save + resume</li>
+          <li>→ Identity, background check, tax, payout, and training checkpoints</li>
+          <li>→ Application review + submit for admin decision</li>
           <li>→ Admin review within 2–3 business days</li>
-          <li>→ Identity verification, background check, and payout setup on approval</li>
         </ul>
       </div>
 

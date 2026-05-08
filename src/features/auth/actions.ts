@@ -57,6 +57,7 @@ export const signUpAction = async (
     email: formData.get('email'),
     password: formData.get('password'),
     confirmPassword: formData.get('confirmPassword'),
+    role: formData.get('role') ?? 'customer',
   });
 
   if (!parsed.success) {
@@ -72,6 +73,9 @@ export const signUpAction = async (
     password: parsed.data.password,
     options: {
       emailRedirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/verify-email`,
+      data: {
+        role: parsed.data.role,
+      },
     },
   });
 

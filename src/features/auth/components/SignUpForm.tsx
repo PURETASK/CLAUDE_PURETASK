@@ -10,7 +10,7 @@ import { type SignUpValues, signUpSchema } from '@/features/auth/validation';
 
 const INITIAL_STATE: AuthActionState = { ok: false, error: null };
 
-export const SignUpForm = () => {
+export const SignUpForm = ({ role = 'customer' }: { role?: 'customer' | 'cleaner' }) => {
   const [state, formAction] = useActionState(signUpAction, INITIAL_STATE);
   const [isPending, startTransition] = useTransition();
 
@@ -26,6 +26,7 @@ export const SignUpForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      role,
     },
   });
 
@@ -45,6 +46,7 @@ export const SignUpForm = () => {
     formData.set('email', values.email);
     formData.set('password', values.password);
     formData.set('confirmPassword', values.confirmPassword);
+    formData.set('role', values.role ?? role);
 
     startTransition(() => {
       formAction(formData);
@@ -56,7 +58,10 @@ export const SignUpForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full max-w-md flex-col gap-4 rounded border p-6"
     >
-      <h1 className="text-2xl font-semibold">Create account</h1>
+      <h1 className="text-2xl font-semibold">
+        {role === 'cleaner' ? 'Create cleaner account' : 'Create account'}
+      </h1>
+      <input type="hidden" {...register('role')} value={role} />
 
       <label className="flex flex-col gap-1">
         <span>Email</span>

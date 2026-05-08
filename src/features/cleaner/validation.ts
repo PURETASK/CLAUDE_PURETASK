@@ -29,7 +29,47 @@ export const step4Schema = z.object({
     .refine((v) => v === true, 'You must acknowledge the photo guidelines.'),
 });
 
+export const step5Schema = z.object({
+  identity_status: z.enum(['pending', 'verified', 'requires_input']),
+});
+
+export const step6Schema = z.object({
+  background_check_status: z.enum(['requested', 'pending', 'in_progress', 'clear', 'consider']),
+});
+
+export const step7Schema = z.object({
+  stripe_connect_completed: z.boolean(),
+  pending_stripe_account_id: z.string().min(1, 'Enter a Stripe account id.').optional(),
+});
+
+export const step8Schema = z.object({
+  legal_name: z.string().min(2, 'Legal name is required.'),
+  tax_classification: z.enum(['sole_proprietor', 'llc', 'corporation', 'partnership']),
+  tax_id_last4: z.string().regex(/^\d{4}$/, 'Enter last 4 digits.'),
+});
+
+export const step9Schema = z.object({
+  photo_training_completed: z
+    .boolean()
+    .refine((v) => v, 'You must complete photo etiquette training.'),
+});
+
+export const step10Schema = z.object({
+  ready_to_submit: z.boolean().refine((v) => v, 'Confirm all sections are complete before review.'),
+});
+
+export const step11Schema = z.object({
+  confirm_submission: z.boolean().refine((v) => v, 'You must confirm before submitting.'),
+});
+
 export type Step1Values = z.infer<typeof step1Schema>;
 export type Step2Values = z.infer<typeof step2Schema>;
 export type Step3Values = z.infer<typeof step3Schema>;
 export type Step4Values = z.infer<typeof step4Schema>;
+export type Step5Values = z.infer<typeof step5Schema>;
+export type Step6Values = z.infer<typeof step6Schema>;
+export type Step7Values = z.infer<typeof step7Schema>;
+export type Step8Values = z.infer<typeof step8Schema>;
+export type Step9Values = z.infer<typeof step9Schema>;
+export type Step10Values = z.infer<typeof step10Schema>;
+export type Step11Values = z.infer<typeof step11Schema>;

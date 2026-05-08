@@ -10,6 +10,7 @@ export const signUpSchema = z
     email: z.string().email('Enter a valid email.'),
     password: z.string().min(8, 'Password must be at least 8 characters.'),
     confirmPassword: z.string().min(8, 'Confirm your password.'),
+    role: z.enum(['customer', 'cleaner']).default('customer'),
   })
   .refine((values) => values.password === values.confirmPassword, {
     message: 'Passwords do not match.',
@@ -31,6 +32,6 @@ export const resetPasswordSchema = z
   });
 
 export type SignInValues = z.infer<typeof signInSchema>;
-export type SignUpValues = z.infer<typeof signUpSchema>;
+export type SignUpValues = z.input<typeof signUpSchema>;
 export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;

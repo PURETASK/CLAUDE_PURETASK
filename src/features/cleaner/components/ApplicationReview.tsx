@@ -1,9 +1,16 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useActionState, useEffect, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { submitApplicationAction } from '@/features/cleaner/actions';
+import {
+  saveStepAction,
+  submitApplicationAction,
+  type CleanerActionState,
+} from '@/features/cleaner/actions';
+import { type Step11Values, step11Schema } from '@/features/cleaner/validation';
 
 const SERVICE_LABELS: Record<string, string> = {
   standard: 'Standard clean',
@@ -19,13 +26,43 @@ type AppData = {
   service_types?: string[];
   why_puretask_text?: string;
   etiquette_acknowledged?: boolean;
+  identity_status?: 'pending' | 'verified' | 'requires_input';
+  background_check_status?: 'requested' | 'pending' | 'in_progress' | 'clear' | 'consider';
+  stripe_connect_completed?: boolean;
+  legal_name?: string;
+  tax_classification?: string;
+  tax_id_last4?: string;
+  photo_training_completed?: boolean;
+  ready_to_submit?: boolean;
 };
 
 type Props = { applicationData: AppData };
 
 export const ApplicationReview = ({ applicationData: d }: Props) => {
   const router = useRouter();
+  const saveStep11 = saveStepAction.bind(null, '11');
+  const [state, formAction] = useActionState<CleanerActionState, FormData>(saveStep11, {
+    ok: false,
+    error: null,
+  });
   const [isPending, startTransition] = useTransition();
+  const [isSubmitting, startSubmitTransition] = useTransition();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<Step11Values>({
+    resolver: zodResolver(step11Schema),
+    defaultValues: { confirm_submission: false },
+  });
+
+  useEffect(() => {
+    if (state.error) {
+      setError('root', { message: state.error });
+    }
+  }, [setError, state.error]);
 
   const isComplete =
     d.home_zip &&
@@ -33,18 +70,32 @@ export const ApplicationReview = ({ applicationData: d }: Props) => {
     d.years_experience !== undefined &&
     d.service_types?.length &&
     d.why_puretask_text &&
-    d.etiquette_acknowledged;
+    d.etiquette_acknowledged &&
+    d.identity_status === 'verified' &&
+    d.background_check_status === 'clear' &&
+    d.stripe_connect_completed &&
+    d.legal_name &&
+    d.tax_classification &&
+    d.tax_id_last4 &&
+    d.photo_training_completed &&
+    d.ready_to_submit;
 
-  const handleSubmit = () => {
-    startTransition(async () => {
+  const handleFinalSubmit = () => {
+    startSubmitTransition(async () => {
       await submitApplicationAction();
     });
   };
 
+  const onSaveFinal = (values: Step11Values) => {
+    const fd = new FormData();
+    fd.set('confirm_submission', String(values.confirm_submission));
+    startTransition(() => formAction(fd));
+  };
+
   return (
-    <div className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSaveFinal)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Review your application</h2>
+        <h2 className="text-lg font-semibold">Final review and submit</h2>
         <p className="mt-1 text-sm text-zinc-500">
           Check your details before submitting. You won&apos;t be able to edit after submission.
         </p>
@@ -86,6 +137,31 @@ export const ApplicationReview = ({ applicationData: d }: Props) => {
           step={4}
           router={router}
         />
+        <Row
+          label="Identity verification"
+          value={d.identity_status ?? 'pending'}
+          step={5}
+          router={router}
+        />
+        <Row
+          label="Background check"
+          value={d.background_check_status ?? 'requested'}
+          step={6}
+          router={router}
+        />
+        <Row
+          label="Stripe Connect"
+          value={d.stripe_connect_completed ? 'Completed ✓' : 'Incomplete'}
+          step={7}
+          router={router}
+        />
+        <Row label="Tax legal name" value={d.legal_name ?? '—'} step={8} router={router} />
+        <Row
+          label="Photo training"
+          value={d.photo_training_completed ? 'Completed ✓' : 'Incomplete'}
+          step={9}
+          router={router}
+        />
       </div>
 
       {!isComplete ? (
@@ -94,24 +170,42 @@ export const ApplicationReview = ({ applicationData: d }: Props) => {
         </p>
       ) : null}
 
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" {...register('confirm_submission')} />I confirm this application is
+        accurate and ready for admin review.
+      </label>
+      {errors.confirm_submission ? (
+        <p className="text-sm text-red-600">{errors.confirm_submission.message}</p>
+      ) : null}
+      {errors.root ? (
+        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
+      ) : null}
+
       <div className="flex gap-3">
         <button
           type="button"
-          onClick={() => router.push('/app/apply/step/4')}
+          onClick={() => router.push('/app/apply/step/10')}
           className="rounded border px-5 py-2 text-sm"
         >
           Back
         </button>
         <button
+          type="submit"
+          disabled={isPending}
+          className="rounded border px-5 py-2 text-sm disabled:opacity-60"
+        >
+          {isPending ? 'Saving...' : 'Save final confirmation'}
+        </button>
+        <button
           type="button"
-          onClick={handleSubmit}
-          disabled={isPending || !isComplete}
+          onClick={handleFinalSubmit}
+          disabled={isSubmitting || !isComplete}
           className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
         >
-          {isPending ? 'Submitting...' : 'Submit application'}
+          {isSubmitting ? 'Submitting...' : 'Submit application'}
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

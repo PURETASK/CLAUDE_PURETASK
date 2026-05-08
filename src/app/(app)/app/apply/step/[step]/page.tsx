@@ -2,16 +2,22 @@ import { notFound, redirect } from 'next/navigation';
 
 import { ApplicationReview } from '@/features/cleaner/components/ApplicationReview';
 import { ApplicationStep1 } from '@/features/cleaner/components/ApplicationStep1';
+import { ApplicationStep10 } from '@/features/cleaner/components/ApplicationStep10';
 import { ApplicationStep2 } from '@/features/cleaner/components/ApplicationStep2';
 import { ApplicationStep3 } from '@/features/cleaner/components/ApplicationStep3';
 import { ApplicationStep4 } from '@/features/cleaner/components/ApplicationStep4';
+import { ApplicationStep5 } from '@/features/cleaner/components/ApplicationStep5';
+import { ApplicationStep6 } from '@/features/cleaner/components/ApplicationStep6';
+import { ApplicationStep7 } from '@/features/cleaner/components/ApplicationStep7';
+import { ApplicationStep8 } from '@/features/cleaner/components/ApplicationStep8';
+import { ApplicationStep9 } from '@/features/cleaner/components/ApplicationStep9';
 import { StepIndicator } from '@/features/cleaner/components/StepIndicator';
 import { getMyApplication } from '@/features/cleaner/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 type PageProps = { params: Promise<{ step: string }> };
 
-const VALID_STEPS = ['1', '2', '3', '4', '5'];
+const VALID_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 
 const ApplyStepPage = async ({ params }: PageProps) => {
   const { step } = await params;
@@ -60,7 +66,61 @@ const ApplyStepPage = async ({ params }: PageProps) => {
           defaultValues={{ etiquette_acknowledged: (d.etiquette_acknowledged as boolean) ?? false }}
         />
       )}
-      {step === '5' && <ApplicationReview applicationData={d} />}
+      {step === '5' && (
+        <ApplicationStep5
+          defaultValues={{
+            identity_status:
+              (d.identity_status as 'pending' | 'verified' | 'requires_input') ?? 'pending',
+          }}
+        />
+      )}
+      {step === '6' && (
+        <ApplicationStep6
+          defaultValues={{
+            background_check_status:
+              (d.background_check_status as
+                | 'requested'
+                | 'pending'
+                | 'in_progress'
+                | 'clear'
+                | 'consider') ?? 'requested',
+          }}
+        />
+      )}
+      {step === '7' && (
+        <ApplicationStep7
+          defaultValues={{
+            stripe_connect_completed: (d.stripe_connect_completed as boolean) ?? false,
+            pending_stripe_account_id: (d.pending_stripe_account_id as string) ?? '',
+          }}
+        />
+      )}
+      {step === '8' && (
+        <ApplicationStep8
+          defaultValues={{
+            legal_name: (d.legal_name as string) ?? '',
+            tax_classification:
+              (d.tax_classification as 'sole_proprietor' | 'llc' | 'corporation' | 'partnership') ??
+              'sole_proprietor',
+            tax_id_last4: (d.tax_id_last4 as string) ?? '',
+          }}
+        />
+      )}
+      {step === '9' && (
+        <ApplicationStep9
+          defaultValues={{
+            photo_training_completed: (d.photo_training_completed as boolean) ?? false,
+          }}
+        />
+      )}
+      {step === '10' && (
+        <ApplicationStep10
+          defaultValues={{
+            ready_to_submit: (d.ready_to_submit as boolean) ?? false,
+          }}
+        />
+      )}
+      {step === '11' && <ApplicationReview applicationData={d} />}
     </div>
   );
 };

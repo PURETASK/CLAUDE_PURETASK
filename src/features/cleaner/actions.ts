@@ -7,7 +7,19 @@ import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { Json } from '@/types/database';
 
-import { step1Schema, step2Schema, step3Schema, step4Schema } from './validation';
+import {
+  step10Schema,
+  step11Schema,
+  step1Schema,
+  step2Schema,
+  step3Schema,
+  step4Schema,
+  step5Schema,
+  step6Schema,
+  step7Schema,
+  step8Schema,
+  step9Schema,
+} from './validation';
 
 export type CleanerActionState = {
   ok: boolean;
@@ -44,6 +56,13 @@ const STEP_SCHEMAS = {
   '2': step2Schema,
   '3': step3Schema,
   '4': step4Schema,
+  '5': step5Schema,
+  '6': step6Schema,
+  '7': step7Schema,
+  '8': step8Schema,
+  '9': step9Schema,
+  '10': step10Schema,
+  '11': step11Schema,
 } as const;
 
 const NEXT_STEP: Record<string, string> = {
@@ -51,6 +70,12 @@ const NEXT_STEP: Record<string, string> = {
   '2': '3',
   '3': '4',
   '4': '5',
+  '5': '6',
+  '6': '7',
+  '7': '8',
+  '8': '9',
+  '9': '10',
+  '10': '11',
 };
 
 export const saveStepAction = async (
@@ -89,6 +114,52 @@ export const saveStepAction = async (
   } else if (step === '4') {
     const parsed = step4Schema.safeParse({
       etiquette_acknowledged: formData.get('etiquette_acknowledged') === 'true',
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '5') {
+    const parsed = step5Schema.safeParse({
+      identity_status: formData.get('identity_status'),
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '6') {
+    const parsed = step6Schema.safeParse({
+      background_check_status: formData.get('background_check_status'),
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '7') {
+    const parsed = step7Schema.safeParse({
+      stripe_connect_completed: formData.get('stripe_connect_completed') === 'true',
+      pending_stripe_account_id:
+        (formData.get('pending_stripe_account_id') as string | null) ?? undefined,
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '8') {
+    const parsed = step8Schema.safeParse({
+      legal_name: formData.get('legal_name'),
+      tax_classification: formData.get('tax_classification'),
+      tax_id_last4: formData.get('tax_id_last4'),
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '9') {
+    const parsed = step9Schema.safeParse({
+      photo_training_completed: formData.get('photo_training_completed') === 'true',
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '10') {
+    const parsed = step10Schema.safeParse({
+      ready_to_submit: formData.get('ready_to_submit') === 'true',
+    });
+    if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
+    stepData = parsed.data;
+  } else if (step === '11') {
+    const parsed = step11Schema.safeParse({
+      confirm_submission: formData.get('confirm_submission') === 'true',
     });
     if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid.' };
     stepData = parsed.data;
@@ -146,6 +217,10 @@ export const submitApplicationAction = async (): Promise<never> => {
       travel_radius_miles: (data.travel_radius_miles as number) ?? null,
       years_experience: (data.years_experience as number) ?? null,
       why_puretask_text: (data.why_puretask_text as string) ?? null,
+      pending_stripe_account_id: (data.pending_stripe_account_id as string) ?? null,
+      stripe_onboarding_completed_at: data.stripe_connect_completed
+        ? new Date().toISOString()
+        : null,
     })
     .eq('user_id', user.id)
     .eq('state', 'draft');
