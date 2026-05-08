@@ -1,6 +1,28 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-export default function NotificationsSettingsPage() {
+import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { env } from '@/lib/env';
+import { PushSubscriptionToggle } from '@/components/PushSubscriptionToggle';
+import { SmsSettingsForm } from './SmsSettingsForm';
+
+export default async function NotificationsSettingsPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/auth/sign-in');
+
+  const admin = createSupabaseAdminClient();
+  const { data: prefs } = await admin
+    .from('notification_preferences')
+    .select('sms_enabled, sms_phone')
+    .eq('user_id', user.id)
+    .single();
+
+  const vapidKey = env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? null;
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
@@ -8,55 +30,46 @@ export default function NotificationsSettingsPage() {
           ← Back to settings
         </Link>
         <h1 className="text-xl font-semibold">Notifications</h1>
-        <p className="text-sm text-zinc-500">
-          Email notifications are sent automatically for key booking and dispute events.
-        </p>
       </div>
 
-      <div className="space-y-3">
-        {[
-          {
-            label: 'Booking confirmed',
-            sub: 'When your cleaner accepts a booking request',
-            on: true,
-          },
-          {
-            label: 'Work awaiting approval',
-            sub: 'When your cleaner marks the job complete',
-            on: true,
-          },
-          { label: 'Dispute response', sub: 'When your cleaner responds to a dispute', on: true },
-          {
-            label: 'New booking request (cleaners)',
-            sub: 'When a customer requests your services',
-            on: true,
-          },
-          {
-            label: 'Payout initiated (cleaners)',
-            sub: 'When a payout is sent to your account',
-            on: true,
-          },
-        ].map((item) => (
-          <div
-            key={item.label}
-            className="flex items-center justify-between rounded-lg border border-zinc-200 bg-white p-4"
-          >
-            <div>
-              <p className="text-sm font-medium text-zinc-800">{item.label}</p>
-              <p className="text-xs text-zinc-400">{item.sub}</p>
-            </div>
-            <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-              On
-            </span>
+      <div className="space-y-6">
+        <div className="rounded-xl border border-zinc-100 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-zinc-800">Email notifications</h2>
+          <div className="space-y-3">
+            {[
+              { label: 'Booking confirmed', sub: 'When your cleaner accepts a request' },
+              { label: 'Work awaiting approval', sub: 'When the cleaner marks the job complete' },
+              { label: 'Dispute response', sub: 'When your cleaner responds to a dispute' },
+              { label: 'New booking request', sub: 'Cleaners: when a customer requests you' },
+              { label: 'Payout initiated', sub: 'Cleaners: when a payout is sent' },
+            ].map((item) => (
+              <div key={item.label} className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-zinc-800">{item.label}</p>
+                  <p className="text-xs text-zinc-400">{item.sub}</p>
+                </div>
+                <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+                  On
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="mt-6 rounded-lg border border-zinc-100 bg-zinc-50 p-4">
-        <p className="text-xs text-zinc-400">
-          Push and SMS notifications will be available in a future update. Email preferences
-          granularity coming soon.
-        </p>
+        {vapidKey && (
+          <div className="rounded-xl border border-zinc-100 bg-white p-5">
+            <h2 className="mb-4 text-sm font-semibold text-zinc-800">Push notifications</h2>
+            <PushSubscriptionToggle vapidPublicKey={vapidKey} />
+          </div>
+        )}
+
+        <div className="rounded-xl border border-zinc-100 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-zinc-800">SMS notifications</h2>
+          <SmsSettingsForm
+            currentPhone={prefs?.sms_phone ?? null}
+            currentEnabled={prefs?.sms_enabled ?? false}
+          />
+        </div>
       </div>
     </div>
   );
