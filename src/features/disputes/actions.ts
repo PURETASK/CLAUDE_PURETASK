@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { stripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -55,7 +56,7 @@ export const approveBookingAction = async (bookingId: string): Promise<DisputeAc
 
   const { data: booking } = await supabase
     .from('bookings')
-    .select('id, state')
+    .select('id, state, cleaner_id, cleaner_payout_cents, booking_number')
     .eq('id', bookingId)
     .single();
 
@@ -63,26 +64,62 @@ export const approveBookingAction = async (bookingId: string): Promise<DisputeAc
   if (booking.state !== 'awaiting_approval')
     return { ok: false, error: 'Booking is not awaiting approval.' };
 
+  const admin = createSupabaseAdminClient();
+
+  // Capture the Stripe PaymentIntent if one exists
+  const { data: charge } = await admin
+    .from('charges')
+    .select('id, stripe_payment_intent_id, state')
+    .eq('booking_id', bookingId)
+    .is('tip_id', null)
+    .maybeSingle();
+
+  const now = new Date().toISOString();
+
+  if (charge?.stripe_payment_intent_id && charge.state === 'authorized') {
+    try {
+      await stripe.paymentIntents.capture(charge.stripe_payment_intent_id);
+      await admin
+        .from('charges')
+        .update({ state: 'captured', captured_at: now })
+        .eq('id', charge.id);
+    } catch {
+      // Non-fatal: capture failure should not block approval; admin handles manually
+    }
+  }
+
   const disputeWindowEndsAt = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
 
   const { error } = await supabase
     .from('bookings')
     .update({
-      state: 'approved',
-      customer_approved_at: new Date().toISOString(),
+      state: 'paid',
+      customer_approved_at: now,
       dispute_window_ends_at: disputeWindowEndsAt,
     })
     .eq('id', bookingId);
   if (error) return { ok: false, error: error.message };
 
-  const admin = createSupabaseAdminClient();
   await admin.from('booking_state_events').insert({
     booking_id: bookingId,
     previous_state: 'awaiting_approval',
-    new_state: 'approved',
+    new_state: 'paid',
     triggered_by_user_id: user.id,
     reason: 'Customer approved completed work.',
   });
+
+  // Create payout line item for the cleaner
+  if (booking.cleaner_payout_cents > 0 && booking.cleaner_id) {
+    await admin.from('payout_line_items').insert({
+      cleaner_id: booking.cleaner_id,
+      booking_id: bookingId,
+      amount_cents: booking.cleaner_payout_cents,
+      description: `Earnings from booking ${booking.booking_number}`,
+      earned_at: now,
+      currency: 'usd',
+      is_instant: false,
+    });
+  }
 
   revalidatePath(`/app/bookings/${bookingId}`);
   return { ok: true, error: null };

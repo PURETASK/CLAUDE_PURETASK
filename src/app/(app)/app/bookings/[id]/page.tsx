@@ -97,7 +97,19 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
       </section>
 
       <section className="rounded border bg-white p-5 text-sm">
-        <p className="mb-3 font-medium">Pricing</p>
+        <div className="mb-3 flex items-center justify-between">
+          <p className="font-medium">Pricing</p>
+          {['approved', 'auto_approved', 'paid', 'disputed', 'dispute_resolved'].includes(
+            booking.state,
+          ) && (
+            <Link
+              href={`/app/bookings/${booking.id}/receipt`}
+              className="text-xs text-zinc-400 hover:text-zinc-700"
+            >
+              View receipt →
+            </Link>
+          )}
+        </div>
         <div className="flex flex-col gap-1.5 text-zinc-600">
           <div className="flex justify-between">
             <span>

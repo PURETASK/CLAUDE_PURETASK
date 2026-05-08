@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { COMMISSION_RATE, computeBookingPricing } from './pricing';
+import {
+  COMMISSION_RATE,
+  RISING_PRO_INTRO_JOB_LIMIT,
+  RISING_PRO_INTRO_RATE,
+  TIER_COMMISSION_RATES,
+  computeBookingPricing,
+  getCommissionRate,
+} from './pricing';
 
 describe('computeBookingPricing', () => {
   it('default commission rate is 20%', () => {
@@ -64,5 +71,43 @@ describe('computeBookingPricing', () => {
         expect(totalChargeCents).toBe(cleanerSubtotalCents + platformFeeCents);
       }
     }
+  });
+
+  it('commissionRate is returned on the result object', () => {
+    const { commissionRate } = computeBookingPricing(5000, 3, 0.13);
+    expect(commissionRate).toBe(0.13);
+  });
+});
+
+describe('getCommissionRate', () => {
+  it('Rising Pro with < 6 jobs gets 12% intro rate', () => {
+    expect(getCommissionRate('rising_pro', 0)).toBe(RISING_PRO_INTRO_RATE);
+    expect(getCommissionRate('rising_pro', 5)).toBe(RISING_PRO_INTRO_RATE);
+  });
+
+  it('Rising Pro intro window ends exactly at job limit', () => {
+    expect(getCommissionRate('rising_pro', RISING_PRO_INTRO_JOB_LIMIT - 1)).toBe(
+      RISING_PRO_INTRO_RATE,
+    );
+    expect(getCommissionRate('rising_pro', RISING_PRO_INTRO_JOB_LIMIT)).toBe(
+      TIER_COMMISSION_RATES.rising_pro,
+    );
+  });
+
+  it('Rising Pro with >= 6 jobs gets 15%', () => {
+    expect(getCommissionRate('rising_pro', 6)).toBe(0.15);
+    expect(getCommissionRate('rising_pro', 50)).toBe(0.15);
+  });
+
+  it('Proven Specialist gets 13%', () => {
+    expect(getCommissionRate('proven_specialist', 0)).toBe(0.13);
+  });
+
+  it('Top Performer gets 11%', () => {
+    expect(getCommissionRate('top_performer', 100)).toBe(0.11);
+  });
+
+  it('All-Star Expert gets 10%', () => {
+    expect(getCommissionRate('all_star_expert', 200)).toBe(0.1);
   });
 });

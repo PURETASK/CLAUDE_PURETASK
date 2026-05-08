@@ -36,7 +36,13 @@ const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
               Favorites
             </Link>
             <Link
-              href="/settings"
+              href="/app/cleaner/earnings"
+              className="text-sm font-medium text-slate-700 hover:text-slate-950"
+            >
+              Earnings
+            </Link>
+            <Link
+              href="/app/settings"
               className="text-sm font-medium text-slate-700 hover:text-slate-950"
             >
               Settings

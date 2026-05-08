@@ -3,10 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { stripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-import { COMMISSION_RATE, computeBookingPricing } from './pricing';
+import { computeBookingPricing, getCommissionRate, type TierName } from './pricing';
 import { createBookingSchema } from './validation';
 
 export type BookingActionState = { ok: boolean; error: string | null };
@@ -51,7 +52,9 @@ export const createBookingAction = async (
 
   const { data: cleaner } = await admin
     .from('cleaner_profiles')
-    .select('id, hourly_rates_cents, current_tier')
+    .select(
+      'id, hourly_rates_cents, current_tier, completed_booking_count, stripe_connect_account_id',
+    )
     .eq('id', parsed.data.cleaner_id)
     .eq('is_active', true)
     .single();
@@ -68,6 +71,26 @@ export const createBookingAction = async (
     .single();
   if (!service) return { ok: false, error: 'Service not found.' };
 
+  // Look up customer's default payment method
+  const { data: defaultPm } = await admin
+    .from('payment_methods')
+    .select('id, stripe_customer_id, stripe_payment_method_id')
+    .eq('customer_id', customerProfile.id)
+    .eq('is_default', true)
+    .is('deleted_at', null)
+    .maybeSingle();
+
+  if (!defaultPm)
+    return {
+      ok: false,
+      error: 'No payment method on file. Please add a card at Settings → Payment Methods.',
+    };
+
+  const commissionRate = getCommissionRate(
+    cleaner.current_tier as TierName,
+    cleaner.completed_booking_count,
+  );
+
   const startAt = new Date(parsed.data.start_at);
   const endAt = new Date(startAt.getTime() + parsed.data.duration_hours * 60 * 60 * 1000);
 
@@ -76,7 +99,7 @@ export const createBookingAction = async (
     platformFeeCents: platformFee,
     totalChargeCents: totalCharge,
     cleanerPayoutCents: cleanerPayout,
-  } = computeBookingPricing(hourlyRate, parsed.data.duration_hours);
+  } = computeBookingPricing(hourlyRate, parsed.data.duration_hours, commissionRate);
 
   const bookingNumber = generateBookingNumber();
 
@@ -97,7 +120,7 @@ export const createBookingAction = async (
       platform_fee_cents: platformFee,
       total_charge_cents: totalCharge,
       tier_at_booking: cleaner.current_tier,
-      commission_rate_at_booking: COMMISSION_RATE,
+      commission_rate_at_booking: commissionRate,
       cleaner_payout_cents: cleanerPayout,
       customer_notes: parsed.data.customer_notes ?? null,
     })
@@ -105,6 +128,45 @@ export const createBookingAction = async (
     .single();
 
   if (error || !booking) return { ok: false, error: error?.message ?? 'Failed to create booking.' };
+
+  // Create Stripe PaymentIntent (manual capture — captured when customer approves)
+  const idempotencyKey = `booking-${booking.id}-pi`;
+  let piId: string | null = null;
+  try {
+    const pi = await stripe.paymentIntents.create(
+      {
+        amount: totalCharge,
+        currency: 'usd',
+        customer: defaultPm.stripe_customer_id,
+        payment_method: defaultPm.stripe_payment_method_id,
+        capture_method: 'manual',
+        confirm: true,
+        off_session: true,
+        description: `PureTask booking ${bookingNumber}`,
+        metadata: { booking_id: booking.id },
+      },
+      { idempotencyKey },
+    );
+    piId = pi.id;
+
+    await admin.from('charges').insert({
+      booking_id: booking.id,
+      customer_id: customerProfile.id,
+      payment_method_id: defaultPm.id,
+      amount_cents: totalCharge,
+      application_fee_cents: platformFee,
+      currency: 'usd',
+      state: 'authorized',
+      stripe_payment_intent_id: pi.id,
+      idempotency_key: idempotencyKey,
+      authorized_at: new Date().toISOString(),
+    });
+  } catch (stripeErr) {
+    // Roll back booking on payment failure
+    await admin.from('bookings').delete().eq('id', booking.id);
+    const msg = stripeErr instanceof Error ? stripeErr.message : 'Payment authorization failed.';
+    return { ok: false, error: msg };
+  }
 
   await admin.from('booking_state_events').insert({
     booking_id: booking.id,
@@ -114,6 +176,7 @@ export const createBookingAction = async (
     reason: 'Customer created booking request.',
   });
 
+  void piId; // referenced above, satisfies linter
   redirect(`/app/bookings/${booking.id}`);
 };
 
