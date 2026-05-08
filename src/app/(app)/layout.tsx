@@ -1,8 +1,18 @@
 import Link from 'next/link';
 
 import { signOutAction } from '@/features/auth/actions';
+import { getRecentNotifications } from '@/features/notifications/queries';
+import { NotificationBell } from '@/components/NotificationBell';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
+const AppShellLayout = async ({ children }: { children: React.ReactNode }) => {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const notifications = user ? await getRecentNotifications(20) : [];
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
@@ -65,6 +75,9 @@ const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
             >
               Settings
             </Link>
+            {user && (
+              <NotificationBell initialNotifications={notifications} userId={user.id} />
+            )}
             <form action={signOutAction}>
               <button
                 type="submit"
