@@ -1,16 +1,23 @@
 import { Suspense } from 'react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { CleanerCard } from '@/features/discovery/components/CleanerCard';
 import { CleanerFilters } from '@/features/discovery/components/CleanerFilters';
-import { listCleaners } from '@/features/discovery/queries';
-import { computeMatchScore } from '@/features/discovery/scoring';
+import { rankBrowseCleaners } from '@/features/discovery/browse-ranking';
+import {
+  browseCleaners,
+  getCustomerDiscoveryAnchor,
+  getZipCoverageState,
+} from '@/features/discovery/queries';
+import { parseBrowseSearchParams } from '@/features/discovery/validation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-type PageProps = { searchParams: Promise<{ zip?: string; service?: string }> };
+type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 const CleanersPage = async ({ searchParams }: PageProps) => {
-  const { zip, service } = await searchParams;
+  const raw = await searchParams;
+  const filters = parseBrowseSearchParams(raw);
 
   const supabase = await createSupabaseServerClient();
   const {
@@ -18,26 +25,9 @@ const CleanersPage = async ({ searchParams }: PageProps) => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const cleaners = await listCleaners({ zip, serviceType: service });
-
-  const hasZipFilter = Boolean(zip?.trim());
-
-  const ranked = cleaners
-    .map((c) => ({
-      cleaner: c,
-      score: computeMatchScore(
-        {
-          current_tier: c.current_tier,
-          average_rating: c.average_rating,
-          current_score: c.current_score,
-          review_count: c.review_count,
-          is_veteran: c.is_veteran,
-          zip_covered: c.zip_covered,
-        },
-        hasZipFilter,
-      ),
-    }))
-    .sort((a, b) => b.score.total - a.score.total);
+  const [anchor, rows] = await Promise.all([getCustomerDiscoveryAnchor(), browseCleaners(filters)]);
+  const ranked = rankBrowseCleaners(rows, anchor, filters);
+  const coverage = await getZipCoverageState(anchor?.zipCode);
 
   return (
     <div className="flex flex-col gap-6">
@@ -53,14 +43,25 @@ const CleanersPage = async ({ searchParams }: PageProps) => {
       </Suspense>
 
       {ranked.length === 0 ? (
-        <p className="text-sm text-zinc-500">
-          No cleaners found{zip ? ` serving ZIP ${zip}` : ''}
-          {service ? ` for ${service} cleaning` : ''}.
-        </p>
+        coverage === 'waitlist' || coverage === 'inactive' || coverage === 'seo_only' ? (
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            <p className="font-medium">We&apos;re not in your ZIP yet.</p>
+            <p className="mt-1">
+              Join the waitlist and we&apos;ll notify you as soon as your area opens.
+            </p>
+            <Link className="mt-3 inline-block underline" href="/app/waitlist">
+              Join waitlist
+            </Link>
+          </div>
+        ) : (
+          <p className="text-sm text-zinc-500">
+            No cleaners match. Try widening your distance or relaxing filters.
+          </p>
+        )
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {ranked.map(({ cleaner, score }) => (
-            <CleanerCard key={cleaner.id} cleaner={cleaner} score={score} />
+          {ranked.map(({ row, transparency, miles }) => (
+            <CleanerCard key={row.id} cleaner={row} score={transparency} distanceMiles={miles} />
           ))}
         </div>
       )}

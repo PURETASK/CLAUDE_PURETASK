@@ -2,9 +2,16 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
 import { MatchScoreBreakdown } from '@/features/discovery/components/MatchScoreBreakdown';
+import { FavoriteButton } from '@/features/discovery/components/FavoriteButton';
 import { TierBadge } from '@/features/discovery/components/TierBadge';
-import { getCleanerProfile } from '@/features/discovery/queries';
-import { computeMatchScore } from '@/features/discovery/scoring';
+import { computeMatchTransparency } from '@/features/discovery/match-score';
+import {
+  getCleanerProfile,
+  getCustomerDiscoveryAnchor,
+  haversineMiles,
+  isCleanerFavoritedByCurrentCustomer,
+  listRecentPublicReviewsForCleaner,
+} from '@/features/discovery/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -25,20 +32,39 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const cleaner = await getCleanerProfile(id);
+  const [cleaner, isFavorited, reviews] = await Promise.all([
+    getCleanerProfile(id),
+    isCleanerFavoritedByCurrentCustomer(id),
+    listRecentPublicReviewsForCleaner(id, 5),
+  ]);
   if (!cleaner) notFound();
 
-  const breakdown = computeMatchScore(
-    {
-      current_tier: cleaner.current_tier,
-      average_rating: cleaner.average_rating,
-      current_score: cleaner.current_score,
-      review_count: cleaner.review_count,
-      is_veteran: cleaner.is_veteran,
-      zip_covered: true,
-    },
-    false,
-  );
+  const anchor = await getCustomerDiscoveryAnchor();
+  const miles =
+    anchor?.latitude != null &&
+    anchor.longitude != null &&
+    cleaner.home_latitude != null &&
+    cleaner.home_longitude != null
+      ? haversineMiles(
+          anchor.latitude,
+          anchor.longitude,
+          cleaner.home_latitude,
+          cleaner.home_longitude,
+        )
+      : null;
+
+  const transparency = computeMatchTransparency({
+    distanceMiles: miles,
+    currentTier: cleaner.current_tier,
+    customerWantsBookingSoon: false,
+    servesCustomerZip: Boolean(
+      anchor?.zipCode && cleaner.service_zip_codes.includes(anchor.zipCode),
+    ),
+    cleanerSpecialtyKeys: cleaner.specialty_keys,
+    requestedServiceKeys: [],
+    completedBookingCount: cleaner.completed_booking_count,
+    cleanerSinceAt: cleaner.cleaner_since_at,
+  });
 
   const offeredServices = Object.entries(cleaner.hourly_rates_cents).filter(([, rate]) => rate > 0);
 
@@ -127,19 +153,36 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
 
       <section>
         <p className="mb-3 text-sm font-medium text-zinc-500">Match score breakdown</p>
-        <MatchScoreBreakdown
-          breakdown={breakdown}
-          tier={cleaner.current_tier}
-          hasZipFilter={false}
-        />
+        <MatchScoreBreakdown transparency={transparency} hasZipFilter={false} />
       </section>
 
-      <Link
-        href={`/app/cleaners/${cleaner.id}/book`}
-        className="self-start rounded bg-black px-6 py-2.5 text-sm text-white hover:bg-zinc-800"
-      >
-        Book this cleaner
-      </Link>
+      <section className="rounded border bg-white p-5">
+        <p className="mb-3 font-medium">Recent reviews</p>
+        {reviews.length === 0 ? (
+          <p className="text-sm text-zinc-500">
+            Reviews will appear here as customers complete bookings.
+          </p>
+        ) : (
+          <ul className="space-y-3">
+            {reviews.map((review) => (
+              <li key={review.id} className="text-sm text-zinc-700">
+                <p className="font-medium">{review.stars} ★</p>
+                <p className="text-zinc-600">{review.body ?? 'No comment provided.'}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <div className="flex items-center gap-3">
+        <Link
+          href={`/app/cleaners/${cleaner.id}/book`}
+          className="self-start rounded bg-black px-6 py-2.5 text-sm text-white hover:bg-zinc-800"
+        >
+          Request to book
+        </Link>
+        <FavoriteButton cleanerId={cleaner.id} initialIsFavorited={isFavorited} />
+      </div>
     </div>
   );
 };

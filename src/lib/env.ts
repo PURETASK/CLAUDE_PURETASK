@@ -11,6 +11,7 @@ const envSchema = z.object({
   STRIPE_CONNECT_WEBHOOK_SECRET: z.string().min(1).optional(),
   CHECKR_API_KEY: z.string().min(1).optional(),
   CHECKR_WEBHOOK_SECRET: z.string().min(1).optional(),
+  GOOGLE_MAPS_API_KEY: z.string().min(1).optional(),
 });
 
 const parsedEnv = envSchema.safeParse({
@@ -24,6 +25,7 @@ const parsedEnv = envSchema.safeParse({
   STRIPE_CONNECT_WEBHOOK_SECRET: process.env.STRIPE_CONNECT_WEBHOOK_SECRET,
   CHECKR_API_KEY: process.env.CHECKR_API_KEY,
   CHECKR_WEBHOOK_SECRET: process.env.CHECKR_WEBHOOK_SECRET,
+  GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
 });
 
 if (!parsedEnv.success) {
