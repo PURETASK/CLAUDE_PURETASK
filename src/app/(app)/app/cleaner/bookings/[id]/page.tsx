@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
-import { CleanerActionButtons } from '@/features/booking/components/CleanerActionButtons';
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
+import { CleanerActionButtons } from '@/features/booking/components/CleanerActionButtons';
+import { MarkCompleteButton } from '@/features/booking/components/MarkCompleteButton';
 import { getBookingById, getMyCleanerProfileId } from '@/features/booking/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -29,6 +30,8 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
 
   const start = new Date(booking.start_at);
   const isRequested = booking.state === 'booking_requested';
+  const isConfirmed = booking.state === 'confirmed';
+  const hasDispute = booking.state === 'disputed';
 
   return (
     <div className="flex max-w-lg flex-col gap-6">
@@ -102,6 +105,15 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
       </section>
 
       {isRequested && <CleanerActionButtons bookingId={booking.id} />}
+      {isConfirmed && <MarkCompleteButton bookingId={booking.id} />}
+      {hasDispute && (
+        <Link
+          href={`/app/cleaner/bookings/${booking.id}/dispute`}
+          className="inline-block rounded border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+        >
+          View dispute
+        </Link>
+      )}
     </div>
   );
 };
