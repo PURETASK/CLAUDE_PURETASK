@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { CleanerCard } from '@/features/discovery/components/CleanerCard';
+import { rankBrowseCleaners } from '@/features/discovery/browse-ranking';
+import { browseCleaners, getCustomerDiscoveryAnchor } from '@/features/discovery/queries';
+import { parseBrowseSearchParams } from '@/features/discovery/validation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 const SERVICE_CARDS = [
@@ -34,6 +38,26 @@ const AppHomePage = async () => {
   if (!user) redirect('/auth/sign-in');
 
   const { data: me } = await supabase.from('users').select('full_name').eq('id', user.id).single();
+  const [anchor, rows] = await Promise.all([
+    getCustomerDiscoveryAnchor(),
+    browseCleaners(
+      parseBrowseSearchParams({
+        max_miles: '25',
+        min_rating: '0',
+        sort: 'match',
+      }),
+    ),
+  ]);
+
+  const ranked = rankBrowseCleaners(
+    rows,
+    anchor,
+    parseBrowseSearchParams({
+      max_miles: '25',
+      min_rating: '0',
+      sort: 'match',
+    }),
+  ).slice(0, 3);
 
   return (
     <div className="flex flex-col gap-8">
@@ -70,6 +94,28 @@ const AppHomePage = async () => {
       >
         Browse all cleaners
       </Link>
+
+      <section className="rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="text-lg font-semibold text-slate-900">Recent bookings</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          You&apos;ll see your last 3 bookings here after your first appointment.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-lg font-semibold text-slate-900">Recommended cleaners</h2>
+        {ranked.length === 0 ? (
+          <p className="text-sm text-slate-500">
+            Recommendations will appear once we can match your default address.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {ranked.map(({ row, transparency, miles }) => (
+              <CleanerCard key={row.id} cleaner={row} score={transparency} distanceMiles={miles} />
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 };

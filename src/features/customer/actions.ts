@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { queueAddressGeocodeFromServerAction } from '@/features/customer/geocode-address-queue';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 import { addressSchema, photoPolicySchema, updateProfileSchema } from './validation';
@@ -121,6 +122,8 @@ export const addAddressAction = async (
     if (setDefaultError) return { ok: false, error: setDefaultError.message };
   }
 
+  queueAddressGeocodeFromServerAction(insertedAddress.id);
+
   revalidatePath('/settings/addresses');
   revalidatePath('/app/settings/addresses');
   return { ok: true, error: null, message: 'Address added.' };
@@ -167,11 +170,16 @@ export const updateAddressAction = async (
       country: 'US',
       label: parsed.data.label || null,
       access_instructions: parsed.data.access_instructions || null,
+      latitude: null,
+      longitude: null,
+      geocoded_at: null,
     })
     .eq('id', addressId)
     .eq('owner_user_id', user.id);
 
   if (error) return { ok: false, error: error.message };
+
+  queueAddressGeocodeFromServerAction(addressId);
 
   revalidatePath('/settings/addresses');
   revalidatePath('/app/settings/addresses');

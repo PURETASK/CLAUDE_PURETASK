@@ -1,7 +1,7 @@
-import { TIER_COLORS, TIER_LABELS } from '@/features/discovery/scoring';
-import type { MatchScoreInput } from '@/features/discovery/scoring';
+import { TIER_COLORS, TIER_LABELS } from '@/features/discovery/match-score';
+import type { DiscoveryTier } from '@/features/discovery/match-score';
 
-type Props = { tier: MatchScoreInput['current_tier']; size?: 'sm' | 'md' };
+type Props = { tier: DiscoveryTier; size?: 'sm' | 'md' };
 
 export const TierBadge = ({ tier, size = 'sm' }: Props) => {
   const { bg, text } = TIER_COLORS[tier];
