@@ -32,6 +32,7 @@ export type BookingDetail = BookingListItem & {
   cancellation_reason: string | null;
   customer_id: string;
   cleaner_id: string | null;
+  dispute_window_ends_at: string | null;
 };
 
 export const listServices = async (): Promise<ServiceRow[]> => {
@@ -173,7 +174,7 @@ export const getBookingById = async (id: string): Promise<BookingDetail | null> 
        hourly_rate_cents, cleaner_subtotal_cents, platform_fee_cents,
        total_charge_cents, cleaner_payout_cents, tier_at_booking,
        customer_notes, cancelled_at, cancellation_reason,
-       customer_id, cleaner_id,
+       customer_id, cleaner_id, dispute_window_ends_at,
        services!bookings_service_id_fkey(display_name),
        addresses!bookings_address_id_fkey(street_1),
        customer_profiles!bookings_customer_id_fkey(
@@ -226,6 +227,9 @@ export const getBookingById = async (id: string): Promise<BookingDetail | null> 
     cancellation_reason: data.cancellation_reason ?? null,
     customer_id: data.customer_id,
     cleaner_id: data.cleaner_id ?? null,
+    dispute_window_ends_at:
+      (data as unknown as { dispute_window_ends_at?: string | null }).dispute_window_ends_at ??
+      null,
     service_display_name: (service as { display_name: string } | null)?.display_name ?? '—',
     other_party_name:
       (cleanerUser as { full_name: string } | null)?.full_name ??

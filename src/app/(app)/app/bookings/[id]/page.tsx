@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
-import { CancelBookingButton } from '@/features/booking/components/CancelBookingButton';
+import { ApproveWorkButton } from '@/features/booking/components/ApproveWorkButton';
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
+import { CancelBookingButton } from '@/features/booking/components/CancelBookingButton';
 import { getBookingById, getMyCustomerProfileId } from '@/features/booking/queries';
+import { getReviewForBooking } from '@/features/reviews/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -27,8 +29,17 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
   if (!booking) notFound();
   if (booking.customer_id !== customerProfileId) notFound();
 
+  const existingReview = await getReviewForBooking(id);
+
   const start = new Date(booking.start_at);
   const cancellable = ['booking_requested', 'confirmed'].includes(booking.state);
+  const awaitingApproval = booking.state === 'awaiting_approval';
+  const reviewableStates = ['approved', 'auto_approved', 'paid', 'disputed', 'dispute_resolved'];
+  const canReview = reviewableStates.includes(booking.state) && !existingReview;
+  const canDispute =
+    ['approved', 'auto_approved', 'paid'].includes(booking.state) ||
+    booking.state === 'disputed' ||
+    booking.state === 'dispute_resolved';
 
   return (
     <div className="flex max-w-lg flex-col gap-6">
@@ -105,7 +116,50 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
         </div>
       </section>
 
+      {awaitingApproval && (
+        <div className="rounded border bg-white p-5">
+          <p className="mb-3 text-sm font-medium">Your cleaner has marked this job complete.</p>
+          <div className="flex flex-wrap gap-3">
+            <ApproveWorkButton bookingId={booking.id} />
+            <Link
+              href={`/app/bookings/${booking.id}/dispute`}
+              className="rounded border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+            >
+              File a dispute
+            </Link>
+          </div>
+        </div>
+      )}
+
       {cancellable && <CancelBookingButton bookingId={booking.id} />}
+
+      {(canReview || canDispute) && (
+        <div className="flex flex-wrap gap-3">
+          {canReview && (
+            <Link
+              href={`/app/bookings/${booking.id}/review`}
+              className="rounded bg-black px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+            >
+              Leave a review
+            </Link>
+          )}
+          {existingReview && (
+            <span className="rounded bg-zinc-100 px-4 py-2 text-sm text-zinc-500">
+              ✓ Review submitted
+            </span>
+          )}
+          {canDispute && (
+            <Link
+              href={`/app/bookings/${booking.id}/dispute`}
+              className="rounded border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+            >
+              {booking.state === 'disputed' || booking.state === 'dispute_resolved'
+                ? 'View dispute'
+                : 'File a dispute'}
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 };
