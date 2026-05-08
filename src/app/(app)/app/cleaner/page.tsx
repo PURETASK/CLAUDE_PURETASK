@@ -12,7 +12,7 @@ const CleanerDashboardPage = async () => {
   if (!user) redirect('/auth/sign-in');
 
   const cleanerProfileId = await getMyCleanerProfileId();
-  if (!cleanerProfileId) redirect('/app/apply');
+  if (!cleanerProfileId) redirect('/cleaner/apply');
 
   const bookings = await getMyBookingsAsCleaner();
 

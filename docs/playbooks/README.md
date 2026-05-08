@@ -8,6 +8,7 @@ How to use:
 - Complete its "Done Checklist" before PR.
 - Run `always-follow-workflow.md` for the full end-to-end process.
 - Start each task with `feature-kickoff-template.md`.
+- Close each phase with `phase-gate-template.md`.
 
 Order:
 1. `category-01-framework-language-runtime.md`
@@ -27,6 +28,7 @@ Order:
 15. `category-15-open-decisions.md`
 16. `always-follow-workflow.md`
 17. `feature-kickoff-template.md`
+18. `phase-gate-template.md`
 
 Maintenance:
 - If a decision changes in `docs/puretask-decisions.md`, update the matching category playbook and `docs/puretask-build-playbook.md`.

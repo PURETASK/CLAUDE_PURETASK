@@ -1,4 +1,16 @@
-const STEPS = ['Coverage', 'Experience', 'About you', 'Guidelines', 'Review'];
+const STEPS = [
+  'Coverage',
+  'Experience',
+  'About you',
+  'Guidelines',
+  'Identity',
+  'Background',
+  'Payouts',
+  'Tax info',
+  'Training',
+  'Checklist',
+  'Submit',
+];
 
 type Props = { current: number };
 
