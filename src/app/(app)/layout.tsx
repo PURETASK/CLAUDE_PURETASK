@@ -24,6 +24,12 @@ const AppShellLayout = ({ children }: { children: React.ReactNode }) => {
               My Bookings
             </Link>
             <Link
+              href="/app/recurring"
+              className="text-sm font-medium text-slate-700 hover:text-slate-950"
+            >
+              Recurring
+            </Link>
+            <Link
               href="/app/dashboard"
               className="text-sm font-medium text-slate-700 hover:text-slate-950"
             >

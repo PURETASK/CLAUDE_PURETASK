@@ -181,6 +181,12 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
         >
           Request to book
         </Link>
+        <Link
+          href={`/app/recurring/new?cleaner_id=${cleaner.id}`}
+          className="self-start rounded border border-zinc-300 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50"
+        >
+          Set up recurring
+        </Link>
         <FavoriteButton cleanerId={cleaner.id} initialIsFavorited={isFavorited} />
       </div>
     </div>
