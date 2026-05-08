@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 
 import { ProfileHeader } from '@/features/customer/components/ProfileHeader';
 import { SettingsLayout } from '@/features/customer/components/SettingsLayout';
-import { StubCard } from '@/features/customer/components/StubCard';
 import { getCurrentUser } from '@/features/customer/queries';
 
 const SettingsLandingPage = async () => {
@@ -54,11 +53,18 @@ const SettingsLandingPage = async () => {
             Manage cards
           </Link>
         </div>
-        <StubCard
-          title="Security"
-          description="Two-factor auth and active session management."
-          phaseBadge="Coming pre-launch"
-        />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-slate-900">Security</h3>
+          <p className="mt-2 text-sm text-slate-700">
+            Enable two-factor authentication to protect your account.
+          </p>
+          <Link
+            href="/settings/security"
+            className="mt-3 inline-block rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-800 hover:bg-slate-50"
+          >
+            Manage security
+          </Link>
+        </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-900">Privacy + Data</h3>
