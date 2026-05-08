@@ -1,5 +1,7 @@
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { sendSms } from '@/lib/sms';
+import { sendWebPush, type PushSubscriptionJson } from '@/lib/webpush';
 
 export type NotificationRow = {
   id: string;
@@ -73,4 +75,19 @@ export const createNotification = async (
     template_version: 1,
     metadata: {},
   });
+
+  const { data: prefs } = await admin
+    .from('notification_preferences')
+    .select('push_enabled, push_subscriptions, sms_enabled, sms_phone')
+    .eq('user_id', recipientUserId)
+    .single();
+
+  if (prefs?.push_enabled) {
+    const subs = (prefs.push_subscriptions as PushSubscriptionJson[] | null) ?? [];
+    await Promise.all(subs.map((sub) => sendWebPush(sub, { title, body, url: opts?.deepLink })));
+  }
+
+  if (prefs?.sms_enabled && prefs.sms_phone) {
+    await sendSms(prefs.sms_phone, `${title}: ${body}`);
+  }
 };
