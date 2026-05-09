@@ -4,8 +4,13 @@ import { useActionState, useState } from 'react';
 
 import { cleanerRespondAction, type DisputeActionState } from '@/features/disputes/actions';
 import { RESPONSE_TYPE_LABELS } from '@/features/disputes/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL: DisputeActionState = { ok: false, error: null };
+
+const labelClass = 'mb-1 block text-sm font-medium text-neutral-700';
+const fieldClass = 'pt-field';
 
 type Props = { disputeId: string };
 
@@ -18,13 +23,13 @@ export const CleanerResponseForm = ({ disputeId }: Props) => {
       <input type="hidden" name="dispute_id" value={disputeId} />
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">Your response</label>
+        <label className={labelClass}>Your response</label>
         <select
           name="response_type"
           required
           value={responseType}
           onChange={(e) => setResponseType(e.target.value)}
-          className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className={fieldClass}
         >
           <option value="">Select your response</option>
           {Object.entries(RESPONSE_TYPE_LABELS).map(([value, label]) => (
@@ -37,48 +42,42 @@ export const CleanerResponseForm = ({ disputeId }: Props) => {
 
       {responseType === 'offer_partial_refund' && (
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700">
-            Refund amount (dollars)
-          </label>
+          <label className={labelClass}>Refund amount (dollars)</label>
           <input
             type="number"
             name="response_amount_cents"
             min="0"
             step="1"
             placeholder="e.g. 25"
-            className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+            className={fieldClass}
             onChange={(e) => {
               const input = e.target as HTMLInputElement;
               input.value = String(Math.round(parseFloat(input.value || '0') * 100));
             }}
           />
-          <p className="mt-1 text-xs text-zinc-400">Enter whole dollar amount</p>
+          <p className="mt-1 text-xs text-neutral-400">Enter whole dollar amount</p>
         </div>
       )}
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">Message to customer</label>
+        <label className={labelClass}>Message to customer</label>
         <textarea
           name="response_message"
           rows={4}
           required
           minLength={10}
           maxLength={2000}
-          className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className={fieldClass}
           placeholder="Explain your response to the customer."
         />
       </div>
 
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
-      {state.ok && <p className="text-sm text-emerald-600">Response submitted.</p>}
+      {state.error && <TrustCallout variant="caution">{state.error}</TrustCallout>}
+      {state.ok && <TrustCallout variant="success">Response submitted.</TrustCallout>}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-5 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-60"
-      >
+      <Button type="submit" disabled={isPending}>
         {isPending ? 'Submitting…' : 'Submit response'}
-      </button>
+      </Button>
     </form>
   );
 };

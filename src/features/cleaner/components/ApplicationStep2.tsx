@@ -7,6 +7,8 @@ import { useController, useForm } from 'react-hook-form';
 
 import { saveStepAction, type CleanerActionState } from '@/features/cleaner/actions';
 import { type Step2Values, step2Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Props = { defaultValues?: Partial<Step2Values> };
 
@@ -62,26 +64,28 @@ export const ApplicationStep2 = ({ defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Experience</h2>
-        <p className="mt-1 text-sm text-zinc-500">Tell us about your cleaning background.</p>
+        <h2 className="text-lg font-semibold text-neutral-900">Experience</h2>
+        <p className="mt-1 text-sm text-neutral-500">Tell us about your cleaning background.</p>
       </div>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Years of professional cleaning experience</span>
+        <span className="text-sm font-medium text-neutral-700">
+          Years of professional cleaning experience
+        </span>
         <input
           type="number"
           min={0}
           max={50}
-          className="max-w-xs rounded border px-3 py-2"
+          className="pt-field max-w-xs"
           {...register('years_experience', { valueAsNumber: true })}
         />
         {errors.years_experience ? (
-          <span className="text-sm text-red-600">{errors.years_experience.message}</span>
+          <span className="text-sm text-error">{errors.years_experience.message}</span>
         ) : null}
       </label>
 
       <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium text-neutral-700">
           Services you can provide (select all that apply)
         </span>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -92,14 +96,14 @@ export const ApplicationStep2 = ({ defaultValues }: Props) => {
                 key={opt.value}
                 type="button"
                 onClick={() => toggleService(opt.value)}
-                className={`rounded border p-3 text-left text-sm transition-colors ${
+                className={`rounded-xl border p-3 text-left text-sm transition-colors duration-control ${
                   checked
-                    ? 'border-black bg-black text-white'
-                    : 'border-zinc-200 hover:border-zinc-400'
+                    ? 'border-brand-600 bg-brand-600/10 text-brand-600'
+                    : 'border-neutral-200 hover:border-neutral-400'
                 }`}
               >
                 <p className="font-medium">{opt.label}</p>
-                <p className={`text-xs ${checked ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                <p className={`text-xs ${checked ? 'text-brand-600/70' : 'text-neutral-500'}`}>
                   {opt.desc}
                 </p>
               </button>
@@ -107,29 +111,24 @@ export const ApplicationStep2 = ({ defaultValues }: Props) => {
           })}
         </div>
         {errors.service_types ? (
-          <span className="text-sm text-red-600">{errors.service_types.message}</span>
+          <span className="text-sm text-error">{errors.service_types.message}</span>
         ) : null}
       </div>
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={() => router.push('/app/apply/step/1')}
-          className="rounded border px-5 py-2 text-sm"
         >
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Save & continue'}
-        </button>
+        </Button>
+        <Button type="submit" disabled={isPending} size="sm">
+          {isPending ? 'Saving…' : 'Save & continue'}
+        </Button>
       </div>
     </form>
   );

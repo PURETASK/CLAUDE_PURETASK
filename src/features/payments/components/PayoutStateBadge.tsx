@@ -1,18 +1,23 @@
+import { Badge, type BadgeVariant } from '@/components/ui/badge';
+
 type Props = { state: string };
 
-const STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  pending: { bg: 'bg-yellow-50', text: 'text-yellow-700', label: 'Pending' },
-  in_transit: { bg: 'bg-blue-50', text: 'text-blue-700', label: 'In Transit' },
-  paid: { bg: 'bg-green-50', text: 'text-green-700', label: 'Paid' },
-  failed: { bg: 'bg-red-50', text: 'text-red-700', label: 'Failed' },
-  cancelled: { bg: 'bg-zinc-100', text: 'text-zinc-600', label: 'Cancelled' },
+const VARIANT_MAP: Record<string, BadgeVariant> = {
+  pending: 'warning',
+  in_transit: 'info',
+  paid: 'success',
+  failed: 'error',
+  cancelled: 'neutral',
 };
 
-export const PayoutStateBadge = ({ state }: Props) => {
-  const s = STYLES[state] ?? STYLES['pending']!;
-  return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${s.bg} ${s.text}`}>
-      {s.label}
-    </span>
-  );
+const LABEL_MAP: Record<string, string> = {
+  pending: 'Pending',
+  in_transit: 'In Transit',
+  paid: 'Paid',
+  failed: 'Failed',
+  cancelled: 'Cancelled',
 };
+
+export const PayoutStateBadge = ({ state }: Props) => (
+  <Badge variant={VARIANT_MAP[state] ?? 'neutral'}>{LABEL_MAP[state] ?? state}</Badge>
+);

@@ -3,8 +3,13 @@
 import { useActionState } from 'react';
 
 import { adminResolveDisputeAction, type DisputeActionState } from '@/features/disputes/actions';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL: DisputeActionState = { ok: false, error: null };
+
+const labelClass = 'mb-1 block text-sm font-medium text-neutral-700';
+const fieldClass = 'pt-field';
 
 type Props = { disputeId: string };
 
@@ -16,12 +21,8 @@ export const AdminResolveForm = ({ disputeId }: Props) => {
       <input type="hidden" name="dispute_id" value={disputeId} />
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">Resolution</label>
-        <select
-          name="resolution_type"
-          required
-          className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
-        >
+        <label className={labelClass}>Resolution</label>
+        <select name="resolution_type" required className={fieldClass}>
           <option value="">Select resolution</option>
           <option value="admin_no_refund">No refund — side with cleaner</option>
           <option value="admin_partial_refund">Partial refund</option>
@@ -30,40 +31,34 @@ export const AdminResolveForm = ({ disputeId }: Props) => {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">
-          Refund amount (cents, if applicable)
-        </label>
+        <label className={labelClass}>Refund amount (cents, if applicable)</label>
         <input
           type="number"
           name="resolution_amount_cents"
           min="0"
-          className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className={fieldClass}
           placeholder="Leave blank for no refund"
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">Decision notes</label>
+        <label className={labelClass}>Decision notes</label>
         <textarea
           name="resolution_notes"
           rows={4}
           required
           minLength={10}
           maxLength={2000}
-          className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className={fieldClass}
           placeholder="Document your reasoning. This is visible to both parties."
         />
       </div>
 
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state.error && <TrustCallout variant="caution">{state.error}</TrustCallout>}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-5 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-60"
-      >
+      <Button type="submit" disabled={isPending}>
         {isPending ? 'Resolving…' : 'Resolve dispute'}
-      </button>
+      </Button>
     </form>
   );
 };

@@ -7,6 +7,7 @@ import {
   setDefaultPaymentMethodAction,
 } from '@/features/payments/actions';
 import type { PaymentMethodRow } from '@/features/payments/queries';
+import { Badge } from '@/components/ui/badge';
 
 const CARD_BRAND_LABELS: Record<string, string> = {
   visa: 'Visa',
@@ -30,22 +31,18 @@ export const PaymentMethodCard = ({ pm }: Props) => {
       : null;
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-zinc-200 bg-white p-4">
+    <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4 shadow-tier1">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-14 items-center justify-center rounded border border-zinc-200 bg-zinc-50 text-xs font-medium text-zinc-600">
+        <div className="flex h-9 w-14 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-xs font-medium text-neutral-600">
           {brand.slice(0, 4).toUpperCase()}
         </div>
         <div>
-          <p className="text-sm font-medium text-zinc-800">
+          <p className="text-sm font-medium text-neutral-800">
             {brand} ···· {pm.card_last_four}
           </p>
-          {expiry && <p className="text-xs text-zinc-400">Expires {expiry}</p>}
+          {expiry && <p className="text-xs text-neutral-400">Expires {expiry}</p>}
         </div>
-        {pm.is_default && (
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600">
-            Default
-          </span>
-        )}
+        {pm.is_default && <Badge variant="info">Default</Badge>}
       </div>
 
       <div className="flex items-center gap-2">
@@ -57,7 +54,7 @@ export const PaymentMethodCard = ({ pm }: Props) => {
                 await setDefaultPaymentMethodAction(pm.id);
               })
             }
-            className="text-xs text-zinc-500 hover:text-zinc-800 disabled:opacity-50"
+            className="text-xs text-neutral-500 transition-colors duration-control hover:text-neutral-800 disabled:opacity-50"
           >
             Set default
           </button>
@@ -69,7 +66,7 @@ export const PaymentMethodCard = ({ pm }: Props) => {
               await deletePaymentMethodAction(pm.id);
             })
           }
-          className="text-xs text-red-500 hover:text-red-700 disabled:opacity-30"
+          className="text-xs text-error transition-colors duration-control hover:text-error-dark disabled:opacity-30"
           title={pm.is_default ? 'Cannot delete default card' : 'Remove card'}
         >
           Remove

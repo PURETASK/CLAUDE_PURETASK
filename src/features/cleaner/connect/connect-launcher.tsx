@@ -1,9 +1,11 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+
 export const ConnectLauncher = () => {
   return (
-    <button type="button" className="rounded-md border px-4 py-2 text-sm font-medium">
+    <Button type="button" variant="secondary">
       Launch Connect onboarding (stub)
-    </button>
+    </Button>
   );
 };

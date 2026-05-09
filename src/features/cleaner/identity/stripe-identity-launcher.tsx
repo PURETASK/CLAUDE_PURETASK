@@ -3,6 +3,7 @@
 import { useTransition } from 'react';
 
 import { createIdentitySessionAction } from '@/features/cleaner/identity/actions';
+import { Button } from '@/components/ui/button';
 
 export const StripeIdentityLauncher = ({
   applicationId,
@@ -23,13 +24,8 @@ export const StripeIdentityLauncher = ({
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleLaunch}
-      disabled={isPending}
-      className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
-    >
-      {isPending ? 'Launching...' : 'Launch Stripe Identity'}
-    </button>
+    <Button type="button" onClick={handleLaunch} disabled={isPending}>
+      {isPending ? 'Launching…' : 'Launch Stripe Identity'}
+    </Button>
   );
 };

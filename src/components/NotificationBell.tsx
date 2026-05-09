@@ -30,7 +30,6 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
 
   const unreadCount = notifications.filter((n) => !n.read_at).length;
 
-  // Poll for new notifications every 30 seconds
   useEffect(() => {
     const poll = async () => {
       try {
@@ -48,7 +47,6 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
     return () => clearInterval(id);
   }, [userId]);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
@@ -75,7 +73,7 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="relative rounded-md p-1.5 text-slate-600 hover:bg-slate-100"
+        className="relative rounded-lg p-1.5 text-neutral-600 transition-colors duration-control hover:bg-neutral-100"
         aria-label="Notifications"
       >
         <svg
@@ -92,20 +90,20 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
           />
         </svg>
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[10px] font-bold text-white">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-10 z-50 w-80 rounded-xl border border-zinc-200 bg-white shadow-xl">
-          <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-3">
-            <p className="text-sm font-semibold text-zinc-900">Notifications</p>
+        <div className="absolute right-0 top-10 z-50 w-80 rounded-xl border border-neutral-200 bg-white shadow-tier2">
+          <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+            <p className="text-sm font-semibold text-neutral-900">Notifications</p>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs text-zinc-400 hover:text-zinc-700"
+                className="text-xs text-neutral-400 transition-colors duration-control hover:text-neutral-700"
               >
                 Mark all read
               </button>
@@ -114,29 +112,31 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
 
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm text-zinc-400">No notifications yet.</p>
+              <p className="px-4 py-6 text-center text-sm text-neutral-400">
+                No notifications yet.
+              </p>
             ) : (
               notifications.map((n) => (
                 <div
                   key={n.id}
-                  className={`flex gap-3 px-4 py-3 transition-colors hover:bg-zinc-50 ${!n.read_at ? 'bg-blue-50/40' : ''}`}
+                  className={`flex gap-3 px-4 py-3 transition-colors hover:bg-neutral-50 ${!n.read_at ? 'bg-brand-600/5' : ''}`}
                 >
                   <div
-                    className={`mt-1 h-2 w-2 flex-shrink-0 rounded-full ${!n.read_at ? 'bg-blue-500' : 'bg-transparent'}`}
+                    className={`mt-1 h-2 w-2 flex-shrink-0 rounded-full ${!n.read_at ? 'bg-brand-600' : 'bg-transparent'}`}
                   />
                   <div className="min-w-0 flex-1">
                     {n.deep_link ? (
                       <a href={n.deep_link} onClick={() => handleMarkRead(n.id)} className="block">
-                        <p className="text-sm font-medium text-zinc-900">{n.title}</p>
-                        <p className="mt-0.5 text-xs text-zinc-500">{n.body}</p>
+                        <p className="text-sm font-medium text-neutral-900">{n.title}</p>
+                        <p className="mt-0.5 text-xs text-neutral-500">{n.body}</p>
                       </a>
                     ) : (
                       <div onClick={() => handleMarkRead(n.id)} className="cursor-default">
-                        <p className="text-sm font-medium text-zinc-900">{n.title}</p>
-                        <p className="mt-0.5 text-xs text-zinc-500">{n.body}</p>
+                        <p className="text-sm font-medium text-neutral-900">{n.title}</p>
+                        <p className="mt-0.5 text-xs text-neutral-500">{n.body}</p>
                       </div>
                     )}
-                    <p className="mt-1 text-xs text-zinc-400">{timeAgo(n.created_at)}</p>
+                    <p className="mt-1 text-xs text-neutral-400">{timeAgo(n.created_at)}</p>
                   </div>
                 </div>
               ))

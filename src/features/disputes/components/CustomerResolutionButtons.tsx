@@ -8,6 +8,7 @@ import {
   customerRejectResolutionAction,
   type DisputeActionState,
 } from '@/features/disputes/actions';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL: DisputeActionState = { ok: false, error: null };
 
@@ -35,7 +36,7 @@ export const CustomerResolutionButtons = ({ disputeId }: Props) => {
           <button
             type="submit"
             disabled={isAccepting || isRejecting}
-            className="rounded bg-emerald-600 px-5 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-60"
+            className="inline-flex items-center justify-center rounded-xl bg-success px-5 py-2.5 text-sm font-semibold text-white shadow-tier1 transition-all duration-control hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98]"
           >
             {isAccepting ? 'Accepting…' : 'Accept resolution'}
           </button>
@@ -44,13 +45,13 @@ export const CustomerResolutionButtons = ({ disputeId }: Props) => {
           <button
             type="submit"
             disabled={isAccepting || isRejecting}
-            className="rounded border px-5 py-2 text-sm text-zinc-600 hover:bg-zinc-50 disabled:opacity-60"
+            className="inline-flex items-center justify-center rounded-xl border border-brand-600 bg-white px-5 py-2.5 text-sm font-semibold text-brand-600 shadow-tier1 transition-all duration-control hover:bg-neutral-50 hover:shadow-tier2 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98]"
           >
             {isRejecting ? 'Escalating…' : 'Escalate to admin'}
           </button>
         </form>
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <TrustCallout variant="caution">{error}</TrustCallout>}
     </div>
   );
 };

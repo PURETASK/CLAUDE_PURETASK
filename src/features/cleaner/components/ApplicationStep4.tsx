@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 
 import { saveStepAction, type CleanerActionState } from '@/features/cleaner/actions';
 import { type Step4Values, step4Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL: CleanerActionState = { ok: false, error: null };
 
@@ -80,8 +82,8 @@ export const ApplicationStep4 = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Photo guidelines</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-semibold text-neutral-900">Photo guidelines</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           Verified photo documentation is the foundation of customer trust at PureTask. Read these
           rules carefully — they govern every job you take.
         </p>
@@ -89,47 +91,42 @@ export const ApplicationStep4 = ({
 
       <div className="flex flex-col gap-3">
         {GUIDELINES.map((g) => (
-          <div key={g.rule} className="rounded border p-4">
-            <p className="text-sm font-medium">{g.rule}</p>
-            <p className="mt-1 text-sm text-zinc-500">{g.detail}</p>
+          <div key={g.rule} className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+            <p className="text-sm font-medium text-neutral-900">{g.rule}</p>
+            <p className="mt-1 text-sm text-neutral-500">{g.detail}</p>
           </div>
         ))}
       </div>
 
-      <label className="flex cursor-pointer items-start gap-3 rounded border p-4">
+      <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-neutral-200 p-4 transition-colors hover:bg-neutral-50">
         <input
           type="checkbox"
-          className="mt-0.5 h-4 w-4 shrink-0"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-brand-600"
           {...register('etiquette_acknowledged')}
         />
-        <span className="text-sm">
+        <span className="text-sm text-neutral-700">
           I have read and understood PureTask&apos;s photo guidelines. I agree to follow them on
           every job and understand that failure to comply may affect my reliability score and tier.
         </span>
       </label>
       {errors.etiquette_acknowledged ? (
-        <span className="text-sm text-red-600">{errors.etiquette_acknowledged.message}</span>
+        <span className="text-sm text-error">{errors.etiquette_acknowledged.message}</span>
       ) : null}
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={() => router.push('/app/apply/step/3')}
-          className="rounded border px-5 py-2 text-sm"
         >
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Continue to review'}
-        </button>
+        </Button>
+        <Button type="submit" disabled={isPending} size="sm">
+          {isPending ? 'Saving…' : 'Continue to review'}
+        </Button>
       </div>
     </form>
   );

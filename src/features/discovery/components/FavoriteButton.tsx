@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
 import { toggleFavoriteAction } from '@/features/discovery/actions';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   cleanerId: string;
@@ -15,7 +16,8 @@ export const FavoriteButton = ({ cleanerId, initialIsFavorited }: Props) => {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <button
+    <Button
+      variant={initialIsFavorited ? 'secondary' : 'primary'}
       type="button"
       onClick={() => {
         startTransition(async () => {
@@ -23,11 +25,10 @@ export const FavoriteButton = ({ cleanerId, initialIsFavorited }: Props) => {
           router.refresh();
         });
       }}
-      className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
       disabled={isPending}
       aria-pressed={initialIsFavorited}
     >
-      {isPending ? 'Saving...' : initialIsFavorited ? 'Remove from favorites' : 'Save to favorites'}
-    </button>
+      {isPending ? 'Saving…' : initialIsFavorited ? 'Remove from favorites' : 'Save to favorites'}
+    </Button>
   );
 };

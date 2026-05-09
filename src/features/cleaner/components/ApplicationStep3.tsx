@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 
 import { saveStepAction, type CleanerActionState } from '@/features/cleaner/actions';
 import { type Step3Values, step3Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Props = { defaultValues?: Partial<Step3Values> };
 
@@ -48,47 +50,42 @@ export const ApplicationStep3 = ({ defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">About you</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-semibold text-neutral-900">About you</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           Tell customers and the PureTask team why you&apos;re a great fit.
         </p>
       </div>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium text-neutral-700">
           Why do you want to join PureTask? What sets you apart?
         </span>
         <textarea
           rows={6}
           placeholder="Share your approach to cleaning, what you take pride in, and why customers should trust you with their home..."
-          className="rounded border px-3 py-2 text-sm"
+          className="pt-field text-sm"
           {...register('why_puretask_text')}
         />
-        <div className="flex justify-between text-xs text-zinc-400">
+        <div className="flex justify-between text-xs text-neutral-400">
           <span>{errors.why_puretask_text?.message ?? ''}</span>
-          <span className={text.length < 50 ? 'text-red-500' : ''}>{text.length} / 1000</span>
+          <span className={text.length < 50 ? 'text-error' : ''}>{text.length} / 1000</span>
         </div>
       </label>
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={() => router.push('/app/apply/step/2')}
-          className="rounded border px-5 py-2 text-sm"
         >
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Save & continue'}
-        </button>
+        </Button>
+        <Button type="submit" disabled={isPending} size="sm">
+          {isPending ? 'Saving…' : 'Save & continue'}
+        </Button>
       </div>
     </form>
   );

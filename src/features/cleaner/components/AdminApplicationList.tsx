@@ -1,11 +1,21 @@
 import Link from 'next/link';
 
-const STATE_BADGES: Record<string, string> = {
-  submitted: 'bg-amber-100 text-amber-800',
-  in_review: 'bg-blue-100 text-blue-800',
-  needs_info: 'bg-orange-100 text-orange-800',
-  approved: 'bg-green-100 text-green-800',
-  rejected: 'bg-red-100 text-red-800',
+import { Badge, type BadgeVariant } from '@/components/ui/badge';
+
+const STATE_VARIANTS: Record<string, BadgeVariant> = {
+  submitted: 'warning',
+  in_review: 'info',
+  needs_info: 'warning',
+  approved: 'success',
+  rejected: 'error',
+};
+
+const STATE_LABELS: Record<string, string> = {
+  submitted: 'Submitted',
+  in_review: 'In Review',
+  needs_info: 'Needs Info',
+  approved: 'Approved',
+  rejected: 'Rejected',
 };
 
 type Application = {
@@ -20,7 +30,7 @@ type Props = { applications: Application[] };
 
 export const AdminApplicationList = ({ applications }: Props) => {
   if (applications.length === 0) {
-    return <p className="text-sm text-zinc-500">No applications to review.</p>;
+    return <p className="text-sm text-neutral-500">No applications to review.</p>;
   }
 
   return (
@@ -29,22 +39,22 @@ export const AdminApplicationList = ({ applications }: Props) => {
         <Link
           key={app.id}
           href={`/applications/${app.id}`}
-          className="flex items-center justify-between rounded border p-4 hover:bg-zinc-50"
+          className="flex items-center justify-between rounded-xl border border-neutral-200 p-4 shadow-tier1 transition-all duration-control hover:bg-neutral-50 hover:shadow-tier2"
         >
           <div className="flex flex-col gap-0.5">
-            <p className="text-sm font-medium">{app.users?.full_name ?? 'Unknown'}</p>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm font-medium text-neutral-900">
+              {app.users?.full_name ?? 'Unknown'}
+            </p>
+            <p className="text-xs text-neutral-500">
               {app.users?.email} · #{app.application_number}
             </p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <span
-              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATE_BADGES[app.state] ?? 'bg-zinc-100 text-zinc-600'}`}
-            >
-              {app.state.replace('_', ' ')}
-            </span>
+            <Badge variant={STATE_VARIANTS[app.state] ?? 'neutral'}>
+              {STATE_LABELS[app.state] ?? app.state.replace('_', ' ')}
+            </Badge>
             {app.submitted_at ? (
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-neutral-400">
                 {new Date(app.submitted_at).toLocaleDateString('en-US', { dateStyle: 'medium' })}
               </p>
             ) : null}

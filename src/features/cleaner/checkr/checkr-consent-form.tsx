@@ -1,13 +1,14 @@
 'use client';
 
+import { TrustCallout } from '@/components/ui/trust-callout';
+
 export const CheckrConsentForm = () => {
   return (
-    <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-      <p className="font-medium">FCRA Consent</p>
+    <TrustCallout variant="warning" title="FCRA Consent">
       <p className="mt-1">
         This consent text is a placeholder and must be replaced after legal review.
       </p>
-      <p className="mt-2 text-xs">{'<!-- PENDING_LAWYER_REVIEW -->'}</p>
-    </div>
+      <p className="mt-2 text-xs opacity-70">{'<!-- PENDING_LAWYER_REVIEW -->'}</p>
+    </TrustCallout>
   );
 };

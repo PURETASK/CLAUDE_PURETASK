@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 
 import { saveStepAction, type CleanerActionState } from '@/features/cleaner/actions';
 import { type Step5Values, step5Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Props = { defaultValues?: Partial<Step5Values> };
 
@@ -45,41 +47,36 @@ export const ApplicationStep5 = ({ defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Identity verification</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-semibold text-neutral-900">Identity verification</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           Phase 4c will launch Stripe Identity from this step. For now, track status manually while
           integrating.
         </p>
       </div>
 
       <label className="flex max-w-sm flex-col gap-1">
-        <span className="text-sm font-medium">Identity status</span>
-        <select className="rounded border px-3 py-2" {...register('identity_status')}>
+        <span className="text-sm font-medium text-neutral-700">Identity status</span>
+        <select className="pt-field" {...register('identity_status')}>
           <option value="pending">Pending</option>
           <option value="verified">Verified</option>
           <option value="requires_input">Requires input</option>
         </select>
       </label>
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={() => router.push('/app/apply/step/4')}
-          className="rounded border px-5 py-2 text-sm"
         >
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Save & continue'}
-        </button>
+        </Button>
+        <Button type="submit" disabled={isPending} size="sm">
+          {isPending ? 'Saving…' : 'Save & continue'}
+        </Button>
       </div>
     </form>
   );

@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 
 import { saveStepAction, type CleanerActionState } from '@/features/cleaner/actions';
 import { type Step1Values, step1Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Props = { defaultValues?: Partial<Step1Values> };
 
@@ -47,30 +49,30 @@ export const ApplicationStep1 = ({ defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Service coverage</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-semibold text-neutral-900">Service coverage</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           Tell us where you&apos;re based and how far you&apos;re willing to travel.
         </p>
       </div>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Your home ZIP code</span>
+        <span className="text-sm font-medium text-neutral-700">Your home ZIP code</span>
         <input
           type="text"
           maxLength={5}
           placeholder="95814"
-          className="max-w-xs rounded border px-3 py-2"
+          className="pt-field max-w-xs"
           {...register('home_zip')}
         />
         {errors.home_zip ? (
-          <span className="text-sm text-red-600">{errors.home_zip.message}</span>
+          <span className="text-sm text-error">{errors.home_zip.message}</span>
         ) : null}
       </label>
 
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Maximum travel radius</span>
+        <span className="text-sm font-medium text-neutral-700">Maximum travel radius</span>
         <select
-          className="max-w-xs rounded border px-3 py-2"
+          className="pt-field max-w-xs"
           {...register('travel_radius_miles', { valueAsNumber: true })}
         >
           {RADII.map((r) => (
@@ -80,21 +82,15 @@ export const ApplicationStep1 = ({ defaultValues }: Props) => {
           ))}
         </select>
         {errors.travel_radius_miles ? (
-          <span className="text-sm text-red-600">{errors.travel_radius_miles.message}</span>
+          <span className="text-sm text-error">{errors.travel_radius_miles.message}</span>
         ) : null}
       </label>
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="self-start rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
-      >
-        {isPending ? 'Saving...' : 'Save & continue'}
-      </button>
+      <Button type="submit" disabled={isPending} className="self-start">
+        {isPending ? 'Saving…' : 'Save & continue'}
+      </Button>
     </form>
   );
 };

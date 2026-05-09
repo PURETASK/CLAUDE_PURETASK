@@ -11,6 +11,8 @@ import {
   type CleanerActionState,
 } from '@/features/cleaner/actions';
 import { type Step11Values, step11Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const SERVICE_LABELS: Record<string, string> = {
   standard: 'Standard clean',
@@ -95,13 +97,13 @@ export const ApplicationReview = ({ applicationData: d }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSaveFinal)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Final review and submit</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-semibold text-neutral-900">Final review and submit</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           Check your details before submitting. You won&apos;t be able to edit after submission.
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 rounded border p-5">
+      <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 p-5 shadow-tier1">
         <Row label="Home ZIP" value={d.home_zip ?? '—'} step={1} router={router} />
         <Row
           label="Travel radius"
@@ -165,45 +167,40 @@ export const ApplicationReview = ({ applicationData: d }: Props) => {
       </div>
 
       {!isComplete ? (
-        <p className="rounded bg-amber-50 p-3 text-sm text-amber-700">
+        <TrustCallout variant="warning">
           Some steps are incomplete. Go back and complete all steps before submitting.
-        </p>
+        </TrustCallout>
       ) : null}
 
-      <label className="flex items-center gap-2 text-sm">
-        <input type="checkbox" {...register('confirm_submission')} />I confirm this application is
-        accurate and ready for admin review.
+      <label className="flex items-center gap-2 text-sm text-neutral-700">
+        <input type="checkbox" className="accent-brand-600" {...register('confirm_submission')} />I
+        confirm this application is accurate and ready for admin review.
       </label>
       {errors.confirm_submission ? (
-        <p className="text-sm text-red-600">{errors.confirm_submission.message}</p>
+        <p className="text-sm text-error">{errors.confirm_submission.message}</p>
       ) : null}
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={() => router.push('/app/apply/step/10')}
-          className="rounded border px-5 py-2 text-sm"
         >
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded border px-5 py-2 text-sm disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Save final confirmation'}
-        </button>
-        <button
+        </Button>
+        <Button type="submit" variant="secondary" size="sm" disabled={isPending}>
+          {isPending ? 'Saving…' : 'Save final confirmation'}
+        </Button>
+        <Button
           type="button"
+          size="sm"
           onClick={handleFinalSubmit}
           disabled={isSubmitting || !isComplete}
-          className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
         >
-          {isSubmitting ? 'Submitting...' : 'Submit application'}
-        </button>
+          {isSubmitting ? 'Submitting…' : 'Submit application'}
+        </Button>
       </div>
     </form>
   );
@@ -220,13 +217,13 @@ const Row = ({
   step: number;
   router: ReturnType<typeof useRouter>;
 }) => (
-  <div className="flex items-start justify-between gap-4 py-1.5 text-sm">
-    <span className="w-36 shrink-0 text-zinc-500">{label}</span>
-    <span className="flex-1">{value}</span>
+  <div className="flex items-start justify-between gap-4 border-b border-neutral-100 py-1.5 text-sm last:border-0">
+    <span className="w-36 shrink-0 text-neutral-500">{label}</span>
+    <span className="flex-1 text-neutral-900">{value}</span>
     <button
       type="button"
       onClick={() => router.push(`/app/apply/step/${step}`)}
-      className="shrink-0 text-xs text-zinc-400 hover:text-zinc-700"
+      className="shrink-0 text-xs text-neutral-400 transition-colors duration-control hover:text-brand-600"
     >
       Edit
     </button>

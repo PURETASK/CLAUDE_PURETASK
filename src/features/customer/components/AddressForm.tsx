@@ -11,6 +11,9 @@ import {
   type CustomerActionState,
 } from '@/features/customer/actions';
 import { type AddressValues, addressSchema } from '@/features/customer/validation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type ExistingAddress = AddressValues & { id: string };
 
@@ -63,113 +66,90 @@ export const AddressForm = ({ existing, onSuccessPath, onCancelPath }: Props) =>
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 rounded border p-4">
-      <h3 className="font-medium">{existing ? 'Edit address' : 'Add address'}</h3>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-white p-6 shadow-tier1"
+    >
+      <h3 className="font-semibold text-neutral-900">
+        {existing ? 'Edit address' : 'Add address'}
+      </h3>
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Label (optional, e.g. &ldquo;My Home&rdquo;)</span>
-        <input type="text" className="rounded border px-3 py-2 text-sm" {...register('label')} />
-        {errors.label ? <span className="text-sm text-red-600">{errors.label.message}</span> : null}
-      </label>
+      <Input
+        label='Label (optional, e.g. "My Home")'
+        type="text"
+        error={errors.label?.message}
+        {...register('label')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Street address</span>
-        <input
-          type="text"
-          autoComplete="address-line1"
-          className="rounded border px-3 py-2 text-sm"
-          {...register('street_1')}
-        />
-        {errors.street_1 ? (
-          <span className="text-sm text-red-600">{errors.street_1.message}</span>
-        ) : null}
-      </label>
+      <Input
+        label="Street address"
+        type="text"
+        autoComplete="address-line1"
+        error={errors.street_1?.message}
+        {...register('street_1')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Apt / Suite (optional)</span>
-        <input
-          type="text"
-          autoComplete="address-line2"
-          className="rounded border px-3 py-2 text-sm"
-          {...register('street_2')}
-        />
-      </label>
+      <Input
+        label="Apt / Suite (optional)"
+        type="text"
+        autoComplete="address-line2"
+        {...register('street_2')}
+      />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <label className="col-span-1 flex flex-col gap-1 sm:col-span-1">
-          <span className="text-sm">City</span>
-          <input
-            type="text"
-            autoComplete="address-level2"
-            className="rounded border px-3 py-2 text-sm"
-            {...register('city')}
-          />
-          {errors.city ? <span className="text-sm text-red-600">{errors.city.message}</span> : null}
-        </label>
-
-        <label className="flex flex-col gap-1">
-          <span className="text-sm">State</span>
-          <input
-            type="text"
-            autoComplete="address-level1"
-            maxLength={2}
-            placeholder="CA"
-            className="rounded border px-3 py-2 text-sm uppercase"
-            {...register('state')}
-          />
-          {errors.state ? (
-            <span className="text-sm text-red-600">{errors.state.message}</span>
-          ) : null}
-        </label>
-
-        <label className="flex flex-col gap-1">
-          <span className="text-sm">ZIP</span>
-          <input
-            type="text"
-            autoComplete="postal-code"
-            maxLength={5}
-            placeholder="95814"
-            className="rounded border px-3 py-2 text-sm"
-            {...register('zip_code')}
-          />
-          {errors.zip_code ? (
-            <span className="text-sm text-red-600">{errors.zip_code.message}</span>
-          ) : null}
-        </label>
+        <Input
+          label="City"
+          type="text"
+          autoComplete="address-level2"
+          error={errors.city?.message}
+          className="col-span-1"
+          {...register('city')}
+        />
+        <Input
+          label="State"
+          type="text"
+          autoComplete="address-level1"
+          maxLength={2}
+          placeholder="CA"
+          error={errors.state?.message}
+          className="uppercase"
+          {...register('state')}
+        />
+        <Input
+          label="ZIP"
+          type="text"
+          autoComplete="postal-code"
+          maxLength={5}
+          placeholder="95814"
+          error={errors.zip_code?.message}
+          {...register('zip_code')}
+        />
       </div>
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Access instructions (optional)</span>
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-neutral-700">
+          Access instructions (optional)
+        </label>
         <textarea
           rows={2}
           placeholder="Gate code, key location, etc."
-          className="rounded border px-3 py-2 text-sm"
+          className="pt-field"
           {...register('access_instructions')}
         />
-        {errors.access_instructions ? (
-          <span className="text-sm text-red-600">{errors.access_instructions.message}</span>
-        ) : null}
-      </label>
+        {errors.access_instructions && (
+          <span className="text-xs text-error">{errors.access_instructions.message}</span>
+        )}
+      </div>
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root && <TrustCallout variant="caution">{errors.root.message}</TrustCallout>}
 
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-4 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : existing ? 'Save changes' : 'Add address'}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.push(onCancelPath)}
-          className="rounded border px-4 py-2 text-sm"
-        >
+      <div className="flex gap-3">
+        <Button type="submit" disabled={isPending}>
+          {isPending ? 'Saving…' : existing ? 'Save changes' : 'Add address'}
+        </Button>
+        <Button type="button" variant="secondary" onClick={() => router.push(onCancelPath)}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

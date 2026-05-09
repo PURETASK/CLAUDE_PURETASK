@@ -70,6 +70,20 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
+/* ── Shared native form-field class ──────────────────────────────────────── */
+@layer components {
+  .pt-field {
+    @apply w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-sm
+      text-neutral-900 placeholder:text-neutral-400 transition-colors
+      focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20
+      disabled:bg-neutral-50 disabled:text-neutral-400;
+    transition-duration: var(--duration-control);
+  }
+  .pt-field-error {
+    @apply border-error focus:border-error focus:ring-error/20;
+  }
+}
+
 /* ── Approved brand gradients ─────────────────────────────────────────────── */
 @layer utilities {
   /* Hero: Deep Trust Blue → Electric Service Blue → Clean Aqua */

@@ -10,25 +10,25 @@ export const ReviewCard = ({ review }: Props) => {
   });
 
   return (
-    <div className="border-b border-zinc-100 py-4 last:border-0">
+    <div className="border-b border-neutral-100 py-4 last:border-0">
       <div className="mb-1 flex items-center justify-between">
-        <span className="text-sm text-amber-500">{stars}</span>
-        <span className="text-xs text-zinc-400">{date}</span>
+        <span className="text-sm text-accent-400">{stars}</span>
+        <span className="text-xs text-neutral-400">{date}</span>
       </div>
       {review.traits.length > 0 && (
         <div className="mb-2 flex flex-wrap gap-1">
           {review.traits.map((t) => (
             <span
               key={t.display_label}
-              className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600"
+              className="rounded-full bg-brand-600/10 px-2 py-0.5 text-xs text-brand-600"
             >
               {t.display_label}
             </span>
           ))}
         </div>
       )}
-      {review.body && <p className="text-sm text-zinc-700">{review.body}</p>}
-      <p className="mt-1 text-xs text-zinc-400">{review.customer_name}</p>
+      {review.body && <p className="text-sm text-neutral-700">{review.body}</p>}
+      <p className="mt-1 text-xs text-neutral-400">{review.customer_name}</p>
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { useActionState, useState } from 'react';
 
 import { submitReviewAction, type ReviewActionState } from '@/features/reviews/actions';
 import type { TraitRow } from '@/features/reviews/queries';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL: ReviewActionState = { ok: false, error: null };
 
@@ -24,7 +26,7 @@ export const ReviewForm = ({ bookingId, traits }: Props) => {
       <input type="hidden" name="stars" value={stars} />
 
       <div>
-        <p className="mb-2 text-sm font-medium text-zinc-700">How many stars?</p>
+        <p className="mb-2 text-sm font-medium text-neutral-700">How many stars?</p>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((n) => (
             <button
@@ -33,7 +35,8 @@ export const ReviewForm = ({ bookingId, traits }: Props) => {
               onClick={() => setStars(n)}
               onMouseEnter={() => setHoveredStar(n)}
               onMouseLeave={() => setHoveredStar(0)}
-              className="text-2xl leading-none focus:outline-none"
+              className="text-2xl leading-none text-neutral-300 transition-colors duration-micro focus:outline-none"
+              style={{ color: n <= (hoveredStar || stars) ? 'var(--color-accent-400)' : undefined }}
             >
               {n <= (hoveredStar || stars) ? '★' : '☆'}
             </button>
@@ -43,7 +46,7 @@ export const ReviewForm = ({ bookingId, traits }: Props) => {
 
       {traits.length > 0 && (
         <div>
-          <p className="mb-2 text-sm font-medium text-zinc-700">What stood out? (optional)</p>
+          <p className="mb-2 text-sm font-medium text-neutral-700">What stood out? (optional)</p>
           <div className="flex flex-wrap gap-2">
             {traits.map((t) => {
               const selected = selectedTraits.includes(t.id);
@@ -52,10 +55,10 @@ export const ReviewForm = ({ bookingId, traits }: Props) => {
                   key={t.id}
                   type="button"
                   onClick={() => toggleTrait(t.id)}
-                  className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+                  className={`rounded-full border px-3 py-1 text-sm transition-colors duration-control ${
                     selected
-                      ? 'border-black bg-black text-white'
-                      : 'border-zinc-200 text-zinc-600 hover:border-zinc-400'
+                      ? 'border-brand-600 bg-brand-600/10 text-brand-600'
+                      : 'border-neutral-200 text-neutral-600 hover:border-neutral-400'
                   }`}
                 >
                   {t.display_label}
@@ -70,27 +73,23 @@ export const ReviewForm = ({ bookingId, traits }: Props) => {
       )}
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
           Tell others about your experience (optional)
         </label>
         <textarea
           name="body"
           rows={3}
           maxLength={1000}
-          className="w-full rounded border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className="pt-field"
           placeholder="What did you love? What could be better?"
         />
       </div>
 
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state.error && <TrustCallout variant="caution">{state.error}</TrustCallout>}
 
-      <button
-        type="submit"
-        disabled={isPending || stars === 0}
-        className="rounded bg-black px-6 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-60"
-      >
+      <Button type="submit" disabled={isPending || stars === 0}>
         {isPending ? 'Submitting…' : 'Submit review'}
-      </button>
+      </Button>
     </form>
   );
 };

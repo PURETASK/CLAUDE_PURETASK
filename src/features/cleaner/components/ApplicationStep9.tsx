@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 
 import { saveStepAction, type CleanerActionState } from '@/features/cleaner/actions';
 import { type Step9Values, step9Schema } from '@/features/cleaner/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Props = { defaultValues?: Partial<Step9Values> };
 
@@ -45,40 +47,39 @@ export const ApplicationStep9 = ({ defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold">Photo etiquette training</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-lg font-semibold text-neutral-900">Photo etiquette training</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           WF 49 content is being integrated in Phase 4g. This gate enforces completion in the
           application pipeline.
         </p>
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input type="checkbox" {...register('photo_training_completed')} />I completed the PureTask
-        photo etiquette training.
+      <label className="flex items-center gap-2 text-sm text-neutral-700">
+        <input
+          type="checkbox"
+          className="accent-brand-600"
+          {...register('photo_training_completed')}
+        />
+        I completed the PureTask photo etiquette training.
       </label>
       {errors.photo_training_completed ? (
-        <span className="text-sm text-red-600">{errors.photo_training_completed.message}</span>
+        <span className="text-sm text-error">{errors.photo_training_completed.message}</span>
       ) : null}
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root ? <TrustCallout variant="caution">{errors.root.message}</TrustCallout> : null}
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={() => router.push('/app/apply/step/8')}
-          className="rounded border px-5 py-2 text-sm"
         >
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-5 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Save & continue'}
-        </button>
+        </Button>
+        <Button type="submit" disabled={isPending} size="sm">
+          {isPending ? 'Saving…' : 'Save & continue'}
+        </Button>
       </div>
     </form>
   );

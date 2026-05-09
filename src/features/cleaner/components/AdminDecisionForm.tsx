@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState, useTransition } from 'react';
 
 import { adminDecisionAction, type CleanerActionState } from '@/features/cleaner/actions';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL: CleanerActionState = { ok: false, error: null };
 
@@ -38,7 +39,7 @@ export const AdminDecisionForm = ({ applicationId, currentState }: Props) => {
 
   if (isTerminal) {
     return (
-      <p className="rounded bg-zinc-100 p-3 text-sm text-zinc-500">
+      <p className="rounded-xl bg-neutral-100 p-3 text-sm text-neutral-500">
         This application is {currentState}. No further action needed.
       </p>
     );
@@ -46,27 +47,25 @@ export const AdminDecisionForm = ({ applicationId, currentState }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="font-medium">Admin decision</h2>
+      <h2 className="font-medium text-neutral-900">Admin decision</h2>
 
       {state.ok && state.message ? (
-        <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
+        <TrustCallout variant="success">{state.message}</TrustCallout>
       ) : null}
-      {state.error ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{state.error}</p>
-      ) : null}
+      {state.error ? <TrustCallout variant="caution">{state.error}</TrustCallout> : null}
 
       <div className="flex flex-col gap-3">
         <label className="flex flex-col gap-1">
-          <span className="text-sm text-zinc-500">
+          <span className="text-sm text-neutral-500">
             Reason / info request message (shown to applicant)
           </span>
-          <textarea id="decision-reason" rows={3} className="rounded border px-3 py-2 text-sm" />
+          <textarea id="decision-reason" rows={3} className="pt-field text-sm" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-sm text-zinc-500">
+          <span className="text-sm text-neutral-500">
             Internal admin notes (not shown to applicant)
           </span>
-          <textarea id="admin-notes" rows={2} className="rounded border px-3 py-2 text-sm" />
+          <textarea id="admin-notes" rows={2} className="pt-field text-sm" />
         </label>
       </div>
 
@@ -76,9 +75,9 @@ export const AdminDecisionForm = ({ applicationId, currentState }: Props) => {
             type="button"
             onClick={() => submit('start_review')}
             disabled={isPending}
-            className="rounded border px-4 py-2 text-sm disabled:opacity-60"
+            className="inline-flex items-center justify-center rounded-xl border border-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-600 transition-all duration-control hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isPending && activeDecision === 'start_review' ? 'Saving...' : 'Start review'}
+            {isPending && activeDecision === 'start_review' ? 'Saving…' : 'Start review'}
           </button>
         ) : null}
         {canDecide ? (
@@ -87,25 +86,25 @@ export const AdminDecisionForm = ({ applicationId, currentState }: Props) => {
               type="button"
               onClick={() => submit('approve')}
               disabled={isPending}
-              className="rounded bg-green-600 px-4 py-2 text-sm text-white disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-xl bg-success px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all duration-control hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isPending && activeDecision === 'approve' ? 'Saving...' : 'Approve'}
+              {isPending && activeDecision === 'approve' ? 'Saving…' : 'Approve'}
             </button>
             <button
               type="button"
               onClick={() => submit('request_info')}
               disabled={isPending}
-              className="rounded border border-orange-300 px-4 py-2 text-sm text-orange-700 disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-xl border border-warning/30 px-4 py-2 text-sm font-semibold text-warning-dark transition-all duration-control hover:bg-warning-light disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isPending && activeDecision === 'request_info' ? 'Saving...' : 'Request info'}
+              {isPending && activeDecision === 'request_info' ? 'Saving…' : 'Request info'}
             </button>
             <button
               type="button"
               onClick={() => submit('reject')}
               disabled={isPending}
-              className="rounded border border-red-300 px-4 py-2 text-sm text-red-700 disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-xl border border-error/30 px-4 py-2 text-sm font-semibold text-error transition-all duration-control hover:bg-error-light disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isPending && activeDecision === 'reject' ? 'Saving...' : 'Reject'}
+              {isPending && activeDecision === 'reject' ? 'Saving…' : 'Reject'}
             </button>
           </>
         ) : null}

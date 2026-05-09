@@ -78,7 +78,9 @@ export function PushSubscriptionToggle({ vapidPublicKey }: Props) {
 
   if (!supported) {
     return (
-      <p className="text-sm text-zinc-400">Push notifications are not supported by your browser.</p>
+      <p className="text-sm text-neutral-400">
+        Push notifications are not supported by your browser.
+      </p>
     );
   }
 
@@ -86,8 +88,8 @@ export function PushSubscriptionToggle({ vapidPublicKey }: Props) {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-zinc-800">Browser push notifications</p>
-          <p className="text-xs text-zinc-400">
+          <p className="text-sm font-medium text-neutral-800">Browser push notifications</p>
+          <p className="text-xs text-neutral-400">
             {subscribed
               ? 'You will receive push notifications on this device.'
               : 'Get notified instantly even when the app is in the background.'}
@@ -96,16 +98,16 @@ export function PushSubscriptionToggle({ vapidPublicKey }: Props) {
         <button
           onClick={subscribed ? unsubscribe : subscribe}
           disabled={loading}
-          className={`ml-4 flex-shrink-0 rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 ${
+          className={`ml-4 inline-flex flex-shrink-0 items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-control disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98] ${
             subscribed
-              ? 'border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50'
-              : 'bg-slate-900 text-white hover:bg-slate-700'
+              ? 'border border-brand-600 bg-white text-brand-600 shadow-tier1 hover:bg-neutral-50 hover:shadow-tier2'
+              : 'bg-gradient-brand text-white shadow-tier1 hover:brightness-110 hover:shadow-tier2'
           }`}
         >
           {loading ? '…' : subscribed ? 'Disable' : 'Enable'}
         </button>
       </div>
-      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-xs text-error">{error}</p>}
     </div>
   );
 }

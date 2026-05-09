@@ -6,6 +6,9 @@ import { useForm } from 'react-hook-form';
 
 import { updateProfileAction, type CustomerActionState } from '@/features/customer/actions';
 import { type UpdateProfileValues, updateProfileSchema } from '@/features/customer/validation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Props = {
   defaultValues: UpdateProfileValues;
@@ -39,47 +42,30 @@ export const ProfileForm = ({ defaultValues }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Full name</span>
-        <input
-          type="text"
-          autoComplete="name"
-          className="rounded border px-3 py-2"
-          {...register('full_name')}
-        />
-        {errors.full_name ? (
-          <span className="text-sm text-red-600">{errors.full_name.message}</span>
-        ) : null}
-      </label>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex max-w-md flex-col gap-5">
+      <Input
+        label="Full name"
+        type="text"
+        autoComplete="name"
+        error={errors.full_name?.message}
+        {...register('full_name')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Phone (optional)</span>
-        <input
-          type="tel"
-          autoComplete="tel"
-          placeholder="+19165550100"
-          className="rounded border px-3 py-2"
-          {...register('phone')}
-        />
-        {errors.phone ? <span className="text-sm text-red-600">{errors.phone.message}</span> : null}
-      </label>
+      <Input
+        label="Phone (optional)"
+        type="tel"
+        autoComplete="tel"
+        placeholder="+19165550100"
+        error={errors.phone?.message}
+        {...register('phone')}
+      />
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root && <TrustCallout variant="caution">{errors.root.message}</TrustCallout>}
+      {state.ok && state.message && <TrustCallout variant="success">{state.message}</TrustCallout>}
 
-      {state.ok && state.message ? (
-        <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
-      ) : null}
-
-      <button
-        type="submit"
-        disabled={isPending}
-        className="self-start rounded bg-black px-4 py-2 text-sm text-white disabled:opacity-60"
-      >
-        {isPending ? 'Saving...' : 'Save changes'}
-      </button>
+      <Button type="submit" disabled={isPending} className="self-start">
+        {isPending ? 'Saving…' : 'Save changes'}
+      </Button>
     </form>
   );
 };
