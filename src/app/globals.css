@@ -1,19 +1,94 @@
 @import 'tailwindcss';
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   PureTask — Clean Aero Glow Design System (v2.1)
+   Theme: premium, human, calm, practical, trustworthy
+   ───────────────────────────────────────────────────────────────────────────── */
+
 :root {
-  --background: #f4f7fb;
-  --foreground: #0f172a;
+  --background: #f8fbfe; /* neutral-50: default page canvas */
+  --foreground: #0f172a; /* neutral-900: primary text */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Surface defaults */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* ── Brand palette ─────────────────────────────────────────────────────── */
+  --color-brand-900: #0a3b78; /* Deep Trust Blue — nav, trust anchors, logo */
+  --color-brand-600: #169af5; /* Electric Service Blue — CTA, active, progress */
+  --color-accent-400: #40e8e0; /* Clean Aqua — glow, gradient, premium highlight */
+  --color-navy-950: #072a55; /* Anchor Navy — dark hero, contrast surfaces */
+
+  /* ── PureTask neutral ramp (blue-tinted) ──────────────────────────────── */
+  --color-neutral-50: #f8fbfe;
+  --color-neutral-100: #f1f6fb;
+  --color-neutral-200: #e2eaf2;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+
+  /* ── Semantic colors ──────────────────────────────────────────────────── */
+  --color-success: #16a34a;
+  --color-success-light: #dcfce7;
+  --color-success-dark: #166534;
+  --color-warning: #d97706;
+  --color-warning-light: #fef3c7;
+  --color-warning-dark: #92400e;
+  --color-error: #dc2626;
+  --color-error-light: #fee2e2;
+  --color-error-dark: #991b1b;
+
+  /* ── Elevation shadows (navy-tinted) ──────────────────────────────────── */
+  --shadow-tier1: 0 2px 8px rgba(7, 42, 85, 0.08);
+  --shadow-tier2: 0 8px 24px rgba(7, 42, 85, 0.1);
+  --shadow-tier3: 0 14px 36px rgba(7, 42, 85, 0.16);
+
+  /* ── Extended border radius ───────────────────────────────────────────── */
+  --radius-4xl: 2rem; /* 32px — largest brand radius */
+
+  /* ── Motion ───────────────────────────────────────────────────────────── */
+  --duration-micro: 150ms;
+  --duration-control: 200ms;
+  --duration-card: 350ms;
+  --duration-confirm: 500ms;
+  --ease-soft-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* ── Approved brand gradients ─────────────────────────────────────────────── */
+@layer utilities {
+  /* Hero: Deep Trust Blue → Electric Service Blue → Clean Aqua */
+  .bg-gradient-hero {
+    background: linear-gradient(135deg, #0a3b78 0%, #169af5 55%, #40e8e0 100%);
+  }
+
+  /* Primary button / brand surfaces: Deep Trust Blue → Electric Service Blue */
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, #0a3b78 0%, #169af5 100%);
+  }
+
+  /* Premium icon / accent gradient: Electric Service Blue → Clean Aqua */
+  .bg-gradient-premium {
+    background: linear-gradient(135deg, #169af5 0%, #40e8e0 100%);
+  }
+
+  /* Confirmation glow: white core with cyan halo */
+  .bg-gradient-glow {
+    background: radial-gradient(circle at center, #ffffff 0%, #40e8e040 60%, transparent 100%);
+  }
 }

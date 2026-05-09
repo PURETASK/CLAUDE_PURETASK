@@ -24,22 +24,33 @@ export const StepIndicator = ({ current }: Props) => (
         <div key={label} className="flex items-center">
           <div className="flex flex-col items-center gap-1">
             <div
-              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium ${
+              className={[
+                'flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-all duration-control',
                 done
-                  ? 'bg-black text-white'
+                  ? 'bg-gradient-brand text-white shadow-tier1'
                   : active
-                    ? 'border-2 border-black bg-white text-black'
-                    : 'border border-zinc-300 bg-white text-zinc-400'
-              }`}
+                    ? 'border-2 border-brand-600 bg-white text-brand-600 shadow-tier1'
+                    : 'border border-neutral-300 bg-white text-neutral-400',
+              ].join(' ')}
             >
               {done ? '✓' : n}
             </div>
-            <span className={`hidden text-xs sm:block ${active ? 'font-medium' : 'text-zinc-400'}`}>
+            <span
+              className={[
+                'hidden text-xs sm:block transition-colors duration-micro',
+                active ? 'font-semibold text-brand-900' : 'text-neutral-400',
+              ].join(' ')}
+            >
               {label}
             </span>
           </div>
           {i < STEPS.length - 1 ? (
-            <div className={`mx-1 h-px w-8 sm:w-12 ${done ? 'bg-black' : 'bg-zinc-200'}`} />
+            <div
+              className={[
+                'mx-1 h-px w-8 transition-colors duration-control sm:w-12',
+                done ? 'bg-brand-600' : 'bg-neutral-200',
+              ].join(' ')}
+            />
           ) : null}
         </div>
       );

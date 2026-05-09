@@ -1,27 +1,34 @@
-const STATE_LABELS: Record<string, { label: string; color: string; desc: string }> = {
+import { Badge, type BadgeVariant } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { TrustCallout } from '@/components/ui/trust-callout';
+
+const STATE_LABELS: Record<
+  string,
+  { label: string; variant: BadgeVariant; desc: string }
+> = {
   submitted: {
     label: 'Under review',
-    color: 'bg-amber-100 text-amber-800',
+    variant: 'warning',
     desc: "Your application has been received. We'll review it and get back to you within 2–3 business days.",
   },
   in_review: {
     label: 'In review',
-    color: 'bg-blue-100 text-blue-800',
+    variant: 'info',
     desc: 'Our team is currently reviewing your application.',
   },
   needs_info: {
     label: 'Info requested',
-    color: 'bg-orange-100 text-orange-800',
+    variant: 'warning',
     desc: 'We need a bit more information before we can continue.',
   },
   approved: {
     label: 'Approved',
-    color: 'bg-green-100 text-green-800',
+    variant: 'success',
     desc: 'Congratulations! Your application has been approved. Complete the steps below to start taking bookings.',
   },
   rejected: {
     label: 'Not approved',
-    color: 'bg-red-100 text-red-800',
+    variant: 'error',
     desc: "We weren't able to approve your application at this time.",
   },
 };
@@ -43,7 +50,7 @@ export const ApplicationStatus = ({
 }: Props) => {
   const info = STATE_LABELS[state] ?? {
     label: state,
-    color: 'bg-zinc-100 text-zinc-700',
+    variant: 'neutral' as BadgeVariant,
     desc: '',
   };
 
@@ -51,37 +58,33 @@ export const ApplicationStatus = ({
     <div className="flex flex-col gap-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold">Application status</h1>
-          <p className="mt-1 text-sm text-zinc-500">#{applicationNumber}</p>
+          <h1 className="text-xl font-bold text-neutral-900">Application status</h1>
+          <p className="mt-1 text-sm text-neutral-500">#{applicationNumber}</p>
         </div>
-        <span className={`rounded-full px-3 py-1 text-sm font-medium ${info.color}`}>
-          {info.label}
-        </span>
+        <Badge variant={info.variant}>{info.label}</Badge>
       </div>
 
-      <p className="text-sm">{info.desc}</p>
+      <p className="text-sm text-neutral-700">{info.desc}</p>
 
-      {state === 'needs_info' && infoRequestMessage ? (
-        <div className="rounded border border-orange-200 bg-orange-50 p-4 text-sm">
-          <p className="font-medium text-orange-800">Message from our team:</p>
-          <p className="mt-1 text-orange-700">{infoRequestMessage}</p>
-          <p className="mt-3 text-zinc-500">
+      {state === 'needs_info' && infoRequestMessage && (
+        <TrustCallout variant="warning" title="Message from our team:">
+          <p>{infoRequestMessage}</p>
+          <p className="mt-2 text-neutral-500">
             Please reply to the email we sent to your account address, or contact{' '}
             <span className="font-medium">support@puretask.com</span> with your application number.
           </p>
-        </div>
-      ) : null}
+        </TrustCallout>
+      )}
 
-      {state === 'rejected' && rejectionReason ? (
-        <div className="rounded border border-red-200 bg-red-50 p-4 text-sm">
-          <p className="font-medium text-red-800">Reason:</p>
-          <p className="mt-1 text-red-700">{rejectionReason}</p>
-        </div>
-      ) : null}
+      {state === 'rejected' && rejectionReason && (
+        <TrustCallout variant="caution" title="Reason:">
+          {rejectionReason}
+        </TrustCallout>
+      )}
 
-      {state === 'approved' ? (
+      {state === 'approved' && (
         <div className="flex flex-col gap-3">
-          <h2 className="font-medium">Next steps</h2>
+          <h2 className="font-semibold text-neutral-900">Next steps</h2>
           <PlaceholderCard
             title="Identity verification"
             desc="Verify your government-issued ID via Stripe Identity."
@@ -98,13 +101,13 @@ export const ApplicationStatus = ({
             badge="Coming soon"
           />
         </div>
-      ) : null}
+      )}
 
-      {submittedAt ? (
-        <p className="text-xs text-zinc-400">
+      {submittedAt && (
+        <p className="text-xs text-neutral-400">
           Submitted {new Date(submittedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })}
         </p>
-      ) : null}
+      )}
     </div>
   );
 };
@@ -118,11 +121,13 @@ const PlaceholderCard = ({
   desc: string;
   badge: string;
 }) => (
-  <div className="flex items-start justify-between gap-4 rounded border p-4">
+  <Card className="flex items-start justify-between gap-4 p-4">
     <div>
-      <p className="text-sm font-medium">{title}</p>
-      <p className="mt-0.5 text-sm text-zinc-500">{desc}</p>
+      <p className="text-sm font-semibold text-neutral-800">{title}</p>
+      <p className="mt-0.5 text-sm text-neutral-500">{desc}</p>
     </div>
-    <span className="shrink-0 rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-500">{badge}</span>
-  </div>
+    <Badge variant="neutral" className="shrink-0">
+      {badge}
+    </Badge>
+  </Card>
 );

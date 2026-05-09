@@ -6,6 +6,9 @@ import { useForm } from 'react-hook-form';
 
 import { signInAction, type AuthActionState } from '@/features/auth/actions';
 import { type SignInValues, signInSchema } from '@/features/auth/validation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL_STATE: AuthActionState = { ok: false, error: null };
 
@@ -45,45 +48,36 @@ export const SignInForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full max-w-md flex-col gap-4 rounded border p-6"
+      className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white p-8 shadow-tier2"
     >
-      <h1 className="text-2xl font-semibold">Sign in</h1>
+      <div>
+        <h1 className="text-2xl font-bold text-neutral-900">Welcome back</h1>
+        <p className="mt-1 text-sm text-neutral-500">Sign in to your PureTask account</p>
+      </div>
 
-      <label className="flex flex-col gap-1">
-        <span>Email</span>
-        <input
-          type="email"
-          autoComplete="email"
-          className="rounded border px-3 py-2"
-          {...register('email')}
-        />
-        {errors.email ? <span className="text-sm text-red-600">{errors.email.message}</span> : null}
-      </label>
+      <Input
+        label="Email"
+        type="email"
+        autoComplete="email"
+        error={errors.email?.message}
+        {...register('email')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span>Password</span>
-        <input
-          type="password"
-          autoComplete="current-password"
-          className="rounded border px-3 py-2"
-          {...register('password')}
-        />
-        {errors.password ? (
-          <span className="text-sm text-red-600">{errors.password.message}</span>
-        ) : null}
-      </label>
+      <Input
+        label="Password"
+        type="password"
+        autoComplete="current-password"
+        error={errors.password?.message}
+        {...register('password')}
+      />
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
+      {errors.root && (
+        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
+      )}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
-      >
-        {isPending ? 'Signing in...' : 'Sign in'}
-      </button>
+      <Button type="submit" disabled={isPending} className="w-full">
+        {isPending ? 'Signing in…' : 'Sign in'}
+      </Button>
     </form>
   );
 };

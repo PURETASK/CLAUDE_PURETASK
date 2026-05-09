@@ -7,6 +7,9 @@ import { useForm } from 'react-hook-form';
 
 import { resetPasswordAction, type AuthActionState } from '@/features/auth/actions';
 import { type ResetPasswordValues, resetPasswordSchema } from '@/features/auth/validation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL_STATE: AuthActionState = { ok: false, error: null };
 
@@ -33,7 +36,6 @@ export const ResetPasswordForm = () => {
       setError('root', { message: state.error });
       return;
     }
-
     if (state.ok) {
       reset();
     }
@@ -52,52 +54,44 @@ export const ResetPasswordForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full max-w-md flex-col gap-4 rounded border p-6"
+      className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white p-8 shadow-tier2"
     >
-      <h1 className="text-2xl font-semibold">Set a new password</h1>
+      <div>
+        <h1 className="text-2xl font-bold text-neutral-900">Set a new password</h1>
+        <p className="mt-1 text-sm text-neutral-500">Choose a strong password for your account.</p>
+      </div>
 
-      <label className="flex flex-col gap-1">
-        <span>New password</span>
-        <input
-          type="password"
-          autoComplete="new-password"
-          className="rounded border px-3 py-2"
-          {...register('password')}
-        />
-        {errors.password ? (
-          <span className="text-sm text-red-600">{errors.password.message}</span>
-        ) : null}
-      </label>
+      <Input
+        label="New password"
+        type="password"
+        autoComplete="new-password"
+        error={errors.password?.message}
+        {...register('password')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span>Confirm password</span>
-        <input
-          type="password"
-          autoComplete="new-password"
-          className="rounded border px-3 py-2"
-          {...register('confirmPassword')}
-        />
-        {errors.confirmPassword ? (
-          <span className="text-sm text-red-600">{errors.confirmPassword.message}</span>
-        ) : null}
-      </label>
+      <Input
+        label="Confirm password"
+        type="password"
+        autoComplete="new-password"
+        error={errors.confirmPassword?.message}
+        {...register('confirmPassword')}
+      />
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
-      {state.ok && state.message ? (
-        <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
-      ) : null}
+      {errors.root && (
+        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
+      )}
+      {state.ok && state.message && (
+        <TrustCallout variant="success">{state.message}</TrustCallout>
+      )}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
+      <Button type="submit" disabled={isPending} className="w-full">
+        {isPending ? 'Updating…' : 'Update password'}
+      </Button>
+
+      <Link
+        className="text-center text-sm font-medium text-brand-600 hover:text-brand-900"
+        href="/auth/sign-in"
       >
-        {isPending ? 'Updating...' : 'Update password'}
-      </button>
-
-      <Link className="text-sm underline" href="/auth/sign-in">
         Go to sign in
       </Link>
     </form>

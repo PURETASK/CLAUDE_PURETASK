@@ -7,6 +7,9 @@ import { useForm } from 'react-hook-form';
 
 import { forgotPasswordAction, type AuthActionState } from '@/features/auth/actions';
 import { type ForgotPasswordValues, forgotPasswordSchema } from '@/features/auth/validation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL_STATE: AuthActionState = { ok: false, error: null };
 
@@ -32,7 +35,6 @@ export const ForgotPasswordForm = () => {
       setError('root', { message: state.error });
       return;
     }
-
     if (state.ok) {
       reset();
     }
@@ -50,39 +52,39 @@ export const ForgotPasswordForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full max-w-md flex-col gap-4 rounded border p-6"
+      className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white p-8 shadow-tier2"
     >
-      <h1 className="text-2xl font-semibold">Reset password</h1>
-      <p className="text-sm text-zinc-600">Enter your email and we will send a reset link.</p>
+      <div>
+        <h1 className="text-2xl font-bold text-neutral-900">Reset password</h1>
+        <p className="mt-1 text-sm text-neutral-500">
+          Enter your email and we&apos;ll send a reset link.
+        </p>
+      </div>
 
-      <label className="flex flex-col gap-1">
-        <span>Email</span>
-        <input
-          type="email"
-          autoComplete="email"
-          className="rounded border px-3 py-2"
-          {...register('email')}
-        />
-        {errors.email ? <span className="text-sm text-red-600">{errors.email.message}</span> : null}
-      </label>
+      <Input
+        label="Email"
+        type="email"
+        autoComplete="email"
+        error={errors.email?.message}
+        {...register('email')}
+      />
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
-      {state.ok && state.message ? (
-        <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
-      ) : null}
+      {errors.root && (
+        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
+      )}
+      {state.ok && state.message && (
+        <TrustCallout variant="success">{state.message}</TrustCallout>
+      )}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
+      <Button type="submit" disabled={isPending} className="w-full">
+        {isPending ? 'Sending…' : 'Send reset link'}
+      </Button>
+
+      <Link
+        className="text-center text-sm font-medium text-brand-600 hover:text-brand-900"
+        href="/auth/sign-in"
       >
-        {isPending ? 'Sending...' : 'Send reset link'}
-      </button>
-
-      <Link className="text-sm underline" href="/auth/sign-in">
-        Back to sign in
+        ← Back to sign in
       </Link>
     </form>
   );

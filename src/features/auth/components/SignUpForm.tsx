@@ -7,6 +7,9 @@ import { useForm } from 'react-hook-form';
 
 import { signUpAction, type AuthActionState } from '@/features/auth/actions';
 import { type SignUpValues, signUpSchema } from '@/features/auth/validation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 const INITIAL_STATE: AuthActionState = { ok: false, error: null };
 
@@ -35,7 +38,6 @@ export const SignUpForm = ({ role = 'customer' }: { role?: 'customer' | 'cleaner
       setError('root', { message: state.error });
       return;
     }
-
     if (state.ok) {
       reset();
     }
@@ -56,68 +58,55 @@ export const SignUpForm = ({ role = 'customer' }: { role?: 'customer' | 'cleaner
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full max-w-md flex-col gap-4 rounded border p-6"
+      className="flex w-full max-w-md flex-col gap-5 rounded-2xl bg-white p-8 shadow-tier2"
     >
-      <h1 className="text-2xl font-semibold">
-        {role === 'cleaner' ? 'Create cleaner account' : 'Create account'}
-      </h1>
+      <div>
+        <h1 className="text-2xl font-bold text-neutral-900">
+          {role === 'cleaner' ? 'Create cleaner account' : 'Create your account'}
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500">Join PureTask — it&apos;s free to get started</p>
+      </div>
+
       <input type="hidden" {...register('role')} value={role} />
 
-      <label className="flex flex-col gap-1">
-        <span>Email</span>
-        <input
-          type="email"
-          autoComplete="email"
-          className="rounded border px-3 py-2"
-          {...register('email')}
-        />
-        {errors.email ? <span className="text-sm text-red-600">{errors.email.message}</span> : null}
-      </label>
+      <Input
+        label="Email"
+        type="email"
+        autoComplete="email"
+        error={errors.email?.message}
+        {...register('email')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span>Password</span>
-        <input
-          type="password"
-          autoComplete="new-password"
-          className="rounded border px-3 py-2"
-          {...register('password')}
-        />
-        {errors.password ? (
-          <span className="text-sm text-red-600">{errors.password.message}</span>
-        ) : null}
-      </label>
+      <Input
+        label="Password"
+        type="password"
+        autoComplete="new-password"
+        error={errors.password?.message}
+        {...register('password')}
+      />
 
-      <label className="flex flex-col gap-1">
-        <span>Confirm password</span>
-        <input
-          type="password"
-          autoComplete="new-password"
-          className="rounded border px-3 py-2"
-          {...register('confirmPassword')}
-        />
-        {errors.confirmPassword ? (
-          <span className="text-sm text-red-600">{errors.confirmPassword.message}</span>
-        ) : null}
-      </label>
+      <Input
+        label="Confirm password"
+        type="password"
+        autoComplete="new-password"
+        error={errors.confirmPassword?.message}
+        {...register('confirmPassword')}
+      />
 
-      {errors.root ? (
-        <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-      ) : null}
-      {state.ok && state.message ? (
-        <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
-      ) : null}
+      {errors.root && (
+        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
+      )}
+      {state.ok && state.message && (
+        <TrustCallout variant="success">{state.message}</TrustCallout>
+      )}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
-      >
-        {isPending ? 'Creating account...' : 'Create account'}
-      </button>
+      <Button type="submit" disabled={isPending} className="w-full">
+        {isPending ? 'Creating account…' : 'Create account'}
+      </Button>
 
-      <p className="text-sm text-zinc-600">
+      <p className="text-center text-sm text-neutral-500">
         Already have an account?{' '}
-        <Link className="underline" href="/auth/sign-in">
+        <Link className="font-medium text-brand-600 hover:text-brand-900" href="/auth/sign-in">
           Sign in
         </Link>
       </p>
