@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 
 import { markJobCompleteAction, type DisputeActionState } from '@/features/disputes/actions';
+import { Button } from '@/components/ui/button';
 
 const INITIAL: DisputeActionState = { ok: false, error: null };
 
@@ -21,15 +22,11 @@ export const MarkCompleteButton = ({ bookingId }: Props) => {
   return (
     <div>
       <form action={formAction}>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded bg-black px-5 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isPending}>
           {isPending ? 'Submitting…' : 'Mark job complete'}
-        </button>
+        </Button>
       </form>
-      {state.error && <p className="mt-2 text-sm text-red-600">{state.error}</p>}
+      {state.error && <p className="mt-2 text-xs text-error">{state.error}</p>}
     </div>
   );
 };

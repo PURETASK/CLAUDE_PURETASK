@@ -18,12 +18,12 @@ export const CancelBookingButton = ({ bookingId }: Props) => {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-60"
+          className="rounded-xl border border-error/30 px-4 py-2 text-sm font-medium text-error transition-all duration-control hover:bg-error-light disabled:opacity-50"
         >
           {isPending ? 'Cancelling…' : 'Cancel booking'}
         </button>
       </form>
-      {state.error && <p className="mt-2 text-sm text-red-600">{state.error}</p>}
+      {state.error && <p className="mt-2 text-xs text-error">{state.error}</p>}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
   declineBookingAction,
   type BookingActionState,
 } from '@/features/booking/actions';
+import { Button } from '@/components/ui/button';
 
 const INITIAL: BookingActionState = { ok: false, error: null };
 
@@ -32,25 +33,17 @@ export const CleanerActionButtons = ({ bookingId }: Props) => {
     <div className="flex flex-col gap-2">
       <div className="flex gap-3">
         <form action={acceptAction}>
-          <button
-            type="submit"
-            disabled={isAccepting || isDeclining}
-            className="rounded bg-black px-5 py-2 text-sm text-white hover:bg-zinc-800 disabled:opacity-60"
-          >
+          <Button type="submit" disabled={isAccepting || isDeclining}>
             {isAccepting ? 'Accepting…' : 'Accept'}
-          </button>
+          </Button>
         </form>
         <form action={declineAction}>
-          <button
-            type="submit"
-            disabled={isAccepting || isDeclining}
-            className="rounded border px-5 py-2 text-sm text-zinc-600 hover:bg-zinc-50 disabled:opacity-60"
-          >
+          <Button type="submit" variant="secondary" disabled={isAccepting || isDeclining}>
             {isDeclining ? 'Declining…' : 'Decline'}
-          </button>
+          </Button>
         </form>
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-xs text-error">{error}</p>}
     </div>
   );
 };

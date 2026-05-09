@@ -25,20 +25,20 @@ export const CleanerCard = ({ cleaner, score, distanceMiles }: Props) => {
   return (
     <Link
       href={`/app/cleaners/${cleaner.id}`}
-      className="flex flex-col gap-3 rounded border bg-white p-5 transition-shadow hover:shadow-sm"
+      className="flex flex-col gap-3 rounded-2xl border border-neutral-100 bg-white p-5 shadow-tier1 transition-all duration-card hover:-translate-y-0.5 hover:shadow-tier2"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <span className="font-medium">{cleaner.full_name}</span>
+          <span className="font-semibold text-neutral-900">{cleaner.full_name}</span>
           <TierBadge tier={cleaner.current_tier} />
         </div>
         <div className="text-right">
-          <div className="text-lg font-semibold text-zinc-900">{score.displayScore}</div>
-          <div className="text-xs text-zinc-400">/ 100 match</div>
+          <div className="text-lg font-bold text-brand-900">{score.displayScore}</div>
+          <div className="text-xs text-neutral-400">/ 100 match</div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-zinc-500">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">
         {cleaner.average_rating != null ? (
           <span>
             {cleaner.average_rating.toFixed(1)} ★ ({cleaner.review_count})
@@ -53,7 +53,10 @@ export const CleanerCard = ({ cleaner, score, distanceMiles }: Props) => {
       {offeredServices.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {offeredServices.map((s) => (
-            <span key={s} className="rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600">
+            <span
+              key={s}
+              className="rounded-full bg-brand-600/10 px-2.5 py-0.5 text-xs font-medium text-brand-600"
+            >
               {s}
             </span>
           ))}

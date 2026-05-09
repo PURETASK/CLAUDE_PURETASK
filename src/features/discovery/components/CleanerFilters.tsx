@@ -27,13 +27,11 @@ export const CleanerFilters = () => {
     router.replace(`/app/cleaners?${params.toString()}`);
   }, [service, maxMiles, minRating, sort, router]);
 
+  const selectClass = 'pt-field w-auto';
+
   return (
     <div className="flex flex-wrap gap-3">
-      <select
-        value={service}
-        onChange={(e) => setService(e.target.value)}
-        className="rounded border px-3 py-2 text-sm"
-      >
+      <select value={service} onChange={(e) => setService(e.target.value)} className={selectClass}>
         <option value="">All services</option>
         {SERVICE_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>
@@ -44,7 +42,7 @@ export const CleanerFilters = () => {
       <select
         value={maxMiles}
         onChange={(e) => setMaxMiles(e.target.value)}
-        className="rounded border px-3 py-2 text-sm"
+        className={selectClass}
       >
         <option value="5">Within 5 miles</option>
         <option value="10">Within 10 miles</option>
@@ -54,18 +52,14 @@ export const CleanerFilters = () => {
       <select
         value={minRating}
         onChange={(e) => setMinRating(e.target.value)}
-        className="rounded border px-3 py-2 text-sm"
+        className={selectClass}
       >
         <option value="0">All ratings</option>
         <option value="4.5">4.5+ stars</option>
         <option value="4.7">4.7+ stars</option>
         <option value="4.9">4.9+ stars</option>
       </select>
-      <select
-        value={sort}
-        onChange={(e) => setSort(e.target.value)}
-        className="rounded border px-3 py-2 text-sm"
-      >
+      <select value={sort} onChange={(e) => setSort(e.target.value)} className={selectClass}>
         <option value="match">Sort: Match score</option>
         <option value="distance">Sort: Distance</option>
         <option value="rating">Sort: Rating</option>

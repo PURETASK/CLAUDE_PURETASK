@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import { createBookingAction, type BookingActionState } from '@/features/booking/actions';
 import type { ServiceRow } from '@/features/booking/queries';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 type Address = { id: string; street_1: string; city: string; state: string };
 type CleanerInfo = {
@@ -24,6 +26,9 @@ const INITIAL: BookingActionState = { ok: false, error: null };
 const DURATION_OPTIONS = [2, 3, 4, 5, 6, 8];
 
 const fmtPrice = (cents: number) => `$${(cents / 100).toFixed(2)}`;
+
+const fieldClass = 'pt-field';
+const labelClass = 'text-sm font-medium text-neutral-700';
 
 export const BookingForm = ({ cleaner, services, addresses }: Props) => {
   const router = useRouter();
@@ -59,12 +64,12 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
       <input type="hidden" name="cleaner_id" value={cleaner.id} />
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Service</label>
+        <label className={labelClass}>Service</label>
         <select
           name="service_type"
           value={serviceType}
           onChange={(e) => setServiceType(e.target.value)}
-          className="rounded border px-3 py-2 text-sm"
+          className={fieldClass}
         >
           {offeredServices.map((s) => (
             <option key={s.service_type} value={s.service_type}>
@@ -75,20 +80,20 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Address</label>
+        <label className={labelClass}>Address</label>
         {addresses.length === 0 ? (
-          <p className="text-sm text-red-600">
+          <TrustCallout variant="warning">
             No addresses saved.{' '}
-            <a href="/app/settings/addresses" className="underline">
+            <a href="/app/settings/addresses" className="font-medium underline">
               Add one first.
             </a>
-          </p>
+          </TrustCallout>
         ) : (
           <select
             name="address_id"
             value={addressId}
             onChange={(e) => setAddressId(e.target.value)}
-            className="rounded border px-3 py-2 text-sm"
+            className={fieldClass}
           >
             {addresses.map((a) => (
               <option key={a.id} value={a.id}>
@@ -101,25 +106,25 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
 
       <div className="flex gap-3">
         <div className="flex flex-1 flex-col gap-1">
-          <label className="text-sm font-medium">Date</label>
+          <label className={labelClass}>Date</label>
           <input
             type="date"
             name="date"
             value={date}
             min={new Date().toISOString().split('T')[0]}
             onChange={(e) => setDate(e.target.value)}
-            className="rounded border px-3 py-2 text-sm"
+            className={fieldClass}
             required
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium">Start time</label>
+          <label className={labelClass}>Start time</label>
           <input
             type="time"
             name="time"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            className="rounded border px-3 py-2 text-sm"
+            className={fieldClass}
             required
           />
         </div>
@@ -128,14 +133,14 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
       <input type="hidden" name="start_at" value={startAt} />
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">
+        <label className={labelClass}>
           Duration{minHours > 2 ? ` (${minHours}hr minimum for this tier)` : ''}
         </label>
         <select
           name="duration_hours"
           value={effectiveDuration}
           onChange={(e) => setDuration(Number(e.target.value))}
-          className="max-w-xs rounded border px-3 py-2 text-sm"
+          className={`${fieldClass} max-w-xs`}
         >
           {DURATION_OPTIONS.filter((d) => d >= minHours).map((d) => (
             <option key={d} value={d}>
@@ -146,19 +151,20 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Notes for cleaner (optional)</label>
+        <label className={labelClass}>Notes for cleaner (optional)</label>
         <textarea
           name="customer_notes"
           rows={3}
           maxLength={500}
           placeholder="Key under mat, dog is friendly, focus on kitchen…"
-          className="rounded border px-3 py-2 text-sm"
+          className={fieldClass}
         />
       </div>
 
-      <div className="rounded border bg-zinc-50 p-4 text-sm">
-        <p className="mb-2 font-medium">Price summary</p>
-        <div className="flex flex-col gap-1 text-zinc-600">
+      {/* Price summary card */}
+      <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 text-sm shadow-tier1">
+        <p className="mb-3 font-semibold text-neutral-900">Price summary</p>
+        <div className="flex flex-col gap-1.5 text-neutral-600">
           <div className="flex justify-between">
             <span>
               {fmtPrice(hourlyRate)}/hr × {effectiveDuration}hr
@@ -169,30 +175,22 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
             <span>PureTask service fee (20%)</span>
             <span>{fmtPrice(platformFee)}</span>
           </div>
-          <div className="mt-1 flex justify-between border-t pt-1 font-medium text-zinc-900">
+          <div className="mt-2 flex justify-between border-t border-neutral-200 pt-2 font-semibold text-neutral-900">
             <span>Total</span>
             <span>{fmtPrice(total)}</span>
           </div>
         </div>
       </div>
 
-      {state.error && <p className="rounded bg-red-50 p-3 text-sm text-red-700">{state.error}</p>}
+      {state.error && <TrustCallout variant="caution">{state.error}</TrustCallout>}
 
       <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="rounded border px-5 py-2 text-sm"
-        >
+        <Button type="button" variant="secondary" onClick={() => router.back()}>
           Back
-        </button>
-        <button
-          type="submit"
-          disabled={isPending || addresses.length === 0 || !date}
-          className="rounded bg-black px-6 py-2 text-sm text-white disabled:opacity-60"
-        >
+        </Button>
+        <Button type="submit" disabled={isPending || addresses.length === 0 || !date}>
           {isPending ? 'Requesting…' : 'Request booking'}
-        </button>
+        </Button>
       </div>
     </form>
   );

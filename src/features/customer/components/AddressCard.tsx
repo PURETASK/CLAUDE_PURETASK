@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTransition } from 'react';
 
 import { deleteAddressAction, setDefaultAddressAction } from '@/features/customer/actions';
+import { Badge } from '@/components/ui/badge';
 
 type Address = {
   id: string;
@@ -26,34 +27,32 @@ export const AddressCard = ({ address, isDefault, onChanged }: Props) => {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <div className="flex items-start justify-between rounded border p-4">
+    <div className="flex items-start justify-between rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1">
       <div className="flex flex-col gap-0.5 text-sm">
         <div className="flex items-center gap-2">
-          <p className="font-medium">{address.label || 'Untitled'}</p>
-          {isDefault ? (
-            <span className="rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-700">Default</span>
-          ) : null}
+          <p className="font-semibold text-neutral-900">{address.label || 'Untitled'}</p>
+          {isDefault && <Badge variant="brand">Default</Badge>}
         </div>
-        <p>
+        <p className="text-neutral-700">
           {address.street_1}
           {address.street_2 ? `, ${address.street_2}` : ''}
         </p>
-        <p className="text-zinc-500">
+        <p className="text-neutral-500">
           {address.city}, {address.state} {address.zip_code}
         </p>
-        {address.access_instructions ? (
-          <p className="mt-1 text-xs text-zinc-400">{address.access_instructions}</p>
-        ) : null}
+        {address.access_instructions && (
+          <p className="mt-1 text-xs text-neutral-400">{address.access_instructions}</p>
+        )}
       </div>
 
       <div className="ml-4 flex shrink-0 gap-2">
         <Link
           href={`/settings/addresses/${address.id}`}
-          className="rounded border px-3 py-1 text-sm"
+          className="rounded-lg border border-neutral-200 px-3 py-1 text-sm font-medium text-neutral-700 transition-all duration-control hover:border-brand-600 hover:text-brand-600"
         >
           Edit
         </Link>
-        {!isDefault ? (
+        {!isDefault && (
           <button
             type="button"
             onClick={() =>
@@ -62,12 +61,12 @@ export const AddressCard = ({ address, isDefault, onChanged }: Props) => {
                 onChanged();
               })
             }
-            className="rounded border px-3 py-1 text-sm"
+            className="rounded-lg border border-neutral-200 px-3 py-1 text-sm font-medium text-neutral-600 transition-all duration-control hover:border-brand-600 hover:text-brand-600 disabled:opacity-50"
             disabled={isPending}
           >
             Set default
           </button>
-        ) : null}
+        )}
         <button
           type="button"
           onClick={() =>
@@ -77,7 +76,7 @@ export const AddressCard = ({ address, isDefault, onChanged }: Props) => {
             })
           }
           disabled={isPending}
-          className="rounded border border-red-200 px-3 py-1 text-sm text-red-600 disabled:opacity-60"
+          className="rounded-lg border border-error/30 px-3 py-1 text-sm font-medium text-error transition-all duration-control hover:bg-error-light disabled:opacity-50"
         >
           Delete
         </button>

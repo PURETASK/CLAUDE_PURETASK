@@ -10,6 +10,8 @@ import {
   type PhotoPolicyValues,
   photoPolicySchema,
 } from '@/features/customer/validation';
+import { Button } from '@/components/ui/button';
+import { TrustCallout } from '@/components/ui/trust-callout';
 
 import { RoomMultiSelect } from './RoomMultiSelect';
 import { WaiverModal } from './WaiverModal';
@@ -79,37 +81,31 @@ export const PhotoPolicyForm = ({ defaultValues }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex max-w-xl flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex max-w-xl flex-col gap-5">
         <fieldset className="flex flex-col gap-2">
-          <legend className="text-sm font-medium">Photo policy</legend>
+          <legend className="mb-1 text-sm font-semibold text-neutral-700">Photo policy</legend>
 
-          <label className="rounded border p-3 text-sm">
-            <input type="radio" value="default" {...register('photo_policy')} className="mr-2" />
-            Default (allow standard completion photos)
-          </label>
-
-          <label className="rounded border p-3 text-sm">
-            <input
-              type="radio"
-              value="skip_named_rooms"
-              {...register('photo_policy')}
-              className="mr-2"
-            />
-            Skip named rooms
-          </label>
-
-          <label className="rounded border p-3 text-sm">
-            <input
-              type="radio"
-              value="skip_all_with_waiver"
-              {...register('photo_policy')}
-              className="mr-2"
-            />
-            Skip all photos (requires waiver)
-          </label>
+          {[
+            { value: 'default', label: 'Default (allow standard completion photos)' },
+            { value: 'skip_named_rooms', label: 'Skip named rooms' },
+            { value: 'skip_all_with_waiver', label: 'Skip all photos (requires waiver)' },
+          ].map((opt) => (
+            <label
+              key={opt.value}
+              className="flex cursor-pointer items-center gap-3 rounded-xl border border-neutral-200 p-3 text-sm text-neutral-700 transition-colors duration-control has-[:checked]:border-brand-600 has-[:checked]:bg-brand-600/5"
+            >
+              <input
+                type="radio"
+                value={opt.value}
+                {...register('photo_policy')}
+                className="h-4 w-4 accent-brand-600"
+              />
+              {opt.label}
+            </label>
+          ))}
         </fieldset>
 
-        {selectedPolicy === 'skip_named_rooms' ? (
+        {selectedPolicy === 'skip_named_rooms' && (
           <>
             <RoomMultiSelect
               selectedRooms={selectedRooms}
@@ -117,32 +113,26 @@ export const PhotoPolicyForm = ({ defaultValues }: Props) => {
               otherRoom={otherRoom}
               onOtherRoomChange={setOtherRoom}
             />
-            {errors.skip_photo_rooms ? (
-              <p className="text-sm text-red-600">{errors.skip_photo_rooms.message}</p>
-            ) : null}
+            {errors.skip_photo_rooms && (
+              <p className="text-xs text-error">{errors.skip_photo_rooms.message}</p>
+            )}
           </>
-        ) : null}
+        )}
 
-        {selectedPolicy === 'skip_all_with_waiver' ? (
-          <p className="rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+        {selectedPolicy === 'skip_all_with_waiver' && (
+          <TrustCallout variant="warning">
             You must explicitly accept the waiver before saving this option.
-          </p>
-        ) : null}
+          </TrustCallout>
+        )}
 
-        {errors.root ? (
-          <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.root.message}</p>
-        ) : null}
-        {state.ok && state.message ? (
-          <p className="rounded bg-green-50 p-3 text-sm text-green-700">{state.message}</p>
-        ) : null}
+        {errors.root && <TrustCallout variant="caution">{errors.root.message}</TrustCallout>}
+        {state.ok && state.message && (
+          <TrustCallout variant="success">{state.message}</TrustCallout>
+        )}
 
-        <button
-          type="submit"
-          disabled={isPending}
-          className="self-start rounded bg-black px-4 py-2 text-sm text-white disabled:opacity-60"
-        >
-          {isPending ? 'Saving...' : 'Save policy'}
-        </button>
+        <Button type="submit" disabled={isPending} className="self-start">
+          {isPending ? 'Saving…' : 'Save policy'}
+        </Button>
       </form>
 
       <WaiverModal
