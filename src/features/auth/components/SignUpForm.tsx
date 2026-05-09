@@ -64,7 +64,9 @@ export const SignUpForm = ({ role = 'customer' }: { role?: 'customer' | 'cleaner
         <h1 className="text-2xl font-bold text-neutral-900">
           {role === 'cleaner' ? 'Create cleaner account' : 'Create your account'}
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">Join PureTask — it&apos;s free to get started</p>
+        <p className="mt-1 text-sm text-neutral-500">
+          Join PureTask — it&apos;s free to get started
+        </p>
       </div>
 
       <input type="hidden" {...register('role')} value={role} />
@@ -93,12 +95,8 @@ export const SignUpForm = ({ role = 'customer' }: { role?: 'customer' | 'cleaner
         {...register('confirmPassword')}
       />
 
-      {errors.root && (
-        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
-      )}
-      {state.ok && state.message && (
-        <TrustCallout variant="success">{state.message}</TrustCallout>
-      )}
+      {errors.root && <TrustCallout variant="caution">{errors.root.message}</TrustCallout>}
+      {state.ok && state.message && <TrustCallout variant="success">{state.message}</TrustCallout>}
 
       <Button type="submit" disabled={isPending} className="w-full">
         {isPending ? 'Creating account…' : 'Create account'}

@@ -37,7 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {helper && !error && <span className="text-xs text-neutral-500">{helper}</span>}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';

@@ -42,8 +42,7 @@ export default function LandingPage() {
             Northern California
           </p>
           <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight">
-            Home cleaning you can{' '}
-            <span className="text-accent-400">actually trust</span>
+            Home cleaning you can <span className="text-accent-400">actually trust</span>
           </h1>
           <p className="mb-10 text-lg text-white/80">
             Background-checked cleaners, GPS-verified arrivals, photo proof of every job. Pay only
@@ -95,7 +94,10 @@ export default function LandingPage() {
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {TRUST.map((t) => (
-              <div key={t.label} className="rounded-2xl bg-white p-6 shadow-tier1 transition-shadow duration-card hover:shadow-tier2">
+              <div
+                key={t.label}
+                className="rounded-2xl bg-white p-6 shadow-tier1 transition-shadow duration-card hover:shadow-tier2"
+              >
                 <p className="mb-3 text-3xl">{t.icon}</p>
                 <p className="mb-1 font-semibold text-neutral-900">{t.label}</p>
                 <p className="text-sm text-neutral-500">{t.sub}</p>

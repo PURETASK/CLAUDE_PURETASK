@@ -2,33 +2,35 @@ import { type ReactNode } from 'react';
 
 export type CalloutVariant = 'info' | 'success' | 'warning' | 'caution';
 
-const STYLES: Record<CalloutVariant, { bg: string; border: string; heading: string; body: string }> =
-  {
-    info: {
-      bg: 'bg-brand-600/5',
-      border: 'border-brand-600/20',
-      heading: 'text-brand-900',
-      body: 'text-brand-600',
-    },
-    success: {
-      bg: 'bg-success-light',
-      border: 'border-success/30',
-      heading: 'text-success-dark',
-      body: 'text-success',
-    },
-    warning: {
-      bg: 'bg-warning-light',
-      border: 'border-warning/30',
-      heading: 'text-warning-dark',
-      body: 'text-warning',
-    },
-    caution: {
-      bg: 'bg-error-light',
-      border: 'border-error/30',
-      heading: 'text-error-dark',
-      body: 'text-error',
-    },
-  };
+const STYLES: Record<
+  CalloutVariant,
+  { bg: string; border: string; heading: string; body: string }
+> = {
+  info: {
+    bg: 'bg-brand-600/5',
+    border: 'border-brand-600/20',
+    heading: 'text-brand-900',
+    body: 'text-brand-600',
+  },
+  success: {
+    bg: 'bg-success-light',
+    border: 'border-success/30',
+    heading: 'text-success-dark',
+    body: 'text-success',
+  },
+  warning: {
+    bg: 'bg-warning-light',
+    border: 'border-warning/30',
+    heading: 'text-warning-dark',
+    body: 'text-warning',
+  },
+  caution: {
+    bg: 'bg-error-light',
+    border: 'border-error/30',
+    heading: 'text-error-dark',
+    body: 'text-error',
+  },
+};
 
 export interface TrustCalloutProps {
   variant?: CalloutVariant;

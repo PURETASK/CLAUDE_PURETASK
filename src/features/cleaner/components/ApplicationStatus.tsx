@@ -2,10 +2,7 @@ import { Badge, type BadgeVariant } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { TrustCallout } from '@/components/ui/trust-callout';
 
-const STATE_LABELS: Record<
-  string,
-  { label: string; variant: BadgeVariant; desc: string }
-> = {
+const STATE_LABELS: Record<string, { label: string; variant: BadgeVariant; desc: string }> = {
   submitted: {
     label: 'Under review',
     variant: 'warning',

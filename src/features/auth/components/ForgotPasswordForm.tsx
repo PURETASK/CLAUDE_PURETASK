@@ -69,12 +69,8 @@ export const ForgotPasswordForm = () => {
         {...register('email')}
       />
 
-      {errors.root && (
-        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
-      )}
-      {state.ok && state.message && (
-        <TrustCallout variant="success">{state.message}</TrustCallout>
-      )}
+      {errors.root && <TrustCallout variant="caution">{errors.root.message}</TrustCallout>}
+      {state.ok && state.message && <TrustCallout variant="success">{state.message}</TrustCallout>}
 
       <Button type="submit" disabled={isPending} className="w-full">
         {isPending ? 'Sending…' : 'Send reset link'}

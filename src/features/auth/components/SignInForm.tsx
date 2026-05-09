@@ -71,9 +71,7 @@ export const SignInForm = () => {
         {...register('password')}
       />
 
-      {errors.root && (
-        <TrustCallout variant="caution">{errors.root.message}</TrustCallout>
-      )}
+      {errors.root && <TrustCallout variant="caution">{errors.root.message}</TrustCallout>}
 
       <Button type="submit" disabled={isPending} className="w-full">
         {isPending ? 'Signing in…' : 'Sign in'}

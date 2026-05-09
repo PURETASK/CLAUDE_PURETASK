@@ -9,7 +9,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             PureTask
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium text-neutral-600 sm:flex">
-            <Link href="/how-it-works" className="transition-colors duration-micro hover:text-brand-600">
+            <Link
+              href="/how-it-works"
+              className="transition-colors duration-micro hover:text-brand-600"
+            >
               How it works
             </Link>
             <Link href="/pricing" className="transition-colors duration-micro hover:text-brand-600">
@@ -18,7 +21,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <Link href="/faq" className="transition-colors duration-micro hover:text-brand-600">
               FAQ
             </Link>
-            <Link href="/for-cleaners" className="transition-colors duration-micro hover:text-brand-600">
+            <Link
+              href="/for-cleaners"
+              className="transition-colors duration-micro hover:text-brand-600"
+            >
               For cleaners
             </Link>
           </nav>
@@ -98,7 +104,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
               <p className="mb-3 text-sm font-semibold text-neutral-900">Legal</p>
               <ul className="space-y-2 text-sm text-neutral-500">
                 <li>
-                  <Link href="/legal/photography-policy" className="transition-colors hover:text-brand-600">
+                  <Link
+                    href="/legal/photography-policy"
+                    className="transition-colors hover:text-brand-600"
+                  >
                     Photo policy
                   </Link>
                 </li>

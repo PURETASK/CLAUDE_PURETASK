@@ -1,0 +1,407 @@
+PureTask Art Theme & Art Style Guide V2.1
+PureTask
+Art Theme & Art Style Guide
+Version 2.1 - Expanded Production Guide
+Brand identity, product expression, design tokens, component standards, mascot usage, motion behavior, accessibility,
+and implementation rules.
+Prepared for Primary use Core standard
+PureTask
+Product, brand, marketing, motion, dev
+handoff
+Make every experience feel clear,
+premium, and under control
+This V2.1 edition converts the earlier brand vision into a more usable production system. It adds concrete recommendations
+for typography, color tokens, spacing, elevation, motion, component behavior, responsive patterns, and governance so
+PureTask can scale consistently across product and marketing.
+PureTask Art Theme & Art Style Guide V2.1
+Contents
+1. 1. Scope and intended use
+2. 2. Brand essence and positioning
+3. 3. The official theme: Clean Aero Glow
+4. 4. Brand architecture and asset hierarchy
+5. 5. Typography system
+6. 6. Color system and design tokens
+7. 7. Shape language, spacing, and elevation
+8. 8. Material and lighting system
+9. 9. Dash the hummingbird: model and usage rules
+10. 10. Iconography system
+11. 11. Product expression system
+12. 12. Component standards
+13. 13. Motion and interaction system
+14. 14. Accessibility and responsive behavior
+15. 15. Print, physical reproduction, and simplified marks
+16. 16. Implementation, governance, and handoff
+17. 17. Expanded do / don't guidance
+18. 18. Final positioning statement
+Quick Reference
+Official theme Primary mark Companion asset Product promise
+Clean Aero Glow P-house logo Dash the hummingbird
+Trusted, polished task
+execution with clear structure
+PureTask Art Theme & Art Style Guide V2.1
+1. Scope and Intended Use
+This guide defines the official visual system for PureTask across product, onboarding, booking flows, marketing, motion,
+social media, print, and implementation handoff. It is designed to keep the PureTask brand consistent as the company
+grows from concept-stage identity into a trustworthy service platform.
+Use this document as an operating standard, not as a loose mood board. When a team member must choose between
+a visually interesting option and a clearer, more trustworthy option, PureTask should always choose the clearer, more
+trustworthy option.
+Primary users
+Product designers, brand designers, marketers, illustrators,
+motion designers, developers, agencies, and future
+collaborators.
+Applies to
+App UI, web UI, onboarding flows, booking flow, ads, social
+content, decks, print collateral, uniforms, and support
+materials.
+Decision rule Every visual choice should increase trust, reduce friction, and
+make the service feel easier to understand.
+2. Brand Essence and Positioning
+PureTask is a premium home-services platform that should feel like clean service + trusted technology + effortless
+execution. The brand should communicate that life gets easier, details get organized, and the user can move forward
+with confidence.
+PureTask is not a discount maid-service brand, not a cluttered marketplace, and not a cold operations dashboard. It
+should feel premium, human, calm, practical, and operationally strong.
+PureTask is Premium but practical; modern but human; efficient but calm;
+polished without feeling fake.
+PureTask is not Cheap, chaotic, goofy, over-corporate, generic, or mascot-first.
+Emotional outcomes Relief, trust, clarity, confidence, calm momentum.
+Brand shorthand A polished promise: fast, clear, premium, and under control.
+3. The Official Theme: Clean Aero Glow
+PureTask Art Theme & Art Style Guide V2.1
+Clean Aero Glow is the official PureTask visual theme. It combines three non-negotiable brand characteristics: polished
+freshness, streamlined motion, and a luminous premium finish. The theme should always support trust and usability
+before spectacle.
+Layer Meaning How it shows up Failure mode to avoid
+Clean Fresh, refined, readable,
+uncluttered
+White or near-white surfaces,
+clear hierarchy, calm spacing,
+controlled information density
+Sterile emptiness or generic
+white-label minimalism
+Aero Fast, light, guided, frictionless Directional layouts, elegant
+transitions, curved movement,
+low-friction flows
+Aggressive speed, sharp
+futurism, visual rush
+Glow Premium, softly luminous,
+polished
+Blue-cyan gradients, subtle
+highlights, success glow,
+restrained sparkle
+Neon overload, toy-like gloss,
+decorative excess
+4. Brand Architecture and Asset Hierarchy
+PureTask works best as a system with shared DNA, not as one overloaded logo. The brand should separate the
+company mark, the companion asset, and the shared motifs so each can play a clear role.
+Primary mark
+The glossy P-house mark is the company anchor. Use it for app
+icon, navigation, billing, legal, invoices, trust badges, print
+identifiers, and small-format brand recognition.
+Companion asset
+Dash the hummingbird adds motion, care, precision, and
+delight. Use Dash in onboarding, loading, success states,
+selected campaign art, and premium storytelling moments.
+Shared motifs Sparkle, motion trail, white highlights, blue-cyan gradients,
+rounded depth, and soft glow connect the system.
+Hierarchy rule The logo leads official identity. Dash supports emotional
+richness. Shared motifs tie everything together.
+ Logo only: navigation, app icon, invoices, legal, trust-focused surfaces, uniforms.
+ Dash only: onboarding delight, social storytelling, motion moments, hero illustrations.
+ Logo + Dash: homepage hero, premium campaigns, splash screens, keynote visuals.
+ Do not force Dash into every logo instance, and do not let the mascot outrank the company mark.
+5. Typography System
+PureTask Art Theme & Art Style Guide V2.1
+Typography controls tone, structure, and trust. PureTask typography should feel modern, clear, premium, and highly
+readable. It should never feel gimmicky, flimsy, or overly futuristic.
+Recommendation: use one primary sans-serif family across product and most brand use. Inter is the strongest default
+recommendation for product and digital surfaces because it is readable at UI sizes and scales cleanly. Use a system
+fallback stack when needed. If a display accent is desired in campaigns, use it sparingly and keep it in the same modern
+sans family lane.
+Role Size Weight Line Use case
+Display 48-64 700 1.0-1.05 Hero titles and cover
+moments
+H1 36-44 700 1.05-1.1 Major page titles
+H2 28-32 600 1.1 Section openings
+H3 22-24 600 1.15 Subsections and cards
+Body 16 400 1.45-1.55 Primary paragraph text
+Label 14 500 1.3-1.4 Inputs and metadata
+labels
+Helper 12-13 400 1.35-1.45 Hints, secondary
+guidance, legal
+microcopy
+Metric 18-28 600-700 1.1 Prices, credits, time,
+totals, % complete
+ Headings should feel confident, not loud.
+ Body copy should remain highly readable and calm.
+ Metrics such as credits, totals, and time windows should use stronger weight and stronger contrast.
+ Do not mix too many type families or novelty display fonts into the system.
+6. Color System and Design Tokens
+The PureTask palette should remain tightly controlled around blue, cyan, white, and supporting neutrals. The brand
+should own blue-cyan strongly while using semantic colors only for function and clarity.
+Token Name Hex Use
+Brand-900 Deep Trust Blue #0A3B78 Navigation, trust anchors,
+formal headers, official logo
+PureTask Art Theme & Art Style Guide V2.1
+depth
+Brand-600 Electric Service Blue #169AF5 Primary CTA, active states,
+progress, interactive energy
+Accent-400 Clean Aqua #40E8E0 Glow, gradients, premium
+highlight, freshness accents
+Base-000 Crisp White #FFFFFF Cards, icon cutouts, contrast,
+breathing room
+Navy-950 Anchor Navy #072A55 Dark hero backgrounds,
+contrast surfaces, premium
+depth
+Supporting UI Tokens
+Neutral ramp
+50 #F8FBFE, 100 #F1F6FB, 200 #E2EAF2, 300 #CBD5E1, 400
+#94A3B8, 500 #64748B, 600 #475569, 700 #334155, 800
+#1E293B, 900 #0F172A
+Semantic success Base #16A34A, light background #DCFCE7, dark text #166534
+Semantic warning Base #D97706, light background #FEF3C7, dark text #92400E
+Semantic error Base #DC2626, light background #FEE2E2, dark text #991B1B
+Focus ring Use Brand-600 at 2 px with 10-20% outer glow where
+appropriate
+Surface tiers Canvas: Neutral 50-100; Card: White; Elevated card: White +
+subtle shadow; Overlay: Navy at 40-60% opacity
+Approved Gradient Recipes
+ Hero gradient: #0A3B78 -> #169AF5 -> #40E8E0
+ Button gradient: #0A3B78 -> #169AF5
+ Premium icon gradient: #169AF5 -> #40E8E0 with restrained white highlight
+ Confirmation glow: white core with cyan halo at low opacity
+ Do not introduce unrelated rainbow gradients or yellow-dominant hero schemes.
+7. Shape Language, Spacing, and Elevation
+PureTask Art Theme & Art Style Guide V2.1
+PureTask forms should feel polished, comfortable, and easy to read at a glance. Rounded confidence is central to the
+system. Shapes should feel safe to engage with, slightly buoyant, and intentionally simplified.
+Corner radius family 8, 12, 16, 24, 32. Use smaller radii for compact controls and
+larger radii for cards, hero surfaces, and onboarding shells.
+Spacing scale
+4, 8, 12, 16, 24, 32, 40, 48, 64. Product spacing should feel
+generous enough to look premium but tight enough to stay
+operational.
+Silhouette rule Prefer broad readable shapes, soft tapering, and clean
+negative space. Avoid jagged or hostile geometry.
+Elevation tiers Tier 1 subtle: 0 2 8 rgba(7,42,85,.08); Tier 2 medium: 0 8 24
+rgba(7,42,85,.10); Tier 3 hero: 0 14 36 rgba(7,42,85,.16).
+ Do not let text sit too close to control edges.
+ Use consistent internal padding in cards and tables.
+ Premium feel comes from clean spacing and hierarchy, not from cramming more detail into a smaller space.
+8. Material and Lighting System
+PureTask blends soft 3D polish with app-native refinement. The material language should support trust and finish, not
+novelty. Use depth intentionally so the brand feels elevated but still usable.
+Material tier 1: Hero gloss
+Use for homepage hero art, campaigns, concept sheets, and
+premium storytelling visuals. Stronger gradients and richer
+highlights are acceptable here.
+Material tier 2: Product gloss
+Use for icon treatments, onboarding art, confirmation states,
+and selected branded UI moments. Keep depth lighter than
+hero art.
+Material tier 3: Flat fallback Use for print, embroidery, small icons, monochrome surfaces,
+and reproduction-constrained environments.
+Lighting behavior
+Favor bright upper surfaces, soft rim light, controlled
+reflections, and clean optimistic contrast. Never let the light
+feel greasy, dirty, or dramatic by default.
+PureTask Art Theme & Art Style Guide V2.1
+9. Dash the Hummingbird: Model and Usage Rules
+Dash is PureTask's companion character and motion symbol. Dash should signal precision, speed, attentiveness, and
+lightly optimistic service energy without turning the brand into a cartoon.
+Dash should always remain recognizable by a sleek hummingbird silhouette, rounded aerodynamic body, elegant
+pointed beak, intelligent eye treatment, and wing geometry that feels directional and refined.
+Approved emotional range Focused, attentive, confident, graceful, calm, lightly uplifting.
+Disallowed emotional range Goofy, meme-like, slapstick, angry, sleepy, chaotic, juvenile.
+Core variants Hero Dash, onboarding Dash, micro-icon Dash, silhouette
+Dash, motion-trail Dash, print-safe Dash.
+Proportion guidance Keep the head compact, body rounded but not puffy, beak
+elegant not aggressive, and wings readable at small sizes.
+Animation logic
+Dash may glide, sweep, lead the eye, resolve into sparkle, or
+support a success-state transition. Dash should not bounce
+wildly or dominate every interface.
+PureTask Art Theme & Art Style Guide V2.1
+Dash Usage Matrix
+ Use Dash in onboarding, loading, confirmation, social storytelling, campaign hero art, and selected success moments.
+ Reduce Dash detail for small contexts. Preserve silhouette first.
+ Do not distort Dash proportions, add comic facial expressions, or cover core product screens with mascot clutter.
+10. Iconography System
+PureTask icons should look like small members of the same family as the logo: rounded, readable, stable, and slightly
+polished. Icons must prioritize silhouette first and detail second.
+Grid logic
+Use a consistent icon grid and consistent corner radius
+behavior. Product icons should feel cohesive before they feel
+expressive.
+Construction Favor filled or hybrid-filled icons for core navigation and
+service concepts. Use outlines sparingly and consistently.
+Line weight Avoid ultra-thin strokes. Icons should remain readable at small
+size and high-density UI conditions.
+Core families Home, booking, calendar, time, location, trust, payment,
+support, extras, cleaning focus areas, pets, reliability.
+ Do not mix multiple unrelated icon styles in product.
+ Do not rely on tiny interior detail that disappears at small sizes.
+ Keep icon metaphors simple and consistent.
+11. Product Expression System
+PureTask product design should feel like a guided concierge flow rather than a generic form-builder interface. The
+product must reduce uncertainty, communicate progress, and make the user feel that everything is under control.
+Page Shell and Layout
+ Use a soft blue-gray or near-white page canvas with subtle ambient glow.
+ Favor centered step-based layouts for onboarding and booking.
+ Use one primary card per step whenever possible.
+ Reserve right-side summary panels for review, price, and trust-critical contexts.
+ Keep top chrome minimal during focused flows.
+Onboarding and Booking Flow Rules
+Flow structure
+Welcome -> Contact -> Home details -> Access/Parking/Pets ->
+Preferences -> Review profile -> Service -> Date/Time ->
+Scope/Extras -> Cleaner match -> Review/Confirm ->
+Payment/Trust -> Confirmation
+PureTask Art Theme & Art Style Guide V2.1
+Progress behavior
+Every major step should show visible progress with step count
+and percent or equivalent. The user should always know
+where they are.
+Input grouping Only ask for one category of information per step. Do not
+overload a single screen with unrelated questions.
+Trust moments
+Price summaries, holds, approvals, actual hours, and next
+steps must be visually clear and intentionally framed.
+Repeat use
+Store home profile data and preferences so future bookings
+feel faster and smarter.
+Reference Product Direction
+The current PureTask reference screens already point in the right direction: centered onboarding cards, progress bars,
+strong titles, helper text, structured address capture, access instructions, cleaning preferences, and a review surface
+with a side price summary. Those patterns should be treated as official product DNA and refined into the final system.
+Reference layout patterns: home-details capture, access notes, preferences, and review/price-summary behavior.
+12. Component Standards
+The component layer is where brand consistency turns into product quality. Components should feel related by
+geometry, spacing, contrast, and interaction logic.
+PureTask Art Theme & Art Style Guide V2.1
+Component Default treatment Key states Rules
+Primary button Brand-900/600 fill, white text, 12-
+16 radius
+hover, active, disabled, focus High contrast, strong tap area,
+semibold label
+Secondary button White or neutral surface, blue
+text/border
+hover, active, disabled Use for alternate actions, not
+major conversion
+Text input White fill, subtle border,
+rounded, label above
+focus, error, disabled, filled Never use placeholder as only
+label
+Choice chip Rounded capsule, neutral idle,
+blue selected
+hover, selected, disabled Used for bedrooms, bathrooms,
+priorities, extras
+Progress bar Thin rounded track, blue-cyan fill active, complete Always pair with step label or
+percent
+Summary card White card with stronger shadow
+and border hierarchy
+sticky, stacked, mobile-collapse Use for price/trust/booking
+review
+Trust callout Soft tinted background, icon +
+short explanation
+info, caution, approval required Keep copy concise and direct
+Service card Large selectable tile with title,
+description, optional price hint
+idle, hover, selected Prefer cards over dropdown for
+service choice
+ Maintain generous vertical padding so components never look cramped.
+ Use helper text only when it improves clarity; avoid paragraph-heavy forms.
+ On mobile, stack summary content cleanly rather than shrinking it into unusable sidebars.
+13. Motion and Interaction System
+Motion in PureTask should reinforce clarity, confidence, and premium flow. Motion is not decorative filler. It should
+guide the eye, show change, and reward completion without becoming noisy.
+Core motion verbs Glide, sweep, trail, resolve, settle.
+Timing guidance
+Micro hover 120-180 ms; control transitions 180-260 ms;
+card/page reveals 280-420 ms; confirmation moments 400-
+700 ms.
+Easing Prefer soft ease-out and smooth deceleration. Avoid spring
+chaos unless carefully tuned.
+PureTask Art Theme & Art Style Guide V2.1
+Dash motion Use Dash for premium moments such as onboarding, loading,
+or confirmation. Keep Dash brief and elegant.
+State feedback
+Buttons, chips, and summaries should show clean
+hover/focus/active feedback so the interface feels alive and
+legible.
+14. Accessibility and Responsive Behavior
+Accessibility is part of the PureTask trust promise. Premium design is incomplete if users cannot read, navigate, or
+understand it easily.
+Contrast
+Critical content such as prices, totals, dates, CTA labels, and
+warnings must meet readable contrast standards.
+Focus states
+Every interactive control needs a visible keyboard focus
+treatment. Hover cannot be the only signal.
+Touch targets Buttons, chips, toggles, and selectors must remain comfortable
+on mobile and tablet.
+Reduced motion Use simplified motion where users prefer less animation.
+Avoid making essential feedback animation-dependent.
+Responsive rules
+Desktop may use centered cards + sticky summary. Tablet
+reduces columns. Mobile stacks into a single flow with large
+tap targets and collapsed summaries.
+ Do not use color alone to indicate error, success, or state.
+ Do not shrink important controls below practical touch size.
+ Keep helper text readable and close to the control it explains.
+15. Print, Physical Reproduction, and Simplified Marks
+PureTask will need to work beyond screens. Reproduction rules should preserve recognizability even when gloss, glow,
+and gradients are removed.
+Required variants Full-color premium mark, flat-color mark, monochrome mark,
+dark-background mark, embroidery-safe mark.
+Simplification rule Preserve silhouette and structure first. Remove glow and
+complex highlight behavior before sacrificing recognizability.
+PureTask Art Theme & Art Style Guide V2.1
+Physical use cases Uniforms, leave-behinds, cards, stickers, signage, printed
+invoices, internal docs, partner packs.
+Minimum standard
+Small-format use should remain crisp and readable. If the
+premium treatment muddies the mark, switch to simplified
+output.
+16. Implementation, Governance, and Handoff
+A strong visual system only scales if the organization knows how to maintain it. Implementation quality is part of brand
+quality.
+Source of truth
+Maintain one current design-system source for marks, Dash
+variants, gradients, tokens, components, and approved
+exports.
+Asset packaging Provide SVG, PNG, PDF, transparent versions, dark-background
+variants, and simplified print variants.
+Naming conventions File names should identify asset, variant, color mode, and
+version clearly.
+Approval path Major brand changes should be reviewed against this guide
+before adoption across product or marketing.
+AI-generated assets All AI-assisted outputs should be reviewed for geometry drift,
+color drift, mascot drift, and trust-tone consistency before use.
+Recommended Handoff Package
+ Logo pack: primary, simplified, monochrome, dark-background, print-safe.
+ Dash pack: hero, onboarding, small icon, silhouette, motion key art.
+ Token pack: colors, spacing, radii, shadows, motion timings, typography roles.
+ Component pack: buttons, inputs, chips, summaries, trust banners, service cards, progress bars.
+ Reference pack: approved screenshots and hero examples.
+17. Expanded Do / Don't Guidance
+Do Don't
+Keep the palette tight and the gradients smooth. Do not introduce random colors that weaken blue-cyan
+ownership.
+PureTask Art Theme & Art Style Guide V2.1
+Use sparkle as a sign of completion or refined delight. Do not use sparkle as visual confetti.
+Let the logo stay simple and recognizable. Do not force Dash into every mark.
+Use Dash to add motion and warmth in selected moments. Do not make Dash goofy, juvenile, or louder than the company
+mark.
+Design every screen so the user feels under control. Do not crowd forms or hide trust-critical information.
+Use glow to support emphasis and premium finish. Do not flood the interface with glow until readability suffers.
+Build environments that feel bright, believable, and calm. Do not drift into generic maid-service clichés or cold B2B sterility.
+18. Final Positioning Statement
+PureTask should always look like a polished promise: fast, clear, premium, reassuring, and fully in control. The brand
+should make people feel that help is already organized, details are already handled, and service will be delivered with
+confidence and care.
+Every visual choice in PureTask should strengthen trust, reduce friction, and make booking and managing home service
+feel easier. If a design choice weakens that outcome, it is off-brand.
+PureTask V2.1 - Expanded Production Guide
+Built to align branding, product UX, and execution standards into one system.
