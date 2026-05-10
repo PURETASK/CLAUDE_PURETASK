@@ -17,7 +17,7 @@ export default async function NotificationsSettingsPage() {
   const admin = createSupabaseAdminClient();
   const { data: prefs } = await admin
     .from('notification_preferences')
-    .select('sms_enabled, sms_phone')
+    .select('sms_enabled, sms_phone, quiet_hours_enabled, quiet_hours_start_minutes, quiet_hours_end_minutes')
     .eq('user_id', user.id)
     .single();
 
@@ -69,6 +69,39 @@ export default async function NotificationsSettingsPage() {
             currentPhone={prefs?.sms_phone ?? null}
             currentEnabled={prefs?.sms_enabled ?? false}
           />
+        </div>
+
+        <div className="rounded-xl border border-zinc-100 bg-white p-5">
+          <h2 className="mb-1 text-sm font-semibold text-zinc-800">Quiet hours</h2>
+          <p className="mb-4 text-xs text-zinc-400">No notifications during this window.</p>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-zinc-700">
+                {prefs?.quiet_hours_enabled ? 'Enabled' : 'Disabled'}
+              </span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                  prefs?.quiet_hours_enabled
+                    ? 'bg-green-50 text-green-700'
+                    : 'bg-zinc-100 text-zinc-500'
+                }`}
+              >
+                {prefs?.quiet_hours_enabled ? 'On' : 'Off'}
+              </span>
+            </div>
+            {prefs?.quiet_hours_enabled && (
+              <p className="text-xs text-zinc-500">
+                From{' '}
+                {prefs.quiet_hours_start_minutes !== null
+                  ? `${String(Math.floor((prefs.quiet_hours_start_minutes ?? 0) / 60)).padStart(2, '0')}:${String((prefs.quiet_hours_start_minutes ?? 0) % 60).padStart(2, '0')}`
+                  : '—'}{' '}
+                to{' '}
+                {prefs.quiet_hours_end_minutes !== null
+                  ? `${String(Math.floor((prefs.quiet_hours_end_minutes ?? 0) / 60)).padStart(2, '0')}:${String((prefs.quiet_hours_end_minutes ?? 0) % 60).padStart(2, '0')}`
+                  : '—'}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
