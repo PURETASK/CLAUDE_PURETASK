@@ -21,6 +21,10 @@ export const BACKGROUNDS = {
   support: '/assets/backgrounds/support.png',
   findCity: '/assets/backgrounds/find-city.png',
   cleanersWanted: '/assets/backgrounds/cleaners-wanted.png',
+  cleanerBanner: '/assets/backgrounds/cleaner-banner.webp',
+  walletBg: '/assets/backgrounds/wallet-bg.png',
+  moneyBg: '/assets/backgrounds/money-bg.png',
+  middleEmpty: '/assets/backgrounds/middle-empty.jpg',
 } as const;
 
 export const BRAND = {

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -12,6 +13,7 @@ import {
 } from '@/features/discovery/queries';
 import { parseBrowseSearchParams } from '@/features/discovery/validation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { ICONS } from '@/lib/assets';
 
 type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -31,11 +33,14 @@ const CleanersPage = async ({ searchParams }: PageProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold">Find a Cleaner</h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Browse verified cleaners in Northern California.
-        </p>
+      <div className="flex items-center gap-3">
+        <Image src={ICONS.cleaning} alt="" width={52} height={52} className="rounded-xl drop-shadow-md" />
+        <div>
+          <h1 className="text-2xl font-bold text-neutral-900">Find a Cleaner</h1>
+          <p className="mt-0.5 text-sm text-neutral-500">
+            Browse verified cleaners in Northern California.
+          </p>
+        </div>
       </div>
 
       <Suspense>

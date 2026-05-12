@@ -85,7 +85,7 @@ export default async function NotificationsPage({ searchParams }: Props) {
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image src={ICONS.notification} alt="" width={36} height={36} className="rounded-xl" />
+          <Image src={ICONS.notification} alt="" width={48} height={48} className="rounded-xl drop-shadow-md" />
           <h1 className="text-2xl font-bold text-neutral-900">Notifications</h1>
         </div>
         {unreadCounts.All > 0 && (

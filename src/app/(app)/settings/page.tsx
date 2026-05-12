@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { ProfileHeader } from '@/features/customer/components/ProfileHeader';
 import { SettingsLayout } from '@/features/customer/components/SettingsLayout';
 import { getCurrentUser } from '@/features/customer/queries';
+import { ICONS } from '@/lib/assets';
 
 const SettingsLandingPage = async () => {
   const user = await getCurrentUser();
@@ -13,6 +14,7 @@ const SettingsLandingPage = async () => {
     <SettingsLayout
       title="Customer Settings"
       subtitle="Manage your account profile, service addresses, and privacy preferences."
+      icon={ICONS.settings}
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <ProfileHeader fullName={user.full_name} email={user.email} createdAt={user.created_at} />

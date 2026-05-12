@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { BACKGROUNDS } from '@/lib/assets';
 
 export const metadata: Metadata = {
   title: 'Where We Operate | PureTask',
@@ -30,13 +32,28 @@ const CoveragePage = async () => {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-2xl px-4 py-12 space-y-10">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-neutral-900">Where we operate</h1>
-          <p className="mt-2 text-neutral-600">
-            PureTask is growing — here&apos;s where you can book today and what&apos;s coming next.
-          </p>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <Image
+          src={BACKGROUNDS.findCity}
+          alt="PureTask coverage map"
+          width={1400}
+          height={480}
+          className="h-56 w-full object-cover sm:h-72"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/30 via-neutral-900/50 to-neutral-900/80" />
+        <div className="absolute inset-0 flex items-end">
+          <div className="mx-auto w-full max-w-2xl px-6 pb-10 text-center">
+            <h1 className="text-3xl font-bold text-white">Where we operate</h1>
+            <p className="mt-2 text-neutral-300">
+              PureTask is growing — here&apos;s where you can book today and what&apos;s coming next.
+            </p>
+          </div>
         </div>
+      </section>
+
+      <div className="mx-auto max-w-2xl px-4 py-12 space-y-10">
 
         {activeMetros.length > 0 && (
           <section>

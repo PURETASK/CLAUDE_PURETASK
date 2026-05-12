@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -7,6 +8,7 @@ import { CleanerCard } from '@/features/discovery/components/CleanerCard';
 import { rankBrowseCleaners } from '@/features/discovery/browse-ranking';
 import { getCustomerDiscoveryAnchor, listFavorites } from '@/features/discovery/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { ICONS } from '@/lib/assets';
 
 const FavoritesPage = async () => {
   const supabase = await createSupabaseServerClient();
@@ -26,7 +28,13 @@ const FavoritesPage = async () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-xl font-semibold">Favorite Cleaners</h1>
+        <div className="flex items-center gap-3">
+          <Image src={ICONS.contacts} alt="" width={52} height={52} className="rounded-xl drop-shadow-md" />
+          <div>
+            <h1 className="text-2xl font-bold text-neutral-900">Favorites</h1>
+            <p className="mt-0.5 text-sm text-neutral-500">Your saved cleaners, ready to rebook.</p>
+          </div>
+        </div>
         <Link href="/app/cleaners" className="text-sm font-medium underline">
           Browse cleaners
         </Link>

@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { getMyTickets } from '@/features/support/queries';
+import { BACKGROUNDS, ICONS } from '@/lib/assets';
 
 const STATUS_LABELS: Record<string, string> = {
   open: 'Open',
@@ -25,14 +27,21 @@ export default async function SupportPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Support</h1>
-        <Link
-          href="/app/support/new"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-        >
-          New ticket
-        </Link>
+      {/* Support header with background */}
+      <div className="relative mb-6 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-tier1">
+        <Image src={BACKGROUNDS.support} alt="" fill className="object-cover opacity-30" />
+        <div className="relative z-10 flex items-center justify-between px-6 py-5">
+          <div className="flex items-center gap-3">
+            <Image src={ICONS.message} alt="" width={48} height={48} className="rounded-xl drop-shadow-md" />
+            <h1 className="text-2xl font-bold text-neutral-900">Support</h1>
+          </div>
+          <Link
+            href="/app/support/new"
+            className="rounded-xl bg-gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
+          >
+            New ticket
+          </Link>
+        </div>
       </div>
 
       {tickets.length === 0 ? (
