@@ -1,32 +1,34 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useTransition } from 'react';
 
 import { completeMilestone } from '@/features/onboarding/actions/milestone-actions';
+import { ICONS } from '@/lib/assets';
 
 const SLIDES = [
   {
-    icon: '📊',
+    icon: ICONS.home,
     title: 'Your dashboard & score',
     body: 'Your reliability score (0–100) determines your tier and platform fee. Higher score = lower fee + more bookings.',
   },
   {
-    icon: '📬',
+    icon: ICONS.calendar,
     title: 'How job requests work',
     body: 'When a customer books you, you have 4 hours to accept or decline. Accept fast — top cleaners respond in under 20 minutes.',
   },
   {
-    icon: '📸',
+    icon: ICONS.cleaning,
     title: 'The photo system',
     body: 'Upload before & after photos for each room. Photos protect you in disputes and improve your photo compliance score.',
   },
   {
-    icon: '💰',
+    icon: ICONS.wallet,
     title: 'Earnings & payouts',
     body: 'Customers approve your work and release payment. Funds hit your bank in 1–2 business days via Stripe.',
   },
   {
-    icon: '⭐',
+    icon: ICONS.cleaning2,
     title: 'Tiers & your intro rate',
     body: 'Your first 6 months: 12% platform fee. Reach Proven Specialist (score 70+) to drop to 13%, Top Performer for 11%.',
   },
@@ -57,8 +59,8 @@ export const CleanerPlatformTour = ({ onDone }: Props) => {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-neutral-900/50 p-4 sm:items-center">
       <div className="w-full max-w-sm rounded-3xl border border-neutral-200 bg-white p-8 shadow-tier3">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-brand-600/10 text-3xl">
-          {current.icon}
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-50">
+          <Image src={current.icon} alt="" width={40} height={40} className="object-contain" />
         </div>
 
         <p className="text-center text-xs font-semibold uppercase tracking-wide text-brand-600">
@@ -81,7 +83,7 @@ export const CleanerPlatformTour = ({ onDone }: Props) => {
         <button
           onClick={handleNext}
           disabled={isPending}
-          className="mt-6 w-full rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+          className="mt-6 w-full rounded-xl bg-gradient-brand py-3 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110 disabled:opacity-50"
         >
           {isLast ? 'Start earning' : 'Next'}
         </button>

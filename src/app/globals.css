@@ -20,8 +20,15 @@
   --color-foreground: var(--foreground);
 
   /* ── Brand palette ─────────────────────────────────────────────────────── */
-  --color-brand-900: #0a3b78; /* Deep Trust Blue — nav, trust anchors, logo */
+  --color-brand-50:  #eef8ff; /* Ultra-light tint — empty state bg, badge fill */
+  --color-brand-100: #daeffe; /* Light tint — hover fill, subtle surface */
+  --color-brand-200: #bae0fd; /* Border tint — badge border, divider */
+  --color-brand-400: #56b4f8; /* Mid blue — muted icon, secondary indicator */
   --color-brand-600: #169af5; /* Electric Service Blue — CTA, active, progress */
+  --color-brand-700: #0f80d6; /* Pressed / dark variant of brand-600 */
+  --color-brand-900: #0a3b78; /* Deep Trust Blue — nav, trust anchors, logo */
+  --color-accent-200: #a5f3f0; /* Light aqua — light text on dark */
+  --color-accent-300: #67ede8; /* Mid aqua — link on dark bg */
   --color-accent-400: #40e8e0; /* Clean Aqua — glow, gradient, premium highlight */
   --color-navy-950: #072a55; /* Anchor Navy — dark hero, contrast surfaces */
 
@@ -68,6 +75,27 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), Inter, Arial, Helvetica, sans-serif;
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #169af5;
+  outline-offset: 2px;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -999px;
+  left: 0;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #169af5;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0 0 0.75rem 0;
+}
+.skip-to-content:focus {
+  top: 0;
 }
 
 /* ── Type scale roles (V2.1 spec) ──────────────────────────────────────────── */

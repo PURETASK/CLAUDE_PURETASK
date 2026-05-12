@@ -1,36 +1,38 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { ICONS } from '@/lib/assets';
 
 const SETTINGS_LINKS = [
   {
     href: '/cleaner/settings/insurance',
-    icon: '🛡️',
+    icon: ICONS.checkmark,
     title: 'Insurance Verification',
     desc: 'Upload and manage your liability insurance documents.',
   },
   {
     href: '/cleaner/tax-info',
-    icon: '🧾',
+    icon: ICONS.wallet,
     title: 'Tax Information',
     desc: 'SSN / EIN on file for 1099-NEC reporting.',
   },
   {
     href: '/cleaner/verify-identity',
-    icon: '🪪',
+    icon: ICONS.contacts,
     title: 'Identity Verification',
     desc: 'Government-issued ID verification via Stripe Identity.',
   },
   {
     href: '/cleaner/background-check',
-    icon: '🔍',
+    icon: ICONS.checkmark,
     title: 'Background Check',
     desc: 'View the status of your Checkr background check.',
   },
   {
     href: '/cleaner/connect-onboarding',
-    icon: '💳',
+    icon: ICONS.wallet,
     title: 'Payout Account',
     desc: 'Stripe Connect bank account for receiving earnings.',
   },
@@ -60,14 +62,18 @@ const CleanerOnboardingSettingsPage = async () => {
           <Link
             key={href}
             href={href}
-            className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 transition-all hover:border-brand-300 hover:shadow-tier2"
+            className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 transition-all hover:border-brand-200 hover:shadow-tier2"
           >
-            <span className="text-2xl">{icon}</span>
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50">
+              <Image src={icon} alt="" width={22} height={22} className="object-contain" />
+            </div>
             <div className="flex-1">
               <p className="font-medium text-neutral-900">{title}</p>
               <p className="text-sm text-neutral-500">{desc}</p>
             </div>
-            <span className="text-neutral-300">→</span>
+            <svg className="h-4 w-4 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </Link>
         ))}
       </div>
@@ -75,14 +81,18 @@ const CleanerOnboardingSettingsPage = async () => {
       <div className="border-t border-neutral-200 pt-4">
         <Link
           href="/app/cleaner/settings"
-          className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 transition-all hover:border-brand-300 hover:shadow-tier2"
+          className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 transition-all hover:border-brand-200 hover:shadow-tier2"
         >
-          <span className="text-2xl">⚙️</span>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50">
+            <Image src={ICONS.settings} alt="" width={22} height={22} className="object-contain" />
+          </div>
           <div className="flex-1">
             <p className="font-medium text-neutral-900">Profile &amp; Payout Preferences</p>
             <p className="text-sm text-neutral-500">Edit your bio, instant payout toggle, and Stripe Connect link.</p>
           </div>
-          <span className="text-neutral-300">→</span>
+          <svg className="h-4 w-4 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </div>
     </div>

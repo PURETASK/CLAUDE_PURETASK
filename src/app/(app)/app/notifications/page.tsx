@@ -92,7 +92,7 @@ export default async function NotificationsPage({ searchParams }: Props) {
           <form action={markAllNotificationsReadAction}>
             <button
               type="submit"
-              className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium text-neutral-600 transition-all hover:border-neutral-300 hover:bg-neutral-50"
+              className="rounded-xl border border-neutral-200 px-3 py-1.5 text-sm font-medium text-neutral-600 transition-all hover:border-neutral-300 hover:bg-neutral-50"
             >
               Mark all read
             </button>

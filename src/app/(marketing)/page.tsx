@@ -1,5 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+
+import { ICONS } from '@/lib/assets';
 
 export const metadata: Metadata = {
   title: 'PureTask — Verified Home Cleaning in Northern California',
@@ -26,10 +29,10 @@ const STEPS = [
 ];
 
 const TRUST = [
-  { icon: '🔍', label: 'Background checked', sub: 'Every cleaner runs through Checkr' },
-  { icon: '📸', label: 'Photo proof', sub: 'Before/after photos on every job' },
-  { icon: '📍', label: 'GPS verified', sub: 'Clock-in at your address, every time' },
-  { icon: '⭐', label: 'Tier reputation', sub: '4 tiers earned through real performance' },
+  { icon: ICONS.checkmark, label: 'Background checked', sub: 'Every cleaner runs through Checkr' },
+  { icon: ICONS.cleaning, label: 'Photo proof', sub: 'Before/after photos on every job' },
+  { icon: ICONS.home, label: 'GPS verified', sub: 'Clock-in at your address, every time' },
+  { icon: ICONS.cleaning2, label: 'Tier reputation', sub: '4 tiers earned through real performance' },
 ];
 
 export default function LandingPage() {
@@ -98,7 +101,9 @@ export default function LandingPage() {
                 key={t.label}
                 className="rounded-2xl bg-white p-6 shadow-tier1 transition-shadow duration-card hover:shadow-tier2"
               >
-                <p className="mb-3 text-3xl">{t.icon}</p>
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50">
+                  <Image src={t.icon} alt="" width={28} height={28} className="object-contain" />
+                </div>
                 <p className="mb-1 font-semibold text-neutral-900">{t.label}</p>
                 <p className="text-sm text-neutral-500">{t.sub}</p>
               </div>

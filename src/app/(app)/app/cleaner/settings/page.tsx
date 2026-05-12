@@ -33,30 +33,32 @@ export default async function CleanerSettingsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
-        <Link href="/app/cleaner" className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600">
+        <Link href="/app/cleaner" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
           ← Dashboard
         </Link>
-        <h1 className="text-xl font-semibold">Cleaner settings</h1>
-        <p className="text-sm text-zinc-500">Manage your payout preferences and profile.</p>
+        <h1 className="text-2xl font-bold text-neutral-900">Cleaner settings</h1>
+        <p className="text-sm text-neutral-500">Manage your payout preferences and profile.</p>
       </div>
 
       {/* Payout preferences */}
-      <section className="mb-6 rounded-lg border border-zinc-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-semibold">Payout preferences</h2>
+      <section className="mb-6 rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
+        <h2 className="mb-4 text-sm font-semibold text-neutral-900">Payout preferences</h2>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-zinc-800">Instant payouts</p>
-            <p className="text-xs text-zinc-400">
+            <p className="text-sm font-medium text-neutral-800">Instant payouts</p>
+            <p className="text-xs text-neutral-400">
               Get paid immediately for a 5% fee. Standard payouts (free) arrive every Friday.
             </p>
           </div>
           <form action={toggleAction}>
             <button
               type="submit"
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                profile.instant_payout_enabled ? 'bg-zinc-900' : 'bg-zinc-200'
+              className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
+                profile.instant_payout_enabled ? 'bg-brand-600' : 'bg-neutral-200'
               }`}
+              aria-checked={profile.instant_payout_enabled}
+              role="switch"
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
@@ -68,9 +70,9 @@ export default async function CleanerSettingsPage() {
         </div>
 
         {!profile.stripe_connect_account_id && (
-          <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+          <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-700">
             Complete Stripe Connect setup to enable payouts.{' '}
-            <Link href="/app/cleaner/connect-onboarding" className="font-medium underline">
+            <Link href="/app/cleaner/connect-onboarding" className="font-semibold underline">
               Set up payouts →
             </Link>
           </p>
@@ -78,31 +80,31 @@ export default async function CleanerSettingsPage() {
       </section>
 
       {/* Bio */}
-      <section className="mb-6 rounded-lg border border-zinc-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-semibold">Profile bio</h2>
-        <p className="mb-3 text-sm text-zinc-500">
+      <section className="mb-6 rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
+        <h2 className="mb-2 text-sm font-semibold text-neutral-900">Profile bio</h2>
+        <p className="mb-4 text-sm text-neutral-500">
           Your bio appears on your public profile page and is visible to potential customers.
         </p>
         <BioEditForm currentBio={profile.bio} />
       </section>
 
-      {/* Links */}
-      <section className="flex gap-3">
+      {/* Quick links */}
+      <section className="flex flex-wrap gap-3">
         <Link
           href="/app/cleaner/earnings"
-          className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+          className="rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 shadow-tier1 transition-all hover:bg-neutral-50"
         >
           View earnings
         </Link>
         <Link
           href="/app/cleaner/availability"
-          className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+          className="rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 shadow-tier1 transition-all hover:bg-neutral-50"
         >
           Availability
         </Link>
         <Link
           href="/cleaner/connect-onboarding"
-          className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+          className="rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 shadow-tier1 transition-all hover:bg-neutral-50"
         >
           Stripe Connect
         </Link>

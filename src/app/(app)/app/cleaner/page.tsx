@@ -43,10 +43,18 @@ const CleanerDashboardPage = async () => {
 
   const bandColors: Record<string, string> = {
     trusted: 'bg-emerald-100 text-emerald-700',
-    good_standing: 'bg-blue-100 text-blue-700',
+    good_standing: 'bg-brand-100 text-brand-700',
     warning: 'bg-amber-100 text-amber-700',
     probation: 'bg-orange-100 text-orange-700',
     suspended: 'bg-red-100 text-red-700',
+  };
+
+  const bandBarColors: Record<string, string> = {
+    trusted: 'bg-emerald-400',
+    good_standing: 'bg-brand-400',
+    warning: 'bg-amber-400',
+    probation: 'bg-orange-400',
+    suspended: 'bg-red-400',
   };
 
   const currentBand = scoreHistory[0]?.band ?? 'good_standing';
@@ -54,44 +62,44 @@ const CleanerDashboardPage = async () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-xl font-semibold">Cleaner Dashboard</h1>
+      <h1 className="text-2xl font-bold text-neutral-900">Cleaner Dashboard</h1>
 
       {profile && (
         <section className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-zinc-100 bg-white px-5 py-4">
-            <p className="text-xs text-zinc-400">Reliability score</p>
-            <p className="mt-1 text-3xl font-bold text-zinc-900">{currentScore}</p>
+          <div className="rounded-2xl border border-neutral-200 bg-white px-5 py-4 shadow-tier1">
+            <p className="text-xs font-medium text-neutral-400">Reliability score</p>
+            <p className="mt-1 text-3xl font-bold text-neutral-900">{currentScore}</p>
             <span
-              className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${bandColors[currentBand] ?? bandColors.good_standing}`}
+              className={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${bandColors[currentBand] ?? bandColors.good_standing}`}
             >
               {currentBand.replace(/_/g, ' ')}
             </span>
           </div>
-          <div className="rounded-xl border border-zinc-100 bg-white px-5 py-4">
-            <p className="text-xs text-zinc-400">Current tier</p>
-            <p className="mt-1 text-lg font-semibold capitalize text-zinc-900">
+          <div className="rounded-2xl border border-neutral-200 bg-white px-5 py-4 shadow-tier1">
+            <p className="text-xs font-medium text-neutral-400">Current tier</p>
+            <p className="mt-1 text-lg font-semibold capitalize text-neutral-900">
               {profile.current_tier.replace(/_/g, ' ')}
             </p>
-            <p className="mt-1 text-xs text-zinc-400">
+            <p className="mt-1 text-xs text-neutral-400">
               Updated {new Date(profile.score_updated_at).toLocaleDateString()}
             </p>
           </div>
           {scoreHistory.length > 1 && (
-            <div className="rounded-xl border border-zinc-100 bg-white px-5 py-4">
-              <p className="mb-2 text-xs text-zinc-400">7-day trend</p>
+            <div className="rounded-2xl border border-neutral-200 bg-white px-5 py-4 shadow-tier1">
+              <p className="mb-2 text-xs font-medium text-neutral-400">7-day trend</p>
               <div className="flex items-end gap-1">
                 {[...scoreHistory].reverse().map((s, i) => (
                   <div
                     key={i}
                     title={`${s.snapshot_date}: ${s.score}`}
                     style={{ height: `${Math.round((s.score / 100) * 40)}px` }}
-                    className={`w-4 rounded-sm ${bandColors[s.band] ?? 'bg-zinc-200'}`}
+                    className={`w-4 rounded-sm ${bandBarColors[s.band] ?? 'bg-neutral-200'}`}
                   />
                 ))}
               </div>
               <Link
                 href="/app/cleaner/score"
-                className="mt-2 block text-xs text-zinc-400 hover:text-zinc-700"
+                className="mt-2 block text-xs text-neutral-400 hover:text-neutral-700"
               >
                 View history →
               </Link>
@@ -101,11 +109,11 @@ const CleanerDashboardPage = async () => {
       )}
 
       <section>
-        <p className="mb-3 font-medium">
+        <p className="mb-3 font-semibold text-neutral-900">
           Incoming requests{incoming.length > 0 ? ` (${incoming.length})` : ''}
         </p>
         {incoming.length === 0 ? (
-          <p className="text-sm text-zinc-400">No pending requests.</p>
+          <p className="text-sm text-neutral-400">No pending requests.</p>
         ) : (
           <div className="grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
             {incoming.map((b) => (
@@ -117,7 +125,7 @@ const CleanerDashboardPage = async () => {
 
       {active.length > 0 && (
         <section>
-          <p className="mb-3 font-medium">Confirmed ({active.length})</p>
+          <p className="mb-3 font-semibold text-neutral-900">Confirmed ({active.length})</p>
           <div className="grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
             {active.map((b) => (
               <BookingCard key={b.id} booking={b} href={`/app/cleaner/bookings/${b.id}`} />
@@ -128,7 +136,7 @@ const CleanerDashboardPage = async () => {
 
       {past.length > 0 && (
         <section>
-          <p className="mb-3 font-medium text-zinc-500">Past bookings</p>
+          <p className="mb-3 font-semibold text-neutral-500">Past bookings</p>
           <div className="grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
             {past.map((b) => (
               <BookingCard key={b.id} booking={b} href={`/app/cleaner/bookings/${b.id}`} />

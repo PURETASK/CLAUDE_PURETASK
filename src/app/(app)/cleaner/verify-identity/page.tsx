@@ -126,7 +126,7 @@ const VerifyIdentityPage = async () => {
           </p>
           <Link
             href="/cleaner/apply/step-5"
-            className="mt-3 inline-block rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+            className="mt-3 inline-block rounded-xl bg-gradient-brand px-4 py-2.5 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
           >
             Start verification
           </Link>

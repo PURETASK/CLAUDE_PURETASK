@@ -6,6 +6,9 @@ import { BRAND } from '@/lib/assets';
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
       <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
@@ -49,7 +52,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         </div>
       </header>
 
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
 
       <footer className="border-t border-neutral-200 bg-neutral-50 py-12">
         <div className="mx-auto max-w-5xl px-6">

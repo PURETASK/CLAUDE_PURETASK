@@ -36,33 +36,33 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
   return (
     <div className="flex max-w-lg flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Link href="/app/cleaner" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/app/cleaner" className="text-sm text-neutral-500 hover:text-neutral-900">
           Dashboard
         </Link>
-        <span className="text-zinc-300">/</span>
+        <span className="text-neutral-300">/</span>
         <h1 className="text-xl font-semibold">{booking.booking_number}</h1>
       </div>
 
-      <section className="rounded border bg-white p-5 text-sm">
+      <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 text-sm">
         <div className="mb-4 flex items-center gap-3">
           <BookingStateBadge state={booking.state} />
-          <span className="text-zinc-400">#{booking.booking_number}</span>
+          <span className="text-neutral-400">#{booking.booking_number}</span>
         </div>
-        <div className="flex flex-col gap-2 text-zinc-600">
+        <div className="flex flex-col gap-2 text-neutral-600">
           <div className="flex gap-4">
-            <span className="w-28 shrink-0 text-zinc-400">Service</span>
+            <span className="w-28 shrink-0 text-neutral-400">Service</span>
             <span>{booking.service_display_name}</span>
           </div>
           <div className="flex gap-4">
-            <span className="w-28 shrink-0 text-zinc-400">Customer</span>
+            <span className="w-28 shrink-0 text-neutral-400">Customer</span>
             <span>{booking.other_party_name}</span>
           </div>
           <div className="flex gap-4">
-            <span className="w-28 shrink-0 text-zinc-400">Address</span>
+            <span className="w-28 shrink-0 text-neutral-400">Address</span>
             <span>{booking.address_street}</span>
           </div>
           <div className="flex gap-4">
-            <span className="w-28 shrink-0 text-zinc-400">Date</span>
+            <span className="w-28 shrink-0 text-neutral-400">Date</span>
             <span>
               {start.toLocaleDateString('en-US', {
                 weekday: 'long',
@@ -73,7 +73,7 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
             </span>
           </div>
           <div className="flex gap-4">
-            <span className="w-28 shrink-0 text-zinc-400">Time</span>
+            <span className="w-28 shrink-0 text-neutral-400">Time</span>
             <span>
               {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} ·{' '}
               {booking.duration_hours_decimal}hr
@@ -81,23 +81,23 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
           </div>
           {booking.customer_notes && (
             <div className="flex gap-4">
-              <span className="w-28 shrink-0 text-zinc-400">Notes</span>
+              <span className="w-28 shrink-0 text-neutral-400">Notes</span>
               <span className="whitespace-pre-wrap">{booking.customer_notes}</span>
             </div>
           )}
         </div>
       </section>
 
-      <section className="rounded border bg-white p-5 text-sm">
-        <p className="mb-3 font-medium">Your earnings</p>
-        <div className="flex flex-col gap-1.5 text-zinc-600">
+      <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 text-sm">
+        <p className="mb-3 font-semibold text-neutral-900">Your earnings</p>
+        <div className="flex flex-col gap-1.5 text-neutral-600">
           <div className="flex justify-between">
             <span>
               {fmtPrice(booking.hourly_rate_cents)}/hr × {booking.duration_hours_decimal}hr
             </span>
             <span>{fmtPrice(booking.cleaner_subtotal_cents)}</span>
           </div>
-          <div className="mt-1 flex justify-between border-t pt-1 font-medium text-zinc-900">
+          <div className="mt-1 flex justify-between border-t border-neutral-100 pt-2 font-semibold text-neutral-900">
             <span>Your payout</span>
             <span>{fmtPrice(booking.cleaner_payout_cents)}</span>
           </div>
@@ -106,7 +106,7 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
 
       <Link
         href={`/app/cleaner/bookings/${booking.id}/messages`}
-        className="inline-flex items-center gap-2 rounded border border-zinc-200 px-4 py-2 text-sm text-zinc-600 hover:bg-zinc-50"
+        className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-600 shadow-tier1 transition-all hover:bg-neutral-50"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -119,7 +119,7 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
       {hasDispute && (
         <Link
           href={`/app/cleaner/bookings/${booking.id}/dispute`}
-          className="inline-block rounded border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+          className="inline-block rounded-xl border border-red-200 px-4 py-2.5 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
         >
           View dispute
         </Link>

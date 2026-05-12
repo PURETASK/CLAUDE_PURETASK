@@ -1,5 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+
+import { ICONS } from '@/lib/assets';
 
 export const metadata: Metadata = {
   title: 'Cleaner Specialties | PureTask',
@@ -8,40 +11,36 @@ export const metadata: Metadata = {
 
 const SPECIALTIES = [
   {
-    icon: '🌿',
+    icon: ICONS.cleaning,
     label: 'Eco-Friendly',
     description: 'Uses green cleaning products only. Earned after 15+ customers tag them "eco-friendly."',
   },
   {
-    icon: '🐾',
+    icon: ICONS.contacts,
     label: 'Pet-Friendly',
-    description:
-      'Comfortable around pets and knows how to clean pet hair, odors, and dander. 15+ "pet-friendly" tags.',
+    description: 'Comfortable around pets and knows how to clean pet hair, odors, and dander. 15+ "pet-friendly" tags.',
   },
   {
-    icon: '🏠',
+    icon: ICONS.home,
     label: 'Deep Clean Expert',
-    description:
-      'Goes beyond surface cleaning every time. Earned from 15+ "thorough" and "detail-oriented" tags.',
+    description: 'Goes beyond surface cleaning every time. Earned from 15+ "thorough" and "detail-oriented" tags.',
   },
   {
-    icon: '📦',
+    icon: ICONS.calendar,
     label: 'Move-Out Specialist',
-    description:
-      'Experience with move-out cleans that pass landlord inspections. 15+ move-out bookings at 4.5+.',
+    description: 'Experience with move-out cleans that pass landlord inspections. 15+ move-out bookings at 4.5+.',
   },
   {
-    icon: '🏡',
+    icon: ICONS.cleaning2,
     label: 'Airbnb Ready',
-    description:
-      'Fast, reliable turnovers between guests. 15+ Airbnb bookings completed with 4.7+ rating.',
+    description: 'Fast, reliable turnovers between guests. 15+ Airbnb bookings completed with 4.7+ rating.',
   },
 ] as const;
 
 const SpecialtiesPage = () => {
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-lg px-4 py-12 space-y-6">
+      <div className="mx-auto max-w-lg space-y-6 px-4 py-12">
         <div>
           <Link href="/" className="text-sm text-brand-600 hover:underline">
             ← Home
@@ -49,8 +48,8 @@ const SpecialtiesPage = () => {
         </div>
 
         <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-tier2 text-center">
-          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-brand-600/10 text-4xl">
-            ⭐
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-50">
+            <Image src={ICONS.cleaning2} alt="" width={44} height={44} className="object-contain" />
           </div>
           <h1 className="text-2xl font-bold text-neutral-900">Specialty Endorsements</h1>
           <p className="mt-2 text-neutral-600">
@@ -65,8 +64,8 @@ const SpecialtiesPage = () => {
               className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1"
             >
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-neutral-100 text-2xl">
-                  {icon}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50">
+                  <Image src={icon} alt="" width={26} height={26} className="object-contain" />
                 </div>
                 <div>
                   <p className="font-semibold text-neutral-900">{label}</p>

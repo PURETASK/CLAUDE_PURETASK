@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { ICONS } from '@/lib/assets';
 
 async function completePhotoTraining(formData: FormData) {
   'use server';
@@ -13,12 +15,12 @@ async function completePhotoTraining(formData: FormData) {
 const SECTIONS = [
   {
     title: 'Why photos matter',
-    icon: '📸',
+    icon: ICONS.cleaning,
     body: 'Customers rely on before-and-after photos to confirm work quality and protect both parties in case of disputes. Every completed room requires at least one photo.',
   },
   {
     title: 'What to photograph',
-    icon: '✅',
+    icon: ICONS.checkmark,
     items: [
       'Every room you clean — take a photo after finishing',
       'Any pre-existing damage before you start work',
@@ -28,7 +30,7 @@ const SECTIONS = [
   },
   {
     title: 'Photo quality standards',
-    icon: '🔍',
+    icon: ICONS.checkmark,
     items: [
       'Well-lit — open blinds or turn on lights',
       'In-focus — wait for autofocus before shooting',
@@ -38,7 +40,7 @@ const SECTIONS = [
   },
   {
     title: 'What NOT to photograph',
-    icon: '🚫',
+    icon: ICONS.contacts,
     items: [
       'People — never photograph customers or their guests',
       'Personal documents, mail, or financial papers',
@@ -48,10 +50,10 @@ const SECTIONS = [
   },
   {
     title: 'Privacy rules',
-    icon: '🔒',
+    icon: ICONS.checkmark,
     body: 'All photos are uploaded directly to PureTask and are never stored on your device. Customers can see their own photos but photos are never shared publicly. Violations of privacy rules result in immediate account suspension.',
   },
-];
+] as const;
 
 const PhotoTrainingPage = async () => {
   const supabase = await createSupabaseServerClient();
@@ -78,16 +80,20 @@ const PhotoTrainingPage = async () => {
             key={section.title}
             className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1"
           >
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">{section.icon}</span>
+            <div className="mb-3 flex items-center gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50">
+                <Image src={section.icon} alt="" width={20} height={20} className="object-contain" />
+              </div>
               <h2 className="font-semibold text-neutral-900">{section.title}</h2>
             </div>
-            {section.body && <p className="text-sm text-neutral-600">{section.body}</p>}
-            {section.items && (
+            {'body' in section && section.body && (
+              <p className="text-sm text-neutral-600">{section.body}</p>
+            )}
+            {'items' in section && section.items && (
               <ul className="space-y-1.5">
                 {section.items.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-neutral-600">
-                    <span className="mt-0.5 text-brand-500">•</span>
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600" />
                     {item}
                   </li>
                 ))}
@@ -117,7 +123,7 @@ const PhotoTrainingPage = async () => {
           </label>
           <button
             type="submit"
-            className="mt-4 w-full rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+            className="mt-4 w-full rounded-xl bg-gradient-brand px-4 py-2.5 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
           >
             Complete Training &amp; Continue
           </button>
