@@ -39,12 +39,12 @@ export default async function CustomerDisputePage({ params }: Props) {
         <div>
           <Link
             href={`/app/bookings/${id}`}
-            className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+            className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← Back to booking
           </Link>
           <h1 className="text-xl font-semibold">{dispute ? 'Dispute' : 'File a dispute'}</h1>
-          <p className="text-sm text-zinc-500">Booking {booking.booking_number}</p>
+          <p className="text-sm text-neutral-500">Booking {booking.booking_number}</p>
         </div>
         {dispute && <DisputeStateBadge state={dispute.state} />}
       </div>
@@ -60,20 +60,20 @@ export default async function CustomerDisputePage({ params }: Props) {
 
       {dispute ? (
         <div className="space-y-6">
-          <div className="rounded-lg border border-zinc-100 p-4 text-sm">
+          <div className="rounded-lg border border-neutral-100 p-4 text-sm">
             <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
-              <dt className="text-zinc-400">Issue</dt>
+              <dt className="text-neutral-400">Issue</dt>
               <dd className="font-medium">
                 {ISSUE_CATEGORY_LABELS[dispute.issue_category] ?? dispute.issue_category}
               </dd>
-              <dt className="text-zinc-400">You asked for</dt>
+              <dt className="text-neutral-400">You asked for</dt>
               <dd className="font-medium">
                 {DESIRED_OUTCOME_LABELS[dispute.customer_desired_outcome] ??
                   dispute.customer_desired_outcome}
               </dd>
               {dispute.cleaner_response_type && (
                 <>
-                  <dt className="text-zinc-400">Cleaner offered</dt>
+                  <dt className="text-neutral-400">Cleaner offered</dt>
                   <dd className="font-medium">
                     {RESPONSE_TYPE_LABELS[dispute.cleaner_response_type] ??
                       dispute.cleaner_response_type}
@@ -110,7 +110,7 @@ export default async function CustomerDisputePage({ params }: Props) {
         </div>
       ) : canFileDispute ? (
         <div>
-          <p className="mb-4 text-sm text-zinc-500">
+          <p className="mb-4 text-sm text-neutral-500">
             You have until{' '}
             {booking.dispute_window_ends_at
               ? new Date(booking.dispute_window_ends_at as unknown as string).toLocaleString()
@@ -120,7 +120,7 @@ export default async function CustomerDisputePage({ params }: Props) {
           <FileDisputeForm bookingId={id} />
         </div>
       ) : (
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-neutral-500">
           Disputes cannot be filed for this booking in its current state.
         </p>
       )}

@@ -1,10 +1,10 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 
 import { getMyCustomerReliabilityEvents } from '@/features/reliability/queries';
 
 const EVENT_COLORS: Record<string, string> = {
   positive: 'text-emerald-600',
-  neutral: 'text-zinc-500',
+  neutral: 'text-neutral-500',
   negative: 'text-red-600',
 };
 
@@ -26,21 +26,21 @@ export default async function CustomerReliabilityPage() {
       <div className="mb-6">
         <Link
           href="/app/dashboard"
-          className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
         >
           ← Dashboard
         </Link>
         <h1 className="text-xl font-semibold">Your reliability record</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-neutral-500">
           Cleaners see this when reviewing your booking requests. On-time arrivals and completed
           bookings build a positive record.
         </p>
       </div>
 
       {events.length === 0 ? (
-        <div className="rounded-xl border border-zinc-100 bg-white px-6 py-12 text-center">
-          <p className="text-sm font-medium text-zinc-700">No reliability events yet.</p>
-          <p className="mt-1 text-sm text-zinc-400">
+        <div className="rounded-xl border border-neutral-100 bg-white px-6 py-12 text-center">
+          <p className="text-sm font-medium text-neutral-700">No reliability events yet.</p>
+          <p className="mt-1 text-sm text-neutral-400">
             Complete your first booking to start building your record.
           </p>
         </div>
@@ -49,12 +49,12 @@ export default async function CustomerReliabilityPage() {
           {events.map((e) => (
             <div
               key={e.id}
-              className="flex items-start justify-between rounded-xl border border-zinc-100 bg-white px-5 py-4"
+              className="flex items-start justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4"
             >
               <div>
-                <p className="text-sm font-medium text-zinc-900">{formatEventType(e.event_type)}</p>
-                <p className="mt-0.5 text-xs text-zinc-500">{e.description}</p>
-                <p className="mt-1 text-xs text-zinc-400">
+                <p className="text-sm font-medium text-neutral-900">{formatEventType(e.event_type)}</p>
+                <p className="mt-0.5 text-xs text-neutral-500">{e.description}</p>
+                <p className="mt-1 text-xs text-neutral-400">
                   {new Date(e.event_occurred_at).toLocaleDateString()}
                 </p>
               </div>

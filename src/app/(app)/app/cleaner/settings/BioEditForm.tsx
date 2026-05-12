@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useActionState } from 'react';
 
@@ -20,14 +20,14 @@ export function BioEditForm({ currentBio }: { currentBio: string | null }) {
         rows={5}
         maxLength={1000}
         placeholder="Tell customers about your experience, specialties, and what makes your cleaning service stand out…"
-        className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-800 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none"
+        className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-800 placeholder-neutral-400 focus:border-neutral-400 focus:outline-none"
       />
       <div className="mt-2 flex items-center justify-between">
-        <p className="text-xs text-zinc-400">Max 1000 characters</p>
+        <p className="text-xs text-neutral-400">Max 1000 characters</p>
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-zinc-900 px-4 py-1.5 text-xs font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+          className="rounded-lg bg-neutral-900 px-4 py-1.5 text-xs font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
         >
           {pending ? 'Saving…' : 'Save bio'}
         </button>

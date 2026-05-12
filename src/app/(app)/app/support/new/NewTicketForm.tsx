@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useActionState } from 'react';
 
@@ -21,14 +21,14 @@ export function NewTicketForm() {
   return (
     <form action={action} className="space-y-5">
       <div>
-        <label htmlFor="category" className="mb-1.5 block text-sm font-medium text-zinc-700">
+        <label htmlFor="category" className="mb-1.5 block text-sm font-medium text-neutral-700">
           Category
         </label>
         <select
           id="category"
           name="category"
           required
-          className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
         >
           <option value="">Select a category…</option>
           {CATEGORIES.map((c) => (
@@ -40,7 +40,7 @@ export function NewTicketForm() {
       </div>
 
       <div>
-        <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-zinc-700">
+        <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-neutral-700">
           Subject
         </label>
         <input
@@ -50,12 +50,12 @@ export function NewTicketForm() {
           required
           maxLength={200}
           placeholder="Brief description of your issue"
-          className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
         />
       </div>
 
       <div>
-        <label htmlFor="body" className="mb-1.5 block text-sm font-medium text-zinc-700">
+        <label htmlFor="body" className="mb-1.5 block text-sm font-medium text-neutral-700">
           Message
         </label>
         <textarea
@@ -65,23 +65,23 @@ export function NewTicketForm() {
           rows={6}
           maxLength={5000}
           placeholder="Describe your issue in detail…"
-          className="w-full resize-none rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
         />
       </div>
 
       <div>
         <label
           htmlFor="related_booking_id"
-          className="mb-1.5 block text-sm font-medium text-zinc-700"
+          className="mb-1.5 block text-sm font-medium text-neutral-700"
         >
-          Related booking ID <span className="font-normal text-zinc-400">(optional)</span>
+          Related booking ID <span className="font-normal text-neutral-400">(optional)</span>
         </label>
         <input
           id="related_booking_id"
           name="related_booking_id"
           type="text"
           placeholder="Paste booking ID if applicable"
-          className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
         />
       </div>
 
@@ -92,7 +92,7 @@ export function NewTicketForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-slate-900 py-2.5 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+        className="w-full rounded-lg bg-neutral-900 py-2.5 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
       >
         {pending ? 'Submitting…' : 'Submit ticket'}
       </button>

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
@@ -24,18 +24,18 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-neutral-100 text-neutral-900">
+      <header className="border-b border-neutral-200 bg-white">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
-          <p className="text-sm font-semibold uppercase tracking-wide text-slate-700">Admin</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Admin</p>
           <nav className="flex items-center gap-4 text-sm">
-            <Link href="/admin/applications" className="text-slate-700 hover:text-slate-950">
+            <Link href="/admin/applications" className="text-neutral-700 hover:text-slate-950">
               Applications
             </Link>
-            <Link href="/admin/settings" className="text-slate-700 hover:text-slate-950">
+            <Link href="/admin/settings" className="text-neutral-700 hover:text-slate-950">
               Settings
             </Link>
-            <Link href="/app" className="text-slate-700 hover:text-slate-950">
+            <Link href="/app" className="text-neutral-700 hover:text-slate-950">
               Back to app
             </Link>
           </nav>

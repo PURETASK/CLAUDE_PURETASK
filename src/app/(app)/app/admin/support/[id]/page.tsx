@@ -24,14 +24,14 @@ const STATUS_COLORS: Record<string, string> = {
   awaiting_admin: 'bg-red-100 text-red-700',
   in_progress: 'bg-purple-100 text-purple-700',
   resolved: 'bg-emerald-100 text-emerald-700',
-  closed: 'bg-zinc-100 text-zinc-500',
+  closed: 'bg-neutral-100 text-neutral-500',
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
   urgent: 'bg-red-500 text-white',
   high: 'bg-orange-100 text-orange-700',
-  normal: 'bg-zinc-100 text-zinc-600',
-  low: 'bg-zinc-50 text-zinc-400',
+  normal: 'bg-neutral-100 text-neutral-600',
+  low: 'bg-neutral-50 text-neutral-400',
 };
 
 export default async function AdminSupportDetailPage({ params }: Props) {
@@ -48,12 +48,12 @@ export default async function AdminSupportDetailPage({ params }: Props) {
         <div>
           <Link
             href="/app/admin/support"
-            className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+            className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← Support queue
           </Link>
           <h1 className="text-xl font-semibold">{ticket.subject}</h1>
-          <p className="mt-0.5 text-xs text-zinc-400">{ticket.ticket_number}</p>
+          <p className="mt-0.5 text-xs text-neutral-400">{ticket.ticket_number}</p>
         </div>
         <div className="ml-4 mt-1 flex flex-shrink-0 gap-2">
           <span
@@ -69,19 +69,19 @@ export default async function AdminSupportDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="mb-6 rounded-lg border border-zinc-100 p-4 text-sm">
+      <div className="mb-6 rounded-lg border border-neutral-100 p-4 text-sm">
         <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
-          <dt className="text-zinc-400">Customer</dt>
+          <dt className="text-neutral-400">Customer</dt>
           <dd className="font-medium">{ticket.submitter_name}</dd>
-          <dt className="text-zinc-400">Email</dt>
+          <dt className="text-neutral-400">Email</dt>
           <dd>{ticket.submitter_email}</dd>
-          <dt className="text-zinc-400">Category</dt>
+          <dt className="text-neutral-400">Category</dt>
           <dd>{CATEGORY_LABELS[ticket.category] ?? ticket.category}</dd>
-          <dt className="text-zinc-400">Filed</dt>
+          <dt className="text-neutral-400">Filed</dt>
           <dd>{new Date(ticket.created_at).toLocaleString()}</dd>
           {ticket.first_response_at && (
             <>
-              <dt className="text-zinc-400">First response</dt>
+              <dt className="text-neutral-400">First response</dt>
               <dd>{new Date(ticket.first_response_at).toLocaleString()}</dd>
             </>
           )}
@@ -98,29 +98,29 @@ export default async function AdminSupportDetailPage({ params }: Props) {
                 ? 'border border-amber-200 bg-amber-50'
                 : m.sender_role === 'admin'
                   ? 'border border-blue-100 bg-blue-50'
-                  : 'border border-zinc-100 bg-white'
+                  : 'border border-neutral-100 bg-white'
             }`}
           >
             <div className="mb-1 flex items-center justify-between">
-              <span className="text-xs font-semibold text-zinc-600">
+              <span className="text-xs font-semibold text-neutral-600">
                 {m.is_internal_note
                   ? '🔒 Internal note'
                   : m.sender_role === 'admin'
                     ? 'Support admin'
                     : 'Customer'}
               </span>
-              <span className="text-xs text-zinc-400">
+              <span className="text-xs text-neutral-400">
                 {new Date(m.created_at).toLocaleString()}
               </span>
             </div>
-            <p className="whitespace-pre-wrap text-sm text-zinc-800">{m.body}</p>
+            <p className="whitespace-pre-wrap text-sm text-neutral-800">{m.body}</p>
           </div>
         ))}
       </div>
 
       {isOpen && (
         <>
-          <div className="mb-6 rounded-xl border border-zinc-100 bg-white px-5 py-5">
+          <div className="mb-6 rounded-xl border border-neutral-100 bg-white px-5 py-5">
             <h2 className="mb-4 text-sm font-semibold">Reply</h2>
             <AdminReplyForm ticketId={id} />
           </div>

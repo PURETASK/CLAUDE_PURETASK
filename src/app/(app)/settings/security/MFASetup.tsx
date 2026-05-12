@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -100,8 +100,8 @@ export function MFASetup({ initialFactors }: { initialFactors: Factor[] }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-sm font-semibold text-zinc-900">Two-factor authentication</h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h2 className="text-sm font-semibold text-neutral-900">Two-factor authentication</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           Add an authenticator app to require a one-time code when signing in.
         </p>
       </div>
@@ -130,8 +130,8 @@ export function MFASetup({ initialFactors }: { initialFactors: Factor[] }) {
           </div>
         </div>
       ) : enroll.step === 'idle' || enroll.step === 'done' ? (
-        <div className="rounded-xl border border-zinc-100 bg-white p-5">
-          <p className="text-sm text-zinc-600">
+        <div className="rounded-xl border border-neutral-100 bg-white p-5">
+          <p className="text-sm text-neutral-600">
             {enroll.step === 'done'
               ? '2FA successfully set up!'
               : '2FA is not enabled on your account.'}
@@ -139,24 +139,24 @@ export function MFASetup({ initialFactors }: { initialFactors: Factor[] }) {
           <button
             onClick={startEnrollment}
             disabled={loading}
-            className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+            className="mt-3 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
           >
             {loading ? 'Starting…' : 'Set up authenticator app'}
           </button>
         </div>
       ) : enroll.step === 'scanning' ? (
-        <div className="rounded-xl border border-zinc-100 bg-white p-5">
-          <p className="mb-4 text-sm font-medium text-zinc-800">
+        <div className="rounded-xl border border-neutral-100 bg-white p-5">
+          <p className="mb-4 text-sm font-medium text-neutral-800">
             Scan this QR code with your authenticator app
           </p>
           <div className="mb-4 flex justify-center">
             <Image src={enroll.qrCode} alt="TOTP QR code" width={180} height={180} unoptimized />
           </div>
-          <p className="mb-1 text-xs text-zinc-400">Or enter the secret manually:</p>
-          <p className="mb-5 break-all rounded-md bg-zinc-50 px-3 py-2 font-mono text-xs text-zinc-700">
+          <p className="mb-1 text-xs text-neutral-400">Or enter the secret manually:</p>
+          <p className="mb-5 break-all rounded-md bg-neutral-50 px-3 py-2 font-mono text-xs text-neutral-700">
             {enroll.secret}
           </p>
-          <label className="mb-1.5 block text-sm font-medium text-zinc-700">
+          <label className="mb-1.5 block text-sm font-medium text-neutral-700">
             Enter the 6-digit code from your app
           </label>
           <div className="flex gap-3">
@@ -167,18 +167,18 @@ export function MFASetup({ initialFactors }: { initialFactors: Factor[] }) {
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
               placeholder="000000"
-              className="w-32 rounded-lg border border-zinc-200 px-3 py-2 text-center font-mono text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              className="w-32 rounded-lg border border-neutral-200 px-3 py-2 text-center font-mono text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
             />
             <button
               onClick={verifyCode}
               disabled={loading || code.length < 6}
-              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+              className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
             >
               {loading ? 'Verifying…' : 'Verify'}
             </button>
             <button
               onClick={() => setEnroll({ step: 'idle' })}
-              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm text-zinc-500 hover:bg-zinc-50"
+              className="rounded-lg border border-neutral-200 px-4 py-2 text-sm text-neutral-500 hover:bg-neutral-50"
             >
               Cancel
             </button>

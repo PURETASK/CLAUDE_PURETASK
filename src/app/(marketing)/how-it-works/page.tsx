@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -67,7 +67,7 @@ export default function HowItWorksPage() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-16 text-center">
           <h1 className="mb-4 text-4xl font-bold">How PureTask works</h1>
-          <p className="text-lg text-zinc-500">
+          <p className="text-lg text-neutral-500">
             A full-accountability loop — from booking to payment — for both sides of the
             marketplace.
           </p>
@@ -78,13 +78,13 @@ export default function HowItWorksPage() {
           <h2 className="mb-8 text-2xl font-bold">For customers</h2>
           <div className="grid gap-5 md:grid-cols-2">
             {CUSTOMER_STEPS.map((s, i) => (
-              <div key={i} className="flex gap-4 rounded-xl border border-zinc-100 p-5">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-xs font-bold text-white">
+              <div key={i} className="flex gap-4 rounded-xl border border-neutral-100 p-5">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-xs font-bold text-white">
                   {i + 1}
                 </span>
                 <div>
-                  <p className="mb-1 font-semibold text-zinc-900">{s.title}</p>
-                  <p className="text-sm leading-relaxed text-zinc-500">{s.body}</p>
+                  <p className="mb-1 font-semibold text-neutral-900">{s.title}</p>
+                  <p className="text-sm leading-relaxed text-neutral-500">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -92,7 +92,7 @@ export default function HowItWorksPage() {
           <div className="mt-6 text-center">
             <Link
               href="/auth/sign-up"
-              className="rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-zinc-700"
+              className="rounded-lg bg-neutral-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-neutral-700"
             >
               Book your first clean
             </Link>
@@ -100,17 +100,17 @@ export default function HowItWorksPage() {
         </section>
 
         {/* Cleaner flow */}
-        <section className="mb-16 rounded-2xl bg-zinc-50 p-8">
+        <section className="mb-16 rounded-2xl bg-neutral-50 p-8">
           <h2 className="mb-8 text-2xl font-bold">For cleaners</h2>
           <div className="grid gap-5 md:grid-cols-2">
             {CLEANER_STEPS.map((s, i) => (
-              <div key={i} className="flex gap-4 rounded-xl border border-zinc-200 bg-white p-5">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-zinc-900">
+              <div key={i} className="flex gap-4 rounded-xl border border-neutral-200 bg-white p-5">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-neutral-900">
                   {i + 1}
                 </span>
                 <div>
-                  <p className="mb-1 font-semibold text-zinc-900">{s.title}</p>
-                  <p className="text-sm leading-relaxed text-zinc-500">{s.body}</p>
+                  <p className="mb-1 font-semibold text-neutral-900">{s.title}</p>
+                  <p className="text-sm leading-relaxed text-neutral-500">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -118,7 +118,7 @@ export default function HowItWorksPage() {
           <div className="mt-6 text-center">
             <Link
               href="/for-cleaners"
-              className="rounded-lg bg-amber-400 px-6 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-amber-300"
+              className="rounded-lg bg-amber-400 px-6 py-2.5 text-sm font-semibold text-neutral-900 hover:bg-amber-300"
             >
               Learn about cleaner earnings →
             </Link>
@@ -126,7 +126,7 @@ export default function HowItWorksPage() {
         </section>
 
         {/* Dispute */}
-        <section className="rounded-2xl border border-zinc-200 p-8">
+        <section className="rounded-2xl border border-neutral-200 p-8">
           <h2 className="mb-4 text-xl font-bold">The 3-tier dispute system</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {[
@@ -143,9 +143,9 @@ export default function HowItWorksPage() {
                 desc: 'Final rubric-based decision using photo coverage and work standard guidelines.',
               },
             ].map((t) => (
-              <div key={t.tier} className="rounded-lg bg-zinc-50 p-4">
-                <p className="mb-1 text-sm font-semibold text-zinc-700">{t.tier}</p>
-                <p className="text-sm text-zinc-500">{t.desc}</p>
+              <div key={t.tier} className="rounded-lg bg-neutral-50 p-4">
+                <p className="mb-1 text-sm font-semibold text-neutral-700">{t.tier}</p>
+                <p className="text-sm text-neutral-500">{t.desc}</p>
               </div>
             ))}
           </div>

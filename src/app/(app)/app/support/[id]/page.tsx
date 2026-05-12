@@ -12,7 +12,7 @@ const STATUS_COLORS: Record<string, string> = {
   awaiting_admin: 'bg-indigo-100 text-indigo-700',
   in_progress: 'bg-purple-100 text-purple-700',
   resolved: 'bg-emerald-100 text-emerald-700',
-  closed: 'bg-zinc-100 text-zinc-500',
+  closed: 'bg-neutral-100 text-neutral-500',
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -38,12 +38,12 @@ export default async function SupportTicketPage({ params }: Props) {
         <div>
           <Link
             href="/app/support"
-            className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+            className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← My tickets
           </Link>
           <h1 className="text-xl font-semibold">{ticket.subject}</h1>
-          <p className="mt-0.5 text-xs text-zinc-400">
+          <p className="mt-0.5 text-xs text-neutral-400">
             {ticket.ticket_number} · {new Date(ticket.created_at).toLocaleDateString()}
           </p>
         </div>
@@ -60,19 +60,19 @@ export default async function SupportTicketPage({ params }: Props) {
             key={m.id}
             className={`rounded-xl px-5 py-4 ${
               m.sender_role === 'customer'
-                ? 'border border-zinc-100 bg-white'
+                ? 'border border-neutral-100 bg-white'
                 : 'border border-blue-100 bg-blue-50'
             }`}
           >
             <div className="mb-1 flex items-center justify-between">
-              <span className="text-xs font-semibold text-zinc-600">
+              <span className="text-xs font-semibold text-neutral-600">
                 {m.sender_role === 'customer' ? 'You' : 'PureTask Support'}
               </span>
-              <span className="text-xs text-zinc-400">
+              <span className="text-xs text-neutral-400">
                 {new Date(m.created_at).toLocaleString()}
               </span>
             </div>
-            <p className="whitespace-pre-wrap text-sm text-zinc-800">{m.body}</p>
+            <p className="whitespace-pre-wrap text-sm text-neutral-800">{m.body}</p>
           </div>
         ))}
       </div>
@@ -87,7 +87,7 @@ export default async function SupportTicketPage({ params }: Props) {
           )}
         </div>
       ) : (
-        <div className="mt-6 rounded-xl border border-zinc-100 bg-white px-5 py-5">
+        <div className="mt-6 rounded-xl border border-neutral-100 bg-white px-5 py-5">
           <h2 className="mb-4 text-sm font-semibold">Reply</h2>
           <ReplyForm ticketId={id} />
         </div>

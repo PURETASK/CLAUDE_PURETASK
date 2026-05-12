@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useActionState } from 'react';
 
@@ -16,8 +16,8 @@ export function SmsSettingsForm({ currentPhone, currentEnabled }: Props) {
     <form action={action} className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-zinc-800">SMS notifications</p>
-          <p className="text-xs text-zinc-400">
+          <p className="text-sm font-medium text-neutral-800">SMS notifications</p>
+          <p className="text-xs text-neutral-400">
             Receive text messages for booking confirmations and urgent updates.
           </p>
         </div>
@@ -39,12 +39,12 @@ export function SmsSettingsForm({ currentPhone, currentEnabled }: Props) {
             id="sms_enabled_hidden"
             defaultValue={String(currentEnabled)}
           />
-          <div className="peer h-6 w-11 rounded-full bg-zinc-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-900 peer-checked:after:translate-x-full" />
+          <div className="peer h-6 w-11 rounded-full bg-neutral-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-neutral-900 peer-checked:after:translate-x-full" />
         </label>
       </div>
 
       <div>
-        <label htmlFor="sms_phone" className="mb-1.5 block text-sm font-medium text-zinc-700">
+        <label htmlFor="sms_phone" className="mb-1.5 block text-sm font-medium text-neutral-700">
           Phone number
         </label>
         <input
@@ -53,9 +53,9 @@ export function SmsSettingsForm({ currentPhone, currentEnabled }: Props) {
           type="tel"
           defaultValue={currentPhone ?? ''}
           placeholder="+12125551234"
-          className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
         />
-        <p className="mt-1 text-xs text-zinc-400">International format with country code.</p>
+        <p className="mt-1 text-xs text-neutral-400">International format with country code.</p>
       </div>
 
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}
@@ -64,7 +64,7 @@ export function SmsSettingsForm({ currentPhone, currentEnabled }: Props) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+        className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
       >
         {pending ? 'Saving…' : 'Save SMS settings'}
       </button>

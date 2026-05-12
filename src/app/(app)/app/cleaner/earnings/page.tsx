@@ -1,4 +1,4 @@
-import Image from 'next/image';
+﻿import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -54,12 +54,12 @@ export default async function CleanerEarningsPage() {
       </div>
 
       {/* Pending balance */}
-      <section className="mb-6 rounded-lg border border-zinc-200 bg-white p-5">
-        <p className="mb-1 text-xs font-medium uppercase tracking-wide text-zinc-400">
+      <section className="mb-6 rounded-lg border border-neutral-200 bg-white p-5">
+        <p className="mb-1 text-xs font-medium uppercase tracking-wide text-neutral-400">
           Pending balance
         </p>
-        <p className="text-3xl font-semibold text-zinc-900">{fmtPrice(pendingBalanceCents)}</p>
-        <p className="mt-1 text-xs text-zinc-400">
+        <p className="text-3xl font-semibold text-neutral-900">{fmtPrice(pendingBalanceCents)}</p>
+        <p className="mt-1 text-xs text-neutral-400">
           Paid out every Friday at noon Pacific. Next Friday:{' '}
           {(() => {
             const d = new Date();
@@ -74,14 +74,14 @@ export default async function CleanerEarningsPage() {
       {pendingItems.length > 0 && (
         <section className="mb-6">
           <h2 className="mb-3 text-sm font-semibold">Pending earnings breakdown</h2>
-          <div className="divide-y divide-zinc-100 rounded-lg border border-zinc-200 bg-white">
+          <div className="divide-y divide-neutral-100 rounded-lg border border-neutral-200 bg-white">
             {pendingItems.map((item) => (
               <div key={item.id} className="flex items-center justify-between px-4 py-3">
                 <div>
-                  <p className="text-sm text-zinc-700">{item.description}</p>
-                  <p className="text-xs text-zinc-400">{fmtDate(item.earned_at)}</p>
+                  <p className="text-sm text-neutral-700">{item.description}</p>
+                  <p className="text-xs text-neutral-400">{fmtDate(item.earned_at)}</p>
                 </div>
-                <span className="text-sm font-medium text-zinc-900">
+                <span className="text-sm font-medium text-neutral-900">
                   {fmtPrice(item.amount_cents)}
                 </span>
               </div>
@@ -101,9 +101,9 @@ export default async function CleanerEarningsPage() {
       )}
 
       {!instantPayoutEnabled && (
-        <section className="mb-6 rounded-lg border border-zinc-100 bg-zinc-50 p-4 text-sm text-zinc-500">
+        <section className="mb-6 rounded-lg border border-neutral-100 bg-neutral-50 p-4 text-sm text-neutral-500">
           Instant payouts are disabled. Enable them in{' '}
-          <Link href="/app/cleaner/settings" className="underline hover:text-zinc-800">
+          <Link href="/app/cleaner/settings" className="underline hover:text-neutral-800">
             settings
           </Link>
           .
@@ -122,17 +122,17 @@ export default async function CleanerEarningsPage() {
             />
           </div>
         ) : (
-          <div className="divide-y divide-zinc-100 rounded-lg border border-zinc-200 bg-white">
+          <div className="divide-y divide-neutral-100 rounded-lg border border-neutral-200 bg-white">
             {payouts.map((payout) => (
               <div key={payout.id} className="flex items-center justify-between px-4 py-3">
                 <div>
-                  <p className="text-sm font-medium text-zinc-800">
+                  <p className="text-sm font-medium text-neutral-800">
                     {fmtPrice(payout.net_amount_cents)}
                     {payout.is_instant && (
-                      <span className="ml-2 text-xs text-zinc-400">(instant)</span>
+                      <span className="ml-2 text-xs text-neutral-400">(instant)</span>
                     )}
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-neutral-400">
                     {fmtDate(payout.initiated_at)}
                     {payout.period_start_at && payout.period_end_at && (
                       <>
@@ -144,7 +144,7 @@ export default async function CleanerEarningsPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   {payout.instant_fee_cents > 0 && (
-                    <span className="text-xs text-zinc-400">
+                    <span className="text-xs text-neutral-400">
                       fee {fmtPrice(payout.instant_fee_cents)}
                     </span>
                   )}

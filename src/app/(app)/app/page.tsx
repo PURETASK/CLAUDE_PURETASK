@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { CleanerCard } from '@/features/discovery/components/CleanerCard';
@@ -65,13 +65,13 @@ const AppHomePage = async () => {
         <h1 className="text-3xl font-semibold tracking-tight text-slate-950">
           {me?.full_name ? `Welcome back, ${me.full_name.split(' ')[0]}` : 'Welcome to PureTask'}
         </h1>
-        <p className="mt-2 text-base text-slate-700">
+        <p className="mt-2 text-base text-neutral-700">
           Find a vetted cleaner in Northern California.
         </p>
       </div>
 
       <div>
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-600">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-600">
           What do you need?
         </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -79,10 +79,10 @@ const AppHomePage = async () => {
             <Link
               key={s.type}
               href={`/app/cleaners?service=${s.type}`}
-              className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+              className="flex flex-col gap-1 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
-              <span className="font-semibold text-slate-900">{s.label}</span>
-              <span className="text-sm text-slate-600">{s.desc}</span>
+              <span className="font-semibold text-neutral-900">{s.label}</span>
+              <span className="text-sm text-neutral-600">{s.desc}</span>
             </Link>
           ))}
         </div>
@@ -90,22 +90,22 @@ const AppHomePage = async () => {
 
       <Link
         href="/app/cleaners"
-        className="self-start rounded-md bg-slate-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+        className="self-start rounded-md bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-neutral-800"
       >
         Browse all cleaners
       </Link>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="text-lg font-semibold text-slate-900">Recent bookings</h2>
-        <p className="mt-1 text-sm text-slate-500">
+      <section className="rounded-xl border border-neutral-200 bg-white p-5">
+        <h2 className="text-lg font-semibold text-neutral-900">Recent bookings</h2>
+        <p className="mt-1 text-sm text-neutral-500">
           You&apos;ll see your last 3 bookings here after your first appointment.
         </p>
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold text-slate-900">Recommended cleaners</h2>
+        <h2 className="text-lg font-semibold text-neutral-900">Recommended cleaners</h2>
         {ranked.length === 0 ? (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-neutral-500">
             Recommendations will appear once we can match your default address.
           </p>
         ) : (

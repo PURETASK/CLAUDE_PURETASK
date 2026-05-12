@@ -31,12 +31,12 @@ export default async function CleanerDisputePage({ params }: Props) {
         <div>
           <Link
             href={`/app/cleaner/bookings/${id}`}
-            className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+            className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← Back to booking
           </Link>
           <h1 className="text-xl font-semibold">Dispute</h1>
-          <p className="text-sm text-zinc-500">Booking {booking.booking_number}</p>
+          <p className="text-sm text-neutral-500">Booking {booking.booking_number}</p>
         </div>
         <DisputeStateBadge state={dispute.state} />
       </div>
@@ -62,7 +62,7 @@ export default async function CleanerDisputePage({ params }: Props) {
       {dispute.state === 'open' && (
         <div>
           <h2 className="mb-3 text-sm font-semibold">Your response</h2>
-          <p className="mb-4 text-sm text-zinc-500">
+          <p className="mb-4 text-sm text-neutral-500">
             You have until {new Date(dispute.cleaner_response_due_at).toLocaleString()} to respond.
           </p>
           <CleanerResponseForm disputeId={dispute.id} />
@@ -77,8 +77,8 @@ export default async function CleanerDisputePage({ params }: Props) {
         'escalated',
         'in_mediation',
       ].includes(dispute.state) && (
-        <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-4">
-          <p className="text-sm text-zinc-600">
+        <div className="rounded-lg border border-neutral-100 bg-neutral-50 p-4">
+          <p className="text-sm text-neutral-600">
             {dispute.state === 'cleaner_responded' || dispute.state === 'awaiting_customer'
               ? 'Waiting for the customer to review your response.'
               : dispute.state === 'mutually_resolved'

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
@@ -26,15 +26,15 @@ export default async function NotificationsSettingsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
-        <Link href="/settings" className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600">
+        <Link href="/settings" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
           ← Back to settings
         </Link>
         <h1 className="text-xl font-semibold">Notifications</h1>
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-xl border border-zinc-100 bg-white p-5">
-          <h2 className="mb-4 text-sm font-semibold text-zinc-800">Email notifications</h2>
+        <div className="rounded-xl border border-neutral-100 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-neutral-800">Email notifications</h2>
           <div className="space-y-3">
             {[
               { label: 'Booking confirmed', sub: 'When your cleaner accepts a request' },
@@ -45,8 +45,8 @@ export default async function NotificationsSettingsPage() {
             ].map((item) => (
               <div key={item.label} className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-zinc-800">{item.label}</p>
-                  <p className="text-xs text-zinc-400">{item.sub}</p>
+                  <p className="text-sm font-medium text-neutral-800">{item.label}</p>
+                  <p className="text-xs text-neutral-400">{item.sub}</p>
                 </div>
                 <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
                   On
@@ -57,40 +57,40 @@ export default async function NotificationsSettingsPage() {
         </div>
 
         {vapidKey && (
-          <div className="rounded-xl border border-zinc-100 bg-white p-5">
-            <h2 className="mb-4 text-sm font-semibold text-zinc-800">Push notifications</h2>
+          <div className="rounded-xl border border-neutral-100 bg-white p-5">
+            <h2 className="mb-4 text-sm font-semibold text-neutral-800">Push notifications</h2>
             <PushSubscriptionToggle vapidPublicKey={vapidKey} />
           </div>
         )}
 
-        <div className="rounded-xl border border-zinc-100 bg-white p-5">
-          <h2 className="mb-4 text-sm font-semibold text-zinc-800">SMS notifications</h2>
+        <div className="rounded-xl border border-neutral-100 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-neutral-800">SMS notifications</h2>
           <SmsSettingsForm
             currentPhone={prefs?.sms_phone ?? null}
             currentEnabled={prefs?.sms_enabled ?? false}
           />
         </div>
 
-        <div className="rounded-xl border border-zinc-100 bg-white p-5">
-          <h2 className="mb-1 text-sm font-semibold text-zinc-800">Quiet hours</h2>
-          <p className="mb-4 text-xs text-zinc-400">No notifications during this window.</p>
+        <div className="rounded-xl border border-neutral-100 bg-white p-5">
+          <h2 className="mb-1 text-sm font-semibold text-neutral-800">Quiet hours</h2>
+          <p className="mb-4 text-xs text-neutral-400">No notifications during this window.</p>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-zinc-700">
+              <span className="text-sm text-neutral-700">
                 {prefs?.quiet_hours_enabled ? 'Enabled' : 'Disabled'}
               </span>
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                   prefs?.quiet_hours_enabled
                     ? 'bg-green-50 text-green-700'
-                    : 'bg-zinc-100 text-zinc-500'
+                    : 'bg-neutral-100 text-neutral-500'
                 }`}
               >
                 {prefs?.quiet_hours_enabled ? 'On' : 'Off'}
               </span>
             </div>
             {prefs?.quiet_hours_enabled && (
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-neutral-500">
                 From{' '}
                 {prefs.quiet_hours_start_minutes !== null
                   ? `${String(Math.floor((prefs.quiet_hours_start_minutes ?? 0) / 60)).padStart(2, '0')}:${String((prefs.quiet_hours_start_minutes ?? 0) % 60).padStart(2, '0')}`

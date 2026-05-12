@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 
 import { getAllTicketsForAdmin } from '@/features/support/queries';
 
@@ -8,7 +8,7 @@ const STATUS_COLORS: Record<string, string> = {
   awaiting_admin: 'bg-red-100 text-red-700',
   in_progress: 'bg-purple-100 text-purple-700',
   resolved: 'bg-emerald-100 text-emerald-700',
-  closed: 'bg-zinc-100 text-zinc-500',
+  closed: 'bg-neutral-100 text-neutral-500',
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -23,8 +23,8 @@ const STATUS_LABELS: Record<string, string> = {
 const PRIORITY_COLORS: Record<string, string> = {
   urgent: 'bg-red-500 text-white',
   high: 'bg-orange-100 text-orange-700',
-  normal: 'bg-zinc-100 text-zinc-500',
-  low: 'bg-zinc-50 text-zinc-400',
+  normal: 'bg-neutral-100 text-neutral-500',
+  low: 'bg-neutral-50 text-neutral-400',
 };
 
 export default async function AdminSupportPage() {
@@ -38,23 +38,23 @@ export default async function AdminSupportPage() {
       <h1 className="mb-6 text-xl font-semibold">Support queue</h1>
 
       {open.length === 0 && (
-        <p className="mb-6 text-sm text-zinc-400">No open tickets. All clear!</p>
+        <p className="mb-6 text-sm text-neutral-400">No open tickets. All clear!</p>
       )}
 
       {open.length > 0 && (
         <div className="mb-10 space-y-2">
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
             Open ({open.length})
           </h2>
           {open.map((t) => (
             <Link
               key={t.id}
               href={`/app/admin/support/${t.id}`}
-              className="flex items-center justify-between rounded-xl border border-zinc-100 bg-white px-5 py-4 transition-colors hover:bg-zinc-50"
+              className="flex items-center justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4 transition-colors hover:bg-neutral-50"
             >
               <div className="min-w-0">
-                <p className="truncate text-sm font-medium text-zinc-900">{t.subject}</p>
-                <p className="mt-0.5 text-xs text-zinc-400">
+                <p className="truncate text-sm font-medium text-neutral-900">{t.subject}</p>
+                <p className="mt-0.5 text-xs text-neutral-400">
                   {t.ticket_number} · {t.submitter_email} ·{' '}
                   {new Date(t.created_at).toLocaleDateString()}
                 </p>
@@ -78,7 +78,7 @@ export default async function AdminSupportPage() {
 
       {closed.length > 0 && (
         <div>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
             Resolved / Closed ({closed.length})
           </h2>
           <div className="space-y-2">
@@ -86,11 +86,11 @@ export default async function AdminSupportPage() {
               <Link
                 key={t.id}
                 href={`/app/admin/support/${t.id}`}
-                className="flex items-center justify-between rounded-xl border border-zinc-100 bg-white px-5 py-4 opacity-60 transition-colors hover:opacity-100"
+                className="flex items-center justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4 opacity-60 transition-colors hover:opacity-100"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-zinc-900">{t.subject}</p>
-                  <p className="mt-0.5 text-xs text-zinc-400">
+                  <p className="truncate text-sm font-medium text-neutral-900">{t.subject}</p>
+                  <p className="mt-0.5 text-xs text-neutral-400">
                     {t.ticket_number} · {t.submitter_email}
                   </p>
                 </div>

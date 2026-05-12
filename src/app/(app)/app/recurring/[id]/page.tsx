@@ -39,7 +39,7 @@ function fmtDate(iso: string) {
 }
 
 const OCCURRENCE_STATUS_STYLES: Record<string, string> = {
-  scheduled: 'bg-zinc-100 text-zinc-600',
+  scheduled: 'bg-neutral-100 text-neutral-600',
   spawned: 'bg-blue-50 text-blue-700',
   skipped: 'bg-amber-50 text-amber-700',
   cancelled: 'bg-red-50 text-red-600',
@@ -77,18 +77,18 @@ export default async function RecurringDetailPage({ params }: PageProps) {
       <div className="mb-8">
         <Link
           href="/app/recurring"
-          className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
         >
           ← Recurring cleanings
         </Link>
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-xl font-semibold">{schedule.cleaner_name}</h1>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-neutral-500">
               {schedule.service_display_name} ·{' '}
               {CADENCE_LABELS[schedule.cadence] ?? schedule.cadence}
             </p>
-            <p className="mt-1 text-xs text-zinc-400">
+            <p className="mt-1 text-xs text-neutral-400">
               {DAYS[schedule.day_of_week]}s at {fmtTime(schedule.start_minutes)} ·{' '}
               {schedule.duration_hours_decimal} hrs · $
               {((schedule.hourly_rate_cents * schedule.duration_hours_decimal) / 100).toFixed(0)}
@@ -101,7 +101,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
                 ? 'bg-green-50 text-green-700'
                 : isPaused
                   ? 'bg-amber-50 text-amber-700'
-                  : 'bg-zinc-100 text-zinc-500'
+                  : 'bg-neutral-100 text-neutral-500'
             }`}
           >
             {schedule.status.replace(/_/g, ' ')}
@@ -121,7 +121,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
             >
               <button
                 type="submit"
-                className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-50"
+                className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
               >
                 Pause schedule
               </button>
@@ -136,7 +136,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
             >
               <button
                 type="submit"
-                className="rounded-lg bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-700"
+                className="rounded-lg bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-neutral-700"
               >
                 Resume schedule
               </button>
@@ -160,21 +160,21 @@ export default async function RecurringDetailPage({ params }: PageProps) {
 
       {/* Upcoming */}
       <section className="mb-6">
-        <h2 className="mb-3 text-sm font-semibold text-zinc-900">Upcoming sessions</h2>
+        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Upcoming sessions</h2>
         {upcomingOccurrences.length === 0 ? (
-          <p className="text-sm text-zinc-400">No upcoming sessions.</p>
+          <p className="text-sm text-neutral-400">No upcoming sessions.</p>
         ) : (
           <div className="space-y-2">
             {upcomingOccurrences.map((occ) => (
               <div
                 key={occ.id}
-                className="flex items-center justify-between rounded-lg border border-zinc-100 bg-white px-4 py-2.5"
+                className="flex items-center justify-between rounded-lg border border-neutral-100 bg-white px-4 py-2.5"
               >
                 <div>
-                  <p className="text-sm font-medium text-zinc-800">
+                  <p className="text-sm font-medium text-neutral-800">
                     {fmtDate(occ.scheduled_start_at)}
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-neutral-400">
                     {fmtTime(schedule.start_minutes)} · {schedule.duration_hours_decimal} hrs
                   </p>
                 </div>
@@ -191,7 +191,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
                         await skipOccurrenceAction(occ.id);
                       }}
                     >
-                      <button type="submit" className="text-xs text-zinc-400 hover:text-zinc-700">
+                      <button type="submit" className="text-xs text-neutral-400 hover:text-neutral-700">
                         Skip
                       </button>
                     </form>
@@ -199,7 +199,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
                   {occ.booking_id && (
                     <Link
                       href={`/app/bookings/${occ.booking_id}`}
-                      className="text-xs text-zinc-400 underline hover:text-zinc-700"
+                      className="text-xs text-neutral-400 underline hover:text-neutral-700"
                     >
                       Booking
                     </Link>
@@ -214,14 +214,14 @@ export default async function RecurringDetailPage({ params }: PageProps) {
       {/* History */}
       {pastOccurrences.length > 0 && (
         <section>
-          <h2 className="mb-3 text-sm font-semibold text-zinc-900">History</h2>
+          <h2 className="mb-3 text-sm font-semibold text-neutral-900">History</h2>
           <div className="space-y-2">
             {pastOccurrences.map((occ) => (
               <div
                 key={occ.id}
-                className="flex items-center justify-between rounded-lg border border-zinc-100 bg-white px-4 py-2.5"
+                className="flex items-center justify-between rounded-lg border border-neutral-100 bg-white px-4 py-2.5"
               >
-                <p className="text-sm text-zinc-600">{fmtDate(occ.scheduled_start_at)}</p>
+                <p className="text-sm text-neutral-600">{fmtDate(occ.scheduled_start_at)}</p>
                 <div className="flex items-center gap-3">
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${OCCURRENCE_STATUS_STYLES[occ.status] ?? ''}`}
@@ -231,7 +231,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
                   {occ.booking_id && (
                     <Link
                       href={`/app/bookings/${occ.booking_id}`}
-                      className="text-xs text-zinc-400 underline hover:text-zinc-700"
+                      className="text-xs text-neutral-400 underline hover:text-neutral-700"
                     >
                       Booking
                     </Link>
@@ -243,7 +243,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      <div className="mt-8 rounded-lg bg-zinc-50 p-4 text-xs text-zinc-400">
+      <div className="mt-8 rounded-lg bg-neutral-50 p-4 text-xs text-neutral-400">
         <p>
           Started {fmtDate(schedule.started_at)} · {schedule.occurrences_completed_count} sessions
           completed

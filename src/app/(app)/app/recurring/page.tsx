@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getMyRecurringSchedules } from '@/features/recurring/queries';
@@ -15,9 +15,9 @@ const CADENCE_LABELS: Record<string, string> = {
 const STATUS_COLORS: Record<string, string> = {
   active: 'bg-green-50 text-green-700',
   paused: 'bg-amber-50 text-amber-700',
-  ended_by_customer: 'bg-zinc-100 text-zinc-500',
-  ended_by_cleaner: 'bg-zinc-100 text-zinc-500',
-  ended_by_platform: 'bg-zinc-100 text-zinc-500',
+  ended_by_customer: 'bg-neutral-100 text-neutral-500',
+  ended_by_cleaner: 'bg-neutral-100 text-neutral-500',
+  ended_by_platform: 'bg-neutral-100 text-neutral-500',
 };
 
 export default async function RecurringPage() {
@@ -34,20 +34,20 @@ export default async function RecurringPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold">Recurring Cleanings</h1>
-          <p className="text-sm text-zinc-500">Set-it-and-forget-it scheduled cleanings.</p>
+          <p className="text-sm text-neutral-500">Set-it-and-forget-it scheduled cleanings.</p>
         </div>
         <Link
           href="/app/cleaners"
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
         >
           + New schedule
         </Link>
       </div>
 
       {schedules.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-          <p className="mb-3 text-sm text-zinc-500">No recurring schedules yet.</p>
-          <Link href="/app/cleaners" className="text-sm font-medium text-zinc-900 underline">
+        <div className="rounded-xl border border-neutral-200 bg-white p-8 text-center">
+          <p className="mb-3 text-sm text-neutral-500">No recurring schedules yet.</p>
+          <Link href="/app/cleaners" className="text-sm font-medium text-neutral-900 underline">
             Browse cleaners to get started
           </Link>
         </div>
@@ -57,23 +57,23 @@ export default async function RecurringPage() {
             <Link
               key={s.id}
               href={`/app/recurring/${s.id}`}
-              className="block rounded-xl border border-zinc-200 bg-white p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
+              className="block rounded-xl border border-neutral-200 bg-white p-4 hover:border-neutral-300 hover:shadow-sm transition-all"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-medium text-zinc-900">{s.cleaner_name}</p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="font-medium text-neutral-900">{s.cleaner_name}</p>
+                  <p className="text-sm text-neutral-500">
                     {s.service_display_name} · {CADENCE_LABELS[s.cadence] ?? s.cadence}
                   </p>
-                  <p className="mt-1 text-xs text-zinc-400">{s.address_street}</p>
+                  <p className="mt-1 text-xs text-neutral-400">{s.address_street}</p>
                 </div>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${STATUS_COLORS[s.status] ?? 'bg-zinc-100 text-zinc-500'}`}
+                  className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${STATUS_COLORS[s.status] ?? 'bg-neutral-100 text-neutral-500'}`}
                 >
                   {s.status.replace(/_/g, ' ')}
                 </span>
               </div>
-              <div className="mt-3 flex gap-4 text-xs text-zinc-400">
+              <div className="mt-3 flex gap-4 text-xs text-neutral-400">
                 <span>{s.occurrences_completed_count} completed</span>
                 <span>
                   ${((s.hourly_rate_cents * s.duration_hours_decimal) / 100).toFixed(0)}/session

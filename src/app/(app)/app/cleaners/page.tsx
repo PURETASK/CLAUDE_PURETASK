@@ -1,4 +1,4 @@
-import Image from 'next/image';
+﻿import Image from 'next/image';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -59,7 +59,7 @@ const CleanersPage = async ({ searchParams }: PageProps) => {
             </Link>
           </div>
         ) : (
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-neutral-500">
             No cleaners match. Try widening your distance or relaxing filters.
           </p>
         )

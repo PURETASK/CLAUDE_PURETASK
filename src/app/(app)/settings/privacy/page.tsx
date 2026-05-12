@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { PhotoPolicyForm } from '@/features/customer/components/PhotoPolicyForm';
@@ -15,15 +15,15 @@ const SettingsPrivacyPage = async () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Link href="/settings" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/settings" className="text-sm text-neutral-500 hover:text-neutral-900">
           Settings
         </Link>
-        <span className="text-zinc-300">/</span>
+        <span className="text-neutral-300">/</span>
         <h1 className="text-xl font-semibold">Privacy Preferences</h1>
       </div>
 
       <div className="max-w-2xl rounded border bg-white p-4">
-        <p className="mb-3 text-sm text-zinc-600">
+        <p className="mb-3 text-sm text-neutral-600">
           Photos protect both you and your cleaner by creating transparent proof of completed work.
           Photos are encrypted at rest and automatically deleted after 90 days by policy.
         </p>

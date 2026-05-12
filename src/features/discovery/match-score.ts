@@ -1,4 +1,4 @@
-import { differenceInCalendarDays } from 'date-fns';
+﻿import { differenceInCalendarDays } from 'date-fns';
 
 export type DiscoveryTier =
   | 'rising_pro'
@@ -194,7 +194,7 @@ export const TIER_LABELS: Record<DiscoveryTier, string> = {
 };
 
 export const TIER_COLORS: Record<DiscoveryTier, { bg: string; text: string }> = {
-  rising_pro: { bg: 'bg-zinc-100', text: 'text-zinc-700' },
+  rising_pro: { bg: 'bg-neutral-100', text: 'text-neutral-700' },
   proven_specialist: { bg: 'bg-blue-50', text: 'text-blue-700' },
   top_performer: { bg: 'bg-amber-50', text: 'text-amber-700' },
   all_star_expert: { bg: 'bg-emerald-50', text: 'text-emerald-700' },

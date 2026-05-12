@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
 import { getUserAddresses } from '@/features/customer/queries';
@@ -50,7 +50,7 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
   if (offeredServices.length === 0 || addresses.length === 0) {
     return (
       <div className="mx-auto max-w-lg py-10">
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-neutral-500">
           {addresses.length === 0
             ? 'Add a service address before setting up recurring cleanings.'
             : 'This cleaner has no active services.'}
@@ -75,12 +75,12 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
       <div className="mb-8">
         <Link
           href={`/app/cleaners/${cleaner_id}`}
-          className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
         >
           ← {cleaner.full_name}
         </Link>
         <h1 className="text-xl font-semibold">Set up recurring cleaning</h1>
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-neutral-500">
           Schedule automatic cleanings with {cleaner.full_name} on a repeating cadence.
         </p>
       </div>
@@ -89,11 +89,11 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
         <input type="hidden" name="cleaner_id" value={cleaner_id} />
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700">Service</label>
+          <label className="mb-1 block text-sm font-medium text-neutral-700">Service</label>
           <select
             name="service_id"
             required
-            className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
           >
             {offeredServices.map((s) => (
               <option key={s.id} value={s.id}>
@@ -104,11 +104,11 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700">Address</label>
+          <label className="mb-1 block text-sm font-medium text-neutral-700">Address</label>
           <select
             name="address_id"
             required
-            className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
           >
             {addresses.map((a) => (
               <option key={a.id} value={a.id}>
@@ -120,11 +120,11 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Duration (hours)</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-700">Duration (hours)</label>
             <select
               name="duration_hours"
               required
-              className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
             >
               {[1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6].map((h) => (
                 <option key={h} value={h}>
@@ -135,12 +135,12 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Start time</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-700">Start time</label>
             <select
               name="start_minutes"
               defaultValue={480}
               required
-              className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
             >
               {TIME_OPTIONS.map((t) => (
                 <option key={t.value} value={t.value}>
@@ -153,11 +153,11 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Cadence</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-700">Cadence</label>
             <select
               name="cadence"
               required
-              className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
             >
               {CADENCE_OPTIONS.map((c) => (
                 <option key={c.value} value={c.value}>
@@ -168,30 +168,30 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">First date</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-700">First date</label>
             <input
               type="date"
               name="first_date"
               min={minDate}
               required
-              className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700">Notes (optional)</label>
+          <label className="mb-1 block text-sm font-medium text-neutral-700">Notes (optional)</label>
           <textarea
             name="notes"
             rows={3}
             placeholder="Entry instructions, special requests…"
-            className="w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full rounded-xl bg-zinc-900 py-3 text-sm font-semibold text-white hover:bg-zinc-700"
+          className="w-full rounded-xl bg-neutral-900 py-3 text-sm font-semibold text-white hover:bg-neutral-700"
         >
           Create recurring schedule
         </button>

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { ProfileForm } from '@/features/customer/components/ProfileForm';
@@ -11,10 +11,10 @@ const SettingsProfilePage = async () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Link href="/settings" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/settings" className="text-sm text-neutral-500 hover:text-neutral-900">
           Settings
         </Link>
-        <span className="text-zinc-300">/</span>
+        <span className="text-neutral-300">/</span>
         <h1 className="text-xl font-semibold">Profile</h1>
       </div>
 

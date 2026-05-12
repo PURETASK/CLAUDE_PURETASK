@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Pricing — PureTask',
@@ -20,7 +20,7 @@ export default function PricingPage() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-16 text-center">
           <h1 className="mb-4 text-4xl font-bold">Transparent pricing</h1>
-          <p className="text-lg text-zinc-500">
+          <p className="text-lg text-neutral-500">
             No subscriptions. No hidden fees. Everyone sees the same numbers.
           </p>
         </div>
@@ -44,11 +44,11 @@ export default function PricingPage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-center"
+                className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 text-center"
               >
-                <p className="mb-1 text-3xl font-bold text-zinc-900">{item.value}</p>
-                <p className="mb-1 text-sm font-semibold text-zinc-700">{item.label}</p>
-                <p className="text-xs text-zinc-400">{item.sub}</p>
+                <p className="mb-1 text-3xl font-bold text-neutral-900">{item.value}</p>
+                <p className="mb-1 text-sm font-semibold text-neutral-700">{item.label}</p>
+                <p className="text-xs text-neutral-400">{item.sub}</p>
               </div>
             ))}
           </div>
@@ -57,34 +57,34 @@ export default function PricingPage() {
         {/* Cleaner commissions */}
         <section className="mb-16">
           <h2 className="mb-2 text-2xl font-bold">Cleaner commission rates</h2>
-          <p className="mb-6 text-zinc-500">
+          <p className="mb-6 text-neutral-500">
             Commission drops as cleaners earn their tier. Higher tier = lower cut to the platform.
           </p>
-          <div className="overflow-hidden rounded-xl border border-zinc-200">
+          <div className="overflow-hidden rounded-xl border border-neutral-200">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-50">
+              <thead className="bg-neutral-50">
                 <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-zinc-700">Tier</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-500">Condition</th>
-                  <th className="px-4 py-3 text-left font-semibold text-zinc-700">Platform fee</th>
-                  <th className="px-4 py-3 text-left font-semibold text-zinc-700">Cleaner keeps</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-500">Min hours</th>
+                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">Tier</th>
+                  <th className="px-4 py-3 text-left font-medium text-neutral-500">Condition</th>
+                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">Platform fee</th>
+                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">Cleaner keeps</th>
+                  <th className="px-4 py-3 text-left font-medium text-neutral-500">Min hours</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100">
+              <tbody className="divide-y divide-neutral-100">
                 {TIERS.map((t, i) => (
-                  <tr key={i} className="hover:bg-zinc-50">
-                    <td className="px-4 py-3 font-medium text-zinc-900">{t.name}</td>
-                    <td className="px-4 py-3 text-zinc-500">{t.note}</td>
-                    <td className="px-4 py-3 text-zinc-700">{t.commission}</td>
+                  <tr key={i} className="hover:bg-neutral-50">
+                    <td className="px-4 py-3 font-medium text-neutral-900">{t.name}</td>
+                    <td className="px-4 py-3 text-neutral-500">{t.note}</td>
+                    <td className="px-4 py-3 text-neutral-700">{t.commission}</td>
                     <td className="px-4 py-3 font-semibold text-green-700">{t.payout}</td>
-                    <td className="px-4 py-3 text-zinc-500">{t.min}</td>
+                    <td className="px-4 py-3 text-neutral-500">{t.min}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="mt-3 text-xs text-zinc-400">
+          <p className="mt-3 text-xs text-neutral-400">
             Commission is calculated on the cleaner subtotal (hourly rate × hours). The platform
             service fee ($9.99) paid by the customer is separate and goes entirely to PureTask.
           </p>
@@ -94,16 +94,16 @@ export default function PricingPage() {
         <section className="mb-16">
           <h2 className="mb-6 text-2xl font-bold">Payout schedule</h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-xl border border-zinc-200 p-6">
-              <p className="mb-2 text-xl font-bold text-zinc-900">Weekly — Free</p>
-              <p className="text-sm text-zinc-500">
+            <div className="rounded-xl border border-neutral-200 p-6">
+              <p className="mb-2 text-xl font-bold text-neutral-900">Weekly — Free</p>
+              <p className="text-sm text-neutral-500">
                 Every Friday at noon Pacific. All earnings from approved jobs during the week are
                 batched and transferred to your bank via Stripe.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-6">
-              <p className="mb-2 text-xl font-bold text-zinc-900">Instant — 5% fee</p>
-              <p className="text-sm text-zinc-500">
+              <p className="mb-2 text-xl font-bold text-neutral-900">Instant — 5% fee</p>
+              <p className="text-sm text-neutral-500">
                 Request your balance immediately, any day. A 5% fee is deducted from the payout
                 amount. Requires Stripe instant payouts to be enabled on your account.
               </p>
@@ -112,11 +112,11 @@ export default function PricingPage() {
         </section>
 
         {/* FAQ link */}
-        <div className="rounded-xl bg-zinc-50 p-6 text-center">
-          <p className="mb-2 text-sm font-medium text-zinc-700">Still have questions?</p>
+        <div className="rounded-xl bg-neutral-50 p-6 text-center">
+          <p className="mb-2 text-sm font-medium text-neutral-700">Still have questions?</p>
           <a
             href="/faq"
-            className="text-sm font-semibold text-zinc-900 underline hover:no-underline"
+            className="text-sm font-semibold text-neutral-900 underline hover:no-underline"
           >
             Read our full FAQ →
           </a>

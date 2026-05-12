@@ -1,4 +1,4 @@
-import Image from 'next/image';
+﻿import Image from 'next/image';
 import Link from 'next/link';
 
 import { getMyTickets } from '@/features/support/queries';
@@ -19,7 +19,7 @@ const STATUS_COLORS: Record<string, string> = {
   awaiting_admin: 'bg-indigo-100 text-indigo-700',
   in_progress: 'bg-purple-100 text-purple-700',
   resolved: 'bg-emerald-100 text-emerald-700',
-  closed: 'bg-zinc-100 text-zinc-500',
+  closed: 'bg-neutral-100 text-neutral-500',
 };
 
 export default async function SupportPage() {
@@ -45,9 +45,9 @@ export default async function SupportPage() {
       </div>
 
       {tickets.length === 0 ? (
-        <div className="rounded-xl border border-zinc-100 bg-white px-6 py-12 text-center">
-          <p className="text-sm font-medium text-zinc-700">No support tickets yet.</p>
-          <p className="mt-1 text-sm text-zinc-400">
+        <div className="rounded-xl border border-neutral-100 bg-white px-6 py-12 text-center">
+          <p className="text-sm font-medium text-neutral-700">No support tickets yet.</p>
+          <p className="mt-1 text-sm text-neutral-400">
             Need help? Open a ticket and we&#39;ll get back to you shortly.
           </p>
         </div>
@@ -57,11 +57,11 @@ export default async function SupportPage() {
             <Link
               key={t.id}
               href={`/app/support/${t.id}`}
-              className="flex items-start justify-between rounded-xl border border-zinc-100 bg-white px-5 py-4 transition-colors hover:bg-zinc-50"
+              className="flex items-start justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4 transition-colors hover:bg-neutral-50"
             >
               <div>
-                <p className="text-sm font-medium text-zinc-900">{t.subject}</p>
-                <p className="mt-0.5 text-xs text-zinc-400">
+                <p className="text-sm font-medium text-neutral-900">{t.subject}</p>
+                <p className="mt-0.5 text-xs text-neutral-400">
                   {t.ticket_number} · {new Date(t.created_at).toLocaleDateString()}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { AddressList } from '@/features/customer/components/AddressList';
@@ -13,16 +13,16 @@ const SettingsAddressesPage = async () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Link href="/settings" className="text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/settings" className="text-sm text-neutral-500 hover:text-neutral-900">
           Settings
         </Link>
-        <span className="text-zinc-300">/</span>
+        <span className="text-neutral-300">/</span>
         <h1 className="text-xl font-semibold">Addresses</h1>
       </div>
 
       <Link
         href="/settings/addresses/new"
-        className="self-start rounded border bg-white px-4 py-2 text-sm hover:bg-zinc-50"
+        className="self-start rounded border bg-white px-4 py-2 text-sm hover:bg-neutral-50"
       >
         + Add address
       </Link>

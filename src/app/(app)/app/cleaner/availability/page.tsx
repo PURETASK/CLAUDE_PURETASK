@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { addTimeOffAction, removeTimeOffAction } from '@/features/cleaner/availability-actions';
@@ -21,11 +21,11 @@ export default async function CleanerAvailabilityPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
-        <Link href="/app/cleaner" className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600">
+        <Link href="/app/cleaner" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
           ← Dashboard
         </Link>
         <h1 className="text-xl font-semibold">Availability</h1>
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-neutral-500">
           Set your weekly schedule and block time off. Customers can only book during your active
           hours.
         </p>
@@ -33,28 +33,28 @@ export default async function CleanerAvailabilityPage() {
 
       {/* Weekly schedule */}
       <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold text-zinc-900">Weekly schedule</h2>
+        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Weekly schedule</h2>
         <AvailabilityScheduleForm initialRules={data.rules} />
       </section>
 
       {/* Time off */}
-      <section className="mb-8 rounded-lg border border-zinc-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-semibold text-zinc-900">Time off</h2>
+      <section className="mb-8 rounded-lg border border-neutral-200 bg-white p-5">
+        <h2 className="mb-4 text-sm font-semibold text-neutral-900">Time off</h2>
 
         {data.timeOff.length === 0 ? (
-          <p className="mb-4 text-sm text-zinc-400">No upcoming time off blocks.</p>
+          <p className="mb-4 text-sm text-neutral-400">No upcoming time off blocks.</p>
         ) : (
           <ul className="mb-4 space-y-2">
             {data.timeOff.map((block) => (
               <li
                 key={block.id}
-                className="flex items-center justify-between rounded-lg bg-zinc-50 px-3 py-2"
+                className="flex items-center justify-between rounded-lg bg-neutral-50 px-3 py-2"
               >
                 <div>
-                  <p className="text-sm font-medium text-zinc-800">
+                  <p className="text-sm font-medium text-neutral-800">
                     {formatDate(block.blocked_start_at)} — {formatDate(block.blocked_end_at)}
                   </p>
-                  {block.reason && <p className="text-xs text-zinc-500">{block.reason}</p>}
+                  {block.reason && <p className="text-xs text-neutral-500">{block.reason}</p>}
                 </div>
                 <form
                   action={async () => {
@@ -74,7 +74,7 @@ export default async function CleanerAvailabilityPage() {
         <AddTimeOffForm />
       </section>
 
-      <Link href="/app/cleaner/settings" className="text-xs text-zinc-400 hover:text-zinc-600">
+      <Link href="/app/cleaner/settings" className="text-xs text-neutral-400 hover:text-neutral-600">
         ← Back to settings
       </Link>
     </div>
@@ -84,24 +84,24 @@ export default async function CleanerAvailabilityPage() {
 function AddTimeOffForm() {
   return (
     <form action={addTimeOffAction} className="space-y-3">
-      <p className="text-xs font-medium text-zinc-700">Add time off block</p>
+      <p className="text-xs font-medium text-neutral-700">Add time off block</p>
       <div className="flex gap-3">
         <div className="flex-1">
-          <label className="mb-1 block text-xs text-zinc-500">From</label>
+          <label className="mb-1 block text-xs text-neutral-500">From</label>
           <input
             type="date"
             name="start_date"
             required
-            className="w-full rounded-md border border-zinc-200 px-2 py-1.5 text-sm"
+            className="w-full rounded-md border border-neutral-200 px-2 py-1.5 text-sm"
           />
         </div>
         <div className="flex-1">
-          <label className="mb-1 block text-xs text-zinc-500">To</label>
+          <label className="mb-1 block text-xs text-neutral-500">To</label>
           <input
             type="date"
             name="end_date"
             required
-            className="w-full rounded-md border border-zinc-200 px-2 py-1.5 text-sm"
+            className="w-full rounded-md border border-neutral-200 px-2 py-1.5 text-sm"
           />
         </div>
       </div>
@@ -109,11 +109,11 @@ function AddTimeOffForm() {
         type="text"
         name="reason"
         placeholder="Reason (optional)"
-        className="w-full rounded-md border border-zinc-200 px-2 py-1.5 text-sm"
+        className="w-full rounded-md border border-neutral-200 px-2 py-1.5 text-sm"
       />
       <button
         type="submit"
-        className="rounded-lg border border-zinc-300 px-4 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+        className="rounded-lg border border-neutral-300 px-4 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
       >
         Add block
       </button>

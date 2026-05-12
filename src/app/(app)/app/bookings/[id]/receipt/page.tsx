@@ -59,20 +59,20 @@ export default async function BookingReceiptPage({ params }: Props) {
       <div className="mb-6">
         <Link
           href={`/app/bookings/${id}`}
-          className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
         >
           ← Back to booking
         </Link>
         <h1 className="text-xl font-semibold">Receipt</h1>
-        <p className="text-sm text-zinc-500">Booking {booking.booking_number}</p>
+        <p className="text-sm text-neutral-500">Booking {booking.booking_number}</p>
       </div>
 
       {/* Booking summary */}
-      <section className="mb-5 rounded-lg border border-zinc-200 bg-white p-5 text-sm">
+      <section className="mb-5 rounded-lg border border-neutral-200 bg-white p-5 text-sm">
         <p className="mb-3 font-medium">Booking summary</p>
-        <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-zinc-600">
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-neutral-600">
           <dt>Cleaner</dt>
-          <dd className="font-medium text-zinc-800">{booking.other_party_name}</dd>
+          <dd className="font-medium text-neutral-800">{booking.other_party_name}</dd>
           <dt>Date</dt>
           <dd>
             {new Date(booking.start_at).toLocaleDateString('en-US', {
@@ -89,9 +89,9 @@ export default async function BookingReceiptPage({ params }: Props) {
       </section>
 
       {/* Pricing breakdown */}
-      <section className="mb-5 rounded-lg border border-zinc-200 bg-white p-5 text-sm">
+      <section className="mb-5 rounded-lg border border-neutral-200 bg-white p-5 text-sm">
         <p className="mb-3 font-medium">Charges</p>
-        <div className="flex flex-col gap-1.5 text-zinc-600">
+        <div className="flex flex-col gap-1.5 text-neutral-600">
           <div className="flex justify-between">
             <span>
               {fmtPrice(booking.hourly_rate_cents)}/hr × {booking.duration_hours_decimal}h
@@ -102,7 +102,7 @@ export default async function BookingReceiptPage({ params }: Props) {
             <span>PureTask service fee</span>
             <span>{fmtPrice(booking.platform_fee_cents)}</span>
           </div>
-          <div className="mt-1 flex justify-between border-t pt-1.5 font-medium text-zinc-900">
+          <div className="mt-1 flex justify-between border-t pt-1.5 font-medium text-neutral-900">
             <span>Total charged</span>
             <span>{fmtPrice(booking.total_charge_cents)}</span>
           </div>
@@ -110,10 +110,10 @@ export default async function BookingReceiptPage({ params }: Props) {
       </section>
 
       {/* Payment status */}
-      <section className="mb-5 rounded-lg border border-zinc-200 bg-white p-5 text-sm">
+      <section className="mb-5 rounded-lg border border-neutral-200 bg-white p-5 text-sm">
         <p className="mb-3 font-medium">Payment</p>
         {charge ? (
-          <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-zinc-600">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-neutral-600">
             <dt>Status</dt>
             <dd>
               <span
@@ -122,7 +122,7 @@ export default async function BookingReceiptPage({ params }: Props) {
                     ? 'bg-green-50 text-green-700'
                     : charge.state === 'failed'
                       ? 'bg-red-50 text-red-700'
-                      : 'bg-zinc-100 text-zinc-600'
+                      : 'bg-neutral-100 text-neutral-600'
                 }`}
               >
                 {CHARGE_STATE_LABELS[charge.state] ?? charge.state}
@@ -150,11 +150,11 @@ export default async function BookingReceiptPage({ params }: Props) {
             )}
           </dl>
         ) : (
-          <p className="text-zinc-400">No payment record found for this booking.</p>
+          <p className="text-neutral-400">No payment record found for this booking.</p>
         )}
       </section>
 
-      <p className="text-center text-xs text-zinc-400">
+      <p className="text-center text-xs text-neutral-400">
         Questions? Contact{' '}
         <a href="mailto:support@puretask.com" className="underline">
           support@puretask.com

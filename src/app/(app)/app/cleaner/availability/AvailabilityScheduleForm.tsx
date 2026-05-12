@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useTransition, useState } from 'react';
 
@@ -53,7 +53,7 @@ export function AvailabilityScheduleForm({ initialRules }: { initialRules: Avail
 
   return (
     <div>
-      <div className="divide-y divide-zinc-100 rounded-lg border border-zinc-200 bg-white">
+      <div className="divide-y divide-neutral-100 rounded-lg border border-neutral-200 bg-white">
         {rules.map((rule) => (
           <div key={rule.day_of_week} className="flex items-center gap-4 px-4 py-3">
             <div className="w-24">
@@ -62,10 +62,10 @@ export function AvailabilityScheduleForm({ initialRules }: { initialRules: Avail
                   type="checkbox"
                   checked={rule.is_active}
                   onChange={(e) => updateRule(rule.day_of_week, { is_active: e.target.checked })}
-                  className="h-4 w-4 rounded border-zinc-300"
+                  className="h-4 w-4 rounded border-neutral-300"
                 />
                 <span
-                  className={`text-sm font-medium ${rule.is_active ? 'text-zinc-900' : 'text-zinc-400'}`}
+                  className={`text-sm font-medium ${rule.is_active ? 'text-neutral-900' : 'text-neutral-400'}`}
                 >
                   {DAYS[rule.day_of_week]}
                 </span>
@@ -79,7 +79,7 @@ export function AvailabilityScheduleForm({ initialRules }: { initialRules: Avail
                   onChange={(e) =>
                     updateRule(rule.day_of_week, { start_minutes: parseInt(e.target.value) })
                   }
-                  className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs text-zinc-800"
+                  className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-1 text-xs text-neutral-800"
                 >
                   {TIME_OPTIONS.map((t) => (
                     <option key={t.value} value={t.value}>
@@ -87,13 +87,13 @@ export function AvailabilityScheduleForm({ initialRules }: { initialRules: Avail
                     </option>
                   ))}
                 </select>
-                <span className="text-xs text-zinc-400">to</span>
+                <span className="text-xs text-neutral-400">to</span>
                 <select
                   value={rule.end_minutes}
                   onChange={(e) =>
                     updateRule(rule.day_of_week, { end_minutes: parseInt(e.target.value) })
                   }
-                  className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs text-zinc-800"
+                  className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-1 text-xs text-neutral-800"
                 >
                   {TIME_OPTIONS.filter((t) => t.value > rule.start_minutes).map((t) => (
                     <option key={t.value} value={t.value}>
@@ -103,7 +103,7 @@ export function AvailabilityScheduleForm({ initialRules }: { initialRules: Avail
                 </select>
               </div>
             ) : (
-              <p className="text-xs text-zinc-400">Unavailable</p>
+              <p className="text-xs text-neutral-400">Unavailable</p>
             )}
           </div>
         ))}
@@ -114,7 +114,7 @@ export function AvailabilityScheduleForm({ initialRules }: { initialRules: Avail
           type="button"
           onClick={handleSave}
           disabled={isPending}
-          className="rounded-lg bg-zinc-900 px-5 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+          className="rounded-lg bg-neutral-900 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
         >
           {isPending ? 'Saving…' : 'Save schedule'}
         </button>

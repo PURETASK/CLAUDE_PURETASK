@@ -15,9 +15,9 @@ export function ResolveForm({ ticketId }: Props) {
       <div>
         <label
           htmlFor="resolution_notes"
-          className="mb-1.5 block text-sm font-medium text-zinc-700"
+          className="mb-1.5 block text-sm font-medium text-neutral-700"
         >
-          Resolution notes <span className="font-normal text-zinc-400">(optional)</span>
+          Resolution notes <span className="font-normal text-neutral-400">(optional)</span>
         </label>
         <textarea
           id="resolution_notes"
@@ -25,7 +25,7 @@ export function ResolveForm({ ticketId }: Props) {
           rows={3}
           maxLength={2000}
           placeholder="Describe how this was resolved…"
-          className="w-full resize-none rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+          className="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
         />
       </div>
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}

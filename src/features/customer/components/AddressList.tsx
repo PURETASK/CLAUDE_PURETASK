@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useRouter } from 'next/navigation';
 import { AddressCard } from '@/features/customer/components/AddressCard';
@@ -24,7 +24,7 @@ export const AddressList = ({ addresses, defaultAddressId }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
-      {addresses.length === 0 ? <p className="text-sm text-zinc-500">No addresses yet.</p> : null}
+      {addresses.length === 0 ? <p className="text-sm text-neutral-500">No addresses yet.</p> : null}
 
       {addresses.map((address) => (
         <AddressCard

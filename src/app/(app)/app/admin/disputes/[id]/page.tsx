@@ -86,7 +86,7 @@ export default async function AdminDisputeDetailPage({ params }: Props) {
         <div>
           <Link
             href="/app/admin/disputes"
-            className="mb-1 block text-xs text-zinc-400 hover:text-zinc-600"
+            className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← All disputes
           </Link>

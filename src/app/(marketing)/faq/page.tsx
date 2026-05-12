@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'FAQ — PureTask',
@@ -91,18 +91,18 @@ export default function FaqPage() {
       <div className="mx-auto max-w-3xl">
         <div className="mb-16 text-center">
           <h1 className="mb-4 text-4xl font-bold">Frequently asked questions</h1>
-          <p className="text-zinc-500">Everything you need to know before your first booking.</p>
+          <p className="text-neutral-500">Everything you need to know before your first booking.</p>
         </div>
 
         <div className="space-y-14">
           {FAQS.map((section) => (
             <section key={section.section}>
-              <h2 className="mb-6 text-xl font-bold text-zinc-900">{section.section}</h2>
-              <div className="divide-y divide-zinc-100">
+              <h2 className="mb-6 text-xl font-bold text-neutral-900">{section.section}</h2>
+              <div className="divide-y divide-neutral-100">
                 {section.items.map((item) => (
                   <div key={item.q} className="py-5">
-                    <p className="mb-2 font-semibold text-zinc-900">{item.q}</p>
-                    <p className="text-sm leading-relaxed text-zinc-500">{item.a}</p>
+                    <p className="mb-2 font-semibold text-neutral-900">{item.q}</p>
+                    <p className="text-sm leading-relaxed text-neutral-500">{item.a}</p>
                   </div>
                 ))}
               </div>

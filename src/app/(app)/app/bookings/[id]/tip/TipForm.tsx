@@ -37,8 +37,8 @@ export function TipForm({ bookingId }: { bookingId: string }) {
             }}
             className={`rounded-xl border py-2 text-sm font-semibold transition-colors ${
               selected === p.cents && !custom
-                ? 'border-zinc-900 bg-zinc-900 text-white'
-                : 'border-zinc-200 text-zinc-700 hover:border-zinc-400'
+                ? 'border-neutral-900 bg-neutral-900 text-white'
+                : 'border-neutral-200 text-neutral-700 hover:border-neutral-400'
             }`}
           >
             {p.label}
@@ -48,9 +48,9 @@ export function TipForm({ bookingId }: { bookingId: string }) {
 
       {/* Custom amount */}
       <div className="mb-6">
-        <label className="mb-1 block text-left text-xs text-zinc-500">Custom amount</label>
+        <label className="mb-1 block text-left text-xs text-neutral-500">Custom amount</label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-zinc-400">$</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400">$</span>
           <input
             type="number"
             min="1"
@@ -62,7 +62,7 @@ export function TipForm({ bookingId }: { bookingId: string }) {
               setSelected(null);
             }}
             placeholder="0"
-            className="w-full rounded-lg border border-zinc-200 py-2 pl-7 pr-3 text-sm focus:border-zinc-400 focus:outline-none"
+            className="w-full rounded-lg border border-neutral-200 py-2 pl-7 pr-3 text-sm focus:border-neutral-400 focus:outline-none"
           />
         </div>
       </div>
@@ -72,7 +72,7 @@ export function TipForm({ bookingId }: { bookingId: string }) {
       <button
         type="submit"
         disabled={pending || !amountCents || amountCents < 100}
-        className="w-full rounded-xl bg-zinc-900 py-3 text-sm font-semibold text-white hover:bg-zinc-700 disabled:opacity-40"
+        className="w-full rounded-xl bg-neutral-900 py-3 text-sm font-semibold text-white hover:bg-neutral-700 disabled:opacity-40"
       >
         {pending
           ? 'Processing…'
