@@ -3,7 +3,6 @@ import { notFound, redirect } from 'next/navigation';
 
 import { ApproveWorkButton } from '@/features/booking/components/ApproveWorkButton';
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
-import { CancelBookingButton } from '@/features/booking/components/CancelBookingButton';
 import { getBookingById, getMyCustomerProfileId } from '@/features/booking/queries';
 import { getReviewForBooking } from '@/features/reviews/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
@@ -143,7 +142,22 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
         </div>
       )}
 
-      {cancellable && <CancelBookingButton bookingId={booking.id} />}
+      {cancellable && (
+        <div className="flex gap-3">
+          <Link
+            href={`/app/bookings/${booking.id}/reschedule`}
+            className="rounded-xl border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 transition-all hover:bg-neutral-50"
+          >
+            Reschedule
+          </Link>
+          <Link
+            href={`/app/bookings/${booking.id}/cancel`}
+            className="rounded-xl border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
+          >
+            Cancel booking
+          </Link>
+        </div>
+      )}
 
       {(canReview || canDispute) && (
         <div className="flex flex-wrap gap-3">

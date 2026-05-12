@@ -335,6 +335,59 @@ export const declineBookingAction = async (bookingId: string): Promise<BookingAc
   return { ok: true, error: null };
 };
 
+export const rescheduleBookingAction = async (
+  bookingId: string,
+  _prevState: BookingActionState,
+  formData: FormData,
+): Promise<BookingActionState> => {
+  const newStartAt = formData.get('new_start_at') as string | null;
+  if (!newStartAt) return { ok: false, error: 'Please select a new date and time.' };
+
+  const newDate = new Date(newStartAt);
+  if (isNaN(newDate.getTime())) return { ok: false, error: 'Invalid date.' };
+  if (newDate <= new Date()) return { ok: false, error: 'New time must be in the future.' };
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: 'Not authenticated.' };
+
+  const { data: booking } = await supabase
+    .from('bookings')
+    .select('id, state, start_at, end_at, duration_hours_decimal')
+    .eq('id', bookingId)
+    .single();
+
+  if (!booking) return { ok: false, error: 'Booking not found.' };
+  if (!['booking_requested', 'confirmed'].includes(booking.state)) {
+    return { ok: false, error: 'Booking cannot be rescheduled in its current state.' };
+  }
+
+  const durationMs = booking.duration_hours_decimal * 60 * 60 * 1000;
+  const newEndAt = new Date(newDate.getTime() + durationMs).toISOString();
+
+  const { error } = await supabase
+    .from('bookings')
+    .update({ start_at: newDate.toISOString(), end_at: newEndAt, state: 'booking_requested' })
+    .eq('id', bookingId);
+
+  if (error) return { ok: false, error: error.message };
+
+  const admin = createSupabaseAdminClient();
+  await admin.from('booking_state_events').insert({
+    booking_id: bookingId,
+    previous_state: booking.state,
+    new_state: 'booking_requested',
+    triggered_by_user_id: user.id,
+    reason: `Rescheduled to ${newDate.toISOString()}`,
+  });
+
+  revalidatePath(`/app/bookings/${bookingId}`);
+  revalidatePath('/app/bookings');
+  return { ok: true, error: null };
+};
+
 export const cancelBookingAction = async (bookingId: string): Promise<BookingActionState> => {
   const supabase = await createSupabaseServerClient();
   const {

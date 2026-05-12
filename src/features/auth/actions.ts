@@ -162,6 +162,24 @@ export const resetPasswordAction = async (
   };
 };
 
+export const confirmRoleAction = async (formData: FormData): Promise<void> => {
+  const role = formData.get('role');
+  if (role !== 'customer' && role !== 'cleaner') return;
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/auth/sign-in');
+
+  await supabase.from('users').update({ primary_role: role }).eq('id', user.id);
+
+  await supabase.auth.updateUser({ data: { role, role_confirmed: true } });
+
+  revalidatePath('/', 'layout');
+  redirect(role === 'cleaner' ? '/app/cleaner' : '/app');
+};
+
 export const signOutAction = async () => {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();

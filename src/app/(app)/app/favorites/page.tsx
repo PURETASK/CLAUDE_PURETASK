@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { EmptyState } from '@/components/ui/empty-state';
+
 import { CleanerCard } from '@/features/discovery/components/CleanerCard';
 import { rankBrowseCleaners } from '@/features/discovery/browse-ranking';
 import { getCustomerDiscoveryAnchor, listFavorites } from '@/features/discovery/queries';
@@ -31,9 +33,14 @@ const FavoritesPage = async () => {
       </div>
 
       {ranked.length === 0 ? (
-        <p className="text-sm text-zinc-500">
-          You have no favorites yet. Save a cleaner from their profile.
-        </p>
+        <div className="rounded-2xl border border-neutral-200 bg-white shadow-tier1">
+          <EmptyState
+            showDash
+            title="No favorites yet"
+            description="Save cleaners you love from their profile page. They'll appear here for quick rebooking."
+            action={{ label: 'Browse cleaners', href: '/app/cleaners' }}
+          />
+        </div>
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {ranked.map(({ row, transparency, miles }) => (

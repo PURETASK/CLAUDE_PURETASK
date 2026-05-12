@@ -110,7 +110,7 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
             )}
           </div>
 
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
               <p className="px-4 py-6 text-center text-sm text-neutral-400">
                 No notifications yet.
@@ -141,6 +141,14 @@ export function NotificationBell({ initialNotifications, userId }: Props) {
                 </div>
               ))
             )}
+          </div>
+          <div className="border-t border-neutral-100 px-4 py-2">
+            <a
+              href="/app/notifications"
+              className="block text-center text-xs font-medium text-brand-600 transition-colors hover:text-brand-700"
+            >
+              View all notifications
+            </a>
           </div>
         </div>
       )}

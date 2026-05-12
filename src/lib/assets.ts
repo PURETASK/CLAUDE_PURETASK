@@ -5,6 +5,11 @@ export const ICONS = {
   message: '/assets/icons/message.jpeg',
   aiAssistant: '/assets/icons/ai-assistant.png',
   checkmark: '/assets/icons/checkmark.png',
+  wallet: '/assets/icons/wallet.jpeg',
+  contacts: '/assets/icons/contacts.jpeg',
+  settings: '/assets/icons/settings.jpeg',
+  cleaning: '/assets/icons/cleaning.jpeg',
+  cleaning2: '/assets/icons/cleaning2.png',
 } as const;
 
 export const BACKGROUNDS = {

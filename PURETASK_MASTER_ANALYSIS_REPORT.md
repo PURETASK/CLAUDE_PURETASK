@@ -570,6 +570,7 @@ The current dispute system is Phase 8a (basic). Two more tiers are spec'd.
 - Automatic escalation if dispute not resolved within 7 days
 
 **Key details:**
+
 - `customer_reliability_events` in B4 schema tracks dispute history per customer
 - Anti-abuse flag writes to `admin_actions` and triggers an admin notification
 - Insurance claim path requires insurance partner webhook integration (future)

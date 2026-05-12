@@ -23,7 +23,7 @@ const ScoreExplainerPage = async () => {
     <div className="min-h-screen bg-neutral-50 px-4 py-8">
       <div className="mx-auto max-w-md space-y-6">
         <div>
-          <Link href="/cleaner/dashboard" className="text-sm text-brand-600 hover:underline">
+          <Link href="/app/cleaner" className="text-sm text-brand-600 hover:underline">
             ← Dashboard
           </Link>
           <h1 className="mt-3 text-2xl font-bold text-neutral-900">Your Reliability Score</h1>

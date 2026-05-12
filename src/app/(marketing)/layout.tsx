@@ -1,12 +1,16 @@
+import Image from 'next/image';
 import Link from 'next/link';
+
+import { BRAND } from '@/lib/assets';
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="text-lg font-bold tracking-tight text-brand-900">
-            PureTask
+          <Link href="/" className="flex items-center gap-2">
+            <Image src={BRAND.logo} alt="PureTask" width={32} height={32} className="h-8 w-auto" />
+            <span className="text-lg font-bold tracking-tight text-brand-900">PureTask</span>
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium text-neutral-600 sm:flex">
             <Link

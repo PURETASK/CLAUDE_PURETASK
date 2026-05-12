@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { EmptyState } from '@/components/ui/empty-state';
+
 import { InstantPayoutButton } from '@/features/payments/components/InstantPayoutButton';
 import { PayoutStateBadge } from '@/features/payments/components/PayoutStateBadge';
 import { getMyCleanerEarnings } from '@/features/payments/queries';
@@ -96,7 +98,13 @@ export default async function CleanerEarningsPage() {
       <section>
         <h2 className="mb-3 text-sm font-semibold">Payout history</h2>
         {payouts.length === 0 ? (
-          <p className="text-sm text-zinc-400">No payouts yet.</p>
+          <div className="rounded-2xl border border-neutral-200 bg-white shadow-tier1">
+            <EmptyState
+              showDash
+              title="No payouts yet"
+              description="Complete your first job and your earnings will show up here on the next Friday payout."
+            />
+          </div>
         ) : (
           <div className="divide-y divide-zinc-100 rounded-lg border border-zinc-200 bg-white">
             {payouts.map((payout) => (

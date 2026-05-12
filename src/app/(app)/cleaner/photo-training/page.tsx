@@ -1,19 +1,128 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-const PhotoTrainingPage = () => {
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+
+async function completePhotoTraining(formData: FormData) {
+  'use server';
+  const { saveStepAction } = await import('@/features/cleaner/actions');
+  await saveStepAction('9', { ok: false, error: null }, formData);
+  redirect('/cleaner/apply/step-9');
+}
+
+const SECTIONS = [
+  {
+    title: 'Why photos matter',
+    icon: '📸',
+    body: 'Customers rely on before-and-after photos to confirm work quality and protect both parties in case of disputes. Every completed room requires at least one photo.',
+  },
+  {
+    title: 'What to photograph',
+    icon: '✅',
+    items: [
+      'Every room you clean — take a photo after finishing',
+      'Any pre-existing damage before you start work',
+      'Entryways and exits when you arrive and leave',
+      'Specialty items like stovetops, ovens, and bathrooms',
+    ],
+  },
+  {
+    title: 'Photo quality standards',
+    icon: '🔍',
+    items: [
+      'Well-lit — open blinds or turn on lights',
+      'In-focus — wait for autofocus before shooting',
+      'Wide enough to show the full room or surface',
+      'Landscape orientation preferred',
+    ],
+  },
+  {
+    title: 'What NOT to photograph',
+    icon: '🚫',
+    items: [
+      'People — never photograph customers or their guests',
+      'Personal documents, mail, or financial papers',
+      'Valuables such as jewelry, cash, or electronics close-up',
+      'Anything outside the areas you are cleaning',
+    ],
+  },
+  {
+    title: 'Privacy rules',
+    icon: '🔒',
+    body: 'All photos are uploaded directly to PureTask and are never stored on your device. Customers can see their own photos but photos are never shared publicly. Violations of privacy rules result in immediate account suspension.',
+  },
+];
+
+const PhotoTrainingPage = async () => {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/auth/sign-in');
+
   return (
-    <div className="max-w-2xl rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h1 className="text-xl font-semibold text-slate-900">Photo Etiquette Training</h1>
-      <p className="mt-2 text-sm text-slate-700">
-        WF 49 multi-section training content is represented by step 9 completion in this scaffold.
-        Full content module is scheduled for Phase 4g.
-      </p>
-      <Link
-        href="/cleaner/apply/step-9"
-        className="mt-4 inline-block rounded-md border px-3 py-1.5 text-sm"
-      >
-        Go to step 9
-      </Link>
+    <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
+      <div>
+        <Link href="/cleaner/apply" className="text-sm text-brand-600 hover:underline">
+          ← Back to application
+        </Link>
+        <h1 className="mt-3 text-2xl font-bold text-neutral-900">Photo Etiquette Training</h1>
+        <p className="mt-1 text-neutral-500">
+          Read each section carefully. You must acknowledge completion before continuing.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {SECTIONS.map((section) => (
+          <div
+            key={section.title}
+            className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">{section.icon}</span>
+              <h2 className="font-semibold text-neutral-900">{section.title}</h2>
+            </div>
+            {section.body && <p className="text-sm text-neutral-600">{section.body}</p>}
+            {section.items && (
+              <ul className="space-y-1.5">
+                {section.items.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm text-neutral-600">
+                    <span className="mt-0.5 text-brand-500">•</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="rounded-2xl border border-brand-200 bg-brand-50 p-5">
+        <p className="mb-4 text-sm font-medium text-brand-900">
+          By checking the box below, you confirm you have read and understood all photo etiquette
+          rules and agree to follow them on every job.
+        </p>
+        <form action={completePhotoTraining}>
+          <input type="hidden" name="photo_training_completed" value="true" />
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              required
+              className="mt-0.5 h-4 w-4 rounded border-neutral-300 accent-brand-600"
+            />
+            <span className="text-sm text-brand-800">
+              I have read and understood PureTask&apos;s photo etiquette guidelines and will follow
+              them on every job.
+            </span>
+          </label>
+          <button
+            type="submit"
+            className="mt-4 w-full rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+          >
+            Complete Training &amp; Continue
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

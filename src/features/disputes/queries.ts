@@ -169,6 +169,27 @@ export const getDisputeMessages = async (disputeId: string): Promise<DisputeMess
   });
 };
 
+export type DisputePhoto = {
+  id: string;
+  purpose: string;
+  cdn_url: string | null;
+  thumbnail_url: string | null;
+  room_label: string | null;
+  uploaded_at: string;
+};
+
+export const getBookingPhotosForDispute = async (bookingId: string): Promise<DisputePhoto[]> => {
+  const admin = createSupabaseAdminClient();
+  const { data } = await admin
+    .from('booking_photos')
+    .select('id, purpose, cdn_url, thumbnail_url, room_label, uploaded_at')
+    .eq('booking_id', bookingId)
+    .in('purpose', ['after_clock_out', 'dispute_evidence_customer', 'dispute_evidence_cleaner'])
+    .is('deleted_at', null)
+    .order('uploaded_at', { ascending: true });
+  return (data ?? []) as DisputePhoto[];
+};
+
 export const getOpenDisputesForAdmin = async (): Promise<AdminDisputeListItem[]> => {
   const admin = createSupabaseAdminClient();
   const { data } = await admin
