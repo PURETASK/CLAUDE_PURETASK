@@ -90,7 +90,7 @@ export default async function AdminDisputeDetailPage({ params }: Props) {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <Link
-            href="/app/admin/disputes"
+            href="/admin/disputes"
             className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← All disputes

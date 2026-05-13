@@ -49,7 +49,7 @@ export default async function AdminSupportPage() {
           {open.map((t) => (
             <Link
               key={t.id}
-              href={`/app/admin/support/${t.id}`}
+              href={`/admin/support/${t.id}`}
               className="flex items-center justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4 transition-colors hover:bg-neutral-50"
             >
               <div className="min-w-0">
@@ -85,7 +85,7 @@ export default async function AdminSupportPage() {
             {closed.map((t) => (
               <Link
                 key={t.id}
-                href={`/app/admin/support/${t.id}`}
+                href={`/admin/support/${t.id}`}
                 className="flex items-center justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4 opacity-60 transition-colors hover:opacity-100"
               >
                 <div className="min-w-0">

@@ -170,7 +170,7 @@ export const adminReplyAction = async (
     );
   }
 
-  revalidatePath(`/app/admin/support/${ticketId}`);
+  revalidatePath(`/admin/support/${ticketId}`);
   return { ok: true, error: null };
 };
 
@@ -215,7 +215,7 @@ export const resolveTicketAction = async (
     { deepLink: `/app/support/${ticketId}` },
   );
 
-  revalidatePath(`/app/admin/support/${ticketId}`);
-  revalidatePath('/app/admin/support');
-  redirect('/app/admin/support');
+  revalidatePath(`/admin/support/${ticketId}`);
+  revalidatePath('/admin/support');
+  redirect('/admin/support');
 };

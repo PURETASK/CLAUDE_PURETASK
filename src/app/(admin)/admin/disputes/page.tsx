@@ -18,7 +18,7 @@ export default async function AdminDisputesPage() {
           {disputes.map((d) => (
             <Link
               key={d.id}
-              href={`/app/admin/disputes/${d.id}`}
+              href={`/admin/disputes/${d.id}`}
               className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-neutral-50"
             >
               <div className="min-w-0">

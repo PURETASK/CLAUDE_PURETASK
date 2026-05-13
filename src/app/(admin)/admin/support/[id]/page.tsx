@@ -47,7 +47,7 @@ export default async function AdminSupportDetailPage({ params }: Props) {
       <div className="mb-6 flex items-start justify-between">
         <div>
           <Link
-            href="/app/admin/support"
+            href="/admin/support"
             className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
           >
             ← Support queue

@@ -580,7 +580,7 @@ export const adminResolveDisputeAction = async (
     },
   });
 
-  revalidatePath('/app/admin/disputes');
-  revalidatePath(`/app/admin/disputes/${parsed.data.dispute_id}`);
-  redirect('/app/admin/disputes');
+  revalidatePath('/admin/disputes');
+  revalidatePath(`/admin/disputes/${parsed.data.dispute_id}`);
+  redirect('/admin/disputes');
 };

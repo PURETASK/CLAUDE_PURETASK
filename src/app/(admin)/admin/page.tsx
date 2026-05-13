@@ -111,7 +111,7 @@ const AdminDashboardPage = async () => {
     attentionItems.push({
       id: 'disputes',
       label: 'Disputes open > 48h',
-      href: '/app/admin/disputes',
+      href: '/admin/disputes',
       severity: 'critical' as const,
       count: disputesRes.count ?? 0,
     });
@@ -120,7 +120,7 @@ const AdminDashboardPage = async () => {
     attentionItems.push({
       id: 'applications',
       label: 'Applications pending review',
-      href: '/applications',
+      href: '/admin/applications',
       severity: 'warning' as const,
       count: applicationsRes.count ?? 0,
     });

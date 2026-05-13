@@ -38,7 +38,7 @@ export const AdminApplicationList = ({ applications }: Props) => {
       {applications.map((app) => (
         <Link
           key={app.id}
-          href={`/applications/${app.id}`}
+          href={`/admin/applications/${app.id}`}
           className="flex items-center justify-between rounded-xl border border-neutral-200 p-4 shadow-tier1 transition-all duration-control hover:bg-neutral-50 hover:shadow-tier2"
         >
           <div className="flex flex-col gap-0.5">
