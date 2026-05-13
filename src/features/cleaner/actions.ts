@@ -323,8 +323,8 @@ export const adminDecisionAction = async (
     return { ok: false, error: 'Unknown decision.' };
   }
 
-  revalidatePath('/app/admin/applications');
-  revalidatePath(`/app/admin/applications/${applicationId}`);
+  revalidatePath('/applications');
+  revalidatePath(`/applications/${applicationId}`);
   return { ok: true, error: null, message: 'Decision saved.' };
 };
 

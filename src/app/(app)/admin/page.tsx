@@ -120,7 +120,7 @@ const AdminDashboardPage = async () => {
     attentionItems.push({
       id: 'applications',
       label: 'Applications pending review',
-      href: '/admin/applications',
+      href: '/applications',
       severity: 'warning' as const,
       count: applicationsRes.count ?? 0,
     });

@@ -29,11 +29,11 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
           <p className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Admin</p>
           <nav className="flex items-center gap-4 text-sm">
-            <Link href="/admin/applications" className="text-neutral-700 hover:text-slate-950">
-              Applications
+            <Link href="/admin" className="text-neutral-700 hover:text-slate-950">
+              Dashboard
             </Link>
-            <Link href="/admin/settings" className="text-neutral-700 hover:text-slate-950">
-              Settings
+            <Link href="/applications" className="text-neutral-700 hover:text-slate-950">
+              Applications
             </Link>
             <Link href="/app" className="text-neutral-700 hover:text-slate-950">
               Back to app
