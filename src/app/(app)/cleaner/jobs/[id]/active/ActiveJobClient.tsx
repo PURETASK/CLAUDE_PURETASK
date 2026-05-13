@@ -22,7 +22,11 @@ interface Props {
   requiredRooms: string[];
 }
 
-export const ActiveJobClient = ({ booking, uploadedRooms: initialUploaded, requiredRooms }: Props) => {
+export const ActiveJobClient = ({
+  booking,
+  uploadedRooms: initialUploaded,
+  requiredRooms,
+}: Props) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [elapsed, setElapsed] = useState(0);
@@ -134,7 +138,9 @@ export const ActiveJobClient = ({ booking, uploadedRooms: initialUploaded, requi
       <div className="mx-auto max-w-lg space-y-6 px-4 pt-6">
         {!isInProgress && (
           <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-center shadow-tier1">
-            <p className="mb-4 text-neutral-600">Confirm you&apos;ve arrived and are ready to start.</p>
+            <p className="mb-4 text-neutral-600">
+              Confirm you&apos;ve arrived and are ready to start.
+            </p>
             <Button size="lg" className="w-full" onClick={handleClockIn} disabled={isPending}>
               Clock in — start job
             </Button>
@@ -153,7 +159,9 @@ export const ActiveJobClient = ({ booking, uploadedRooms: initialUploaded, requi
                   <div
                     key={room}
                     className={`flex items-center justify-between rounded-xl border px-4 py-3 transition-colors ${
-                      done ? 'border-success/30 bg-success-light' : 'border-neutral-200 bg-neutral-50'
+                      done
+                        ? 'border-success/30 bg-success-light'
+                        : 'border-neutral-200 bg-neutral-50'
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -163,12 +171,20 @@ export const ActiveJobClient = ({ booking, uploadedRooms: initialUploaded, requi
                         }`}
                       >
                         {done && (
-                          <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <svg
+                            className="h-3.5 w-3.5 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={3}
+                          >
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         )}
                       </div>
-                      <span className={`text-sm font-medium ${done ? 'text-success-dark' : 'text-neutral-700'}`}>
+                      <span
+                        className={`text-sm font-medium ${done ? 'text-success-dark' : 'text-neutral-700'}`}
+                      >
                         {room}
                       </span>
                     </div>
@@ -225,7 +241,8 @@ export const ActiveJobClient = ({ booking, uploadedRooms: initialUploaded, requi
           <div className="w-full max-w-md rounded-t-3xl bg-white p-6 sm:rounded-2xl">
             <h2 className="text-lg font-bold text-neutral-900">Clock out?</h2>
             <p className="mt-2 text-sm text-neutral-500">
-              Time logged: <span className="font-semibold text-neutral-900">{formatElapsed(elapsed)}</span>
+              Time logged:{' '}
+              <span className="font-semibold text-neutral-900">{formatElapsed(elapsed)}</span>
               <br />
               The customer will be notified to approve your work.
             </p>

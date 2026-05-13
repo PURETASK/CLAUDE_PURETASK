@@ -8,9 +8,7 @@ interface KpiCardProps {
 const KpiCard = ({ label, value, sublabel, highlight }: KpiCardProps) => (
   <div
     className={`rounded-2xl border p-5 ${
-      highlight
-        ? 'border-error/30 bg-error/5'
-        : 'border-neutral-200 bg-white shadow-tier1'
+      highlight ? 'border-error/30 bg-error/5' : 'border-neutral-200 bg-white shadow-tier1'
     }`}
   >
     <p className="text-sm text-neutral-500">{label}</p>

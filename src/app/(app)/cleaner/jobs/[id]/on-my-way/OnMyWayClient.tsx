@@ -91,8 +91,18 @@ export const OnMyWayClient = ({ booking }: Props) => {
               className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline"
             >
               Open in Maps
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              <svg
+                className="h-3.5 w-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
               </svg>
             </a>
           )}
@@ -100,7 +110,9 @@ export const OnMyWayClient = ({ booking }: Props) => {
 
         {booking.is_running_late && (
           <div className="rounded-xl border border-warning bg-warning-light px-4 py-3">
-            <p className="text-sm font-semibold text-warning-dark">Running late notification sent</p>
+            <p className="text-sm font-semibold text-warning-dark">
+              Running late notification sent
+            </p>
             {booking.late_estimate_minutes && (
               <p className="mt-0.5 text-xs text-warning-dark/80">
                 Customer notified of ~{booking.late_estimate_minutes} min delay.
@@ -116,8 +128,10 @@ export const OnMyWayClient = ({ booking }: Props) => {
             </Button>
           ) : isArrived ? (
             <div className="rounded-xl border border-success bg-success-light px-4 py-3 text-center">
-              <p className="text-sm font-semibold text-success">You've arrived ✓</p>
-              <p className="mt-1 text-xs text-neutral-500">Head to the Active Job screen to clock in.</p>
+              <p className="text-sm font-semibold text-success">You&apos;ve arrived ✓</p>
+              <p className="mt-1 text-xs text-neutral-500">
+                Head to the Active Job screen to clock in.
+              </p>
             </div>
           ) : (
             <>

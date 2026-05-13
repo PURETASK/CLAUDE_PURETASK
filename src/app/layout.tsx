@@ -12,7 +12,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: { default: 'PureTask', template: '%s | PureTask' },
-  description: 'Book background-checked, GPS-verified cleaners in Northern California. Pay only when you approve the work.',
+  description:
+    'Book background-checked, GPS-verified cleaners in Northern California. Pay only when you approve the work.',
   openGraph: {
     siteName: 'PureTask',
     type: 'website',

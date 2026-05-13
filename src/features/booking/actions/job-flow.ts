@@ -23,15 +23,15 @@ export async function markEnRoute(bookingId: string) {
   return { error: null };
 }
 
-export async function markRunningLate(
-  bookingId: string,
-  delayMinutes: number,
-  reason?: string,
-) {
+export async function markRunningLate(bookingId: string, delayMinutes: number, reason?: string) {
   const { supabase, userId } = await getAuthedCleaner();
   await supabase
     .from('bookings')
-    .update({ is_running_late: true, late_estimate_minutes: delayMinutes, late_flagged_at: new Date().toISOString() })
+    .update({
+      is_running_late: true,
+      late_estimate_minutes: delayMinutes,
+      late_flagged_at: new Date().toISOString(),
+    })
     .eq('id', bookingId);
   const { error } = await writeBookingStateEvent(supabase, bookingId, 'in_transit', userId, {
     running_late: true,

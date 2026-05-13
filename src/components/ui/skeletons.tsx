@@ -27,13 +27,7 @@ export const CleanerListSkeleton = () => (
   </div>
 );
 
-export const PhotoUploadSkeleton = ({
-  current,
-  total,
-}: {
-  current: number;
-  total: number;
-}) => (
+export const PhotoUploadSkeleton = ({ current, total }: { current: number; total: number }) => (
   <div className="flex flex-col items-center gap-4 p-6">
     <div className="h-16 w-16 animate-spin rounded-full border-4 border-brand-600 border-t-transparent" />
     <p className="text-sm text-neutral-600">

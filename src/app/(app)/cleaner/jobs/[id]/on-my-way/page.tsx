@@ -33,7 +33,10 @@ const OnMyWayPage = async ({ params }: Props) => {
     .eq('cleaner_id', cleanerProfileId)
     .single();
 
-  if (!booking || !['confirmed', 'imminent', 'in_transit', 'arrived'].includes(booking.state as string)) {
+  if (
+    !booking ||
+    !['confirmed', 'imminent', 'in_transit', 'arrived'].includes(booking.state as string)
+  ) {
     redirect('/app/cleaner');
   }
 
@@ -42,7 +45,7 @@ const OnMyWayPage = async ({ params }: Props) => {
     ? booking.customer_profiles[0]
     : booking.customer_profiles;
   const cpUser = Array.isArray((cpRaw as { users?: unknown })?.users)
-    ? ((cpRaw as { users: unknown[] }).users)[0]
+    ? (cpRaw as { users: unknown[] }).users[0]
     : (cpRaw as { users?: unknown })?.users;
   const customerName = (cpUser as { full_name?: string } | null)?.full_name ?? 'Customer';
 

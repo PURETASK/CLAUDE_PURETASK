@@ -52,7 +52,9 @@ export default async function CustomerReliabilityPage() {
               className="flex items-start justify-between rounded-xl border border-neutral-100 bg-white px-5 py-4"
             >
               <div>
-                <p className="text-sm font-medium text-neutral-900">{formatEventType(e.event_type)}</p>
+                <p className="text-sm font-medium text-neutral-900">
+                  {formatEventType(e.event_type)}
+                </p>
                 <p className="mt-0.5 text-xs text-neutral-500">{e.description}</p>
                 <p className="mt-1 text-xs text-neutral-400">
                   {new Date(e.event_occurred_at).toLocaleDateString()}

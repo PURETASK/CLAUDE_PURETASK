@@ -32,7 +32,13 @@ export default async function SupportPage() {
         <Image src={BACKGROUNDS.support} alt="" fill className="object-cover opacity-30" />
         <div className="relative z-10 flex items-center justify-between px-6 py-5">
           <div className="flex items-center gap-3">
-            <Image src={ICONS.message} alt="" width={48} height={48} className="rounded-xl drop-shadow-md" />
+            <Image
+              src={ICONS.message}
+              alt=""
+              width={48}
+              height={48}
+              className="rounded-xl drop-shadow-md"
+            />
             <h1 className="text-2xl font-bold text-neutral-900">Support</h1>
           </div>
           <Link

@@ -46,11 +46,11 @@ export const TierExplainer = ({ currentTier, currentScore }: Props) => {
   return (
     <div className="space-y-4">
       <div className="rounded-2xl border border-brand-600/20 bg-brand-600/5 p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">Your current tier</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
+          Your current tier
+        </p>
         <div className="mt-2 flex items-center gap-3">
-          <span className="text-2xl">
-            {TIERS.find((t) => t.key === currentTier)?.icon ?? '↑'}
-          </span>
+          <span className="text-2xl">{TIERS.find((t) => t.key === currentTier)?.icon ?? '↑'}</span>
           <div>
             <p className="font-semibold text-neutral-900">
               {TIERS.find((t) => t.key === currentTier)?.label ?? currentTier}
@@ -71,15 +71,15 @@ export const TierExplainer = ({ currentTier, currentScore }: Props) => {
             <div
               key={tier.key}
               className={`rounded-xl border p-4 ${
-                isCurrent
-                  ? 'border-brand-600/30 bg-brand-600/5'
-                  : 'border-neutral-100'
+                isCurrent ? 'border-brand-600/30 bg-brand-600/5' : 'border-neutral-100'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-lg">{tier.icon}</span>
-                  <span className={`font-medium ${isCurrent ? 'text-brand-600' : 'text-neutral-900'}`}>
+                  <span
+                    className={`font-medium ${isCurrent ? 'text-brand-600' : 'text-neutral-900'}`}
+                  >
                     {tier.label}
                   </span>
                   {isCurrent && (
@@ -88,7 +88,9 @@ export const TierExplainer = ({ currentTier, currentScore }: Props) => {
                     </span>
                   )}
                 </div>
-                <span className="text-sm font-semibold text-neutral-700">Score ≥ {tier.minScore}</span>
+                <span className="text-sm font-semibold text-neutral-700">
+                  Score ≥ {tier.minScore}
+                </span>
               </div>
               <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-neutral-600">
                 <span>

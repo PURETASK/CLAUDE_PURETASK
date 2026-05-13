@@ -31,7 +31,10 @@ const CustomerDashboardPage = async () => {
   const [bookings, favorites] = await Promise.all([getMyBookingsAsCustomer(), listFavorites()]);
 
   const upcoming = bookings
-    .filter((b) => ['confirmed', 'on_my_way', 'active'].includes(b.state) && new Date(b.start_at) > new Date())
+    .filter(
+      (b) =>
+        ['confirmed', 'on_my_way', 'active'].includes(b.state) && new Date(b.start_at) > new Date(),
+    )
     .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
 
   const completed = bookings.filter((b) => b.state === 'completed');
@@ -72,9 +75,7 @@ const CustomerDashboardPage = async () => {
               <p className="mt-1 text-lg font-bold text-neutral-900">
                 {nextBooking.service_display_name}
               </p>
-              <p className="mt-0.5 text-sm text-neutral-500">
-                with {nextBooking.other_party_name}
-              </p>
+              <p className="mt-0.5 text-sm text-neutral-500">with {nextBooking.other_party_name}</p>
               <p className="mt-2 flex items-center gap-1.5 text-sm font-medium text-neutral-700">
                 <Image src={ICONS.calendar} alt="" width={16} height={16} className="rounded" />
                 {formatDate(nextBooking.start_at)}
@@ -126,7 +127,10 @@ const CustomerDashboardPage = async () => {
         <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-neutral-900">Book again</h2>
-            <Link href="/app/cleaners" className="text-sm font-medium text-brand-600 hover:text-brand-700">
+            <Link
+              href="/app/cleaners"
+              className="text-sm font-medium text-brand-600 hover:text-brand-700"
+            >
               Find more
             </Link>
           </div>
@@ -165,7 +169,10 @@ const CustomerDashboardPage = async () => {
               <Image src={ICONS.calendar} alt="" width={20} height={20} className="rounded" />
               <h2 className="font-semibold text-neutral-900">Upcoming</h2>
             </div>
-            <Link href="/app/bookings" className="text-sm font-medium text-brand-600 hover:text-brand-700">
+            <Link
+              href="/app/bookings"
+              className="text-sm font-medium text-brand-600 hover:text-brand-700"
+            >
               View all
             </Link>
           </div>

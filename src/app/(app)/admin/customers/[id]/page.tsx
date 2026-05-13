@@ -15,7 +15,11 @@ const AdminCustomerDetailPage = async ({ params }: Props) => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const { data: me } = await supabase.from('users').select('primary_role').eq('id', user.id).single();
+  const { data: me } = await supabase
+    .from('users')
+    .select('primary_role')
+    .eq('id', user.id)
+    .single();
   if (me?.primary_role !== 'admin') redirect('/app');
 
   const { data: profile } = await supabase
@@ -47,7 +51,12 @@ const AdminCustomerDetailPage = async ({ params }: Props) => {
     .reduce((sum, b) => sum + (b.total_charge_cents ?? 0), 0);
 
   const userRaw = Array.isArray(profile.users) ? profile.users[0] : profile.users;
-  const customerUser = userRaw as { id?: string; full_name?: string; email?: string; created_at?: string } | null;
+  const customerUser = userRaw as {
+    id?: string;
+    full_name?: string;
+    email?: string;
+    created_at?: string;
+  } | null;
 
   return (
     <div className="min-h-screen bg-neutral-50 px-4 py-8">
@@ -76,7 +85,10 @@ const AdminCustomerDetailPage = async ({ params }: Props) => {
             { label: 'Total Spent', value: `$${(totalSpentCents / 100).toFixed(2)}` },
             { label: 'Disputes', value: disputes?.length ?? 0 },
           ].map(({ label, value }) => (
-            <div key={label} className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 text-center">
+            <div
+              key={label}
+              className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 text-center"
+            >
               <p className="text-xs text-neutral-500">{label}</p>
               <p className="mt-1 text-xl font-bold text-neutral-900">{value}</p>
             </div>
@@ -109,7 +121,10 @@ const AdminCustomerDetailPage = async ({ params }: Props) => {
                     </td>
                     <td className="py-2">${((b.total_charge_cents ?? 0) / 100).toFixed(2)}</td>
                     <td className="py-2">
-                      <Link href={`/admin/bookings/${b.id}/refund`} className="text-xs text-brand-600 hover:underline">
+                      <Link
+                        href={`/admin/bookings/${b.id}/refund`}
+                        className="text-xs text-brand-600 hover:underline"
+                      >
                         Refund
                       </Link>
                     </td>

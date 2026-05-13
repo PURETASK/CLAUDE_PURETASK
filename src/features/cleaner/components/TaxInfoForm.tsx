@@ -72,9 +72,7 @@ export const TaxInfoForm = ({ hasTaxIdOnFile, taxIdType, earningsYtdCents }: Pro
       </div>
 
       <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 space-y-1">
-        <label className="block text-sm font-medium text-neutral-900">
-          Social Security Number
-        </label>
+        <label className="block text-sm font-medium text-neutral-900">Social Security Number</label>
         <div className="relative">
           <input
             type="text"
@@ -88,9 +86,7 @@ export const TaxInfoForm = ({ hasTaxIdOnFile, taxIdType, earningsYtdCents }: Pro
           <span className="absolute right-3 top-2.5 text-neutral-400">🔒</span>
         </div>
         <p className="text-xs text-neutral-400">Encrypted and stored securely. Never shared.</p>
-        {hasTaxIdOnFile && !ssn && (
-          <p className="text-xs text-success">SSN on file: ···-··-····</p>
-        )}
+        {hasTaxIdOnFile && !ssn && <p className="text-xs text-success">SSN on file: ···-··-····</p>}
       </div>
 
       <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">

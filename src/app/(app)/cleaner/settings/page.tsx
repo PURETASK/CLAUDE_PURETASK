@@ -71,7 +71,12 @@ const CleanerOnboardingSettingsPage = async () => {
               <p className="font-medium text-neutral-900">{title}</p>
               <p className="text-sm text-neutral-500">{desc}</p>
             </div>
-            <svg className="h-4 w-4 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              className="h-4 w-4 text-neutral-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </Link>
@@ -88,9 +93,16 @@ const CleanerOnboardingSettingsPage = async () => {
           </div>
           <div className="flex-1">
             <p className="font-medium text-neutral-900">Profile &amp; Payout Preferences</p>
-            <p className="text-sm text-neutral-500">Edit your bio, instant payout toggle, and Stripe Connect link.</p>
+            <p className="text-sm text-neutral-500">
+              Edit your bio, instant payout toggle, and Stripe Connect link.
+            </p>
           </div>
-          <svg className="h-4 w-4 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            className="h-4 w-4 text-neutral-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </Link>

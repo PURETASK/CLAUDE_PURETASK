@@ -89,9 +89,7 @@ export async function writeBookingStateEvent(
   if (newState === 'awaiting_approval') {
     updatePayload.clock_out_at = new Date().toISOString();
     updatePayload.cleaning_completed_at = new Date().toISOString();
-    updatePayload.auto_approval_due_at = new Date(
-      Date.now() + 24 * 60 * 60 * 1000,
-    ).toISOString();
+    updatePayload.auto_approval_due_at = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
   }
   if (newState === 'approved') {
     updatePayload.customer_approved_at = new Date().toISOString();

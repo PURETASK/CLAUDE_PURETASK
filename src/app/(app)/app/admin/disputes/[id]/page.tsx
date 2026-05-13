@@ -2,7 +2,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { getDisputeById, getDisputeMessages, getBookingPhotosForDispute, type DisputePhoto } from '@/features/disputes/queries';
+import {
+  getDisputeById,
+  getDisputeMessages,
+  getBookingPhotosForDispute,
+  type DisputePhoto,
+} from '@/features/disputes/queries';
 import { DisputeStateBadge } from '@/features/disputes/components/DisputeStateBadge';
 import { DisputeThread } from '@/features/disputes/components/DisputeThread';
 import { AdminResolveForm } from '@/features/disputes/components/AdminResolveForm';
@@ -160,9 +165,7 @@ export default async function AdminDisputeDetailPage({ params }: Props) {
 
       {['mutually_resolved', 'admin_resolved'].includes(dispute.state) && (
         <div className="rounded-xl border border-green-200 bg-green-50 p-5">
-          <p className="text-sm font-medium text-green-800">
-            Resolved: {dispute.resolution_type}
-          </p>
+          <p className="text-sm font-medium text-green-800">Resolved: {dispute.resolution_type}</p>
           {dispute.resolution_notes && (
             <p className="mt-1 text-sm text-green-700">{dispute.resolution_notes}</p>
           )}

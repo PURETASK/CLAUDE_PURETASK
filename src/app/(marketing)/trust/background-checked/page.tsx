@@ -14,7 +14,7 @@ const VERIFIED = [
 ];
 
 const NOT_DONE = [
-  "We never share personal details with customers",
+  'We never share personal details with customers',
   'No ongoing surveillance',
   'No continuous monitoring',
 ];
@@ -35,7 +35,8 @@ const BackgroundCheckedPage = () => {
           </div>
           <h1 className="text-2xl font-bold text-neutral-900">Background Checked by Checkr</h1>
           <p className="mt-2 text-neutral-600">
-            Every cleaner on PureTask undergoes a comprehensive background check before their first job.
+            Every cleaner on PureTask undergoes a comprehensive background check before their first
+            job.
           </p>
         </div>
 
@@ -44,7 +45,13 @@ const BackgroundCheckedPage = () => {
           {VERIFIED.map((item) => (
             <div key={item} className="flex items-center gap-3">
               <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-success/10">
-                <svg className="h-3.5 w-3.5 text-success-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <svg
+                  className="h-3.5 w-3.5 text-success-dark"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
@@ -58,7 +65,13 @@ const BackgroundCheckedPage = () => {
           {NOT_DONE.map((item) => (
             <div key={item} className="flex items-center gap-3">
               <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-neutral-100">
-                <svg className="h-3.5 w-3.5 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg
+                  className="h-3.5 w-3.5 text-neutral-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>

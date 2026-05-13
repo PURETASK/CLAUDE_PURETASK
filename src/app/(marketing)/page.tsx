@@ -32,7 +32,11 @@ const TRUST = [
   { icon: ICONS.checkmark, label: 'Background checked', sub: 'Every cleaner runs through Checkr' },
   { icon: ICONS.cleaning, label: 'Photo proof', sub: 'Before/after photos on every job' },
   { icon: ICONS.home, label: 'GPS verified', sub: 'Clock-in at your address, every time' },
-  { icon: ICONS.cleaning2, label: 'Tier reputation', sub: '4 tiers earned through real performance' },
+  {
+    icon: ICONS.cleaning2,
+    label: 'Tier reputation',
+    sub: '4 tiers earned through real performance',
+  },
 ];
 
 export default function LandingPage() {

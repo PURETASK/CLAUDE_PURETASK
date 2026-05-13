@@ -16,7 +16,9 @@ export const NeedsAttention = ({ items }: Props) => {
   if (items.length === 0) {
     return (
       <div className="rounded-2xl border border-success/30 bg-success-light p-5 text-center">
-        <p className="font-medium text-success-dark">All clear — nothing needs attention right now.</p>
+        <p className="font-medium text-success-dark">
+          All clear — nothing needs attention right now.
+        </p>
       </div>
     );
   }
@@ -35,14 +37,14 @@ export const NeedsAttention = ({ items }: Props) => {
                 : 'border-warning/30 bg-warning/5'
             }`}
           >
-            <span className={`text-sm font-medium ${item.severity === 'critical' ? 'text-error' : 'text-warning-dark'}`}>
+            <span
+              className={`text-sm font-medium ${item.severity === 'critical' ? 'text-error' : 'text-warning-dark'}`}
+            >
               {item.label}
             </span>
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
-                item.severity === 'critical'
-                  ? 'bg-error text-white'
-                  : 'bg-warning text-white'
+                item.severity === 'critical' ? 'bg-error text-white' : 'bg-warning text-white'
               }`}
             >
               {item.count}

@@ -45,7 +45,10 @@ export async function cancelBooking(bookingId: string, reason?: string) {
   if (penalty.penaltyCents > 0) {
     await supabase
       .from('bookings')
-      .update({ cancellation_reason: reason ?? null, cancellation_penalty_cents: penalty.penaltyCents })
+      .update({
+        cancellation_reason: reason ?? null,
+        cancellation_penalty_cents: penalty.penaltyCents,
+      })
       .eq('id', bookingId);
   }
 

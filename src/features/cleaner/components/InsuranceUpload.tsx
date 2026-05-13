@@ -54,7 +54,10 @@ export const InsuranceUpload = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 space-y-4"
+      >
         <h3 className="font-semibold text-neutral-900">Upload your Certificate of Insurance</h3>
         <p className="text-sm text-neutral-500">PDF format, max 10 MB</p>
 

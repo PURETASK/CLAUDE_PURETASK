@@ -6,7 +6,8 @@ import { ICONS } from '@/lib/assets';
 
 export const metadata: Metadata = {
   title: 'ZIP-Locked Badge | PureTask',
-  description: 'What it means when a PureTask cleaner has the ZIP-Locked badge — proven in your exact neighborhood.',
+  description:
+    'What it means when a PureTask cleaner has the ZIP-Locked badge — proven in your exact neighborhood.',
 };
 
 const CRITERIA = [
@@ -18,7 +19,7 @@ const CRITERIA = [
 
 const WHY = [
   'They know the neighborhood — parking, building access, local norms',
-  'They\'ve already satisfied customers like you nearby',
+  "They've already satisfied customers like you nearby",
   'High repeat-booking rate from local customers',
   'Proven reliability, not just overall average',
 ];
@@ -47,7 +48,13 @@ export default function ZipLockedPage() {
           {CRITERIA.map((item) => (
             <div key={item} className="flex items-start gap-3">
               <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-600/10">
-                <svg className="h-3 w-3 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <svg
+                  className="h-3 w-3 text-brand-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>

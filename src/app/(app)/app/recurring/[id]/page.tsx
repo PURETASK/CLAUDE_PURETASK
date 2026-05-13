@@ -191,7 +191,10 @@ export default async function RecurringDetailPage({ params }: PageProps) {
                         await skipOccurrenceAction(occ.id);
                       }}
                     >
-                      <button type="submit" className="text-xs text-neutral-400 hover:text-neutral-700">
+                      <button
+                        type="submit"
+                        className="text-xs text-neutral-400 hover:text-neutral-700"
+                      >
                         Skip
                       </button>
                     </form>

@@ -13,27 +13,32 @@ const SPECIALTIES = [
   {
     icon: ICONS.cleaning,
     label: 'Eco-Friendly',
-    description: 'Uses green cleaning products only. Earned after 15+ customers tag them "eco-friendly."',
+    description:
+      'Uses green cleaning products only. Earned after 15+ customers tag them "eco-friendly."',
   },
   {
     icon: ICONS.contacts,
     label: 'Pet-Friendly',
-    description: 'Comfortable around pets and knows how to clean pet hair, odors, and dander. 15+ "pet-friendly" tags.',
+    description:
+      'Comfortable around pets and knows how to clean pet hair, odors, and dander. 15+ "pet-friendly" tags.',
   },
   {
     icon: ICONS.home,
     label: 'Deep Clean Expert',
-    description: 'Goes beyond surface cleaning every time. Earned from 15+ "thorough" and "detail-oriented" tags.',
+    description:
+      'Goes beyond surface cleaning every time. Earned from 15+ "thorough" and "detail-oriented" tags.',
   },
   {
     icon: ICONS.calendar,
     label: 'Move-Out Specialist',
-    description: 'Experience with move-out cleans that pass landlord inspections. 15+ move-out bookings at 4.5+.',
+    description:
+      'Experience with move-out cleans that pass landlord inspections. 15+ move-out bookings at 4.5+.',
   },
   {
     icon: ICONS.cleaning2,
     label: 'Airbnb Ready',
-    description: 'Fast, reliable turnovers between guests. 15+ Airbnb bookings completed with 4.7+ rating.',
+    description:
+      'Fast, reliable turnovers between guests. 15+ Airbnb bookings completed with 4.7+ rating.',
   },
 ] as const;
 

@@ -44,7 +44,13 @@ const NeighborhoodExpertPage = () => {
             {CRITERIA.map(({ label, detail }) => (
               <div key={label} className="flex items-start gap-3">
                 <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-600/10">
-                  <svg className="h-3.5 w-3.5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <svg
+                    className="h-3.5 w-3.5 text-brand-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>

@@ -40,7 +40,10 @@ const BookPage = async ({ params }: PageProps) => {
   return (
     <div className="flex max-w-lg flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Link href={`/app/cleaners/${id}`} className="text-sm text-neutral-500 hover:text-neutral-900">
+        <Link
+          href={`/app/cleaners/${id}`}
+          className="text-sm text-neutral-500 hover:text-neutral-900"
+        >
           {cleaner.full_name}
         </Link>
         <span className="text-neutral-300">/</span>

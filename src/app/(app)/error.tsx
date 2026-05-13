@@ -19,7 +19,13 @@ export default function AppError({
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <Image src={BRAND.dash} alt="" width={72} height={72} className="mb-5 opacity-70 drop-shadow-md" />
+      <Image
+        src={BRAND.dash}
+        alt=""
+        width={72}
+        height={72}
+        className="mb-5 opacity-70 drop-shadow-md"
+      />
       <h2 className="mb-2 text-xl font-bold text-neutral-900">Something went wrong</h2>
       <p className="mb-6 max-w-sm text-sm text-neutral-500">
         An unexpected error occurred. Your data is safe — try reloading the page.

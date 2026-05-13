@@ -38,7 +38,7 @@ const JobCompletePage = async ({ params }: Props) => {
     ? booking.customer_profiles[0]
     : booking.customer_profiles;
   const cpUser = Array.isArray((cpRaw as { users?: unknown })?.users)
-    ? ((cpRaw as { users: unknown[] }).users)[0]
+    ? (cpRaw as { users: unknown[] }).users[0]
     : (cpRaw as { users?: unknown })?.users;
   const customerName = (cpUser as { full_name?: string } | null)?.full_name ?? 'the customer';
 
@@ -46,8 +46,7 @@ const JobCompletePage = async ({ params }: Props) => {
     booking.clock_in_at && booking.clock_out_at
       ? (() => {
           const mins = Math.round(
-            (new Date(booking.clock_out_at).getTime() -
-              new Date(booking.clock_in_at).getTime()) /
+            (new Date(booking.clock_out_at).getTime() - new Date(booking.clock_in_at).getTime()) /
               60000,
           );
           return `${Math.floor(mins / 60)}h ${mins % 60}m`;
@@ -58,16 +57,20 @@ const JobCompletePage = async ({ params }: Props) => {
     <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
       <div className="mx-auto w-full max-w-md space-y-6 text-center">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-success-light">
-          <svg className="h-10 w-10 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="h-10 w-10 text-success"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
 
         <div>
           <h1 className="text-2xl font-bold text-neutral-900">Job submitted!</h1>
-          <p className="mt-2 text-neutral-600">
-            Waiting for {customerName} to approve your work.
-          </p>
+          <p className="mt-2 text-neutral-600">Waiting for {customerName} to approve your work.</p>
         </div>
 
         <div className="rounded-2xl border border-neutral-200 bg-white p-5 text-left shadow-tier1">
@@ -81,14 +84,17 @@ const JobCompletePage = async ({ params }: Props) => {
               <span className="text-sm font-semibold text-warning">Awaiting approval</span>
             </div>
             <p className="border-t border-neutral-100 pt-3 text-xs text-neutral-400">
-              If {customerName} doesn&apos;t respond within 24 hours, the job auto-approves and you&apos;ll be paid on Friday.
+              If {customerName} doesn&apos;t respond within 24 hours, the job auto-approves and
+              you&apos;ll be paid on Friday.
             </p>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <Link href="/app/cleaner">
-            <Button className="w-full" size="lg">Back to dashboard</Button>
+            <Button className="w-full" size="lg">
+              Back to dashboard
+            </Button>
           </Link>
         </div>
       </div>

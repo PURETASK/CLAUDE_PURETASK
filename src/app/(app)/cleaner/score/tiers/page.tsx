@@ -28,10 +28,7 @@ const TiersPage = async () => {
           </Link>
           <h1 className="mt-3 text-2xl font-bold text-neutral-900">How Tiers Work</h1>
         </div>
-        <TierExplainer
-          currentTier={profile.current_tier}
-          currentScore={profile.current_score}
-        />
+        <TierExplainer currentTier={profile.current_tier} currentScore={profile.current_score} />
       </div>
     </div>
   );

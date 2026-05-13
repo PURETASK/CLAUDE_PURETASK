@@ -15,7 +15,11 @@ const AdminCleanerDetailPage = async ({ params }: Props) => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const { data: me } = await supabase.from('users').select('primary_role').eq('id', user.id).single();
+  const { data: me } = await supabase
+    .from('users')
+    .select('primary_role')
+    .eq('id', user.id)
+    .single();
   if (me?.primary_role !== 'admin') redirect('/app');
 
   const { data: profile } = await supabase
@@ -46,7 +50,12 @@ const AdminCleanerDetailPage = async ({ params }: Props) => {
     .maybeSingle();
 
   const userRaw = Array.isArray(profile.users) ? profile.users[0] : profile.users;
-  const cleanerUser = userRaw as { id?: string; full_name?: string; email?: string; created_at?: string } | null;
+  const cleanerUser = userRaw as {
+    id?: string;
+    full_name?: string;
+    email?: string;
+    created_at?: string;
+  } | null;
 
   const TIER_LABELS: Record<string, string> = {
     rising_pro: 'Rising Pro',
@@ -73,9 +82,17 @@ const AdminCleanerDetailPage = async ({ params }: Props) => {
             { label: 'Score', value: profile.current_score },
             { label: 'Tier', value: TIER_LABELS[profile.current_tier] ?? profile.current_tier },
             { label: 'Completed', value: profile.completed_booking_count },
-            { label: 'Avg Rating', value: profile.average_rating ? `${Number(profile.average_rating).toFixed(1)} ★` : '—' },
+            {
+              label: 'Avg Rating',
+              value: profile.average_rating
+                ? `${Number(profile.average_rating).toFixed(1)} ★`
+                : '—',
+            },
           ].map(({ label, value }) => (
-            <div key={label} className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 text-center">
+            <div
+              key={label}
+              className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 text-center"
+            >
               <p className="text-xs text-neutral-500">{label}</p>
               <p className="mt-1 text-xl font-bold text-neutral-900">{value}</p>
             </div>
@@ -90,11 +107,21 @@ const AdminCleanerDetailPage = async ({ params }: Props) => {
               Account {profile.is_active ? 'Active' : 'Deactivated'}
             </div>
             <div className="flex items-center gap-2">
-              <span className={profile.stripe_connect_account_id ? 'text-success' : 'text-warning-dark'}>●</span>
+              <span
+                className={profile.stripe_connect_account_id ? 'text-success' : 'text-warning-dark'}
+              >
+                ●
+              </span>
               Stripe {profile.stripe_connect_account_id ? 'Connected' : 'Not connected'}
             </div>
             <div className="flex items-center gap-2">
-              <span className={insurancePolicy?.state === 'verified' ? 'text-success' : 'text-neutral-400'}>●</span>
+              <span
+                className={
+                  insurancePolicy?.state === 'verified' ? 'text-success' : 'text-neutral-400'
+                }
+              >
+                ●
+              </span>
               Insurance {insurancePolicy?.state ?? 'None'}
             </div>
           </div>

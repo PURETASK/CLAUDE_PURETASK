@@ -79,7 +79,10 @@ export const InsuranceVerified = ({ expiresAt, verifiedAt }: Props) => {
           Upload updated COI
         </button>
       ) : (
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1 space-y-4"
+        >
           <h3 className="font-medium text-neutral-900">Upload updated certificate</h3>
           <div
             className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-neutral-200 p-6 text-center hover:border-brand-600/50 hover:bg-brand-600/5"

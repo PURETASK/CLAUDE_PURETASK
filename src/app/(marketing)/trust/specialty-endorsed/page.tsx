@@ -10,11 +10,27 @@ export const metadata: Metadata = {
 };
 
 const SPECIALTIES = [
-  { key: 'deep_clean', label: 'Deep Clean', desc: 'Thorough top-to-bottom cleaning beyond the standard scope' },
+  {
+    key: 'deep_clean',
+    label: 'Deep Clean',
+    desc: 'Thorough top-to-bottom cleaning beyond the standard scope',
+  },
   { key: 'move_out', label: 'Move-Out', desc: 'Empty-property cleans for tenants and landlords' },
-  { key: 'eco_products', label: 'Eco-Friendly', desc: 'Uses only non-toxic, environmentally safe products' },
-  { key: 'pet_friendly', label: 'Pet-Friendly', desc: 'Comfortable with and experienced around pets' },
-  { key: 'organizing', label: 'Organizing', desc: 'Decluttering and organizational help beyond cleaning' },
+  {
+    key: 'eco_products',
+    label: 'Eco-Friendly',
+    desc: 'Uses only non-toxic, environmentally safe products',
+  },
+  {
+    key: 'pet_friendly',
+    label: 'Pet-Friendly',
+    desc: 'Comfortable with and experienced around pets',
+  },
+  {
+    key: 'organizing',
+    label: 'Organizing',
+    desc: 'Decluttering and organizational help beyond cleaning',
+  },
 ];
 
 const HOW_EARNED = [
@@ -67,7 +83,13 @@ export default function SpecialtyEndorsedPage() {
           {HOW_EARNED.map((item) => (
             <div key={item} className="flex items-start gap-3">
               <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100">
-                <svg className="h-3 w-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <svg
+                  className="h-3 w-3 text-emerald-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>

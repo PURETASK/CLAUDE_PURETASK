@@ -42,8 +42,17 @@ export const AppealForm = () => {
         <p className="text-sm font-medium text-neutral-900">What are you appealing?</p>
         {(
           [
-            { value: 'tier_drop', label: 'Tier change', detail: 'My tier was reduced and I believe it was unfair.' },
-            { value: 'reliability_event', label: 'Reliability event', detail: 'A specific reliability event (late arrival, cancellation, etc.) was recorded incorrectly.' },
+            {
+              value: 'tier_drop',
+              label: 'Tier change',
+              detail: 'My tier was reduced and I believe it was unfair.',
+            },
+            {
+              value: 'reliability_event',
+              label: 'Reliability event',
+              detail:
+                'A specific reliability event (late arrival, cancellation, etc.) was recorded incorrectly.',
+            },
           ] as { value: AppealTargetType; label: string; detail: string }[]
         ).map(({ value, label, detail }) => (
           <label
@@ -71,9 +80,7 @@ export const AppealForm = () => {
       </div>
 
       <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
-        <label className="mb-2 block text-sm font-medium text-neutral-900">
-          Your explanation
-        </label>
+        <label className="mb-2 block text-sm font-medium text-neutral-900">Your explanation</label>
         <textarea
           value={appealText}
           onChange={(e) => setAppealText(e.target.value)}
@@ -81,22 +88,24 @@ export const AppealForm = () => {
           rows={5}
           className="w-full resize-none rounded-xl border border-neutral-200 px-3 py-2 text-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
         />
-        <p className="mt-1 text-xs text-neutral-400">
-          {appealText.length} chars · Minimum 20
-        </p>
+        <p className="mt-1 text-xs text-neutral-400">{appealText.length} chars · Minimum 20</p>
       </div>
 
       <div className="rounded-xl bg-neutral-50 p-4 text-sm text-neutral-600">
         <p className="font-medium text-neutral-900">Appeal window</p>
         <p className="mt-0.5">
-          Appeals must be submitted within 14 days of the tier change or reliability event.
-          Our team responds within 14 days.
+          Appeals must be submitted within 14 days of the tier change or reliability event. Our team
+          responds within 14 days.
         </p>
       </div>
 
       {error && <p className="text-sm text-error">{error}</p>}
 
-      <Button type="submit" className="w-full" disabled={isPending || appealText.trim().length < 20}>
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={isPending || appealText.trim().length < 20}
+      >
         {isPending ? 'Submitting…' : 'Submit Appeal'}
       </Button>
     </form>

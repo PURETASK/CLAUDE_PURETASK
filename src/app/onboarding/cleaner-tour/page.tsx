@@ -28,7 +28,7 @@ const SLIDES = [
   {
     icon: ICONS.wallet,
     title: 'Getting paid',
-    body: 'Payments are held securely until job completion and customer approval. You\'ll receive payouts to your connected bank account within 2 business days.',
+    body: "Payments are held securely until job completion and customer approval. You'll receive payouts to your connected bank account within 2 business days.",
     cta: 'Next',
   },
   {
@@ -79,13 +79,7 @@ export default function CleanerTourPage() {
       />
 
       <div className="relative z-10 flex w-full max-w-md flex-col items-center gap-8 text-center">
-        <Image
-          src={BRAND.dash}
-          alt="Dash"
-          width={80}
-          height={80}
-          className="drop-shadow-lg"
-        />
+        <Image src={BRAND.dash} alt="Dash" width={80} height={80} className="drop-shadow-lg" />
 
         <Image
           src={current.icon}
@@ -124,10 +118,7 @@ export default function CleanerTourPage() {
         </button>
 
         {slide < SLIDES.length - 1 && (
-          <button
-            onClick={handleSkip}
-            className="text-sm text-neutral-400 hover:text-neutral-600"
-          >
+          <button onClick={handleSkip} className="text-sm text-neutral-400 hover:text-neutral-600">
             Skip tour
           </button>
         )}

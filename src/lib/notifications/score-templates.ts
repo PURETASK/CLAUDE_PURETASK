@@ -4,7 +4,10 @@ export type ScoreNotificationTemplate = {
   body: string;
 };
 
-export function scoreIncreasedTemplate(pointsDelta: number, topMetric: string): ScoreNotificationTemplate {
+export function scoreIncreasedTemplate(
+  pointsDelta: number,
+  topMetric: string,
+): ScoreNotificationTemplate {
   return {
     type: 'score_increased',
     title: 'Your score improved!',

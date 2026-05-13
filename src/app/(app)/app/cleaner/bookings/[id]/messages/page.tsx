@@ -15,10 +15,7 @@ export default async function CleanerBookingMessagesPage({ params }: Props) {
 
   const { id } = await params;
 
-  const [booking, messages] = await Promise.all([
-    getBookingForMessaging(id),
-    getMessages(id),
-  ]);
+  const [booking, messages] = await Promise.all([getBookingForMessaging(id), getMessages(id)]);
 
   if (!booking) notFound();
   if (booking.userRole !== 'cleaner') notFound();

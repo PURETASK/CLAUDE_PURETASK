@@ -38,8 +38,7 @@ export const RefundForm = ({
   const maxRefundable = totalChargeCents - alreadyRefundedCents;
   const halfCents = Math.round(maxRefundable / 2);
 
-  const refundCents =
-    refundType === 'full' ? maxRefundable : refundType === 'half' ? halfCents : 0;
+  const refundCents = refundType === 'full' ? maxRefundable : refundType === 'half' ? halfCents : 0;
 
   const fmt = (cents: number) =>
     (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });

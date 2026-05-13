@@ -120,7 +120,9 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-neutral-700">Duration (hours)</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-700">
+              Duration (hours)
+            </label>
             <select
               name="duration_hours"
               required
@@ -180,7 +182,9 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-neutral-700">Notes (optional)</label>
+          <label className="mb-1 block text-sm font-medium text-neutral-700">
+            Notes (optional)
+          </label>
           <textarea
             name="notes"
             rows={3}

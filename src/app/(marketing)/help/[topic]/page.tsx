@@ -17,7 +17,7 @@ const TOPICS: Record<string, TopicContent> = {
     sections: [
       {
         heading: 'How do I book a cleaner?',
-        body: 'Browse available cleaners on the Find a Cleaner page. Filter by service type, availability, and tier. Select a cleaner and choose your date and time. You\'ll receive a confirmation once they accept.',
+        body: "Browse available cleaners on the Find a Cleaner page. Filter by service type, availability, and tier. Select a cleaner and choose your date and time. You'll receive a confirmation once they accept.",
       },
       {
         heading: 'Can I request the same cleaner again?',
@@ -43,7 +43,7 @@ const TOPICS: Record<string, TopicContent> = {
     sections: [
       {
         heading: 'How does payment work?',
-        body: 'Your card is authorized at booking but not charged until the job is complete and you approve it. If you don\'t raise a dispute within 24 hours of completion, payment releases automatically.',
+        body: "Your card is authorized at booking but not charged until the job is complete and you approve it. If you don't raise a dispute within 24 hours of completion, payment releases automatically.",
       },
       {
         heading: 'What payment methods are accepted?',
@@ -51,7 +51,7 @@ const TOPICS: Record<string, TopicContent> = {
       },
       {
         heading: 'Can I tip my cleaner?',
-        body: 'Yes — you\'ll see a tip prompt after approving a completed job. 100% of tips go directly to your cleaner.',
+        body: "Yes — you'll see a tip prompt after approving a completed job. 100% of tips go directly to your cleaner.",
       },
       {
         heading: 'How are prices set?',
@@ -113,7 +113,8 @@ const TOPICS: Record<string, TopicContent> = {
   },
   cleaners: {
     title: 'For Cleaners',
-    description: 'How earnings, payouts, ratings, and the platform work for cleaning professionals.',
+    description:
+      'How earnings, payouts, ratings, and the platform work for cleaning professionals.',
     sections: [
       {
         heading: 'How do I get jobs?',

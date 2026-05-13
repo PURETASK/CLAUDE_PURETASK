@@ -45,11 +45,14 @@ const ActiveJobPage = async ({ params }: Props) => {
     ? booking.customer_profiles[0]
     : booking.customer_profiles;
   const cpUser = Array.isArray((cpRaw as { users?: unknown })?.users)
-    ? ((cpRaw as { users: unknown[] }).users)[0]
+    ? (cpRaw as { users: unknown[] }).users[0]
     : (cpRaw as { users?: unknown })?.users;
   const customerName = (cpUser as { full_name?: string } | null)?.full_name ?? 'Customer';
 
-  const photos = (booking.booking_photos ?? []) as { room_label: string | null; cdn_url: string | null }[];
+  const photos = (booking.booking_photos ?? []) as {
+    room_label: string | null;
+    cdn_url: string | null;
+  }[];
   const uploadedRooms = new Set(photos.map((p) => p.room_label).filter(Boolean) as string[]);
 
   return (

@@ -8,11 +8,23 @@ import { cancelBookingAction } from '@/features/booking/actions';
 
 type Props = { params: Promise<{ id: string }> };
 
-function calcCancellationFee(startAt: Date, totalCents: number): { pct: number; feeCents: number; label: string } {
+function calcCancellationFee(
+  startAt: Date,
+  totalCents: number,
+): { pct: number; feeCents: number; label: string } {
   const hoursUntil = (startAt.getTime() - Date.now()) / (1000 * 60 * 60);
   if (hoursUntil > 48) return { pct: 0, feeCents: 0, label: 'Free — more than 48 hours away' };
-  if (hoursUntil > 24) return { pct: 50, feeCents: Math.round(totalCents * 0.5), label: '50% cancellation fee (24–48 hours notice)' };
-  return { pct: 100, feeCents: totalCents, label: '100% cancellation fee (less than 24 hours notice)' };
+  if (hoursUntil > 24)
+    return {
+      pct: 50,
+      feeCents: Math.round(totalCents * 0.5),
+      label: '50% cancellation fee (24–48 hours notice)',
+    };
+  return {
+    pct: 100,
+    feeCents: totalCents,
+    label: '100% cancellation fee (less than 24 hours notice)',
+  };
 }
 
 export default function CancelBookingPage({ params }: Props) {
@@ -31,7 +43,10 @@ export default function CancelBookingPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-lg py-10">
-      <Link href={`/app/bookings/${id}`} className="mb-6 block text-sm text-neutral-500 hover:text-neutral-700">
+      <Link
+        href={`/app/bookings/${id}`}
+        className="mb-6 block text-sm text-neutral-500 hover:text-neutral-700"
+      >
         ← Back to booking
       </Link>
 

@@ -4,7 +4,13 @@ export interface ChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
 }
 
-export const Chip = ({ selected = false, disabled, children, className = '', ...props }: ChipProps) => {
+export const Chip = ({
+  selected = false,
+  disabled,
+  children,
+  className = '',
+  ...props
+}: ChipProps) => {
   const base =
     'inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium transition-all duration-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:scale-[0.97]';
 
@@ -15,7 +21,12 @@ export const Chip = ({ selected = false, disabled, children, className = '', ...
       : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400';
 
   return (
-    <button type="button" disabled={disabled} className={`${base} ${state} ${className}`} {...props}>
+    <button
+      type="button"
+      disabled={disabled}
+      className={`${base} ${state} ${className}`}
+      {...props}
+    >
       {children}
     </button>
   );

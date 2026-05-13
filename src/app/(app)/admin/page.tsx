@@ -23,41 +23,48 @@ const AdminDashboardPage = async () => {
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
-  const [bookingsTodayRes, gmvTodayRes, applicationsRes, disputesRes, stateEventsRes, adminActionsRes, sparklineRes] =
-    await Promise.all([
-      supabase
-        .from('bookings')
-        .select('id', { count: 'exact', head: true })
-        .gte('created_at', todayStart.toISOString()),
-      supabase
-        .from('bookings')
-        .select('total_charge_cents')
-        .gte('created_at', todayStart.toISOString())
-        .in('state', ['approved', 'auto_approved', 'paid']),
-      supabase
-        .from('cleaner_applications')
-        .select('id', { count: 'exact', head: true })
-        .eq('state', 'submitted'),
-      supabase
-        .from('disputes')
-        .select('id', { count: 'exact', head: true })
-        .in('state', ['open', 'escalated', 'in_mediation']),
-      supabase
-        .from('booking_state_events')
-        .select('id, new_state, booking_id, created_at')
-        .order('created_at', { ascending: false })
-        .limit(10),
-      supabase
-        .from('admin_actions')
-        .select('id, action_type, description, created_at')
-        .order('created_at', { ascending: false })
-        .limit(10),
-      supabase
-        .from('bookings')
-        .select('total_charge_cents, created_at')
-        .in('state', ['approved', 'auto_approved', 'paid'])
-        .gte('created_at', new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()),
-    ]);
+  const [
+    bookingsTodayRes,
+    gmvTodayRes,
+    applicationsRes,
+    disputesRes,
+    stateEventsRes,
+    adminActionsRes,
+    sparklineRes,
+  ] = await Promise.all([
+    supabase
+      .from('bookings')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', todayStart.toISOString()),
+    supabase
+      .from('bookings')
+      .select('total_charge_cents')
+      .gte('created_at', todayStart.toISOString())
+      .in('state', ['approved', 'auto_approved', 'paid']),
+    supabase
+      .from('cleaner_applications')
+      .select('id', { count: 'exact', head: true })
+      .eq('state', 'submitted'),
+    supabase
+      .from('disputes')
+      .select('id', { count: 'exact', head: true })
+      .in('state', ['open', 'escalated', 'in_mediation']),
+    supabase
+      .from('booking_state_events')
+      .select('id, new_state, booking_id, created_at')
+      .order('created_at', { ascending: false })
+      .limit(10),
+    supabase
+      .from('admin_actions')
+      .select('id, action_type, description, created_at')
+      .order('created_at', { ascending: false })
+      .limit(10),
+    supabase
+      .from('bookings')
+      .select('total_charge_cents, created_at')
+      .in('state', ['approved', 'auto_approved', 'paid'])
+      .gte('created_at', new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()),
+  ]);
 
   const gmvTodayCents = (gmvTodayRes.data ?? []).reduce(
     (sum, b) => sum + (b.total_charge_cents ?? 0),

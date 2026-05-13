@@ -79,10 +79,7 @@ export async function adminResolveDispute(
       refundId = refund?.id ?? null;
 
       if (refundId) {
-        await supabase
-          .from('disputes')
-          .update({ refund_id: refundId })
-          .eq('id', disputeId);
+        await supabase.from('disputes').update({ refund_id: refundId }).eq('id', disputeId);
       }
     }
   }

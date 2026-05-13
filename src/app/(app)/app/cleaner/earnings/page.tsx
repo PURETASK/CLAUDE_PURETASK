@@ -31,18 +31,22 @@ export default async function CleanerEarningsPage() {
     <div className="mx-auto max-w-2xl px-4 py-10">
       {/* Header with money background */}
       <div className="relative mb-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-tier1">
-        <Image
-          src={BACKGROUNDS.moneyBg}
-          alt=""
-          fill
-          className="object-cover opacity-25"
-        />
+        <Image src={BACKGROUNDS.moneyBg} alt="" fill className="object-cover opacity-25" />
         <div className="relative z-10 px-6 py-6">
-          <Link href="/app/cleaner" className="mb-2 block text-xs text-neutral-400 hover:text-neutral-600">
+          <Link
+            href="/app/cleaner"
+            className="mb-2 block text-xs text-neutral-400 hover:text-neutral-600"
+          >
             ← Dashboard
           </Link>
           <div className="flex items-center gap-3">
-            <Image src={ICONS.wallet} alt="" width={52} height={52} className="rounded-xl drop-shadow-md" />
+            <Image
+              src={ICONS.wallet}
+              alt=""
+              width={52}
+              height={52}
+              className="rounded-xl drop-shadow-md"
+            />
             <div>
               <h1 className="text-2xl font-bold text-neutral-900">Earnings</h1>
               <p className="text-sm text-neutral-500">

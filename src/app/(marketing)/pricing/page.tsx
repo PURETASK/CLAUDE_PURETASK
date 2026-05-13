@@ -66,8 +66,12 @@ export default function PricingPage() {
                 <tr>
                   <th className="px-4 py-3 text-left font-semibold text-neutral-700">Tier</th>
                   <th className="px-4 py-3 text-left font-medium text-neutral-500">Condition</th>
-                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">Platform fee</th>
-                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">Cleaner keeps</th>
+                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">
+                    Platform fee
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-neutral-700">
+                    Cleaner keeps
+                  </th>
                   <th className="px-4 py-3 text-left font-medium text-neutral-500">Min hours</th>
                 </tr>
               </thead>

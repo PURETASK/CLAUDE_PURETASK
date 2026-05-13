@@ -50,12 +50,19 @@ const AdminDisputePage = async ({ params }: Props) => {
 
   if (!dispute) redirect('/admin/disputes');
 
-  const bookingRaw = Array.isArray(dispute.bookings)
-    ? dispute.bookings[0]
-    : dispute.bookings;
-  const photos = ((bookingRaw as { booking_photos?: { id: string; cdn_url: string | null; purpose: string | null; room_label: string | null }[] } | null)?.booking_photos ?? []).filter(
-    (p) => p.cdn_url,
-  );
+  const bookingRaw = Array.isArray(dispute.bookings) ? dispute.bookings[0] : dispute.bookings;
+  const photos = (
+    (
+      bookingRaw as {
+        booking_photos?: {
+          id: string;
+          cdn_url: string | null;
+          purpose: string | null;
+          room_label: string | null;
+        }[];
+      } | null
+    )?.booking_photos ?? []
+  ).filter((p) => p.cdn_url);
 
   const cleanerPhotos = photos
     .filter((p) => p.purpose === 'before_clock_in' || p.purpose === 'after_clock_out')
@@ -82,7 +89,9 @@ const AdminDisputePage = async ({ params }: Props) => {
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
             Category: {dispute.issue_category} · State:{' '}
-            <span className={isResolved ? 'text-success' : 'text-warning-dark'}>{dispute.state}</span>
+            <span className={isResolved ? 'text-success' : 'text-warning-dark'}>
+              {dispute.state}
+            </span>
           </p>
         </div>
 

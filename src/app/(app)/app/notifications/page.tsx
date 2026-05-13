@@ -12,8 +12,15 @@ const TABS = ['All', 'Bookings', 'Payments', 'Disputes', 'System'] as const;
 type Tab = (typeof TABS)[number];
 
 function getCategory(type: string): Tab {
-  if (type.includes('booking') || type.includes('schedule') || type.includes('job')) return 'Bookings';
-  if (type.includes('payment') || type.includes('payout') || type.includes('tip') || type.includes('earn')) return 'Payments';
+  if (type.includes('booking') || type.includes('schedule') || type.includes('job'))
+    return 'Bookings';
+  if (
+    type.includes('payment') ||
+    type.includes('payout') ||
+    type.includes('tip') ||
+    type.includes('earn')
+  )
+    return 'Payments';
   if (type.includes('dispute') || type.includes('refund')) return 'Disputes';
   return 'System';
 }
@@ -30,8 +37,12 @@ function timeAgo(iso: string) {
 
 function NotificationItem({ n }: { n: NotificationRow }) {
   return (
-    <div className={`flex gap-3 px-5 py-4 transition-colors hover:bg-neutral-50 ${!n.read_at ? 'bg-brand-600/5' : ''}`}>
-      <div className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${!n.read_at ? 'bg-brand-600' : 'bg-transparent'}`} />
+    <div
+      className={`flex gap-3 px-5 py-4 transition-colors hover:bg-neutral-50 ${!n.read_at ? 'bg-brand-600/5' : ''}`}
+    >
+      <div
+        className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${!n.read_at ? 'bg-brand-600' : 'bg-transparent'}`}
+      />
       <div className="min-w-0 flex-1">
         {n.deep_link ? (
           <Link href={n.deep_link}>
@@ -75,9 +86,12 @@ export default async function NotificationsPage({ searchParams }: Props) {
 
   const unreadCounts: Record<Tab, number> = {
     All: all.filter((n) => !n.read_at).length,
-    Bookings: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'Bookings').length,
-    Payments: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'Payments').length,
-    Disputes: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'Disputes').length,
+    Bookings: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'Bookings')
+      .length,
+    Payments: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'Payments')
+      .length,
+    Disputes: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'Disputes')
+      .length,
     System: all.filter((n) => !n.read_at && getCategory(n.notification_type) === 'System').length,
   };
 
@@ -85,7 +99,13 @@ export default async function NotificationsPage({ searchParams }: Props) {
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image src={ICONS.notification} alt="" width={48} height={48} className="rounded-xl drop-shadow-md" />
+          <Image
+            src={ICONS.notification}
+            alt=""
+            width={48}
+            height={48}
+            className="rounded-xl drop-shadow-md"
+          />
           <h1 className="text-2xl font-bold text-neutral-900">Notifications</h1>
         </div>
         {unreadCounts.All > 0 && (
@@ -128,8 +148,16 @@ export default async function NotificationsPage({ searchParams }: Props) {
       <div className="rounded-xl border border-neutral-200 bg-white shadow-tier1">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-16 text-center">
-            <Image src={ICONS.notification} alt="" width={48} height={48} className="rounded-xl opacity-30" />
-            <p className="text-sm text-neutral-400">No {activeTab !== 'All' ? activeTab.toLowerCase() : ''} notifications yet.</p>
+            <Image
+              src={ICONS.notification}
+              alt=""
+              width={48}
+              height={48}
+              className="rounded-xl opacity-30"
+            />
+            <p className="text-sm text-neutral-400">
+              No {activeTab !== 'All' ? activeTab.toLowerCase() : ''} notifications yet.
+            </p>
           </div>
         ) : (
           <div className="divide-y divide-neutral-100">

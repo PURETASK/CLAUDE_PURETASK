@@ -24,7 +24,7 @@ const extractName = (profile: unknown, fallback: string): string => {
   const p = Array.isArray(profile) ? profile[0] : profile;
   if (!p) return fallback;
   const u = Array.isArray((p as { users?: unknown }).users)
-    ? ((p as { users: unknown[] }).users)[0]
+    ? (p as { users: unknown[] }).users[0]
     : (p as { users?: unknown }).users;
   return (u as { full_name?: string } | null)?.full_name ?? fallback;
 };
@@ -95,7 +95,9 @@ export const getMessages = async (bookingId: string): Promise<MessageRow[]> => {
 
   const { data } = await supabase
     .from('messages')
-    .select(`id, body, sender_role, created_at, expires_at, users!messages_sender_user_id_fkey(full_name)`)
+    .select(
+      `id, body, sender_role, created_at, expires_at, users!messages_sender_user_id_fkey(full_name)`,
+    )
     .eq('booking_id', bookingId)
     .gt('expires_at', new Date().toISOString())
     .order('created_at', { ascending: true });

@@ -39,9 +39,7 @@ export const MessageInput = ({ bookingId, disabled }: Props) => {
 
   return (
     <div className="border-t border-neutral-200 bg-white p-4">
-      {error && (
-        <p className="mb-2 rounded-lg bg-error/10 px-3 py-2 text-xs text-error">{error}</p>
-      )}
+      {error && <p className="mb-2 rounded-lg bg-error/10 px-3 py-2 text-xs text-error">{error}</p>}
       <form onSubmit={handleSubmit} className="flex items-end gap-3">
         <textarea
           value={body}

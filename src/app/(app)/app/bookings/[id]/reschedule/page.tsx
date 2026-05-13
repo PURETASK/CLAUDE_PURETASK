@@ -24,7 +24,10 @@ export default async function RescheduleBookingPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-lg py-10">
-      <Link href={`/app/bookings/${id}`} className="mb-6 block text-sm text-neutral-500 hover:text-neutral-700">
+      <Link
+        href={`/app/bookings/${id}`}
+        className="mb-6 block text-sm text-neutral-500 hover:text-neutral-700"
+      >
         ← Back to booking
       </Link>
 

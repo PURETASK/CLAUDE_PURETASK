@@ -61,8 +61,12 @@ export const CustomerFirstTimeTour = ({ onDone }: Props) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-neutral-900/50 p-4 sm:items-center">
-      <div className={`w-full max-w-sm rounded-3xl border border-neutral-200 p-8 shadow-tier3 ${current.bg}`}>
-        <div className={`mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl ${current.iconBg}`}>
+      <div
+        className={`w-full max-w-sm rounded-3xl border border-neutral-200 p-8 shadow-tier3 ${current.bg}`}
+      >
+        <div
+          className={`mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl ${current.iconBg}`}
+        >
           <Image src={current.icon} alt="" width={40} height={40} className="object-contain" />
         </div>
 

@@ -69,7 +69,9 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
   });
 
   const offeredServices = Object.entries(cleaner.hourly_rates_cents).filter(([, rate]) => rate > 0);
-  const isBackgroundChecked = cleaner.badges.some((b) => b.display_label?.toLowerCase().includes('background'));
+  const isBackgroundChecked = cleaner.badges.some((b) =>
+    b.display_label?.toLowerCase().includes('background'),
+  );
   const isZipLocked = cleaner.badges.some((b) => b.display_label?.toLowerCase().includes('zip'));
 
   return (
@@ -89,7 +91,9 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
             <TierBadge tier={cleaner.current_tier} size="md" />
             {cleaner.average_rating != null ? (
               <span className="text-sm text-neutral-600">
-                <span className="font-semibold text-neutral-900">{cleaner.average_rating.toFixed(1)}</span>
+                <span className="font-semibold text-neutral-900">
+                  {cleaner.average_rating.toFixed(1)}
+                </span>
                 {' ★ · '}
                 {cleaner.review_count} {cleaner.review_count === 1 ? 'review' : 'reviews'}
               </span>
@@ -153,7 +157,9 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
             {offeredServices.map(([type, rate]) => (
               <div key={type} className="flex items-center justify-between text-sm">
                 <span className="text-neutral-700">{SERVICE_LABELS[type] ?? type}</span>
-                <span className="font-semibold text-neutral-900">${(rate / 100).toFixed(0)}/hr</span>
+                <span className="font-semibold text-neutral-900">
+                  ${(rate / 100).toFixed(0)}/hr
+                </span>
               </div>
             ))}
           </div>

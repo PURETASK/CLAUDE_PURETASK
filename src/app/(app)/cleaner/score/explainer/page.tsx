@@ -28,10 +28,7 @@ const ScoreExplainerPage = async () => {
           </Link>
           <h1 className="mt-3 text-2xl font-bold text-neutral-900">Your Reliability Score</h1>
         </div>
-        <ScoreExplainer
-          currentScore={profile.current_score}
-          currentTier={profile.current_tier}
-        />
+        <ScoreExplainer currentScore={profile.current_score} currentTier={profile.current_tier} />
       </div>
     </div>
   );

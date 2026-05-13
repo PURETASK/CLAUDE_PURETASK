@@ -15,7 +15,11 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const { data: me } = await supabase.from('users').select('primary_role').eq('id', user.id).single();
+  const { data: me } = await supabase
+    .from('users')
+    .select('primary_role')
+    .eq('id', user.id)
+    .single();
   if (me?.primary_role !== 'admin') redirect('/app');
 
   let query = supabase
@@ -28,8 +32,7 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
     .order('created_at', { ascending: false })
     .limit(50);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (state) query = query.eq('state', state as any);
+  if (state) query = query.eq('state', state as never);
 
   const { data: bookings } = await query;
 
@@ -37,8 +40,7 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
     if (!q) return true;
     const lower = q.toLowerCase();
     return (
-      (b.booking_number ?? '').toLowerCase().includes(lower) ||
-      b.id.toLowerCase().includes(lower)
+      (b.booking_number ?? '').toLowerCase().includes(lower) || b.id.toLowerCase().includes(lower)
     );
   });
 
@@ -72,7 +74,10 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
             <thead className="border-b border-neutral-100 bg-neutral-50">
               <tr>
                 {['Booking #', 'Date', 'Customer', 'Cleaner', 'Total', 'State', ''].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                  <th
+                    key={h}
+                    className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500"
+                  >
                     {h}
                   </th>
                 ))}
@@ -84,7 +89,7 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
                   ? b.customer_profiles[0]
                   : b.customer_profiles;
                 const custUser = Array.isArray((custRaw as { users?: unknown } | null)?.users)
-                  ? ((custRaw as { users: unknown[] }).users)[0]
+                  ? (custRaw as { users: unknown[] }).users[0]
                   : (custRaw as { users?: unknown } | null)?.users;
                 const customerName = (custUser as { full_name?: string } | null)?.full_name ?? '—';
 
@@ -92,13 +97,15 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
                   ? b.cleaner_profiles[0]
                   : b.cleaner_profiles;
                 const clnrUser = Array.isArray((clnrRaw as { users?: unknown } | null)?.users)
-                  ? ((clnrRaw as { users: unknown[] }).users)[0]
+                  ? (clnrRaw as { users: unknown[] }).users[0]
                   : (clnrRaw as { users?: unknown } | null)?.users;
                 const cleanerName = (clnrUser as { full_name?: string } | null)?.full_name ?? '—';
 
                 return (
                   <tr key={b.id} className="hover:bg-neutral-50">
-                    <td className="px-4 py-3 font-mono text-xs">{b.booking_number ?? b.id.slice(0, 8)}</td>
+                    <td className="px-4 py-3 font-mono text-xs">
+                      {b.booking_number ?? b.id.slice(0, 8)}
+                    </td>
                     <td className="px-4 py-3 text-neutral-600">
                       {new Date(b.start_at).toLocaleDateString()}
                     </td>

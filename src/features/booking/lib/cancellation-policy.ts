@@ -16,7 +16,12 @@ export function calculateCancellationPenalty(
   }
   if (hoursUntilStart >= 24) {
     const penalty = Math.round(totalChargeCents * 0.5);
-    return { penaltyCents: penalty, refundCents: totalChargeCents - penalty, tier: 'partial', hoursUntilStart };
+    return {
+      penaltyCents: penalty,
+      refundCents: totalChargeCents - penalty,
+      tier: 'partial',
+      hoursUntilStart,
+    };
   }
   return { penaltyCents: totalChargeCents, refundCents: 0, tier: 'full', hoursUntilStart };
 }

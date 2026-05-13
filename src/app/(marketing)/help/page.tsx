@@ -32,12 +32,7 @@ const HelpPage = () => {
     <div className="relative min-h-screen">
       {/* Background hero */}
       <div className="relative overflow-hidden bg-gradient-hero px-6 py-16 text-center text-white">
-        <Image
-          src={BACKGROUNDS.support}
-          alt=""
-          fill
-          className="object-cover opacity-10"
-        />
+        <Image src={BACKGROUNDS.support} alt="" fill className="object-cover opacity-10" />
         <div className="relative z-10 mx-auto max-w-xl">
           <h1 className="text-3xl font-bold">How can we help?</h1>
           <p className="mt-2 text-white/80">Search or browse articles below.</p>
@@ -53,7 +48,12 @@ const HelpPage = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
         </div>
@@ -88,8 +88,18 @@ const HelpPage = () => {
                 className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-neutral-50"
               >
                 <span className="text-sm text-neutral-700">{title}</span>
-                <svg className="h-4 w-4 flex-shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="h-4 w-4 flex-shrink-0 text-neutral-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             ))}
@@ -97,8 +107,12 @@ const HelpPage = () => {
         </div>
 
         <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-center shadow-tier1">
-          <p className="font-semibold text-neutral-900">Can&apos;t find what you&apos;re looking for?</p>
-          <p className="mt-1 text-sm text-neutral-600">Our support team typically responds within 2 hours.</p>
+          <p className="font-semibold text-neutral-900">
+            Can&apos;t find what you&apos;re looking for?
+          </p>
+          <p className="mt-1 text-sm text-neutral-600">
+            Our support team typically responds within 2 hours.
+          </p>
           <a
             href="mailto:support@puretask.com"
             className="mt-4 inline-block rounded-xl bg-gradient-brand px-6 py-2.5 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"

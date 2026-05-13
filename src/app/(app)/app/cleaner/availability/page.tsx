@@ -21,7 +21,10 @@ export default async function CleanerAvailabilityPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
-        <Link href="/app/cleaner" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
+        <Link
+          href="/app/cleaner"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
+        >
           ← Dashboard
         </Link>
         <h1 className="text-xl font-semibold">Availability</h1>
@@ -74,7 +77,10 @@ export default async function CleanerAvailabilityPage() {
         <AddTimeOffForm />
       </section>
 
-      <Link href="/app/cleaner/settings" className="text-xs text-neutral-400 hover:text-neutral-600">
+      <Link
+        href="/app/cleaner/settings"
+        className="text-xs text-neutral-400 hover:text-neutral-600"
+      >
         ← Back to settings
       </Link>
     </div>

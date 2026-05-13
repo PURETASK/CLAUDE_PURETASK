@@ -16,7 +16,10 @@ export default async function CleanerScorePage() {
   return (
     <div className="mx-auto max-w-xl">
       <div className="mb-6">
-        <Link href="/app/cleaner" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
+        <Link
+          href="/app/cleaner"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
+        >
           ← Dashboard
         </Link>
         <h1 className="text-xl font-semibold">Reliability score history</h1>

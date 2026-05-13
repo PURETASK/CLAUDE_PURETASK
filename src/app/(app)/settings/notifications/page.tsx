@@ -17,7 +17,9 @@ export default async function NotificationsSettingsPage() {
   const admin = createSupabaseAdminClient();
   const { data: prefs } = await admin
     .from('notification_preferences')
-    .select('sms_enabled, sms_phone, quiet_hours_enabled, quiet_hours_start_minutes, quiet_hours_end_minutes')
+    .select(
+      'sms_enabled, sms_phone, quiet_hours_enabled, quiet_hours_start_minutes, quiet_hours_end_minutes',
+    )
     .eq('user_id', user.id)
     .single();
 
@@ -26,7 +28,10 @@ export default async function NotificationsSettingsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
-        <Link href="/settings" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
+        <Link
+          href="/settings"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
+        >
           ← Back to settings
         </Link>
         <h1 className="text-xl font-semibold">Notifications</h1>

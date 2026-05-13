@@ -71,7 +71,9 @@ export default function ForCleanersPage() {
                 For cleaning professionals
               </p>
               <h1 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-                Build your reputation.<br />Keep more of what you earn.
+                Build your reputation.
+                <br />
+                Keep more of what you earn.
               </h1>
               <Link
                 href="/cleaner/apply"
@@ -132,7 +134,8 @@ export default function ForCleanersPage() {
             <div>
               <h2 className="text-3xl font-bold text-neutral-900">Tiers reward consistency</h2>
               <p className="mt-1 text-neutral-500">
-                Your reliability score determines your tier. Tier up and you earn more with every job.
+                Your reliability score determines your tier. Tier up and you earn more with every
+                job.
               </p>
             </div>
           </div>
@@ -141,7 +144,9 @@ export default function ForCleanersPage() {
               <thead className="bg-neutral-50">
                 <tr>
                   <th className="px-5 py-3.5 text-left font-semibold text-neutral-700">Tier</th>
-                  <th className="px-5 py-3.5 text-left font-semibold text-neutral-700">Commission</th>
+                  <th className="px-5 py-3.5 text-left font-semibold text-neutral-700">
+                    Commission
+                  </th>
                   <th className="px-5 py-3.5 text-left font-medium text-neutral-400">Notes</th>
                 </tr>
               </thead>
@@ -161,12 +166,7 @@ export default function ForCleanersPage() {
 
       {/* CTA — Cleaners Wanted spotlight */}
       <section className="relative overflow-hidden">
-        <Image
-          src={BACKGROUNDS.cleanersWanted}
-          alt=""
-          fill
-          className="object-cover"
-        />
+        <Image src={BACKGROUNDS.cleanersWanted} alt="" fill className="object-cover" />
         <div className="absolute inset-0 bg-neutral-900/70" />
         <div className="relative z-10 mx-auto max-w-2xl px-6 py-24 text-center">
           <Image

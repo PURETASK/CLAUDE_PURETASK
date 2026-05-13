@@ -40,7 +40,13 @@ export const ServiceCard = ({
       </div>
       {selected && (
         <div className="absolute bottom-4 right-4 flex h-5 w-5 items-center justify-center rounded-full bg-brand-600">
-          <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+          <svg
+            className="h-3 w-3 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>

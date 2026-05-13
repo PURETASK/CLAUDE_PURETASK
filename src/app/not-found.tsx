@@ -6,7 +6,13 @@ import { BRAND } from '@/lib/assets';
 export default function NotFound() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 px-4 text-center">
-      <Image src={BRAND.logo} alt="PureTask" width={56} height={56} className="mb-6 drop-shadow-md" />
+      <Image
+        src={BRAND.logo}
+        alt="PureTask"
+        width={56}
+        height={56}
+        className="mb-6 drop-shadow-md"
+      />
       <p className="mb-2 text-8xl font-black text-neutral-200">404</p>
       <h1 className="mb-3 text-2xl font-bold text-neutral-900">Page not found</h1>
       <p className="mb-8 max-w-sm text-sm text-neutral-500">

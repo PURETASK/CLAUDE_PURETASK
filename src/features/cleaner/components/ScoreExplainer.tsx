@@ -77,8 +77,8 @@ export const ScoreExplainer = ({ currentScore, currentTier }: Props) => {
           {worstMetric.key === 'photos'
             ? 'Upload photos for every room after each job to improve your compliance score.'
             : worstMetric.key === 'on_time'
-            ? 'Arriving within 5 minutes of your scheduled time counts as on-time.'
-            : `Improving your ${worstMetric.label.toLowerCase()} will have the biggest impact on your overall score.`}
+              ? 'Arriving within 5 minutes of your scheduled time counts as on-time.'
+              : `Improving your ${worstMetric.label.toLowerCase()} will have the biggest impact on your overall score.`}
         </p>
       </div>
     </div>

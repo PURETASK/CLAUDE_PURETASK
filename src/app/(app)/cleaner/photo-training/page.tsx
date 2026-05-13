@@ -82,7 +82,13 @@ const PhotoTrainingPage = async () => {
           >
             <div className="mb-3 flex items-center gap-3">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50">
-                <Image src={section.icon} alt="" width={20} height={20} className="object-contain" />
+                <Image
+                  src={section.icon}
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="object-contain"
+                />
               </div>
               <h2 className="font-semibold text-neutral-900">{section.title}</h2>
             </div>

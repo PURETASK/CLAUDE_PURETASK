@@ -98,7 +98,9 @@ const AppShellLayout = async ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </header>
-      <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
+      <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-8">
+        {children}
+      </main>
     </div>
   );
 };

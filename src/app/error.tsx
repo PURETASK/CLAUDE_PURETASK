@@ -19,7 +19,13 @@ export default function GlobalError({
   return (
     <html>
       <body className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 px-4 text-center">
-        <Image src={BRAND.logo} alt="PureTask" width={56} height={56} className="mb-6 drop-shadow-md" />
+        <Image
+          src={BRAND.logo}
+          alt="PureTask"
+          width={56}
+          height={56}
+          className="mb-6 drop-shadow-md"
+        />
         <h1 className="mb-2 text-2xl font-bold text-neutral-900">Something went wrong</h1>
         <p className="mb-8 max-w-sm text-sm text-neutral-500">
           An unexpected error occurred. Your data is safe — try reloading.

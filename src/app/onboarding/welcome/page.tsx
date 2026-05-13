@@ -61,22 +61,10 @@ export default function WelcomeTourPage() {
 
   return (
     <div className="relative flex min-h-[calc(100vh-57px)] flex-col items-center justify-center overflow-hidden px-4 py-12">
-      <Image
-        src={current.bg}
-        alt=""
-        fill
-        className="object-cover opacity-20"
-        priority
-      />
+      <Image src={current.bg} alt="" fill className="object-cover opacity-20" priority />
 
       <div className="relative z-10 flex w-full max-w-md flex-col items-center gap-8 text-center">
-        <Image
-          src={BRAND.dash}
-          alt="Dash"
-          width={80}
-          height={80}
-          className="drop-shadow-lg"
-        />
+        <Image src={BRAND.dash} alt="Dash" width={80} height={80} className="drop-shadow-lg" />
 
         <Image
           src={current.icon}
@@ -112,10 +100,7 @@ export default function WelcomeTourPage() {
         </button>
 
         {slide < SLIDES.length - 1 && (
-          <button
-            onClick={handleSkip}
-            className="text-sm text-neutral-400 hover:text-neutral-600"
-          >
+          <button onClick={handleSkip} className="text-sm text-neutral-400 hover:text-neutral-600">
             Skip tour
           </button>
         )}

@@ -34,7 +34,13 @@ const CleanersPage = async ({ searchParams }: PageProps) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-3">
-        <Image src={ICONS.cleaning} alt="" width={52} height={52} className="rounded-xl drop-shadow-md" />
+        <Image
+          src={ICONS.cleaning}
+          alt=""
+          width={52}
+          height={52}
+          className="rounded-xl drop-shadow-md"
+        />
         <div>
           <h1 className="text-2xl font-bold text-neutral-900">Find a Cleaner</h1>
           <p className="mt-0.5 text-sm text-neutral-500">

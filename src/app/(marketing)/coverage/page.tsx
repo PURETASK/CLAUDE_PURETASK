@@ -47,14 +47,14 @@ const CoveragePage = async () => {
           <div className="mx-auto w-full max-w-2xl px-6 pb-10 text-center">
             <h1 className="text-3xl font-bold text-white">Where we operate</h1>
             <p className="mt-2 text-neutral-300">
-              PureTask is growing — here&apos;s where you can book today and what&apos;s coming next.
+              PureTask is growing — here&apos;s where you can book today and what&apos;s coming
+              next.
             </p>
           </div>
         </div>
       </section>
 
       <div className="mx-auto max-w-2xl px-4 py-12 space-y-10">
-
         {activeMetros.length > 0 && (
           <section>
             <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-neutral-900">

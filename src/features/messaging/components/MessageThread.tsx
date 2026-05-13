@@ -119,11 +119,7 @@ export const MessageThread = ({
             ) : (
               <div className="flex flex-col gap-3">
                 {messages.map((msg) => (
-                  <MessageBubble
-                    key={msg.id}
-                    message={msg}
-                    isOwn={msg.sender_role === userRole}
-                  />
+                  <MessageBubble key={msg.id} message={msg} isOwn={msg.sender_role === userRole} />
                 ))}
                 <div ref={bottomRef} />
               </div>

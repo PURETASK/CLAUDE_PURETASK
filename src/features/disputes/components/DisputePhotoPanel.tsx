@@ -32,11 +32,21 @@ export const DisputePhotoPanel = ({
         </div>
         {customerPhotos.length > 0 && (
           <div>
-            <p className="mb-2 text-xs font-medium text-neutral-500">Evidence photos uploaded by customer</p>
+            <p className="mb-2 text-xs font-medium text-neutral-500">
+              Evidence photos uploaded by customer
+            </p>
             <div className="grid grid-cols-3 gap-2">
               {customerPhotos.map((photo) => (
-                <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100">
-                  <Image src={photo.cdn_url} alt="Customer evidence" fill className="object-cover" />
+                <div
+                  key={photo.id}
+                  className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
+                >
+                  <Image
+                    src={photo.cdn_url}
+                    alt="Customer evidence"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
               ))}
             </div>
@@ -61,8 +71,16 @@ export const DisputePhotoPanel = ({
                 <p className="mb-2 text-xs font-medium text-neutral-500">Before clock-in</p>
                 <div className="grid grid-cols-3 gap-2">
                   {cleanerBefore.map((photo) => (
-                    <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100">
-                      <Image src={photo.cdn_url} alt={photo.room_label ?? 'Before'} fill className="object-cover" />
+                    <div
+                      key={photo.id}
+                      className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
+                    >
+                      <Image
+                        src={photo.cdn_url}
+                        alt={photo.room_label ?? 'Before'}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                   ))}
                 </div>
@@ -73,8 +91,16 @@ export const DisputePhotoPanel = ({
                 <p className="mb-2 text-xs font-medium text-neutral-500">After clock-out</p>
                 <div className="grid grid-cols-3 gap-2">
                   {cleanerAfter.map((photo) => (
-                    <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100">
-                      <Image src={photo.cdn_url} alt={photo.room_label ?? 'After'} fill className="object-cover" />
+                    <div
+                      key={photo.id}
+                      className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
+                    >
+                      <Image
+                        src={photo.cdn_url}
+                        alt={photo.room_label ?? 'After'}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                   ))}
                 </div>

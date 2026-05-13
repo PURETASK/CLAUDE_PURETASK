@@ -41,10 +41,7 @@ const InsurancePage = async () => {
         ) : policy.state === 'uploaded' || policy.state === 'under_review' ? (
           <InsurancePending uploadedAt={policy.document_uploaded_at} />
         ) : policy.state === 'verified' && policy.verified_at && policy.expires_at ? (
-          <InsuranceVerified
-            verifiedAt={policy.verified_at}
-            expiresAt={policy.expires_at}
-          />
+          <InsuranceVerified verifiedAt={policy.verified_at} expiresAt={policy.expires_at} />
         ) : (
           <InsuranceUpload />
         )}

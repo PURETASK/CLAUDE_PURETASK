@@ -7,72 +7,229 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { ICONS, BACKGROUNDS } from '@/lib/assets';
 
 const CITIES: Record<string, { label: string; state: string; zips: string[] }> = {
-  sacramento: { label: 'Sacramento', state: 'CA', zips: ['95814', '95816', '95818', '95820', '95822', '95823', '95825', '95826', '95828', '95831', '95832', '95833', '95834', '95835', '95838'] },
-  'san-francisco': { label: 'San Francisco', state: 'CA', zips: ['94102', '94103', '94107', '94110', '94112', '94114', '94115', '94117', '94121', '94122', '94123', '94124', '94127', '94131', '94132', '94133', '94134'] },
-  oakland: { label: 'Oakland', state: 'CA', zips: ['94601', '94602', '94603', '94605', '94606', '94607', '94608', '94609', '94610', '94611', '94612', '94619', '94621'] },
-  'san-jose': { label: 'San Jose', state: 'CA', zips: ['95101', '95110', '95112', '95116', '95117', '95118', '95119', '95120', '95121', '95122', '95123', '95124', '95125', '95126', '95128'] },
-  berkeley: { label: 'Berkeley', state: 'CA', zips: ['94702', '94703', '94704', '94705', '94706', '94707', '94708', '94709', '94710'] },
+  sacramento: {
+    label: 'Sacramento',
+    state: 'CA',
+    zips: [
+      '95814',
+      '95816',
+      '95818',
+      '95820',
+      '95822',
+      '95823',
+      '95825',
+      '95826',
+      '95828',
+      '95831',
+      '95832',
+      '95833',
+      '95834',
+      '95835',
+      '95838',
+    ],
+  },
+  'san-francisco': {
+    label: 'San Francisco',
+    state: 'CA',
+    zips: [
+      '94102',
+      '94103',
+      '94107',
+      '94110',
+      '94112',
+      '94114',
+      '94115',
+      '94117',
+      '94121',
+      '94122',
+      '94123',
+      '94124',
+      '94127',
+      '94131',
+      '94132',
+      '94133',
+      '94134',
+    ],
+  },
+  oakland: {
+    label: 'Oakland',
+    state: 'CA',
+    zips: [
+      '94601',
+      '94602',
+      '94603',
+      '94605',
+      '94606',
+      '94607',
+      '94608',
+      '94609',
+      '94610',
+      '94611',
+      '94612',
+      '94619',
+      '94621',
+    ],
+  },
+  'san-jose': {
+    label: 'San Jose',
+    state: 'CA',
+    zips: [
+      '95101',
+      '95110',
+      '95112',
+      '95116',
+      '95117',
+      '95118',
+      '95119',
+      '95120',
+      '95121',
+      '95122',
+      '95123',
+      '95124',
+      '95125',
+      '95126',
+      '95128',
+    ],
+  },
+  berkeley: {
+    label: 'Berkeley',
+    state: 'CA',
+    zips: ['94702', '94703', '94704', '94705', '94706', '94707', '94708', '94709', '94710'],
+  },
   'elk-grove': { label: 'Elk Grove', state: 'CA', zips: ['95624', '95757', '95758', '95759'] },
   roseville: { label: 'Roseville', state: 'CA', zips: ['95661', '95678', '95747'] },
   folsom: { label: 'Folsom', state: 'CA', zips: ['95630'] },
 };
 
-const SERVICES: Record<string, { label: string; description: string; includes: string[]; duration: string }> = {
+const SERVICES: Record<
+  string,
+  { label: string; description: string; includes: string[]; duration: string }
+> = {
   standard: {
     label: 'Standard Cleaning',
-    description: 'A thorough recurring clean of your home — vacuuming, mopping, dusting, kitchen and bathrooms.',
-    includes: ['Vacuum all rooms', 'Mop hard floors', 'Dust surfaces', 'Clean kitchen counters & appliances', 'Scrub bathrooms', 'Empty trash'],
+    description:
+      'A thorough recurring clean of your home — vacuuming, mopping, dusting, kitchen and bathrooms.',
+    includes: [
+      'Vacuum all rooms',
+      'Mop hard floors',
+      'Dust surfaces',
+      'Clean kitchen counters & appliances',
+      'Scrub bathrooms',
+      'Empty trash',
+    ],
     duration: '2–4 hours depending on size',
   },
   deep: {
     label: 'Deep Cleaning',
-    description: 'A top-to-bottom intensive clean that reaches areas standard cleans skip — inside appliances, baseboards, behind furniture.',
-    includes: ['Everything in Standard', 'Inside oven & refrigerator', 'Baseboards & window sills', 'Cabinet interiors', 'Behind & under furniture', 'Light fixtures & ceiling fans'],
+    description:
+      'A top-to-bottom intensive clean that reaches areas standard cleans skip — inside appliances, baseboards, behind furniture.',
+    includes: [
+      'Everything in Standard',
+      'Inside oven & refrigerator',
+      'Baseboards & window sills',
+      'Cabinet interiors',
+      'Behind & under furniture',
+      'Light fixtures & ceiling fans',
+    ],
     duration: '4–8 hours depending on size',
   },
   'move-out': {
     label: 'Move-Out Cleaning',
-    description: 'Restore your home to pristine condition for landlords and new tenants. Ideal for end-of-lease cleans.',
-    includes: ['Full deep clean of empty property', 'Inside all cabinets & drawers', 'Full appliance cleaning', 'Window tracks & sills', 'Wall spot-cleaning', 'Garage sweep (if applicable)'],
+    description:
+      'Restore your home to pristine condition for landlords and new tenants. Ideal for end-of-lease cleans.',
+    includes: [
+      'Full deep clean of empty property',
+      'Inside all cabinets & drawers',
+      'Full appliance cleaning',
+      'Window tracks & sills',
+      'Wall spot-cleaning',
+      'Garage sweep (if applicable)',
+    ],
     duration: '5–10 hours depending on size',
   },
   airbnb: {
     label: 'Airbnb / Short-Term Rental',
-    description: 'Fast, reliable turnovers between guests with hotel-quality standards and linen management.',
-    includes: ['Full room reset', 'Linen change & remade beds', 'Bathroom restock & clean', 'Kitchen clean & restock', 'Trash removal', 'Guest-ready inspection'],
+    description:
+      'Fast, reliable turnovers between guests with hotel-quality standards and linen management.',
+    includes: [
+      'Full room reset',
+      'Linen change & remade beds',
+      'Bathroom restock & clean',
+      'Kitchen clean & restock',
+      'Trash removal',
+      'Guest-ready inspection',
+    ],
     duration: '1–3 hours per turnover',
   },
   'house-cleaning': {
     label: 'House Cleaning',
     description: 'Full-service house cleaning for any size home — inside and out.',
-    includes: ['Vacuum all rooms', 'Mop hard floors', 'Dust surfaces', 'Clean kitchen counters & appliances', 'Scrub bathrooms', 'Empty trash'],
+    includes: [
+      'Vacuum all rooms',
+      'Mop hard floors',
+      'Dust surfaces',
+      'Clean kitchen counters & appliances',
+      'Scrub bathrooms',
+      'Empty trash',
+    ],
     duration: '2–4 hours depending on size',
   },
   'deep-cleaning': {
     label: 'Deep Cleaning',
     description: 'A comprehensive deep clean for a truly fresh start.',
-    includes: ['Everything in standard cleaning', 'Inside oven & refrigerator', 'Interior cabinets & drawers', 'Light fixtures & ceiling fans', 'Window sills & door frames', 'Behind & under furniture'],
+    includes: [
+      'Everything in standard cleaning',
+      'Inside oven & refrigerator',
+      'Interior cabinets & drawers',
+      'Light fixtures & ceiling fans',
+      'Window sills & door frames',
+      'Behind & under furniture',
+    ],
     duration: '4–8 hours depending on size',
   },
   'move-out-cleaning': {
     label: 'Move-Out Cleaning',
     description: 'Landlord inspection-ready cleaning for end-of-lease.',
-    includes: ['Full deep clean of all rooms', 'Inside all cabinets & closets', 'Walls & light switches', 'Garage sweep', 'Landlord inspection ready'],
+    includes: [
+      'Full deep clean of all rooms',
+      'Inside all cabinets & closets',
+      'Walls & light switches',
+      'Garage sweep',
+      'Landlord inspection ready',
+    ],
     duration: '5–10 hours depending on size',
   },
   'airbnb-cleaning': {
     label: 'Airbnb Cleaning',
     description: 'Quick, reliable turnovers with photo proof every time.',
-    includes: ['Turnover between guests', 'Fresh linens & made beds', 'Restock guest amenities', 'Photo proof of every room', 'Fast 2–4 hour turnaround'],
+    includes: [
+      'Turnover between guests',
+      'Fresh linens & made beds',
+      'Restock guest amenities',
+      'Photo proof of every room',
+      'Fast 2–4 hour turnaround',
+    ],
     duration: '1–3 hours per turnover',
   },
 };
 
 const FAQ = [
-  { q: 'Are all cleaners background checked?', a: 'Yes — every PureTask cleaner passes a Checkr background check before their first job.' },
-  { q: 'How is pricing determined?', a: 'Pricing is set per hour by each cleaner. You see the exact rate before booking — no surprises.' },
-  { q: 'Can I request the same cleaner every time?', a: 'Absolutely. You can favorite any cleaner and rebook them directly with one tap.' },
-  { q: "What if I'm not satisfied?", a: 'We have a 24-hour satisfaction guarantee. Open a dispute and our team reviews it the same day.' },
+  {
+    q: 'Are all cleaners background checked?',
+    a: 'Yes — every PureTask cleaner passes a Checkr background check before their first job.',
+  },
+  {
+    q: 'How is pricing determined?',
+    a: 'Pricing is set per hour by each cleaner. You see the exact rate before booking — no surprises.',
+  },
+  {
+    q: 'Can I request the same cleaner every time?',
+    a: 'Absolutely. You can favorite any cleaner and rebook them directly with one tap.',
+  },
+  {
+    q: "What if I'm not satisfied?",
+    a: 'We have a 24-hour satisfaction guarantee. Open a dispute and our team reviews it the same day.',
+  },
 ];
 
 type Props = {
@@ -144,13 +301,7 @@ export default async function CityServicePage({ params }: Props) {
     <div className="min-h-screen bg-neutral-50">
       {/* Hero */}
       <div className="relative overflow-hidden bg-neutral-900">
-        <Image
-          src={BACKGROUNDS.bubbles}
-          alt=""
-          fill
-          className="object-cover opacity-10"
-          priority
-        />
+        <Image src={BACKGROUNDS.bubbles} alt="" fill className="object-cover opacity-10" priority />
         <div className="relative z-10 mx-auto max-w-4xl px-4 py-16 text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/80">
             <Image src={ICONS.checkmark} alt="" width={16} height={16} />
@@ -159,9 +310,7 @@ export default async function CityServicePage({ params }: Props) {
           <h1 className="text-4xl font-bold text-white md:text-5xl">
             {serviceData.label} in {cityData.label}
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-white/70">
-            {serviceData.description}
-          </p>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-white/70">{serviceData.description}</p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/app/cleaners"
@@ -185,9 +334,18 @@ export default async function CityServicePage({ params }: Props) {
           <h2 className="mb-6 text-2xl font-bold text-neutral-900">What&apos;s included</h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {serviceData.includes.map((item) => (
-              <div key={item} className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-tier1">
+              <div
+                key={item}
+                className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-tier1"
+              >
                 <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-600/10">
-                  <svg className="h-3.5 w-3.5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <svg
+                    className="h-3.5 w-3.5 text-brand-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -195,9 +353,7 @@ export default async function CityServicePage({ params }: Props) {
               </div>
             ))}
           </div>
-          <p className="mt-3 text-sm text-neutral-500">
-            Typical duration: {serviceData.duration}
-          </p>
+          <p className="mt-3 text-sm text-neutral-500">Typical duration: {serviceData.duration}</p>
         </section>
 
         {/* Top cleaners in area */}
@@ -215,9 +371,21 @@ export default async function CityServicePage({ params }: Props) {
                 >
                   <div className="mb-3 flex items-center gap-3">
                     {c.photo ? (
-                      <Image src={c.photo} alt={c.name} width={48} height={48} className="rounded-full object-cover" />
+                      <Image
+                        src={c.photo}
+                        alt={c.name}
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
                     ) : (
-                      <Image src={ICONS.contacts} alt="" width={48} height={48} className="rounded-full" />
+                      <Image
+                        src={ICONS.contacts}
+                        alt=""
+                        width={48}
+                        height={48}
+                        className="rounded-full"
+                      />
                     )}
                     <div>
                       <p className="font-semibold text-neutral-900">{c.name}</p>
@@ -230,9 +398,7 @@ export default async function CityServicePage({ params }: Props) {
                     </svg>
                     {c.rating.toFixed(1)} · {c.reviewCount} reviews
                   </div>
-                  {c.bio && (
-                    <p className="mt-2 line-clamp-2 text-xs text-neutral-500">{c.bio}</p>
-                  )}
+                  {c.bio && <p className="mt-2 line-clamp-2 text-xs text-neutral-500">{c.bio}</p>}
                 </Link>
               ))}
             </div>
@@ -242,12 +408,33 @@ export default async function CityServicePage({ params }: Props) {
         {/* Trust bar */}
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[
-            { icon: ICONS.checkmark, title: 'Background checked', body: 'Every cleaner passes a Checkr background check before their first job.' },
-            { icon: ICONS.home, title: 'Live job tracking', body: "Watch your cleaner's progress in real time with GPS and photo updates." },
-            { icon: ICONS.wallet, title: 'Satisfaction guarantee', body: "24-hour dispute window. We make it right or you don't pay." },
+            {
+              icon: ICONS.checkmark,
+              title: 'Background checked',
+              body: 'Every cleaner passes a Checkr background check before their first job.',
+            },
+            {
+              icon: ICONS.home,
+              title: 'Live job tracking',
+              body: "Watch your cleaner's progress in real time with GPS and photo updates.",
+            },
+            {
+              icon: ICONS.wallet,
+              title: 'Satisfaction guarantee',
+              body: "24-hour dispute window. We make it right or you don't pay.",
+            },
           ].map((item) => (
-            <div key={item.title} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
-              <Image src={item.icon} alt="" width={40} height={40} className="mb-3 drop-shadow-sm" />
+            <div
+              key={item.title}
+              className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1"
+            >
+              <Image
+                src={item.icon}
+                alt=""
+                width={40}
+                height={40}
+                className="mb-3 drop-shadow-sm"
+              />
               <p className="font-semibold text-neutral-900">{item.title}</p>
               <p className="mt-1 text-sm text-neutral-500">{item.body}</p>
             </div>
@@ -259,7 +446,10 @@ export default async function CityServicePage({ params }: Props) {
           <h2 className="mb-6 text-2xl font-bold text-neutral-900">Frequently asked questions</h2>
           <div className="space-y-3">
             {FAQ.map((item) => (
-              <div key={item.q} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
+              <div
+                key={item.q}
+                className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1"
+              >
                 <p className="font-semibold text-neutral-900">{item.q}</p>
                 <p className="mt-1.5 text-sm text-neutral-600">{item.a}</p>
               </div>

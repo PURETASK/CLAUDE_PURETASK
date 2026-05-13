@@ -10,7 +10,11 @@ const AdminDisputesPage = async () => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const { data: me } = await supabase.from('users').select('primary_role').eq('id', user.id).single();
+  const { data: me } = await supabase
+    .from('users')
+    .select('primary_role')
+    .eq('id', user.id)
+    .single();
   if (me?.primary_role !== 'admin') redirect('/app');
 
   const { data: disputes } = await supabase
@@ -37,7 +41,10 @@ const AdminDisputesPage = async () => {
             <thead className="border-b border-neutral-100 bg-neutral-50">
               <tr>
                 {['ID', 'Category', 'Booking', 'Filed', 'State', ''].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                  <th
+                    key={h}
+                    className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500"
+                  >
                     {h}
                   </th>
                 ))}
@@ -46,12 +53,20 @@ const AdminDisputesPage = async () => {
             <tbody className="divide-y divide-neutral-100">
               {(disputes ?? []).map((d) => {
                 const bookingRaw = Array.isArray(d.bookings) ? d.bookings[0] : d.bookings;
-                const booking = bookingRaw as { booking_number?: string; total_charge_cents?: number } | null;
-                const isResolved = d.state === 'admin_resolved' || d.state === 'mutually_resolved' || d.state === 'expired';
+                const booking = bookingRaw as {
+                  booking_number?: string;
+                  total_charge_cents?: number;
+                } | null;
+                const isResolved =
+                  d.state === 'admin_resolved' ||
+                  d.state === 'mutually_resolved' ||
+                  d.state === 'expired';
 
                 return (
                   <tr key={d.id} className="hover:bg-neutral-50">
-                    <td className="px-4 py-3 font-mono text-xs">{d.id.slice(0, 8).toUpperCase()}</td>
+                    <td className="px-4 py-3 font-mono text-xs">
+                      {d.id.slice(0, 8).toUpperCase()}
+                    </td>
                     <td className="px-4 py-3">{d.issue_category}</td>
                     <td className="px-4 py-3 font-mono text-xs">
                       {booking?.booking_number ?? '—'}
@@ -73,7 +88,10 @@ const AdminDisputesPage = async () => {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/admin/disputes/${d.id}`} className="text-xs text-brand-600 hover:underline">
+                      <Link
+                        href={`/admin/disputes/${d.id}`}
+                        className="text-xs text-brand-600 hover:underline"
+                      >
                         Review →
                       </Link>
                     </td>
