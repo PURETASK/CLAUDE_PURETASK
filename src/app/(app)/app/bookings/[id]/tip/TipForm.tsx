@@ -35,9 +35,9 @@ export function TipForm({ bookingId }: { bookingId: string }) {
               setSelected(p.cents);
               setCustom('');
             }}
-            className={`rounded-xl border py-2 text-sm font-semibold transition-colors ${
+            className={`rounded-xl border py-2 text-sm font-semibold transition-colors duration-control ${
               selected === p.cents && !custom
-                ? 'border-neutral-900 bg-neutral-900 text-white'
+                ? 'border-brand-600 bg-brand-600/10 text-brand-600'
                 : 'border-neutral-200 text-neutral-700 hover:border-neutral-400'
             }`}
           >
@@ -50,7 +50,9 @@ export function TipForm({ bookingId }: { bookingId: string }) {
       <div className="mb-6">
         <label className="mb-1 block text-left text-xs text-neutral-500">Custom amount</label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400">$</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400">
+            $
+          </span>
           <input
             type="number"
             min="1"
@@ -72,7 +74,7 @@ export function TipForm({ bookingId }: { bookingId: string }) {
       <button
         type="submit"
         disabled={pending || !amountCents || amountCents < 100}
-        className="w-full rounded-xl bg-neutral-900 py-3 text-sm font-semibold text-white hover:bg-neutral-700 disabled:opacity-40"
+        className="w-full rounded-xl bg-gradient-brand py-3 text-sm font-semibold text-white shadow-tier1 transition-all hover:shadow-tier2 hover:brightness-110 disabled:opacity-40 disabled:hover:shadow-tier1"
       >
         {pending
           ? 'Processing…'

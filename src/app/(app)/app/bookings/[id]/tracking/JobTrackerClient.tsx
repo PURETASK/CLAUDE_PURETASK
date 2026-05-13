@@ -59,7 +59,12 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
       )
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'booking_photos', filter: `booking_id=eq.${booking.id}` },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'booking_photos',
+          filter: `booking_id=eq.${booking.id}`,
+        },
         () => router.refresh(),
       )
       .subscribe();
@@ -73,7 +78,9 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
   const isAwaitingApproval = booking.state === 'awaiting_approval';
   const isDone = ['approved', 'auto_approved', 'paid'].includes(booking.state);
 
-  const autoApproveAt = booking.auto_approval_due_at ? new Date(booking.auto_approval_due_at) : null;
+  const autoApproveAt = booking.auto_approval_due_at
+    ? new Date(booking.auto_approval_due_at)
+    : null;
   const hoursUntilAutoApprove = autoApproveAt
     ? Math.max(0, Math.ceil((autoApproveAt.getTime() - Date.now()) / (1000 * 60 * 60)))
     : null;
@@ -96,7 +103,13 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
       <div className="sticky top-0 z-10 border-b border-neutral-200 bg-white px-4 py-4">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <Link href="/app/bookings" className="text-neutral-500 hover:text-neutral-700">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
@@ -126,7 +139,13 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
                     }`}
                   >
                     {done ? (
-                      <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <svg
+                        className="h-3.5 w-3.5 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={3}
+                      >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     ) : active ? (
@@ -135,7 +154,11 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
                   </div>
                   <span
                     className={`text-sm font-medium ${
-                      done ? 'text-neutral-400 line-through' : active ? 'text-neutral-900' : 'text-neutral-400'
+                      done
+                        ? 'text-neutral-400 line-through'
+                        : active
+                          ? 'text-neutral-900'
+                          : 'text-neutral-400'
                     }`}
                   >
                     {BOOKING_STATE_LABELS[step] ?? step}
@@ -175,7 +198,9 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
           <div className="rounded-2xl border border-success/30 bg-success-light p-5 text-center">
             <p className="font-semibold text-success-dark">Payment released — job complete!</p>
             <Link href={`/app/bookings/${booking.id}/review`}>
-              <Button size="sm" className="mt-3">Leave a review</Button>
+              <Button size="sm" className="mt-3">
+                Leave a review
+              </Button>
             </Link>
           </div>
         )}
@@ -191,7 +216,10 @@ export const JobTrackerClient = ({ booking: initial, photos: initialPhotos, user
                   </p>
                   <div className="grid grid-cols-3 gap-2">
                     {roomPhotos.map((photo) => (
-                      <div key={photo.id} className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
+                      <div
+                        key={photo.id}
+                        className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100"
+                      >
                         <Image
                           src={photo.cdn_url}
                           alt={`${room} photo`}

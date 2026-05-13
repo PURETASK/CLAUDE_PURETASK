@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
+import { Button } from '@/components/ui';
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
 import { CleanerActionButtons } from '@/features/booking/components/CleanerActionButtons';
-import { MarkCompleteButton } from '@/features/booking/components/MarkCompleteButton';
 import { getBookingById, getMyCleanerProfileId } from '@/features/booking/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -30,8 +30,17 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
 
   const start = new Date(booking.start_at);
   const isRequested = booking.state === 'booking_requested';
-  const isConfirmed = booking.state === 'confirmed';
   const hasDispute = booking.state === 'disputed';
+  const enRouteStates = ['confirmed', 'imminent', 'in_transit', 'arrived'];
+  const showStartJob = enRouteStates.includes(booking.state);
+  const showActiveJob = booking.state === 'in_progress';
+  const showAwaitingApproval = booking.state === 'awaiting_approval';
+  const startJobLabel =
+    booking.state === 'confirmed' || booking.state === 'imminent'
+      ? "Start job — I'm on my way"
+      : booking.state === 'arrived'
+        ? 'Continue — you have arrived'
+        : "Continue — you're on your way";
 
   return (
     <div className="flex max-w-lg flex-col gap-6">
@@ -108,14 +117,45 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
         href={`/app/cleaner/bookings/${booking.id}/messages`}
         className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-600 shadow-tier1 transition-all hover:bg-neutral-50"
       >
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
         </svg>
         Message {booking.other_party_name}
       </Link>
 
       {isRequested && <CleanerActionButtons bookingId={booking.id} />}
-      {isConfirmed && <MarkCompleteButton bookingId={booking.id} />}
+      {showStartJob && (
+        <Link href={`/cleaner/jobs/${booking.id}/on-my-way`}>
+          <Button className="w-full" size="lg">
+            {startJobLabel}
+          </Button>
+        </Link>
+      )}
+      {showActiveJob && (
+        <Link href={`/cleaner/jobs/${booking.id}/active`}>
+          <Button className="w-full" size="lg">
+            Continue active job
+          </Button>
+        </Link>
+      )}
+      {showAwaitingApproval && (
+        <Link
+          href={`/cleaner/jobs/${booking.id}/complete`}
+          className="inline-block rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-600 shadow-tier1 transition-all hover:bg-neutral-50"
+        >
+          View submitted job · awaiting customer approval
+        </Link>
+      )}
       {hasDispute && (
         <Link
           href={`/app/cleaner/bookings/${booking.id}/dispute`}

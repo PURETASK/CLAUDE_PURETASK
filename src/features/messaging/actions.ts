@@ -84,6 +84,7 @@ export const sendMessageAction = async (
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath(`/bookings/${bookingId}/messages`);
+  revalidatePath(`/app/bookings/${bookingId}/messages`);
+  revalidatePath(`/app/cleaner/bookings/${bookingId}/messages`);
   return { ok: true, error: null };
 };

@@ -16,10 +16,7 @@ const MessagesPage = async ({ params }: PageProps) => {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const [booking, messages] = await Promise.all([
-    getBookingForMessaging(id),
-    getMessages(id),
-  ]);
+  const [booking, messages] = await Promise.all([getBookingForMessaging(id), getMessages(id)]);
 
   if (!booking) notFound();
 

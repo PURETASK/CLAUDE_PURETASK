@@ -33,7 +33,10 @@ export default async function CleanerSettingsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
-        <Link href="/app/cleaner" className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600">
+        <Link
+          href="/app/cleaner"
+          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
+        >
           ← Dashboard
         </Link>
         <h1 className="text-2xl font-bold text-neutral-900">Cleaner settings</h1>
@@ -72,7 +75,7 @@ export default async function CleanerSettingsPage() {
         {!profile.stripe_connect_account_id && (
           <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-700">
             Complete Stripe Connect setup to enable payouts.{' '}
-            <Link href="/app/cleaner/connect-onboarding" className="font-semibold underline">
+            <Link href="/cleaner/connect-onboarding" className="font-semibold underline">
               Set up payouts →
             </Link>
           </p>

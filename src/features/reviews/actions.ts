@@ -100,5 +100,9 @@ export const submitReviewAction = async (
   }
 
   revalidatePath(`/app/bookings/${parsed.data.booking_id}`);
+  // After a positive review, offer an optional tip; otherwise return to the booking.
+  if (['paid', 'approved', 'auto_approved'].includes(booking.state) && parsed.data.stars >= 4) {
+    redirect(`/app/bookings/${parsed.data.booking_id}/tip?reviewed=1`);
+  }
   redirect(`/app/bookings/${parsed.data.booking_id}?reviewed=1`);
 };

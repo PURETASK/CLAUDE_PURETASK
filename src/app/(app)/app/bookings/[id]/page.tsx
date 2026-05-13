@@ -32,6 +32,9 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
 
   const start = new Date(booking.start_at);
   const cancellable = ['booking_requested', 'confirmed'].includes(booking.state);
+  const trackable = ['confirmed', 'imminent', 'in_transit', 'arrived', 'in_progress'].includes(
+    booking.state,
+  );
   const awaitingApproval = booking.state === 'awaiting_approval';
   const reviewableStates = ['approved', 'auto_approved', 'paid', 'disputed', 'dispute_resolved'];
   const canReview = reviewableStates.includes(booking.state) && !existingReview;
@@ -127,10 +130,46 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
         </div>
       </section>
 
+      {trackable && (
+        <Link
+          href={`/app/bookings/${booking.id}/tracking`}
+          className="flex items-center justify-between rounded-2xl bg-gradient-brand px-5 py-4 text-white shadow-tier1 transition-all hover:brightness-110"
+        >
+          <span className="font-semibold">Track your cleaner</span>
+          <span aria-hidden>→</span>
+        </Link>
+      )}
+
+      {booking.cleaner_id && booking.state !== 'cancelled' && (
+        <Link
+          href={`/app/bookings/${booking.id}/messages`}
+          className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-600 shadow-tier1 transition-all hover:bg-neutral-50"
+        >
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
+          </svg>
+          Message {booking.other_party_name}
+        </Link>
+      )}
+
       {awaitingApproval && (
         <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
-          <p className="mb-1 font-medium text-neutral-900">Your cleaner has marked this job complete.</p>
-          <p className="mb-4 text-sm text-neutral-500">Review the work and approve or file a dispute within 24 hours.</p>
+          <p className="mb-1 font-medium text-neutral-900">
+            Your cleaner has marked this job complete.
+          </p>
+          <p className="mb-4 text-sm text-neutral-500">
+            Review the work and approve or file a dispute within 24 hours.
+          </p>
           <div className="flex flex-wrap gap-3">
             <ApproveWorkButton bookingId={booking.id} />
             <Link
