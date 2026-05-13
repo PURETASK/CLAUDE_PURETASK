@@ -75,6 +75,16 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                     FAQ
                   </Link>
                 </li>
+                <li>
+                  <Link href="/about" className="transition-colors hover:text-brand-600">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/press" className="transition-colors hover:text-brand-600">
+                    Press kit
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>

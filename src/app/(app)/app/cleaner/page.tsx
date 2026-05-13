@@ -30,15 +30,17 @@ const CleanerDashboardPage = async () => {
     .single();
 
   const incoming = bookings.filter((b) => b.state === 'booking_requested');
-  const active = bookings.filter((b) => b.state === 'confirmed');
-  const past = bookings.filter((b) =>
-    [
-      'cleaner_declined',
-      'cancelled_by_customer',
-      'cancelled_by_cleaner',
-      'completed',
-      'paid',
-    ].includes(b.state),
+  const activeStates = [
+    'confirmed',
+    'imminent',
+    'in_transit',
+    'arrived',
+    'in_progress',
+    'awaiting_approval',
+  ];
+  const active = bookings.filter((b) => activeStates.includes(b.state));
+  const past = bookings.filter(
+    (b) => b.state !== 'booking_requested' && !activeStates.includes(b.state),
   );
 
   const bandColors: Record<string, string> = {
@@ -60,9 +62,64 @@ const CleanerDashboardPage = async () => {
   const currentBand = scoreHistory[0]?.band ?? 'good_standing';
   const currentScore = profile?.current_score ?? 90;
 
+  const isSuspended = currentBand === 'suspended';
+  const isProbation = currentBand === 'probation';
+  const isWarning = currentBand === 'warning';
+
   return (
     <div className="flex flex-col gap-8">
       <h1 className="text-2xl font-bold text-neutral-900">Cleaner Dashboard</h1>
+
+      {(isSuspended || isProbation || isWarning) && (
+        <section
+          className={`rounded-2xl border p-5 shadow-tier1 ${
+            isSuspended
+              ? 'border-red-200 bg-red-50'
+              : isProbation
+                ? 'border-orange-200 bg-orange-50'
+                : 'border-amber-200 bg-amber-50'
+          }`}
+        >
+          <p
+            className={`text-sm font-semibold ${
+              isSuspended ? 'text-red-800' : isProbation ? 'text-orange-800' : 'text-amber-800'
+            }`}
+          >
+            {isSuspended
+              ? 'Your account is suspended'
+              : isProbation
+                ? "You're on probation"
+                : 'Your reliability score needs attention'}
+          </p>
+          <p
+            className={`mt-1 text-sm ${
+              isSuspended ? 'text-red-700' : isProbation ? 'text-orange-700' : 'text-amber-700'
+            }`}
+          >
+            {isSuspended
+              ? 'You can’t accept new jobs right now. Resolve any open issues, then submit an appeal to have your account reviewed.'
+              : isProbation
+                ? 'New job offers are limited until your score recovers. Complete your confirmed jobs on time, keep cancellations to a minimum, and your standing will improve.'
+                : 'A few more reliable jobs will bring your score back up. Avoid late arrivals and last-minute cancellations.'}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <Link
+              href="/app/cleaner/score"
+              className="rounded-xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-all hover:bg-neutral-50"
+            >
+              See what affects your score
+            </Link>
+            {(isSuspended || isProbation) && (
+              <Link
+                href="/cleaner/score/appeal"
+                className="rounded-xl bg-gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
+              >
+                Submit an appeal
+              </Link>
+            )}
+          </div>
+        </section>
+      )}
 
       {profile && (
         <section className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
@@ -125,7 +182,7 @@ const CleanerDashboardPage = async () => {
 
       {active.length > 0 && (
         <section>
-          <p className="mb-3 font-semibold text-neutral-900">Confirmed ({active.length})</p>
+          <p className="mb-3 font-semibold text-neutral-900">Active jobs ({active.length})</p>
           <div className="grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
             {active.map((b) => (
               <BookingCard key={b.id} booking={b} href={`/app/cleaner/bookings/${b.id}`} />

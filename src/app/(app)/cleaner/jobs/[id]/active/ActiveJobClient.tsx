@@ -38,15 +38,17 @@ export const ActiveJobClient = ({
   const supabase = createSupabaseBrowserClient();
 
   const isInProgress = booking.state === 'in_progress';
-  const clockedInAt = booking.clock_in_at ? new Date(booking.clock_in_at) : null;
+  const clockInAtIso = booking.clock_in_at;
+  const clockedInAt = clockInAtIso ? new Date(clockInAtIso) : null;
 
   useEffect(() => {
-    if (!clockedInAt) return;
-    const update = () => setElapsed(Math.floor((Date.now() - clockedInAt.getTime()) / 1000));
+    if (!clockInAtIso) return;
+    const startMs = new Date(clockInAtIso).getTime();
+    const update = () => setElapsed(Math.floor((Date.now() - startMs) / 1000));
     update();
     const id = setInterval(update, 1000);
     return () => clearInterval(id);
-  }, [clockedInAt]);
+  }, [clockInAtIso]);
 
   const formatElapsed = (secs: number) => {
     const h = Math.floor(secs / 3600);

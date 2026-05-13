@@ -199,6 +199,32 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
         </div>
       )}
 
+      {['approved', 'auto_approved', 'paid', 'completed'].includes(booking.state) &&
+        booking.cleaner_id && (
+          <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 shadow-tier1">
+            <p className="font-medium text-brand-900">
+              Loved working with {booking.other_party_name}?
+            </p>
+            <p className="mt-1 text-sm text-brand-800">
+              Book them again — they already know your home.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Link
+                href={`/app/cleaners/${booking.cleaner_id}/book`}
+                className="rounded-xl bg-gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
+              >
+                Book {booking.other_party_name} again
+              </Link>
+              <Link
+                href="/app/recurring/new"
+                className="rounded-xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-all hover:bg-neutral-50"
+              >
+                Set up a recurring clean
+              </Link>
+            </div>
+          </div>
+        )}
+
       {(canReview || canDispute) && (
         <div className="flex flex-wrap gap-3">
           {canReview && (
