@@ -91,6 +91,47 @@ export default async function CleanerSettingsPage() {
         <BioEditForm currentBio={profile.bio} />
       </section>
 
+      {/* Verification & taxes */}
+      <section className="mb-6 rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
+        <h2 className="mb-1 text-sm font-semibold text-neutral-900">Verification &amp; taxes</h2>
+        <p className="mb-4 text-sm text-neutral-500">
+          Keep your trust badges and payout paperwork up to date.
+        </p>
+        <div className="flex flex-col divide-y divide-neutral-100">
+          {[
+            {
+              href: '/cleaner/settings/insurance',
+              label: 'Insurance verification',
+              desc: 'Upload a policy to earn the Insurance Verified badge.',
+            },
+            {
+              href: '/cleaner/background-check',
+              label: 'Background check status',
+              desc: 'Track your Checkr screening.',
+            },
+            {
+              href: '/cleaner/settings/tax',
+              label: 'Tax information',
+              desc: 'W-9 details for your 1099.',
+            },
+          ].map((row) => (
+            <Link
+              key={row.href}
+              href={row.href}
+              className="flex items-center justify-between gap-4 py-3 transition-colors hover:text-brand-600"
+            >
+              <span>
+                <span className="block text-sm font-medium text-neutral-800">{row.label}</span>
+                <span className="block text-xs text-neutral-400">{row.desc}</span>
+              </span>
+              <span aria-hidden className="text-neutral-300">
+                →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Quick links */}
       <section className="flex flex-wrap gap-3">
         <Link
@@ -104,6 +145,12 @@ export default async function CleanerSettingsPage() {
           className="rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 shadow-tier1 transition-all hover:bg-neutral-50"
         >
           Availability
+        </Link>
+        <Link
+          href="/app/cleaner/score"
+          className="rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 shadow-tier1 transition-all hover:bg-neutral-50"
+        >
+          Reliability score
         </Link>
         <Link
           href="/cleaner/connect-onboarding"
