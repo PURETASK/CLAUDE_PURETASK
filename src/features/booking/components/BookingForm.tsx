@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { createBookingAction, type BookingActionState } from '@/features/booking/actions';
@@ -84,9 +85,9 @@ export const BookingForm = ({ cleaner, services, addresses }: Props) => {
         {addresses.length === 0 ? (
           <TrustCallout variant="warning">
             No addresses saved.{' '}
-            <a href="/app/settings/addresses" className="font-medium underline">
+            <Link href="/app/settings/addresses" className="font-medium underline">
               Add one first.
-            </a>
+            </Link>
           </TrustCallout>
         ) : (
           <select
