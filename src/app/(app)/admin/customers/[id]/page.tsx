@@ -142,7 +142,7 @@ const AdminCustomerDetailPage = async ({ params }: Props) => {
               {(disputes ?? []).map((d) => (
                 <Link
                   key={d.id}
-                  href={`/admin/disputes/${d.id}`}
+                  href={`/app/admin/disputes/${d.id}`}
                   className="flex items-center justify-between rounded-xl border border-neutral-200 p-3 hover:bg-neutral-50"
                 >
                   <div>

@@ -111,7 +111,7 @@ const AdminDashboardPage = async () => {
     attentionItems.push({
       id: 'disputes',
       label: 'Disputes open > 48h',
-      href: '/admin/disputes',
+      href: '/app/admin/disputes',
       severity: 'critical' as const,
       count: disputesRes.count ?? 0,
     });

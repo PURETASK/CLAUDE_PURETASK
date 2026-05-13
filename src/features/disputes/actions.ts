@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { writeAdminAction } from '@/features/admin/lib/audit';
 import { sendEmail } from '@/lib/email/resend';
 import {
   awaitingApprovalEmail,
@@ -524,6 +525,60 @@ export const adminResolveDisputeAction = async (
   });
 
   await admin.from('bookings').update({ state: 'dispute_resolved' }).eq('id', dispute.booking_id);
+
+  // When the resolution awards a refund, create the refunds row and link it
+  // back to the dispute so finance/audit can trace the money trail.
+  const refundCents = parsed.data.resolution_amount_cents ?? 0;
+  let refundId: string | null = null;
+  if (refundCents > 0) {
+    const { data: charge } = await admin
+      .from('charges')
+      .select('id')
+      .eq('booking_id', dispute.booking_id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (charge) {
+      const { data: refund, error: refundErr } = await admin
+        .from('refunds')
+        .insert({
+          charge_id: charge.id,
+          dispute_id: parsed.data.dispute_id,
+          amount_cents: refundCents,
+          currency: 'U',
+          reason_type: 'dispute_resolution',
+          reason_notes: parsed.data.resolution_notes,
+          initiated_by_user_id: user.id,
+          state: 'pending',
+        })
+        .select('id')
+        .single();
+      if (!refundErr && refund) {
+        refundId = refund.id;
+        await admin
+          .from('disputes')
+          .update({ refund_id: refundId })
+          .eq('id', parsed.data.dispute_id);
+      }
+    }
+  }
+
+  await writeAdminAction(admin, {
+    adminUserId: user.id,
+    actionType: 'dispute_admin_resolved',
+    targetDisputeId: parsed.data.dispute_id,
+    targetBookingId: dispute.booking_id,
+    targetRefundId: refundId ?? undefined,
+    description: `Dispute resolved: ${parsed.data.resolution_type}`,
+    reason: parsed.data.resolution_notes,
+    beforeState: { state: dispute.state },
+    afterState: {
+      state: 'admin_resolved',
+      resolution: parsed.data.resolution_type,
+      refundCents,
+    },
+  });
 
   revalidatePath('/app/admin/disputes');
   revalidatePath(`/app/admin/disputes/${parsed.data.dispute_id}`);
