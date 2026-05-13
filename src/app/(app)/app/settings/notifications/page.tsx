@@ -29,7 +29,7 @@ export default async function NotificationsSettingsPage() {
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-8">
         <Link
-          href="/settings"
+          href="/app/settings"
           className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
         >
           ← Back to settings

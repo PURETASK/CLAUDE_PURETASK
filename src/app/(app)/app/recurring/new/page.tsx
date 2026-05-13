@@ -55,7 +55,7 @@ export default async function NewRecurringPage({ searchParams }: PageProps) {
             ? 'Add a service address before setting up recurring cleanings.'
             : 'This cleaner has no active services.'}
         </p>
-        <Link href="/settings/addresses" className="mt-3 block text-sm underline">
+        <Link href="/app/settings/addresses" className="mt-3 block text-sm underline">
           Manage addresses
         </Link>
       </div>

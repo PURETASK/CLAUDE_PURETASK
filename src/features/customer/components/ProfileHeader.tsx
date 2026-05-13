@@ -23,7 +23,7 @@ export const ProfileHeader = ({ fullName, email, createdAt }: Props) => {
           <p className="mt-1 text-xs text-neutral-500">Joined {joinedDate}</p>
         </div>
         <Link
-          href="/settings/profile"
+          href="/app/settings/profile"
           className="rounded-lg border border-neutral-200 bg-white px-3 py-1 text-sm font-medium text-neutral-700 transition-all duration-control hover:border-brand-600 hover:text-brand-600"
         >
           Edit

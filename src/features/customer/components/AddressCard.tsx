@@ -47,7 +47,7 @@ export const AddressCard = ({ address, isDefault, onChanged }: Props) => {
 
       <div className="ml-4 flex shrink-0 gap-2">
         <Link
-          href={`/settings/addresses/${address.id}`}
+          href={`/app/settings/addresses/${address.id}`}
           className="rounded-lg border border-neutral-200 px-3 py-1 text-sm font-medium text-neutral-700 transition-all duration-control hover:border-brand-600 hover:text-brand-600"
         >
           Edit

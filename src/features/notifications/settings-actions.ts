@@ -37,6 +37,6 @@ export const saveSmsSettingsAction = async (
       { onConflict: 'user_id' },
     );
 
-  revalidatePath('/settings/notifications');
+  revalidatePath('/app/settings/notifications');
   return { ok: true, error: null };
 };

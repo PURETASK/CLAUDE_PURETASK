@@ -12,7 +12,7 @@ const NewAddressPage = async () => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
         <Link
-          href="/settings/addresses"
+          href="/app/settings/addresses"
           className="text-sm text-neutral-500 hover:text-neutral-900"
         >
           Addresses
@@ -22,7 +22,10 @@ const NewAddressPage = async () => {
       </div>
 
       <div className="max-w-xl bg-white">
-        <AddressForm onSuccessPath="/settings/addresses" onCancelPath="/settings/addresses" />
+        <AddressForm
+          onSuccessPath="/app/settings/addresses"
+          onCancelPath="/app/settings/addresses"
+        />
       </div>
     </div>
   );

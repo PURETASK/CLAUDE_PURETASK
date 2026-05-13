@@ -11,7 +11,7 @@ const SettingsProfilePage = async () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Link href="/settings" className="text-sm text-neutral-500 hover:text-neutral-900">
+        <Link href="/app/settings" className="text-sm text-neutral-500 hover:text-neutral-900">
           Settings
         </Link>
         <span className="text-neutral-300">/</span>

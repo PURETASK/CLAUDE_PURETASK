@@ -20,7 +20,7 @@ const EditAddressPage = async ({ params }: Props) => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
         <Link
-          href="/settings/addresses"
+          href="/app/settings/addresses"
           className="text-sm text-neutral-500 hover:text-neutral-900"
         >
           Addresses
@@ -41,8 +41,8 @@ const EditAddressPage = async ({ params }: Props) => {
             zip_code: address.zip_code,
             access_instructions: address.access_instructions ?? undefined,
           }}
-          onSuccessPath="/settings/addresses"
-          onCancelPath="/settings/addresses"
+          onSuccessPath="/app/settings/addresses"
+          onCancelPath="/app/settings/addresses"
         />
       </div>
     </div>

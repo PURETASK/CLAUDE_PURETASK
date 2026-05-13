@@ -55,8 +55,8 @@ export const updateProfileAction = async (
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath('/settings');
-  revalidatePath('/settings/profile');
+  revalidatePath('/app/settings');
+  revalidatePath('/app/settings/profile');
   revalidatePath('/app/settings');
   return { ok: true, error: null, message: 'Profile updated.' };
 };
@@ -124,7 +124,7 @@ export const addAddressAction = async (
 
   queueAddressGeocodeFromServerAction(insertedAddress.id);
 
-  revalidatePath('/settings/addresses');
+  revalidatePath('/app/settings/addresses');
   revalidatePath('/app/settings/addresses');
   return { ok: true, error: null, message: 'Address added.' };
 };
@@ -181,7 +181,7 @@ export const updateAddressAction = async (
 
   queueAddressGeocodeFromServerAction(addressId);
 
-  revalidatePath('/settings/addresses');
+  revalidatePath('/app/settings/addresses');
   revalidatePath('/app/settings/addresses');
   return { ok: true, error: null, message: 'Address updated.' };
 };
@@ -211,7 +211,7 @@ export const setDefaultAddressAction = async (addressId: string): Promise<Custom
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath('/settings/addresses');
+  revalidatePath('/app/settings/addresses');
   revalidatePath('/app/settings/addresses');
   return { ok: true, error: null };
 };
@@ -259,7 +259,7 @@ export const deleteAddressAction = async (addressId: string): Promise<CustomerAc
     if (setDefaultError) return { ok: false, error: setDefaultError.message };
   }
 
-  revalidatePath('/settings/addresses');
+  revalidatePath('/app/settings/addresses');
   revalidatePath('/app/settings/addresses');
   return { ok: true, error: null };
 };
@@ -322,7 +322,7 @@ export const updatePhotoPolicyAction = async (
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath('/settings/privacy');
+  revalidatePath('/app/settings/privacy');
   revalidatePath('/app/settings/privacy');
   return { ok: true, error: null, message: 'Photo policy updated.' };
 };
