@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { env } from '@/lib/env';
-import { stripe } from '@/lib/stripe/webhooks';
+import { isStripeConfigured } from '@/lib/integrations';
+import { getStripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +12,13 @@ export async function POST(req: NextRequest) {
   const secret = req.headers.get('x-cron-secret');
   if (!env.CRON_SECRET || secret !== env.CRON_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!isStripeConfigured()) {
+    return NextResponse.json(
+      { error: 'Stripe not configured — skipping weekly payout' },
+      { status: 503 },
+    );
   }
 
   const admin = createSupabaseAdminClient();
@@ -76,7 +84,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Transfer via Stripe Connect
-      const transfer = await stripe.transfers.create({
+      const transfer = await getStripe().transfers.create({
         amount: totalCents,
         currency: 'usd',
         destination: profile.stripe_connect_account_id,

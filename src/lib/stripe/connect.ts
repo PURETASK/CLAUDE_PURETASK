@@ -1,7 +1,7 @@
-import { stripe } from '@/lib/stripe/webhooks';
+import { getStripe } from '@/lib/stripe/webhooks';
 
 export const createExpressAccount = async (email: string) => {
-  return stripe.accounts.create({
+  return getStripe().accounts.create({
     type: 'express',
     email,
     capabilities: {
@@ -15,7 +15,7 @@ export const createExpressAccountLink = async (
   returnUrl: string,
   refreshUrl: string,
 ) => {
-  return stripe.accountLinks.create({
+  return getStripe().accountLinks.create({
     account: accountId,
     type: 'account_onboarding',
     return_url: returnUrl,

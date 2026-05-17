@@ -7,6 +7,7 @@ import { NotificationBell } from '@/components/NotificationBell';
 import { NavLink } from '@/components/NavLink';
 import { MobileNav } from '@/components/MobileNav';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { IntegrationSetupBanner } from '@/components/shared/IntegrationSetupBanner';
 import { BRAND } from '@/lib/assets';
 
 const CUSTOMER_LINKS = [
@@ -99,6 +100,7 @@ const AppShellLayout = async ({ children }: { children: React.ReactNode }) => {
         </div>
       </header>
       <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-8">
+        <IntegrationSetupBanner />
         {children}
       </main>
     </div>

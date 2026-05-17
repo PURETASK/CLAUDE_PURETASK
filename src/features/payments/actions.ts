@@ -4,11 +4,12 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { env } from '@/lib/env';
+import { INTEGRATION_MESSAGES, isStripeConfigured } from '@/lib/integrations';
 import { sendEmail } from '@/lib/email/resend';
 import { payoutInitiatedEmail } from '@/lib/email/templates';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { stripe } from '@/lib/stripe/webhooks';
+import { getStripe } from '@/lib/stripe/webhooks';
 
 export type PaymentActionState = { ok: boolean; error: string | null };
 
@@ -20,6 +21,7 @@ export const addPaymentMethodAction = async (
 ): Promise<PaymentActionState> => {
   const token = formData.get('stripe_token') as string | null;
   if (!token) return { ok: false, error: 'No payment token provided.' };
+  if (!isStripeConfigured()) return { ok: false, error: INTEGRATION_MESSAGES.stripe };
 
   const supabase = await createSupabaseServerClient();
   const {
@@ -51,7 +53,7 @@ export const addPaymentMethodAction = async (
   // Create Stripe Customer if none exists
   if (!stripeCustomerId) {
     const { data: userData } = await supabase.auth.getUser();
-    const customer = await stripe.customers.create({
+    const customer = await getStripe().customers.create({
       email: userData.user?.email ?? undefined,
       metadata: { supabase_user_id: user.id, customer_profile_id: profile.id },
     });
@@ -59,12 +61,12 @@ export const addPaymentMethodAction = async (
   }
 
   // Convert token (from Stripe.js) to a PaymentMethod then attach it
-  const pm = await stripe.paymentMethods.create({
+  const pm = await getStripe().paymentMethods.create({
     type: 'card',
     card: { token },
   });
 
-  await stripe.paymentMethods.attach(pm.id, { customer: stripeCustomerId });
+  await getStripe().paymentMethods.attach(pm.id, { customer: stripeCustomerId });
 
   const card = pm.card;
   const isFirst = !profile.default_payment_method_id;
@@ -169,7 +171,8 @@ export const deletePaymentMethodAction = async (
     .single();
   if (!pm) return { ok: false, error: 'Payment method not found.' };
 
-  await stripe.paymentMethods.detach(pm.stripe_payment_method_id);
+  if (!isStripeConfigured()) return { ok: false, error: INTEGRATION_MESSAGES.stripe };
+  await getStripe().paymentMethods.detach(pm.stripe_payment_method_id);
 
   await admin
     .from('payment_methods')
@@ -191,6 +194,8 @@ export const deletePaymentMethodAction = async (
 // ── Instant payout ────────────────────────────────────────────────────────
 
 export const requestInstantPayoutAction = async (): Promise<PaymentActionState> => {
+  if (!isStripeConfigured()) return { ok: false, error: INTEGRATION_MESSAGES.stripe };
+
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -247,7 +252,7 @@ export const requestInstantPayoutAction = async (): Promise<PaymentActionState> 
 
   // Create Stripe transfer with instant method
   try {
-    const transfer = await stripe.transfers.create({
+    const transfer = await getStripe().transfers.create({
       amount: netCents,
       currency: 'usd',
       destination: profile.stripe_connect_account_id,
@@ -377,7 +382,7 @@ export const addTipAction = async (
 
   let piId: string;
   try {
-    const pi = await stripe.paymentIntents.create({
+    const pi = await getStripe().paymentIntents.create({
       amount: amountCents,
       currency: 'usd',
       customer: pm.stripe_customer_id,

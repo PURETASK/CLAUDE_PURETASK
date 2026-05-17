@@ -56,6 +56,18 @@ const SettingsLandingPage = async () => {
           </Link>
         </div>
         <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-neutral-900">Integrations</h3>
+          <p className="mt-2 text-sm text-neutral-700">
+            See which payment and ops services are configured on this server.
+          </p>
+          <Link
+            href="/app/settings/integrations"
+            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+          >
+            View status
+          </Link>
+        </div>
+        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-neutral-900">Security</h3>
           <p className="mt-2 text-sm text-neutral-700">
             Enable two-factor authentication to protect your account.
