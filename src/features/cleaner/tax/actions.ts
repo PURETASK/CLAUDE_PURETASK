@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { encryptTaxId } from '@/lib/encryption';
+import { INTEGRATION_MESSAGES, isTaxEncryptionConfigured } from '@/lib/integrations';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 export async function saveTaxInfo(formData: FormData): Promise<{ error: string | null }> {
@@ -18,6 +19,9 @@ export async function saveTaxInfo(formData: FormData): Promise<{ error: string |
   const cleaned = ssn.replace(/-/g, '');
   if (!/^\d{9}$/.test(cleaned)) return { error: 'Please enter a valid 9-digit SSN.' };
   if (!taxIdType) return { error: 'Please select a tax classification.' };
+  if (!isTaxEncryptionConfigured()) {
+    return { error: INTEGRATION_MESSAGES.taxEncryption };
+  }
 
   const encrypted = encryptTaxId(cleaned);
 

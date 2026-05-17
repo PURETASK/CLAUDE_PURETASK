@@ -220,6 +220,10 @@ If a decision needed to write code is not covered here or in `docs/puretask-deci
 
 | Need                    | Location                                 |
 | ----------------------- | ---------------------------------------- |
+| V1 launch scope         | `docs/v1-launch-scope.md`                |
+| Secrets (add when ready)| `docs/secrets-when-ready.md`             |
+| Staging env / E2E QA    | `docs/v1-staging-env-checklist.md`, `docs/v1-staging-e2e-checklist.md` |
+| Post–V1 backlog         | `docs/v1-post-launch-backlog.md`         |
 | Why a decision was made | `docs/puretask-decisions.md`             |
 | Full product spec       | `docs/PureTask_Master_Guide.md`          |
 | Current phase spec      | `docs/phases/phase-N-spec.md`            |

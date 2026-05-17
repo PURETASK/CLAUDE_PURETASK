@@ -1,7 +1,12 @@
 import { handleCheckrEvent } from '@/features/cleaner/checkr/webhook-handler';
 import { verifyCheckrSignature } from '@/lib/checkr/webhooks';
+import { isCheckrWebhookConfigured } from '@/lib/integrations';
 
 export const POST = async (request: Request) => {
+  if (!isCheckrWebhookConfigured()) {
+    return new Response('Checkr webhooks not configured', { status: 503 });
+  }
+
   const signature = request.headers.get('x-checkr-signature');
   const body = await request.text();
 

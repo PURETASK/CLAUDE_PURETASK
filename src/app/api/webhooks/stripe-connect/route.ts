@@ -1,13 +1,17 @@
-import { constructStripeWebhookEvent } from '@/lib/stripe/webhooks';
 import { handleStripeConnectEvent } from '@/features/cleaner/connect/webhook-handler';
 import { env } from '@/lib/env';
+import { isStripeConfigured } from '@/lib/integrations';
+import { constructStripeWebhookEvent } from '@/lib/stripe/webhooks';
 
 export const POST = async (request: Request) => {
   const signature = request.headers.get('stripe-signature');
   const body = await request.text();
 
-  if (!signature || !env.STRIPE_CONNECT_WEBHOOK_SECRET) {
-    return new Response('Missing signature/secret', { status: 400 });
+  if (!isStripeConfigured() || !env.STRIPE_CONNECT_WEBHOOK_SECRET) {
+    return new Response('Stripe Connect webhooks not configured', { status: 503 });
+  }
+  if (!signature) {
+    return new Response('Missing signature', { status: 400 });
   }
 
   try {

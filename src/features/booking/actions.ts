@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation';
 
 import { sendEmail } from '@/lib/email/resend';
 import { bookingConfirmedEmail, newBookingRequestEmail } from '@/lib/email/templates';
-import { stripe } from '@/lib/stripe/webhooks';
+import { INTEGRATION_MESSAGES, isStripeConfigured } from '@/lib/integrations';
+import { getStripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -82,6 +83,10 @@ export const createBookingAction = async (
     .is('deleted_at', null)
     .maybeSingle();
 
+  if (!isStripeConfigured()) {
+    return { ok: false, error: INTEGRATION_MESSAGES.stripe };
+  }
+
   if (!defaultPm)
     return {
       ok: false,
@@ -135,7 +140,7 @@ export const createBookingAction = async (
   const idempotencyKey = `booking-${booking.id}-pi`;
   let piId: string | null = null;
   try {
-    const pi = await stripe.paymentIntents.create(
+    const pi = await getStripe().paymentIntents.create(
       {
         amount: totalCharge,
         currency: 'usd',

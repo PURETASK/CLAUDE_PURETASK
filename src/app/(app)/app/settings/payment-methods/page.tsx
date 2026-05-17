@@ -1,12 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { IntegrationNotice } from '@/components/shared/IntegrationNotice';
 import { PaymentMethodCard } from '@/features/payments/components/PaymentMethodCard';
 import { getMyPaymentMethods } from '@/features/payments/queries';
 import { BACKGROUNDS, ICONS } from '@/lib/assets';
+import { INTEGRATION_MESSAGES, isStripeConfigured } from '@/lib/integrations';
 
 export default async function PaymentMethodsPage() {
   const methods = await getMyPaymentMethods();
+  const stripeReady = isStripeConfigured();
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -37,6 +40,12 @@ export default async function PaymentMethodsPage() {
           </div>
         </div>
       </div>
+
+      {!stripeReady && (
+        <IntegrationNotice title="Payments not enabled yet">
+          {INTEGRATION_MESSAGES.stripe} You can still browse cleaners and set up your profile.
+        </IntegrationNotice>
+      )}
 
       {methods.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-10 text-center shadow-tier1">

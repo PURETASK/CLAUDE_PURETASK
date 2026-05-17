@@ -13,7 +13,10 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "ci": "pnpm lint && pnpm typecheck && pnpm test",
+    "setup:env": "node scripts/setup-local-env.mjs",
+    "integrations:check": "node scripts/check-integrations.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

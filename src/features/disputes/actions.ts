@@ -11,7 +11,8 @@ import {
   disputeResponseEmail,
   payoutInitiatedEmail,
 } from '@/lib/email/templates';
-import { stripe } from '@/lib/stripe/webhooks';
+import { isStripeConfigured } from '@/lib/integrations';
+import { getStripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -123,9 +124,9 @@ export const approveBookingAction = async (bookingId: string): Promise<DisputeAc
 
   const now = new Date().toISOString();
 
-  if (charge?.stripe_payment_intent_id && charge.state === 'authorized') {
+  if (isStripeConfigured() && charge?.stripe_payment_intent_id && charge.state === 'authorized') {
     try {
-      await stripe.paymentIntents.capture(charge.stripe_payment_intent_id);
+      await getStripe().paymentIntents.capture(charge.stripe_payment_intent_id);
       await admin
         .from('charges')
         .update({ state: 'captured', captured_at: now })
