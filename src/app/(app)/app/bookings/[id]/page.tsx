@@ -4,6 +4,9 @@ import { notFound, redirect } from 'next/navigation';
 import { CancelBookingButton } from '@/features/booking/components/CancelBookingButton';
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
 import { getBookingById, getMyCustomerProfileId } from '@/features/booking/queries';
+import { PaymentActionButton } from '@/features/payments/components/PaymentActionButtons';
+import { CustomerApprovalActions } from '@/features/verification/components/CustomerApprovalActions';
+import { PhotoGrid } from '@/features/verification/components/PhotoGrid';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -29,6 +32,18 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
 
   const start = new Date(booking.start_at);
   const cancellable = ['booking_requested', 'confirmed'].includes(booking.state);
+  const needsAuth = booking.state === 'pending_payment_authorization';
+  const needsCapture = ['approved', 'auto_approved', 'dispute_resolved'].includes(booking.state);
+  const awaitingApproval = booking.state === 'awaiting_approval';
+  const showPhotos = [
+    'awaiting_approval',
+    'approved',
+    'auto_approved',
+    'paid',
+    'disputed',
+    'dispute_resolved',
+    'completed',
+  ].includes(booking.state);
 
   return (
     <div className="flex max-w-lg flex-col gap-6">
@@ -105,6 +120,17 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
         </div>
       </section>
 
+      {needsAuth && <PaymentActionButton bookingId={booking.id} variant="authorize" />}
+
+      {showPhotos && (
+        <section className="rounded border bg-white p-5 text-sm">
+          <p className="mb-3 font-medium">Photos from your cleaner</p>
+          <PhotoGrid bookingId={booking.id} />
+        </section>
+      )}
+
+      {awaitingApproval && <CustomerApprovalActions bookingId={booking.id} />}
+      {needsCapture && <PaymentActionButton bookingId={booking.id} variant="capture" />}
       {cancellable && <CancelBookingButton bookingId={booking.id} />}
     </div>
   );

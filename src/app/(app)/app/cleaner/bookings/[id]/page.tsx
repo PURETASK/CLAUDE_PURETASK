@@ -4,6 +4,15 @@ import { notFound, redirect } from 'next/navigation';
 import { CleanerActionButtons } from '@/features/booking/components/CleanerActionButtons';
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
 import { getBookingById, getMyCleanerProfileId } from '@/features/booking/queries';
+import { ClockButtons } from '@/features/verification/components/ClockButtons';
+import { PhotoGrid } from '@/features/verification/components/PhotoGrid';
+import { PhotoUploader } from '@/features/verification/components/PhotoUploader';
+import {
+  missingPhotos,
+  REQUIRED_PHOTO_COUNTS,
+  type ServiceType,
+} from '@/features/verification/photo-rules';
+import { getPhotoCounts } from '@/features/verification/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -29,6 +38,26 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
 
   const start = new Date(booking.start_at);
   const isRequested = booking.state === 'booking_requested';
+  const showClock = ['confirmed', 'imminent', 'in_transit', 'arrived', 'in_progress'].includes(
+    booking.state,
+  );
+  const showUploaders = booking.state === 'in_progress';
+  const showPhotos = [
+    'in_progress',
+    'completed',
+    'awaiting_approval',
+    'approved',
+    'auto_approved',
+    'paid',
+    'disputed',
+    'dispute_resolved',
+  ].includes(booking.state);
+
+  const serviceType = (booking.service_type as ServiceType) ?? 'standard';
+  const counts =
+    showUploaders || showPhotos ? await getPhotoCounts(booking.id) : { before: 0, after: 0 };
+  const missing = missingPhotos(counts, serviceType);
+  const required = REQUIRED_PHOTO_COUNTS[serviceType];
 
   return (
     <div className="flex max-w-lg flex-col gap-6">
@@ -102,6 +131,37 @@ const CleanerBookingDetailPage = async ({ params }: PageProps) => {
       </section>
 
       {isRequested && <CleanerActionButtons bookingId={booking.id} />}
+
+      {showClock && <ClockButtons bookingId={booking.id} state={booking.state} />}
+
+      {showUploaders && (
+        <section className="rounded border bg-white p-5 text-sm">
+          <p className="mb-3 font-medium">
+            Required photos · {required.before} before / {required.after} after
+          </p>
+          <div className="flex flex-col gap-4">
+            <PhotoUploader
+              bookingId={booking.id}
+              purpose="before_clock_in"
+              remaining={missing.before}
+              label={`Before photos (${counts.before}/${required.before})`}
+            />
+            <PhotoUploader
+              bookingId={booking.id}
+              purpose="after_clock_out"
+              remaining={missing.after}
+              label={`After photos (${counts.after}/${required.after})`}
+            />
+          </div>
+        </section>
+      )}
+
+      {showPhotos && (
+        <section className="rounded border bg-white p-5 text-sm">
+          <p className="mb-3 font-medium">Photos</p>
+          <PhotoGrid bookingId={booking.id} />
+        </section>
+      )}
     </div>
   );
 };
