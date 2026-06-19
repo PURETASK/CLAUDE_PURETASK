@@ -230,4 +230,4 @@ If a decision needed to write code is not covered here or in `docs/puretask-deci
 
 ---
 
-**Last updated:** Pre-Phase 1
+**Last updated:** Phase 7 scaffold (2026-06-19) — shadcn/ui, lucide-react, date-fns, @tanstack/react-query installed; vitest test runner added; Stripe placeholder layer scaffolded under `src/lib/stripe/` and `src/features/payments/`.

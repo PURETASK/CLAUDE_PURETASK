@@ -6,19 +6,13 @@ import { redirect } from 'next/navigation';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
+import { computeBookingPricing, generateBookingNumber } from './pricing';
 import { createBookingSchema } from './validation';
 
 export type BookingActionState = { ok: boolean; error: string | null };
 
-const COMMISSION_RATE = 0.2;
-
-const generateBookingNumber = () => {
-  const year = new Date().getFullYear();
-  const rand = Math.floor(Math.random() * 1_000_000)
-    .toString()
-    .padStart(6, '0');
-  return `PT-${year}-${rand}`;
-};
+const newBookingNumber = () =>
+  generateBookingNumber(new Date().getFullYear(), Math.floor(Math.random() * 1_000_000));
 
 export const createBookingAction = async (
   _prevState: BookingActionState,
@@ -72,12 +66,9 @@ export const createBookingAction = async (
   const startAt = new Date(parsed.data.start_at);
   const endAt = new Date(startAt.getTime() + parsed.data.duration_hours * 60 * 60 * 1000);
 
-  const cleanerSubtotal = hourlyRate * parsed.data.duration_hours;
-  const platformFee = Math.round(cleanerSubtotal * COMMISSION_RATE);
-  const totalCharge = cleanerSubtotal + platformFee;
-  const cleanerPayout = cleanerSubtotal;
+  const pricing = computeBookingPricing(hourlyRate, parsed.data.duration_hours);
 
-  const bookingNumber = generateBookingNumber();
+  const bookingNumber = newBookingNumber();
 
   const { data: booking, error } = await admin
     .from('bookings')
@@ -91,13 +82,13 @@ export const createBookingAction = async (
       end_at: endAt.toISOString(),
       duration_hours_decimal: parsed.data.duration_hours,
       state: 'booking_requested',
-      hourly_rate_cents: hourlyRate,
-      cleaner_subtotal_cents: cleanerSubtotal,
-      platform_fee_cents: platformFee,
-      total_charge_cents: totalCharge,
+      hourly_rate_cents: pricing.hourlyRateCents,
+      cleaner_subtotal_cents: pricing.cleanerSubtotalCents,
+      platform_fee_cents: pricing.platformFeeCents,
+      total_charge_cents: pricing.totalChargeCents,
       tier_at_booking: cleaner.current_tier,
-      commission_rate_at_booking: COMMISSION_RATE,
-      cleaner_payout_cents: cleanerPayout,
+      commission_rate_at_booking: pricing.commissionRate,
+      cleaner_payout_cents: pricing.cleanerPayoutCents,
       customer_notes: parsed.data.customer_notes ?? null,
     })
     .select('id')
