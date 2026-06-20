@@ -10,6 +10,24 @@
 
 ---
 
+## Resolution status (updated 2026-06-19)
+
+| Item | Status | Where |
+|---|---|---|
+| P0-1, P0-2, P0-4 auto-approval money path | ✅ Fixed | Batch 1 (#36) |
+| P0-5 currency · P0-7 auth callback · P0-9 accept gate · P0-11 tax env · P0-12 signin redirect | ✅ Fixed | Batch 1 (#36) |
+| P0-3 payment webhook reconciliation · P0-6 cancellation refunds | ✅ Fixed | Batch 2 (#37) |
+| P0-13 capture-less landmine (all approve paths now capture) | ✅ Fixed | Batch 2 (#37) |
+| P0-10 service-area write-on-approval | ✅ Fixed | Batch 2 (#37) |
+| OPS-1 migration 0017 | ✅ Applied to live Supabase | — |
+| P0-13 UI consolidation of the duplicate screens | ⏳ Follow-up (needs product decision) | issue #34 |
+| P0-10 browse ZIP filter + cleaner service-area editor | ⏳ Follow-up (pure code) | issue #31 |
+| P0-8a/b/c Checkr / Identity / Connect wiring | ⏳ Batch 3 (paired with vendor onboarding) | issues #27 #28 #29 |
+
+**Separate pre-launch DB hardening pass (all Supabase-linter WARN, none blocking):** `function_search_path_mutable` on ~15 functions (the new helper hardened in migration `0018`); `extension_in_public` (citext / btree_gist / cube / earthdistance); SECURITY DEFINER functions executable via RPC by anon/authenticated (`is_admin`, `current_*_id`, `handle_*` triggers); leaked-password protection disabled in Auth. Worth a dedicated pass before public launch.
+
+---
+
 ## Money path
 
 | ID | Sev | Batch | Issue | Evidence | Status |
