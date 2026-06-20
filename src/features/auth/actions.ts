@@ -46,7 +46,15 @@ export const signInAction = async (
   }
 
   revalidatePath('/', 'layout');
-  redirect('/app');
+
+  // Route by role so returning cleaners land on their dashboard, not the
+  // customer home. Mirrors the gating in src/middleware.ts.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const meta = user?.user_metadata as { role?: string; role_confirmed?: boolean } | undefined;
+  if (!meta?.role_confirmed) redirect('/onboarding/role-select');
+  redirect(meta.role === 'cleaner' ? '/app/cleaner' : '/app');
 };
 
 export const signUpAction = async (
@@ -72,7 +80,9 @@ export const signUpAction = async (
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
-      emailRedirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/verify-email`,
+      emailRedirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/confirm?next=${encodeURIComponent(
+        '/onboarding/role-select',
+      )}`,
       data: {
         role: parsed.data.role,
       },
@@ -110,7 +120,9 @@ export const forgotPasswordAction = async (
 
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/reset-password`,
+    redirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/confirm?next=${encodeURIComponent(
+      '/auth/reset-password',
+    )}`,
   });
 
   if (error) {

@@ -55,10 +55,7 @@ export const isTwilioConfigured = (): boolean =>
 
 export const isCronConfigured = (): boolean => Boolean(env.CRON_SECRET);
 
-export const isTaxEncryptionConfigured = (): boolean => {
-  const hex = process.env.TAX_ENCRYPTION_KEY;
-  return Boolean(hex && /^[0-9a-f]{64}$/i.test(hex));
-};
+export const isTaxEncryptionConfigured = (): boolean => Boolean(env.TAX_ENCRYPTION_KEY);
 
 const isSupabaseConfigured = (): boolean =>
   Boolean(

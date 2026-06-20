@@ -1,12 +1,13 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
+import { env } from '@/lib/env';
 import { INTEGRATION_MESSAGES, isTaxEncryptionConfigured } from '@/lib/integrations';
 
 function taxKey(): Buffer {
-  if (!isTaxEncryptionConfigured()) {
+  if (!isTaxEncryptionConfigured() || !env.TAX_ENCRYPTION_KEY) {
     throw new Error(INTEGRATION_MESSAGES.taxEncryption);
   }
-  return Buffer.from(process.env.TAX_ENCRYPTION_KEY!, 'hex');
+  return Buffer.from(env.TAX_ENCRYPTION_KEY, 'hex');
 }
 
 export function encryptTaxId(ssn: string): string {

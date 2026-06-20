@@ -31,7 +31,7 @@ export async function adminProcessRefund(
     .insert({
       charge_id: chargeId,
       amount_cents: amountCents,
-      currency: 'U',
+      currency: 'usd',
       reason_type: 'goodwill',
       reason_notes: reasonNotes,
       initiated_by_user_id: user.id,

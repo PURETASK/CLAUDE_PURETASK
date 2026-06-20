@@ -237,6 +237,17 @@ export const acceptBookingAction = async (bookingId: string): Promise<BookingAct
   if (booking.state !== 'booking_requested')
     return { ok: false, error: 'Booking cannot be accepted in its current state.' };
 
+  // Authorization: caller must be the active cleaner assigned to this booking.
+  const { data: callerProfile } = await supabase
+    .from('cleaner_profiles')
+    .select('id, is_active')
+    .eq('user_id', user.id)
+    .maybeSingle();
+  if (!callerProfile || callerProfile.id !== booking.cleaner_id)
+    return { ok: false, error: 'You are not assigned to this booking.' };
+  if (!callerProfile.is_active)
+    return { ok: false, error: 'Your cleaner account is not active yet.' };
+
   const { error } = await supabase
     .from('bookings')
     .update({ state: 'confirmed' })
@@ -311,13 +322,22 @@ export const declineBookingAction = async (bookingId: string): Promise<BookingAc
 
   const { data: booking } = await supabase
     .from('bookings')
-    .select('id, state')
+    .select('id, state, cleaner_id')
     .eq('id', bookingId)
     .single();
 
   if (!booking) return { ok: false, error: 'Booking not found.' };
   if (booking.state !== 'booking_requested')
     return { ok: false, error: 'Booking cannot be declined in its current state.' };
+
+  // Authorization: caller must be the cleaner assigned to this booking.
+  const { data: callerProfile } = await supabase
+    .from('cleaner_profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+  if (!callerProfile || callerProfile.id !== booking.cleaner_id)
+    return { ok: false, error: 'You are not assigned to this booking.' };
 
   const { error } = await supabase
     .from('bookings')
