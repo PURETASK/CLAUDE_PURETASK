@@ -181,6 +181,7 @@ puretask/
 
 ## 13. Always
 
+- **Sync before you analyze or plan.** At the start of any session — before judging "what's built" or starting new work — run `git fetch origin`, then `git log --oneline HEAD..origin/main` and `gh pr list`. The local worktree and memory files can be behind `origin/main`; "current code" means `origin/main`, not the local checkout. (A SessionStart hook in `.claude/settings.local.json` does this automatically — read its output.)
 - Run `pnpm lint` and `pnpm typecheck` before committing.
 - Update `docs/puretask-decisions.md` if you make a project-level decision.
 - Use the `@/` alias instead of relative paths going up directories.
