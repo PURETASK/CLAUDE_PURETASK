@@ -24,11 +24,17 @@ export const handleStripeConnectEvent = async (event: StripeEvent) => {
   if (event.type === 'account.updated') {
     const applicationId = (obj.metadata as { application_id?: string } | undefined)?.application_id;
     if (!applicationId) return;
+
+    // Only mark onboarding COMPLETE when the account can actually take charges
+    // and finished onboarding — `account.updated` also fires while the account
+    // is still restricted/incomplete. Marking complete early would let an
+    // un-payable cleaner be treated as ready.
+    const ready = obj.charges_enabled === true && obj.details_submitted === true;
     await admin
       .from('cleaner_applications')
       .update({
         pending_stripe_account_id: (obj.id as string) ?? null,
-        stripe_onboarding_completed_at: new Date().toISOString(),
+        stripe_onboarding_completed_at: ready ? new Date().toISOString() : null,
       })
       .eq('id', applicationId);
     return;
