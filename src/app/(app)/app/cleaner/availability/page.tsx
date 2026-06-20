@@ -3,8 +3,10 @@ import { notFound } from 'next/navigation';
 
 import { addTimeOffAction, removeTimeOffAction } from '@/features/cleaner/availability-actions';
 import { getMyAvailability } from '@/features/cleaner/availability-queries';
+import { getMyServiceArea } from '@/features/cleaner/service-area-queries';
 
 import { AvailabilityScheduleForm } from './AvailabilityScheduleForm';
+import { ServiceAreaForm } from './ServiceAreaForm';
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -15,7 +17,7 @@ function formatDate(iso: string) {
 }
 
 export default async function CleanerAvailabilityPage() {
-  const data = await getMyAvailability();
+  const [data, serviceArea] = await Promise.all([getMyAvailability(), getMyServiceArea()]);
   if (!data) notFound();
 
   return (
@@ -33,6 +35,12 @@ export default async function CleanerAvailabilityPage() {
           hours.
         </p>
       </div>
+
+      {/* Service area */}
+      <section className="mb-8 rounded-lg border border-neutral-200 bg-white p-5">
+        <h2 className="mb-4 text-sm font-semibold text-neutral-900">Service area</h2>
+        <ServiceAreaForm initialZips={serviceArea?.zips ?? []} />
+      </section>
 
       {/* Weekly schedule */}
       <section className="mb-8">

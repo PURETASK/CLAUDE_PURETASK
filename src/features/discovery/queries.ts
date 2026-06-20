@@ -189,6 +189,16 @@ export const browseCleaners = async (opts: BrowseSearchInput): Promise<CleanerBr
       return true;
     })
     .filter((r) => {
+      // Service-area (ZIP) coverage: if we know the customer's ZIP and the
+      // cleaner has declared a service area, require coverage. Cleaners who have
+      // not set any service ZIPs are not hidden here — they fall back to the
+      // distance check below.
+      const customerZip = anchor?.zipCode?.trim();
+      if (!customerZip) return true;
+      if (r.service_zip_codes.length === 0) return true;
+      return r.service_zip_codes.includes(customerZip);
+    })
+    .filter((r) => {
       if (
         anchor?.latitude != null &&
         anchor.longitude != null &&
