@@ -1,8 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import { useState, useTransition } from 'react';
 
+import {
+  BubbleTourOverlay,
+  BubbleTourSlide,
+} from '@/features/experience/components/BubbleTourOverlay';
 import { completeMilestone } from '@/features/onboarding/actions/milestone-actions';
 import { ICONS } from '@/lib/assets';
 
@@ -57,19 +60,15 @@ export const CleanerPlatformTour = ({ onDone }: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-neutral-900/50 p-4 sm:items-center">
-      <div className="w-full max-w-sm rounded-3xl border border-neutral-200 bg-white p-8 shadow-tier3">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-50">
-          <Image src={current.icon} alt="" width={40} height={40} className="object-contain" />
-        </div>
+    <BubbleTourOverlay open panelClassName="p-0 overflow-hidden">
+      <BubbleTourSlide icon={current.icon} title={current.title} body={current.body} />
 
-        <p className="text-center text-xs font-semibold uppercase tracking-wide text-brand-600">
+      <div className="bg-white px-8 pb-8">
+        <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wide text-brand-600">
           {slide + 1} of {SLIDES.length}
         </p>
-        <h2 className="mt-1 text-center text-xl font-bold text-neutral-900">{current.title}</h2>
-        <p className="mt-2 text-center text-sm text-neutral-600">{current.body}</p>
 
-        <div className="mt-6 flex justify-center gap-2">
+        <div className="flex justify-center gap-2">
           {SLIDES.map((_, i) => (
             <div
               key={i}
@@ -81,6 +80,7 @@ export const CleanerPlatformTour = ({ onDone }: Props) => {
         </div>
 
         <button
+          type="button"
           onClick={handleNext}
           disabled={isPending}
           className="mt-6 w-full rounded-xl bg-gradient-brand py-3 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110 disabled:opacity-50"
@@ -88,6 +88,6 @@ export const CleanerPlatformTour = ({ onDone }: Props) => {
           {isLast ? 'Start earning' : 'Next'}
         </button>
       </div>
-    </div>
+    </BubbleTourOverlay>
   );
 };

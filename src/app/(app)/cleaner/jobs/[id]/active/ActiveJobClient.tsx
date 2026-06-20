@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { clockIn, clockOut, submitRoomPhotos } from '@/features/booking/actions/job-flow';
 import { Button } from '@/components/ui';
+import { BubbleModal } from '@/features/experience/components/BubbleModal';
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 
 interface Booking {
@@ -238,27 +239,27 @@ export const ActiveJobClient = ({
         </div>
       )}
 
-      {showClockOut && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-          <div className="w-full max-w-md rounded-t-3xl bg-white p-6 sm:rounded-2xl">
-            <h2 className="text-lg font-bold text-neutral-900">Clock out?</h2>
-            <p className="mt-2 text-sm text-neutral-500">
-              Time logged:{' '}
-              <span className="font-semibold text-neutral-900">{formatElapsed(elapsed)}</span>
-              <br />
-              The customer will be notified to approve your work.
-            </p>
-            <div className="mt-6 flex gap-3">
-              <Button variant="ghost" className="flex-1" onClick={() => setShowClockOut(false)}>
-                Back
-              </Button>
-              <Button className="flex-1" onClick={handleClockOut} disabled={isPending}>
-                {isPending ? 'Clocking out…' : 'Confirm clock out'}
-              </Button>
-            </div>
+      <BubbleModal
+        open={showClockOut}
+        onClose={() => setShowClockOut(false)}
+        title="Clock out?"
+        description="The customer will be notified to approve your work."
+        footer={
+          <div className="flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setShowClockOut(false)}>
+              Back
+            </Button>
+            <Button className="flex-1" onClick={handleClockOut} disabled={isPending}>
+              {isPending ? 'Clocking out…' : 'Confirm clock out'}
+            </Button>
           </div>
-        </div>
-      )}
+        }
+      >
+        <p className="text-sm text-neutral-600">
+          Time logged:{' '}
+          <span className="font-semibold text-neutral-900">{formatElapsed(elapsed)}</span>
+        </p>
+      </BubbleModal>
     </div>
   );
 };

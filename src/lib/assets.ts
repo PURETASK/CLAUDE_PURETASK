@@ -30,4 +30,5 @@ export const BACKGROUNDS = {
 export const BRAND = {
   logo: '/assets/brand/logo.png',
   dash: '/assets/brand/dash.png',
+  dashMascot: '/assets/brand/dash-mascot.png',
 } as const;

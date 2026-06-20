@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import '@/styles/bubble-experience.css';
 
 import { ToastProvider } from '@/contexts/ToastContext';
 
