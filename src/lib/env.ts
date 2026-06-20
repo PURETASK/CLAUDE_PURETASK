@@ -16,6 +16,7 @@ const envSchema = z.object({
   STRIPE_WEBHOOK_SECRET: optionalString,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: optionalString,
   CHECKR_API_KEY: optionalString,
+  CRON_SECRET: optionalString,
 });
 
 const parsedEnv = envSchema.safeParse({
@@ -28,6 +29,7 @@ const parsedEnv = envSchema.safeParse({
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   CHECKR_API_KEY: process.env.CHECKR_API_KEY,
+  CRON_SECRET: process.env.CRON_SECRET,
 });
 
 if (!parsedEnv.success) {

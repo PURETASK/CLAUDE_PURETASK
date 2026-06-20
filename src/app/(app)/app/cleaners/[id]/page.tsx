@@ -5,6 +5,7 @@ import { MatchScoreBreakdown } from '@/features/discovery/components/MatchScoreB
 import { TierBadge } from '@/features/discovery/components/TierBadge';
 import { getCleanerProfile } from '@/features/discovery/queries';
 import { computeMatchScore } from '@/features/discovery/scoring';
+import { ReviewList } from '@/features/reviews/components/ReviewList';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 type PageProps = { params: Promise<{ id: string }> };
@@ -132,6 +133,11 @@ const CleanerProfilePage = async ({ params }: PageProps) => {
           tier={cleaner.current_tier}
           hasZipFilter={false}
         />
+      </section>
+
+      <section className="rounded border bg-white p-5">
+        <p className="mb-3 font-medium">Reviews</p>
+        <ReviewList cleanerId={cleaner.id} />
       </section>
 
       <Link

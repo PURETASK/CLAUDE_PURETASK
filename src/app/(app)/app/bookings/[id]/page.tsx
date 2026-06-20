@@ -5,6 +5,8 @@ import { CancelBookingButton } from '@/features/booking/components/CancelBooking
 import { BookingStateBadge } from '@/features/booking/components/BookingStateBadge';
 import { getBookingById, getMyCustomerProfileId } from '@/features/booking/queries';
 import { PaymentActionButton } from '@/features/payments/components/PaymentActionButtons';
+import { ReviewForm } from '@/features/reviews/components/ReviewForm';
+import { getReviewForBooking } from '@/features/reviews/queries';
 import { CustomerApprovalActions } from '@/features/verification/components/CustomerApprovalActions';
 import { PhotoGrid } from '@/features/verification/components/PhotoGrid';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
@@ -44,6 +46,10 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
     'dispute_resolved',
     'completed',
   ].includes(booking.state);
+  const reviewable = ['approved', 'auto_approved', 'paid', 'dispute_resolved'].includes(
+    booking.state,
+  );
+  const existingReview = reviewable ? await getReviewForBooking(booking.id) : null;
 
   return (
     <div className="flex max-w-lg flex-col gap-6">
@@ -131,6 +137,18 @@ const CustomerBookingDetailPage = async ({ params }: PageProps) => {
 
       {awaitingApproval && <CustomerApprovalActions bookingId={booking.id} />}
       {needsCapture && <PaymentActionButton bookingId={booking.id} variant="capture" />}
+      {reviewable && !existingReview && <ReviewForm bookingId={booking.id} />}
+      {reviewable && existingReview && (
+        <section className="rounded border bg-white p-4 text-sm">
+          <p className="mb-1 font-medium">
+            Your review · <span className="text-amber-500">{'★'.repeat(existingReview.stars)}</span>
+            <span className="text-zinc-300">{'☆'.repeat(5 - existingReview.stars)}</span>
+          </p>
+          {existingReview.body && (
+            <p className="whitespace-pre-wrap text-zinc-600">{existingReview.body}</p>
+          )}
+        </section>
+      )}
       {cancellable && <CancelBookingButton bookingId={booking.id} />}
     </div>
   );
