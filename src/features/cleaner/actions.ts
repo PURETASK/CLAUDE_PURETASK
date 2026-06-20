@@ -268,7 +268,7 @@ export const adminDecisionAction = async (
   } else if (decision === 'approve') {
     const { data: app } = await admin
       .from('cleaner_applications')
-      .select('user_id')
+      .select('user_id, application_data')
       .eq('id', applicationId)
       .single();
     if (!app) return { ok: false, error: 'Application not found.' };
@@ -285,6 +285,29 @@ export const adminDecisionAction = async (
       profile?.id ??
       (await admin.from('cleaner_profiles').select('id').eq('user_id', app.user_id).single()).data
         ?.id;
+
+    // Materialize the cleaner's service area from the application into
+    // cleaner_service_zips so the cleaner is discoverable in the customer's ZIP.
+    // (Previously this was never written — approved cleaners had no service area
+    // and browse/marketing ZIP filters matched nothing.)
+    if (profileId) {
+      const appData = (app.application_data ?? {}) as { service_zips?: unknown };
+      const zips = Array.isArray(appData.service_zips)
+        ? Array.from(
+            new Set(
+              (appData.service_zips as unknown[]).filter(
+                (z): z is string => typeof z === 'string' && /^\d{5}$/.test(z),
+              ),
+            ),
+          )
+        : [];
+      await admin.from('cleaner_service_zips').delete().eq('cleaner_id', profileId);
+      if (zips.length > 0) {
+        await admin
+          .from('cleaner_service_zips')
+          .insert(zips.map((zip_code) => ({ cleaner_id: profileId, zip_code })));
+      }
+    }
 
     const { error } = await admin
       .from('cleaner_applications')

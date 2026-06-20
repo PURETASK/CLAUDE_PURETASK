@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { writeBookingStateEvent } from '@/features/booking/lib/booking-states';
+import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
+import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 async function getAuthedCleaner() {
@@ -106,8 +108,25 @@ export async function approveWork(bookingId: string) {
   } = await supabase.auth.getUser();
   if (!user) redirect('/auth/sign-in');
 
-  const { error } = await writeBookingStateEvent(supabase, bookingId, 'approved', user.id);
-  if (error) return { error: error.message };
+  // RLS-scoped read acts as the ownership gate (only the booking's customer /
+  // cleaner can see it).
+  const { data: booking } = await supabase
+    .from('bookings')
+    .select('id')
+    .eq('id', bookingId)
+    .maybeSingle();
+  if (!booking) return { error: 'Booking not found.' };
+
+  // Funnel through the shared settler so this approval path also captures the
+  // payment and creates the cleaner payout (previously it was state-only).
+  const admin = createSupabaseAdminClient();
+  const result = await settleApprovedBooking(admin, {
+    bookingId,
+    newState: 'paid',
+    actorUserId: user.id,
+    reason: 'Customer approved completed work.',
+  });
+  if (!result.ok) return { error: result.error };
 
   revalidatePath(`/app/bookings/${bookingId}`);
   return { error: null };

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { type BookingState } from '@/features/booking/lib/booking-states';
+import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { Json } from '@/types/database.types';
@@ -327,21 +328,16 @@ export const approveBookingAction = async (bookingId: string): Promise<Verificat
     .single();
   if (!booking) return { ok: false, error: 'Booking not found.' };
   if (booking.customer_id !== ctx.customerId) return { ok: false, error: 'Not your booking.' };
-  if (booking.state !== 'awaiting_approval') {
-    return { ok: false, error: 'Booking is not awaiting approval.' };
-  }
 
-  await admin
-    .from('bookings')
-    .update({ state: asState('approved'), customer_approved_at: new Date().toISOString() })
-    .eq('id', bookingId);
-  await recordTransition(
+  // Funnel through the shared settler so this approval path also captures the
+  // payment and creates the cleaner payout (previously it was state-only).
+  const result = await settleApprovedBooking(admin, {
     bookingId,
-    asState('awaiting_approval'),
-    asState('approved'),
-    ctx.user.id,
-    'Customer approved the cleaning.',
-  );
+    newState: 'paid',
+    actorUserId: ctx.user.id,
+    reason: 'Customer approved the cleaning.',
+  });
+  if (!result.ok) return { ok: false, error: result.error };
 
   revalidatePath(`/app/bookings/${bookingId}`);
   return { ok: true, error: null };

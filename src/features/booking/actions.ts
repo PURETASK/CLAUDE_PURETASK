@@ -10,6 +10,7 @@ import { getStripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
+import { calculateCancellationPenalty } from './lib/cancellation-policy';
 import { computeBookingPricing, getCommissionRate, type TierName } from './pricing';
 import { createBookingSchema } from './validation';
 
@@ -422,7 +423,7 @@ export const cancelBookingAction = async (bookingId: string): Promise<BookingAct
 
   const { data: booking } = await supabase
     .from('bookings')
-    .select('id, state')
+    .select('id, state, start_at, total_charge_cents')
     .eq('id', bookingId)
     .single();
 
@@ -432,20 +433,67 @@ export const cancelBookingAction = async (bookingId: string): Promise<BookingAct
     return { ok: false, error: 'Booking cannot be cancelled in its current state.' };
   }
 
+  const policy = calculateCancellationPenalty(
+    new Date(booking.start_at),
+    booking.total_charge_cents,
+  );
+
+  const admin = createSupabaseAdminClient();
+
+  // The booking's PaymentIntent is authorize-only (captured at approval). On
+  // cancellation we settle the hold per the policy window: cancel it (full
+  // refund), capture only the penalty (partial), or capture in full (no refund).
+  const { data: charge } = await admin
+    .from('charges')
+    .select('id, stripe_payment_intent_id, state')
+    .eq('booking_id', bookingId)
+    .is('tip_id', null)
+    .maybeSingle();
+
+  if (isStripeConfigured() && charge?.stripe_payment_intent_id && charge.state === 'authorized') {
+    const now = new Date().toISOString();
+    try {
+      if (policy.penaltyCents <= 0) {
+        await getStripe().paymentIntents.cancel(charge.stripe_payment_intent_id);
+        await admin.from('charges').update({ state: 'cancelled' }).eq('id', charge.id);
+      } else if (policy.penaltyCents >= booking.total_charge_cents) {
+        await getStripe().paymentIntents.capture(charge.stripe_payment_intent_id);
+        await admin
+          .from('charges')
+          .update({ state: 'captured', captured_at: now })
+          .eq('id', charge.id);
+      } else {
+        await getStripe().paymentIntents.capture(charge.stripe_payment_intent_id, {
+          amount_to_capture: policy.penaltyCents,
+        });
+        await admin
+          .from('charges')
+          .update({ state: 'captured', captured_at: now })
+          .eq('id', charge.id);
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Could not settle payment on cancellation.';
+      return { ok: false, error: msg };
+    }
+  }
+
   const { error } = await supabase
     .from('bookings')
-    .update({ state: 'cancelled_by_customer', cancelled_at: new Date().toISOString() })
+    .update({
+      state: 'cancelled_by_customer',
+      cancelled_at: new Date().toISOString(),
+      cancellation_penalty_cents: policy.penaltyCents,
+    })
     .eq('id', bookingId);
 
   if (error) return { ok: false, error: error.message };
 
-  const admin = createSupabaseAdminClient();
   await admin.from('booking_state_events').insert({
     booking_id: bookingId,
     previous_state: booking.state,
     new_state: 'cancelled_by_customer',
     triggered_by_user_id: user.id,
-    reason: 'Customer cancelled booking.',
+    reason: `Customer cancelled (${policy.tier}: penalty ${policy.penaltyCents}¢, refund ${policy.refundCents}¢).`,
   });
 
   revalidatePath(`/app/bookings/${bookingId}`);
