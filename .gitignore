@@ -60,3 +60,10 @@ pnpm-debug.log*
 # Supabase local (optional)
 .branches/
 .temp/
+
+# Heavy local reference / source art — kept on disk, out of git history.
+# These are working/source assets, not app deliverables. If they ever need to
+# be shared/versioned, move to Git LFS or a cloud bucket rather than committing.
+/art_assets/
+/all_wireframes_needs_review/
+/art theme and art style guidelines/
