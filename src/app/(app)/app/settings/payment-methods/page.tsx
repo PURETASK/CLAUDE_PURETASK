@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { IntegrationNotice } from '@/components/shared/IntegrationNotice';
+import { AddPaymentMethodPanel } from '@/features/payments/components/AddPaymentMethodPanel';
 import { PaymentMethodCard } from '@/features/payments/components/PaymentMethodCard';
 import { getMyPaymentMethods } from '@/features/payments/queries';
 import { BACKGROUNDS, ICONS } from '@/lib/assets';
@@ -69,28 +70,7 @@ export default async function PaymentMethodsPage() {
         </div>
       )}
 
-      <div className="mt-6 rounded-2xl border border-neutral-200 bg-neutral-50 p-5 shadow-tier1">
-        <p className="mb-2 text-sm font-semibold text-neutral-700">Add a card</p>
-        <p className="mb-3 text-xs text-neutral-500">
-          Card entry is available inline when placing your next booking.
-        </p>
-        <p className="flex items-center gap-1.5 text-xs text-neutral-400">
-          <svg
-            className="h-3.5 w-3.5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 15v2m0 0v2m0-2h2m-2 0H10m10-5a8 8 0 11-16 0 8 8 0 0116 0z"
-            />
-          </svg>
-          Card data is stored securely with Stripe and never touches our servers.
-        </p>
-      </div>
+      <AddPaymentMethodPanel stripeReady={stripeReady} />
     </div>
   );
 }

@@ -1,0 +1,592 @@
+/* PureTask — Soap Bubble Experience (Lumen Bubble) */
+
+:root {
+  --bubble-scene-bg: #061e3d;
+  --bubble-scene-glow: #169af533;
+  --bubble-lens-bg: rgba(255, 255, 255, 0.78);
+  --bubble-lens-border: rgba(255, 255, 255, 0.55);
+  --bubble-rim-1: #40e8e0;
+  --bubble-rim-2: #169af5;
+  --bubble-rim-3: #a78bfa;
+  --bubble-pop-duration: 480ms;
+  --bubble-enter-duration: 560ms;
+  --font-display: var(--font-outfit), system-ui, sans-serif;
+  --font-bubble-body: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.bubble-scene {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, var(--bubble-scene-glow), transparent 55%),
+    radial-gradient(circle at 10% 90%, #40e8e018, transparent 40%),
+    radial-gradient(circle at 90% 20%, #a78bfa14, transparent 35%),
+    linear-gradient(165deg, #041528 0%, var(--bubble-scene-bg) 45%, #0a3b78 100%);
+  overflow-x: clip;
+}
+
+.bubble-scene::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url('/assets/backgrounds/bubbles.png');
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
+.bubble-scene__ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble-scene__orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #ffffff55, #40e8e022 40%, transparent 70%);
+  border: 1px solid #ffffff22;
+  animation: bubble-float 12s ease-in-out infinite;
+  filter: blur(0.5px);
+}
+
+.bubble-scene__orb--1 {
+  width: 120px;
+  height: 120px;
+  top: 12%;
+  left: 8%;
+  animation-delay: 0s;
+}
+.bubble-scene__orb--2 {
+  width: 64px;
+  height: 64px;
+  top: 55%;
+  right: 12%;
+  animation-delay: -4s;
+}
+.bubble-scene__orb--3 {
+  width: 88px;
+  height: 88px;
+  bottom: 18%;
+  left: 22%;
+  animation-delay: -7s;
+}
+
+@keyframes bubble-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.04);
+  }
+}
+
+.bubble-lens-wrap {
+  position: relative;
+  z-index: 1;
+  perspective: 1400px;
+  padding: 0.75rem 0 2rem;
+}
+
+.bubble-lens {
+  position: relative;
+  margin: 0 auto;
+  max-width: 72rem;
+  border-radius: 2rem;
+  background: var(--bubble-lens-bg);
+  border: 1px solid var(--bubble-lens-border);
+  box-shadow:
+    0 0 0 1px #ffffff30 inset,
+    0 2px 4px #ffffff40 inset,
+    0 24px 64px #02101f55,
+    0 0 80px #40e8e018;
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+  transform-style: preserve-3d;
+  transform: rotateX(1.25deg);
+  transition:
+    transform var(--bubble-pop-duration) var(--ease-soft-out, cubic-bezier(0.16, 1, 0.3, 1)),
+    opacity 200ms ease;
+}
+
+.bubble-lens::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    var(--bubble-rim-1),
+    var(--bubble-rim-2) 45%,
+    var(--bubble-rim-3) 80%,
+    var(--bubble-rim-1)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.bubble-lens::after {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 38%;
+  height: 22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffffaa, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0.5;
+  animation: bubble-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes bubble-shimmer {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translateX(12%);
+  }
+}
+
+.bubble-lens__content {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-bubble-body);
+  color: #0f172a;
+}
+
+.bubble-lens--popping {
+  animation: bubble-pop-pulse var(--bubble-pop-duration) var(--ease-soft-out, cubic-bezier(0.16, 1, 0.3, 1))
+    forwards;
+}
+
+.bubble-lens--entering {
+  animation: bubble-lens-enter var(--bubble-enter-duration) var(--ease-soft-out, cubic-bezier(0.16, 1, 0.3, 1))
+    forwards;
+}
+
+.bubble-lens__content--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes bubble-pop-pulse {
+  0% {
+    transform: rotateX(1.25deg) scale(1);
+  }
+  35% {
+    transform: rotateX(0deg) scale(1.05);
+  }
+  55% {
+    transform: scale(0.88);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(0.94);
+    opacity: 0.2;
+  }
+}
+
+@keyframes bubble-lens-enter {
+  0% {
+    transform: scale(0.88) rotateX(2deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02) rotateX(1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(1.25deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Pop particle overlay */
+.bubble-pop-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-pop-overlay__burst {
+  width: min(90vw, 420px);
+  height: min(90vw, 420px);
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffffcc 0%, #40e8e066 25%, transparent 65%);
+  animation: bubble-burst 420ms ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes bubble-burst {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.bubble-pop-overlay__droplet {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff, #40e8e0);
+  box-shadow: 0 0 12px #40e8e088;
+  animation: droplet-fly 520ms ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes droplet-fly {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Chrome inside scene */
+.bubble-chrome {
+  font-family: var(--font-display);
+}
+
+.bubble-nav-link {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color var(--duration-control, 200ms) ease;
+}
+
+.bubble-nav-link--active {
+  color: var(--color-brand-600, #169af5);
+}
+
+.bubble-nav-link:not(.bubble-nav-link--active) {
+  color: #cbd5e1;
+}
+
+.bubble-nav-link:not(.bubble-nav-link--active):hover {
+  color: #40e8e0;
+}
+
+.bubble-header {
+  border-bottom: 1px solid #ffffff18;
+  background: linear-gradient(180deg, #0a3b78ee 0%, #072a55cc 100%);
+  backdrop-filter: blur(12px);
+}
+
+/* Modal */
+.bubble-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: #02101f88;
+  backdrop-filter: blur(6px);
+  animation: fade-in 200ms ease;
+}
+
+.bubble-modal-lens {
+  width: min(100%, 28rem);
+  max-height: min(90vh, 640px);
+  overflow: auto;
+  border-radius: 1.5rem;
+  background: var(--bubble-lens-bg);
+  border: 1px solid var(--bubble-lens-border);
+  box-shadow:
+    0 0 0 1px #ffffff35 inset,
+    0 24px 48px #02101f66;
+  backdrop-filter: blur(20px);
+  animation: bubble-lens-enter var(--bubble-enter-duration) var(--ease-soft-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.bubble-modal-lens--lg {
+  width: min(100%, 36rem);
+}
+
+.bubble-modal-lens--alert {
+  border-color: #fbbf2444;
+  box-shadow:
+    0 0 0 1px #ffffff35 inset,
+    0 0 0 2px #fbbf2433,
+    0 24px 48px #02101f66;
+}
+
+.bubble-tabs__list--scroll {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.bubble-tabs__list--scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.bubble-tabs__list--scroll .bubble-tabs__trigger {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.bubble-lens {
+  position: relative;
+}
+
+.bubble-lens-mascot {
+  position: absolute;
+  top: -1.25rem;
+  right: 1.25rem;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 16px #02101f44);
+}
+
+.bubble-lens-mascot__img {
+  width: 4.5rem;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Marketing — lighter ambient bubbles (no app lens) */
+.marketing-bubble-hero {
+  isolation: isolate;
+}
+
+.marketing-bubble-hero__ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.marketing-bubble-hero__orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #ffffff66, #40e8e033 45%, transparent 72%);
+  border: 1px solid #ffffff28;
+  animation: bubble-float 14s ease-in-out infinite;
+}
+
+.marketing-bubble-hero__orb--1 {
+  width: 140px;
+  height: 140px;
+  top: 10%;
+  left: 6%;
+}
+
+.marketing-bubble-hero__orb--2 {
+  width: 72px;
+  height: 72px;
+  top: 20%;
+  right: 10%;
+  animation-delay: -3s;
+}
+
+.marketing-bubble-hero__orb--3 {
+  width: 96px;
+  height: 96px;
+  bottom: 15%;
+  left: 18%;
+  animation-delay: -6s;
+}
+
+.marketing-bubble-hero__orb--4 {
+  width: 52px;
+  height: 52px;
+  bottom: 28%;
+  right: 22%;
+  animation-delay: -9s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bubble-tabs__list {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 9999px;
+  background: #0a3b7818;
+  border: 1px solid #169af522;
+}
+
+.bubble-tabs__trigger {
+  flex: 1;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  transition: all var(--duration-control, 200ms) ease;
+}
+
+.bubble-tabs__trigger--active {
+  background: linear-gradient(135deg, #169af5, #40e8e0);
+  color: #fff;
+  box-shadow: 0 4px 16px #169af544;
+}
+
+/* Drawer */
+.bubble-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: #02101f88;
+  backdrop-filter: blur(6px);
+  animation: fade-in 200ms ease;
+}
+
+.bubble-drawer-panel {
+  width: min(100%, 28rem);
+  border-radius: 1.5rem 1.5rem 0 0;
+  background: var(--bubble-lens-bg);
+  border: 1px solid var(--bubble-lens-border);
+  box-shadow:
+    0 0 0 1px #ffffff35 inset,
+    0 -8px 48px #02101f55;
+  backdrop-filter: blur(20px);
+  animation: bubble-drawer-enter 400ms var(--ease-soft-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@media (min-width: 640px) {
+  .bubble-drawer-backdrop {
+    align-items: center;
+  }
+
+  .bubble-drawer-panel {
+    border-radius: 1.5rem;
+    margin-bottom: 0;
+  }
+}
+
+.bubble-drawer-panel__handle {
+  width: 2.5rem;
+  height: 0.25rem;
+  margin: 0.75rem auto 0;
+  border-radius: 9999px;
+  background: #94a3b8;
+}
+
+@keyframes bubble-drawer-enter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubble-modal-lens--tour {
+  width: min(100%, 24rem);
+  max-height: none;
+  overflow: visible;
+}
+
+.bubble-rim-decor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+}
+
+.dashboard-bubble-ambience {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.dashboard-bubble-ambience__orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #ffffff44, #40e8e018 50%, transparent 72%);
+  animation: bubble-float 16s ease-in-out infinite;
+}
+
+.dashboard-bubble-ambience__orb--a {
+  width: 100px;
+  height: 100px;
+  top: 4%;
+  right: 8%;
+}
+
+.dashboard-bubble-ambience__orb--b {
+  width: 56px;
+  height: 56px;
+  bottom: 12%;
+  left: 6%;
+  animation-delay: -5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble-drawer-panel,
+  .dashboard-bubble-ambience__orb,
+  .marketing-bubble-hero__orb,
+  .bubble-lens--popping,
+  .bubble-lens--entering,
+  .bubble-pop-overlay__burst,
+  .bubble-pop-overlay__droplet,
+  .bubble-scene__orb,
+  .bubble-lens::after {
+    animation: none !important;
+  }
+
+  .bubble-lens--popping {
+    opacity: 0.6;
+  }
+
+  .bubble-lens--entering {
+    opacity: 1;
+    transform: none;
+  }
+}

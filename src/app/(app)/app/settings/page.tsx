@@ -1,6 +1,7 @@
 ﻿import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { ExperienceSoundToggle } from '@/features/experience/components/ExperienceSoundToggle';
 import { ProfileHeader } from '@/features/customer/components/ProfileHeader';
 import { SettingsLayout } from '@/features/customer/components/SettingsLayout';
 import { getCurrentUser } from '@/features/customer/queries';
@@ -55,6 +56,10 @@ const SettingsLandingPage = async () => {
             Manage cards
           </Link>
         </div>
+        <div className="md:col-span-2">
+          <ExperienceSoundToggle />
+        </div>
+
         <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-neutral-900">Integrations</h3>
           <p className="mt-2 text-sm text-neutral-700">

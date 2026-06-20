@@ -1,8 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import { useState, useTransition } from 'react';
 
+import {
+  BubbleTourOverlay,
+  BubbleTourSlide,
+} from '@/features/experience/components/BubbleTourOverlay';
 import { completeMilestone } from '@/features/onboarding/actions/milestone-actions';
 import { ICONS } from '@/lib/assets';
 
@@ -60,20 +63,20 @@ export const CustomerFirstTimeTour = ({ onDone }: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-neutral-900/50 p-4 sm:items-center">
-      <div
-        className={`w-full max-w-sm rounded-3xl border border-neutral-200 p-8 shadow-tier3 ${current.bg}`}
-      >
-        <div
-          className={`mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl ${current.iconBg}`}
-        >
-          <Image src={current.icon} alt="" width={40} height={40} className="object-contain" />
-        </div>
+    <BubbleTourOverlay
+      open
+      panelClassName="p-0 overflow-hidden border-0 bg-transparent shadow-none"
+    >
+      <BubbleTourSlide
+        icon={current.icon}
+        title={current.title}
+        body={current.body}
+        bgClass={current.bg}
+        iconBgClass={current.iconBg}
+      />
 
-        <h2 className="text-center text-xl font-bold text-neutral-900">{current.title}</h2>
-        <p className="mt-2 text-center text-sm text-neutral-600">{current.body}</p>
-
-        <div className="mt-6 flex justify-center gap-2">
+      <div className={`px-8 pb-8 ${current.bg}`}>
+        <div className="flex justify-center gap-2">
           {SLIDES.map((_, i) => (
             <div
               key={i}
@@ -86,6 +89,7 @@ export const CustomerFirstTimeTour = ({ onDone }: Props) => {
 
         <div className="mt-6 flex flex-col gap-2">
           <button
+            type="button"
             onClick={handleNext}
             disabled={isPending}
             className="w-full rounded-xl bg-gradient-brand py-3 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110 disabled:opacity-50"
@@ -94,6 +98,7 @@ export const CustomerFirstTimeTour = ({ onDone }: Props) => {
           </button>
           {!isLast && (
             <button
+              type="button"
               onClick={handleSkip}
               disabled={isPending}
               className="w-full py-2 text-sm text-neutral-500 hover:text-neutral-700"
@@ -103,6 +108,6 @@ export const CustomerFirstTimeTour = ({ onDone }: Props) => {
           )}
         </div>
       </div>
-    </div>
+    </BubbleTourOverlay>
   );
 };

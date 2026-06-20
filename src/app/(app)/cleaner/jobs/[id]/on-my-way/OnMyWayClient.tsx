@@ -3,8 +3,9 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { markArrived, markEnRoute, markRunningLate } from '@/features/booking/actions/job-flow';
 import { Button } from '@/components/ui';
+import { BubbleModal } from '@/features/experience/components/BubbleModal';
+import { markArrived, markEnRoute, markRunningLate } from '@/features/booking/actions/job-flow';
 
 const DELAY_OPTIONS = [5, 10, 15, 20, 30] as const;
 const LATE_REASONS = [
@@ -69,6 +70,12 @@ export const OnMyWayClient = ({ booking }: Props) => {
       setShowLateModal(false);
       router.refresh();
     });
+  };
+
+  const closeLateModal = () => {
+    setShowLateModal(false);
+    setSelectedDelay(null);
+    setSelectedReason('');
   };
 
   return (
@@ -152,61 +159,61 @@ export const OnMyWayClient = ({ booking }: Props) => {
         </div>
       </div>
 
-      {showLateModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-          <div className="w-full max-w-md rounded-t-3xl bg-white p-6 sm:rounded-2xl">
-            <h2 className="text-lg font-bold text-neutral-900">How late will you be?</h2>
-            <p className="mt-1 text-sm text-neutral-500">The customer will be notified.</p>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              {DELAY_OPTIONS.map((min) => (
-                <button
-                  key={min}
-                  type="button"
-                  onClick={() => setSelectedDelay(min)}
-                  className={`rounded-xl border px-4 py-2 text-sm font-medium transition-all ${
-                    selectedDelay === min
-                      ? 'border-brand-600 bg-brand-600/10 text-brand-600'
-                      : 'border-neutral-200 text-neutral-700 hover:border-neutral-400'
-                  }`}
-                >
-                  {min} min
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {LATE_REASONS.map((reason) => (
-                <button
-                  key={reason}
-                  type="button"
-                  onClick={() => setSelectedReason(reason)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
-                    selectedReason === reason
-                      ? 'border-neutral-700 bg-neutral-900 text-white'
-                      : 'border-neutral-200 text-neutral-600 hover:border-neutral-400'
-                  }`}
-                >
-                  {reason}
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <Button variant="ghost" className="flex-1" onClick={() => setShowLateModal(false)}>
-                Cancel
-              </Button>
-              <Button
-                className="flex-1"
-                onClick={handleLateSubmit}
-                disabled={!selectedDelay || isPending}
-              >
-                {isPending ? 'Sending…' : 'Send notice'}
-              </Button>
-            </div>
+      <BubbleModal
+        open={showLateModal}
+        onClose={closeLateModal}
+        title="How late will you be?"
+        description="The customer will be notified."
+        variant="alert"
+        footer={
+          <div className="flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={closeLateModal}>
+              Cancel
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={handleLateSubmit}
+              disabled={!selectedDelay || isPending}
+            >
+              {isPending ? 'Sending…' : 'Send notice'}
+            </Button>
           </div>
+        }
+      >
+        <div className="flex flex-wrap gap-2">
+          {DELAY_OPTIONS.map((min) => (
+            <button
+              key={min}
+              type="button"
+              onClick={() => setSelectedDelay(min)}
+              className={`rounded-xl border px-4 py-2 text-sm font-medium transition-all ${
+                selectedDelay === min
+                  ? 'border-brand-600 bg-brand-600/10 text-brand-600'
+                  : 'border-neutral-200 text-neutral-700 hover:border-neutral-400'
+              }`}
+            >
+              {min} min
+            </button>
+          ))}
         </div>
-      )}
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {LATE_REASONS.map((reason) => (
+            <button
+              key={reason}
+              type="button"
+              onClick={() => setSelectedReason(reason)}
+              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
+                selectedReason === reason
+                  ? 'border-neutral-700 bg-neutral-900 text-white'
+                  : 'border-neutral-200 text-neutral-600 hover:border-neutral-400'
+              }`}
+            >
+              {reason}
+            </button>
+          ))}
+        </div>
+      </BubbleModal>
     </div>
   );
 };

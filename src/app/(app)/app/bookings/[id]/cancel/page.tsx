@@ -2,40 +2,25 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { use, useTransition } from 'react';
+import { use, useState, useTransition } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { cancelBookingAction } from '@/features/booking/actions';
+import { BubbleModal } from '@/features/experience/components/BubbleModal';
 
 type Props = { params: Promise<{ id: string }> };
-
-function calcCancellationFee(
-  startAt: Date,
-  totalCents: number,
-): { pct: number; feeCents: number; label: string } {
-  const hoursUntil = (startAt.getTime() - Date.now()) / (1000 * 60 * 60);
-  if (hoursUntil > 48) return { pct: 0, feeCents: 0, label: 'Free — more than 48 hours away' };
-  if (hoursUntil > 24)
-    return {
-      pct: 50,
-      feeCents: Math.round(totalCents * 0.5),
-      label: '50% cancellation fee (24–48 hours notice)',
-    };
-  return {
-    pct: 100,
-    feeCents: totalCents,
-    label: '100% cancellation fee (less than 24 hours notice)',
-  };
-}
 
 export default function CancelBookingPage({ params }: Props) {
   const { id } = use(params);
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleCancel = () => {
     startTransition(async () => {
       const result = await cancelBookingAction(id);
       if (result.ok) {
+        setShowConfirm(false);
         router.push(`/app/bookings/${id}`);
       }
     });
@@ -50,7 +35,7 @@ export default function CancelBookingPage({ params }: Props) {
         ← Back to booking
       </Link>
 
-      <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-tier1">
+      <div className="rounded-2xl border border-neutral-200 bg-white/90 p-8 shadow-tier1">
         <h1 className="text-xl font-bold text-neutral-900">Cancel this booking?</h1>
         <p className="mt-2 text-sm text-neutral-500">
           This action cannot be undone. Review the cancellation policy before confirming.
@@ -81,15 +66,42 @@ export default function CancelBookingPage({ params }: Props) {
           >
             Keep booking
           </Link>
-          <button
-            onClick={handleCancel}
+          <Button
+            className="flex-1 bg-red-600 text-white hover:brightness-110"
+            onClick={() => setShowConfirm(true)}
             disabled={isPending}
-            className="flex-1 rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-red-700 disabled:opacity-60"
           >
-            {isPending ? 'Cancelling…' : 'Confirm cancel'}
-          </button>
+            Cancel booking
+          </Button>
         </div>
       </div>
+
+      <BubbleModal
+        open={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        title="Confirm cancellation"
+        description="Your booking will be cancelled and fees may apply per the policy above."
+        variant="alert"
+        footer={
+          <div className="flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setShowConfirm(false)}>
+              Go back
+            </Button>
+            <Button
+              className="flex-1 bg-red-600 text-white hover:brightness-110"
+              onClick={handleCancel}
+              disabled={isPending}
+            >
+              {isPending ? 'Cancelling…' : 'Yes, cancel'}
+            </Button>
+          </div>
+        }
+      >
+        <p className="text-sm text-neutral-600">
+          You will not be able to undo this. If you only need a different time, consider
+          rescheduling instead.
+        </p>
+      </BubbleModal>
     </div>
   );
 }

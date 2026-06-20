@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
+import { MarketingBubbleHero } from '@/features/experience/components/MarketingBubbleHero';
 import { ICONS } from '@/lib/assets';
 
 export const metadata: Metadata = {
@@ -42,35 +43,32 @@ const TRUST = [
 export default function LandingPage() {
   return (
     <>
-      {/* Hero — Clean Aero Glow brand treatment */}
-      <section className="bg-gradient-hero px-6 py-24 text-center text-white">
-        <div className="mx-auto max-w-3xl">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-accent-400/80">
-            Northern California
-          </p>
-          <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight">
-            Home cleaning you can <span className="text-accent-400">actually trust</span>
-          </h1>
-          <p className="mb-10 text-lg text-white/80">
-            Background-checked cleaners, GPS-verified arrivals, photo proof of every job. Pay only
-            when you approve the work.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/auth/sign-up"
-              className="rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-brand-900 shadow-tier2 transition-all duration-control hover:shadow-tier3 hover:brightness-105 active:scale-[0.98]"
-            >
-              Book your first clean
-            </Link>
-            <Link
-              href="/how-it-works"
-              className="rounded-xl border border-white/30 px-8 py-3.5 text-base font-medium text-white/90 transition-all duration-control hover:border-white/60 hover:text-white"
-            >
-              How it works
-            </Link>
-          </div>
+      <MarketingBubbleHero>
+        <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-accent-400/80">
+          Northern California
+        </p>
+        <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight">
+          Home cleaning you can <span className="text-accent-400">actually trust</span>
+        </h1>
+        <p className="mb-10 text-lg text-white/80">
+          Background-checked cleaners, GPS-verified arrivals, photo proof of every job. Pay only
+          when you approve the work.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link
+            href="/auth/sign-up"
+            className="rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-brand-900 shadow-tier2 transition-all duration-control hover:shadow-tier3 hover:brightness-105 active:scale-[0.98]"
+          >
+            Book your first clean
+          </Link>
+          <Link
+            href="/how-it-works"
+            className="rounded-xl border border-white/30 px-8 py-3.5 text-base font-medium text-white/90 transition-all duration-control hover:border-white/60 hover:text-white"
+          >
+            How it works
+          </Link>
         </div>
-      </section>
+      </MarketingBubbleHero>
 
       {/* How it works */}
       <section className="px-6 py-20">
