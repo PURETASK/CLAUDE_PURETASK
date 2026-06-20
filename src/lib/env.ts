@@ -11,6 +11,10 @@ const envSchema = z.object({
   STRIPE_CONNECT_WEBHOOK_SECRET: z.string().min(1).optional(),
   CHECKR_API_KEY: z.string().min(1).optional(),
   CHECKR_WEBHOOK_SECRET: z.string().min(1).optional(),
+  TAX_ENCRYPTION_KEY: z
+    .string()
+    .regex(/^[0-9a-f]{64}$/i, 'TAX_ENCRYPTION_KEY must be 64 hex chars (32 bytes)')
+    .optional(),
   GOOGLE_MAPS_API_KEY: z.string().min(1).optional(),
   CRON_SECRET: z.string().min(1).optional(),
   RESEND_API_KEY: z.string().min(1).optional(),
@@ -34,6 +38,7 @@ const parsedEnv = envSchema.safeParse({
   STRIPE_CONNECT_WEBHOOK_SECRET: process.env.STRIPE_CONNECT_WEBHOOK_SECRET,
   CHECKR_API_KEY: process.env.CHECKR_API_KEY,
   CHECKR_WEBHOOK_SECRET: process.env.CHECKR_WEBHOOK_SECRET,
+  TAX_ENCRYPTION_KEY: process.env.TAX_ENCRYPTION_KEY,
   GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   CRON_SECRET: process.env.CRON_SECRET,
   RESEND_API_KEY: process.env.RESEND_API_KEY,

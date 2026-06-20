@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { writeAdminAction } from '@/features/admin/lib/audit';
+import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
 import { sendEmail } from '@/lib/email/resend';
 import {
   awaitingApprovalEmail,
@@ -11,8 +12,6 @@ import {
   disputeResponseEmail,
   payoutInitiatedEmail,
 } from '@/lib/email/templates';
-import { isStripeConfigured } from '@/lib/integrations';
-import { getStripe } from '@/lib/stripe/webhooks';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -113,61 +112,13 @@ export const approveBookingAction = async (bookingId: string): Promise<DisputeAc
     return { ok: false, error: 'Booking is not awaiting approval.' };
 
   const admin = createSupabaseAdminClient();
-
-  // Capture the Stripe PaymentIntent if one exists
-  const { data: charge } = await admin
-    .from('charges')
-    .select('id, stripe_payment_intent_id, state')
-    .eq('booking_id', bookingId)
-    .is('tip_id', null)
-    .maybeSingle();
-
-  const now = new Date().toISOString();
-
-  if (isStripeConfigured() && charge?.stripe_payment_intent_id && charge.state === 'authorized') {
-    try {
-      await getStripe().paymentIntents.capture(charge.stripe_payment_intent_id);
-      await admin
-        .from('charges')
-        .update({ state: 'captured', captured_at: now })
-        .eq('id', charge.id);
-    } catch {
-      // Non-fatal: capture failure should not block approval; admin handles manually
-    }
-  }
-
-  const disputeWindowEndsAt = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
-
-  const { error } = await supabase
-    .from('bookings')
-    .update({
-      state: 'paid',
-      customer_approved_at: now,
-      dispute_window_ends_at: disputeWindowEndsAt,
-    })
-    .eq('id', bookingId);
-  if (error) return { ok: false, error: error.message };
-
-  await admin.from('booking_state_events').insert({
-    booking_id: bookingId,
-    previous_state: 'awaiting_approval',
-    new_state: 'paid',
-    triggered_by_user_id: user.id,
+  const result = await settleApprovedBooking(admin, {
+    bookingId,
+    newState: 'paid',
+    actorUserId: user.id,
     reason: 'Customer approved completed work.',
   });
-
-  // Create payout line item for the cleaner
-  if (booking.cleaner_payout_cents > 0 && booking.cleaner_id) {
-    await admin.from('payout_line_items').insert({
-      cleaner_id: booking.cleaner_id,
-      booking_id: bookingId,
-      amount_cents: booking.cleaner_payout_cents,
-      description: `Earnings from booking ${booking.booking_number}`,
-      earned_at: now,
-      currency: 'usd',
-      is_instant: false,
-    });
-  }
+  if (!result.ok) return { ok: false, error: result.error };
 
   revalidatePath(`/app/bookings/${bookingId}`);
   redirect(`/app/bookings/${bookingId}/tip`);
@@ -547,7 +498,7 @@ export const adminResolveDisputeAction = async (
           charge_id: charge.id,
           dispute_id: parsed.data.dispute_id,
           amount_cents: refundCents,
-          currency: 'U',
+          currency: 'usd',
           reason_type: 'dispute_resolution',
           reason_notes: parsed.data.resolution_notes,
           initiated_by_user_id: user.id,
