@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { notify } from '@/features/notifications/dispatch';
 import { env } from '@/lib/env';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 
@@ -16,6 +17,14 @@ function determineBand(score: number): string {
   return 'suspended';
 }
 
+const BAND_LABEL: Record<string, string> = {
+  trusted: 'Trusted',
+  good_standing: 'Good standing',
+  warning: 'Warning',
+  probation: 'Probation',
+  suspended: 'Suspended',
+};
+
 export async function POST(req: NextRequest) {
   const secret = req.headers.get('x-cron-secret');
   if (!env.CRON_SECRET || secret !== env.CRON_SECRET) {
@@ -30,7 +39,7 @@ export async function POST(req: NextRequest) {
 
   const { data: cleaners } = await admin
     .from('cleaner_profiles')
-    .select('id, current_score, average_rating')
+    .select('id, user_id, current_score, average_rating')
     .eq('is_active', true);
 
   if (!cleaners || cleaners.length === 0) {
@@ -89,6 +98,23 @@ export async function POST(req: NextRequest) {
       .from('cleaner_profiles')
       .update({ current_score: Math.round(score), score_updated_at: today.toISOString() })
       .eq('id', cleaner.id);
+
+    // Notify the cleaner only when their standing band actually changes (not on
+    // every minor score tick), so the notification is meaningful.
+    const oldScore = cleaner.current_score ?? 100;
+    const oldBand = determineBand(oldScore);
+    if (oldBand !== band && cleaner.user_id) {
+      const improved = Math.round(score) > oldScore;
+      await notify({
+        recipientUserId: cleaner.user_id,
+        type: improved ? 'score_increased' : 'score_decreased',
+        title: improved
+          ? 'Your reliability standing improved'
+          : 'Your reliability standing changed',
+        body: `Your standing is now "${BAND_LABEL[band] ?? band}" (score ${Math.round(score)}/100).`,
+        deepLink: '/app/cleaner/score',
+      });
+    }
 
     results.push({ cleanerId: cleaner.id, score: Math.round(score), band });
   }
