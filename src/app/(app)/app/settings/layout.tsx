@@ -1,14 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { SettingsBubbleNav } from '@/features/experience/components/SettingsBubbleNav';
-
 type Props = { children: ReactNode };
 
-const SettingsLayout = ({ children }: Props) => (
-  <div className="flex flex-col gap-6">
-    <SettingsBubbleNav />
-    {children}
-  </div>
-);
+/** Settings pages render their own headers/back links; the hub at /app/settings is the index. */
+const SettingsLayout = ({ children }: Props) => <>{children}</>;
 
 export default SettingsLayout;
