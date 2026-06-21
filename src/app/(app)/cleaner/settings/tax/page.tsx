@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -33,22 +34,26 @@ const TaxPage = async () => {
   const earningsYtdCents = earningsRow?.total ?? 0;
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-4 py-8">
-      <div className="mx-auto max-w-md space-y-6">
-        <div>
-          <Link href="/cleaner/settings" className="text-sm text-brand-600 hover:underline">
-            ← Settings
+    <div className="mx-auto flex w-full max-w-md flex-col gap-5">
+      <div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/app/cleaner/settings"
+            className="flex-shrink-0 text-neutral-500 transition-colors hover:text-neutral-900"
+            aria-label="Back to settings"
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
           </Link>
-          <h1 className="mt-3 text-2xl font-bold text-neutral-900">Tax Information</h1>
-          <p className="mt-1 text-neutral-600">Required for year-end 1099 reporting.</p>
+          <h1 className="text-lg font-semibold text-neutral-900">Tax information</h1>
         </div>
-
-        <TaxInfoForm
-          hasTaxIdOnFile={!!profile.encrypted_tax_id}
-          taxIdType={profile.tax_id_type}
-          earningsYtdCents={earningsYtdCents}
-        />
+        <p className="mt-2 text-sm text-neutral-500">Required for year-end 1099 reporting.</p>
       </div>
+
+      <TaxInfoForm
+        hasTaxIdOnFile={!!profile.encrypted_tax_id}
+        taxIdType={profile.tax_id_type}
+        earningsYtdCents={earningsYtdCents}
+      />
     </div>
   );
 };
