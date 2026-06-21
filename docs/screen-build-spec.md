@@ -41,7 +41,7 @@ Routes are the **actual** CLAUDE_PURETASK routes (wireframe "suggested routes" d
 
 | Screen             | Wireframe                     | Route                        | Status                   | Action                 | Wave |
 | ------------------ | ----------------------------- | ---------------------------- | ------------------------ | ---------------------- | ---- |
-| Homepage           | `puretask_mobile_homepage_v2` | `/`                          | BUILT (draft re-skinned) | Re-skin ✅ in progress | 1    |
+| Homepage           | `puretask_mobile_homepage_v2` | `/`                          | BUILT                    | Re-skin ✅ done        | 1    |
 | Pricing            | `wireframes_batch4b_batch5a`  | `/pricing`                   | BUILT                    | Re-skin                | 4    |
 | About              | `wireframes_batch4b_batch5a`  | `/about`                     | STUB                     | New                    | 4    |
 | Help center        | `wireframes_batch4b_batch5a`  | `/help`, `/help/[topic]`     | STUB/BUILT               | Re-skin                | 4    |
@@ -126,10 +126,10 @@ Routes are the **actual** CLAUDE_PURETASK routes (wireframe "suggested routes" d
 
 Everything below depends on these, so they come first:
 
-1. **App shell** — `AppShell` with role-aware `BottomTabBar` (mobile) + `AppSidebar` (desktop) + top `AppHeader` (title, notification bell). Replaces the current top-header bubble shell in `(app)/layout.tsx`. Customer/cleaner tab sets per §2.
-2. **Design primitives** (match wireframe restraint): `Card`, `ListRow` (with chevron), `Chip`/`Pill`, `StatusBadge`, `SectionHeader` (title + "See all"), `Stars`, `MoneyRow`, `EmptyState`, `Skeleton`, `Stepper`/`FlowProgress` (for booking + application).
-3. **Token reconcile** — one palette in `globals.css`; map wireframe neutrals → `neutral-*`, primary action → `brand-600`.
-4. Re-skin **marketing home** (in progress) + **auth** screens to validate the primitives.
+1. ✅ **App shell** (PR #53) — `AppShell` with role-aware `BottomTabBar` (mobile) + `AppSidebar` (desktop) + slim `AppHeader` (brand, notification bell) + `MobileNavDrawer`. Replaces the dark bubble shell in `(app)/layout.tsx`. Customer/cleaner tab sets per §2. Code in `src/components/app-shell/`.
+2. ✅ **Design primitives** (PR #53) — added `ListRow`, `SectionHeader`, `Stars`, `MoneyRow`, `StatusBadge`, `Stepper` + dependency-free `cn()`. (`Card`, `Chip`, `Badge`, `Progress`, `EmptyState`, `Skeleton` already existed.)
+3. ✅ **Token reconcile** — tokens were already unified ("Clean Aero Glow" in `globals.css`: `brand-50…900`, `neutral-*`, `shadow-tier*`); the shell now paints on the light `neutral-50` canvas instead of the navy bubble scene.
+4. Re-skin **marketing home** ✅ done (PR #52) + **auth/onboarding** screens (next in Wave 1) to validate the primitives.
 
 ## 6. Build waves
 
