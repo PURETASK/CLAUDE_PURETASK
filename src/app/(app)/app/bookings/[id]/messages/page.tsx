@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
@@ -21,18 +22,24 @@ const MessagesPage = async ({ params }: PageProps) => {
   if (!booking) notFound();
 
   return (
-    <div className="flex max-w-2xl flex-col gap-4">
-      <div className="flex items-center gap-2">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
+      <div className="flex items-center gap-3">
         <Link
           href={`/app/bookings/${booking.id}`}
-          className="text-sm text-neutral-400 transition-colors hover:text-neutral-700"
+          className="flex-shrink-0 text-neutral-500 transition-colors hover:text-neutral-900"
+          aria-label="Back to booking"
         >
-          ← Booking #{booking.bookingNumber}
+          <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
         </Link>
-        <span className="text-neutral-200">/</span>
-        <h1 className="text-base font-semibold text-neutral-900">
-          Chat with {booking.otherPartyName}
-        </h1>
+        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-400">
+          {booking.otherPartyName.charAt(0)}
+        </div>
+        <div className="min-w-0">
+          <h1 className="truncate text-sm font-semibold text-neutral-900">
+            {booking.otherPartyName}
+          </h1>
+          <p className="truncate text-xs text-neutral-500">Booking #{booking.bookingNumber}</p>
+        </div>
       </div>
 
       <MessageThread
