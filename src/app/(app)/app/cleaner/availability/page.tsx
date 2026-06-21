@@ -1,6 +1,8 @@
-﻿import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { Card } from '@/components/ui/card';
 import { addTimeOffAction, removeTimeOffAction } from '@/features/cleaner/availability-actions';
 import { getMyAvailability } from '@/features/cleaner/availability-queries';
 import { getMyServiceArea } from '@/features/cleaner/service-area-queries';
@@ -16,41 +18,44 @@ function formatDate(iso: string) {
   });
 }
 
+const FIELD =
+  'w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-brand-600 focus:outline-none';
+
 export default async function CleanerAvailabilityPage() {
   const [data, serviceArea] = await Promise.all([getMyAvailability(), getMyServiceArea()]);
   if (!data) notFound();
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <div className="mb-8">
-        <Link
-          href="/app/cleaner"
-          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
-        >
-          ← Dashboard
-        </Link>
-        <h1 className="text-xl font-semibold">Availability</h1>
-        <p className="text-sm text-neutral-500">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+      <div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/app/cleaner"
+            className="flex-shrink-0 text-neutral-500 transition-colors hover:text-neutral-900"
+            aria-label="Back to dashboard"
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
+          </Link>
+          <h1 className="text-lg font-semibold text-neutral-900">Availability</h1>
+        </div>
+        <p className="mt-2 text-sm text-neutral-500">
           Set your weekly schedule and block time off. Customers can only book during your active
           hours.
         </p>
       </div>
 
-      {/* Service area */}
-      <section className="mb-8 rounded-lg border border-neutral-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-semibold text-neutral-900">Service area</h2>
+      <Card elevation={1} className="border border-neutral-200 p-5">
+        <h2 className="mb-4 text-base font-semibold text-neutral-900">Service area</h2>
         <ServiceAreaForm initialZips={serviceArea?.zips ?? []} />
-      </section>
+      </Card>
 
-      {/* Weekly schedule */}
-      <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Weekly schedule</h2>
+      <section className="flex flex-col gap-3">
+        <h2 className="text-base font-semibold text-neutral-900">Weekly schedule</h2>
         <AvailabilityScheduleForm initialRules={data.rules} />
       </section>
 
-      {/* Time off */}
-      <section className="mb-8 rounded-lg border border-neutral-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-semibold text-neutral-900">Time off</h2>
+      <Card elevation={1} className="border border-neutral-200 p-5">
+        <h2 className="mb-4 text-base font-semibold text-neutral-900">Time off</h2>
 
         {data.timeOff.length === 0 ? (
           <p className="mb-4 text-sm text-neutral-400">No upcoming time off blocks.</p>
@@ -73,7 +78,7 @@ export default async function CleanerAvailabilityPage() {
                     await removeTimeOffAction(block.id);
                   }}
                 >
-                  <button type="submit" className="text-xs text-red-500 hover:text-red-700">
+                  <button type="submit" className="text-xs font-medium text-error hover:underline">
                     Remove
                   </button>
                 </form>
@@ -82,55 +87,27 @@ export default async function CleanerAvailabilityPage() {
           </ul>
         )}
 
-        <AddTimeOffForm />
-      </section>
-
-      <Link
-        href="/app/cleaner/settings"
-        className="text-xs text-neutral-400 hover:text-neutral-600"
-      >
-        ← Back to settings
-      </Link>
+        <form action={addTimeOffAction} className="flex flex-col gap-3">
+          <p className="text-xs font-medium text-neutral-700">Add time off block</p>
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label className="mb-1 block text-xs text-neutral-500">From</label>
+              <input type="date" name="start_date" required className={FIELD} />
+            </div>
+            <div className="flex-1">
+              <label className="mb-1 block text-xs text-neutral-500">To</label>
+              <input type="date" name="end_date" required className={FIELD} />
+            </div>
+          </div>
+          <input type="text" name="reason" placeholder="Reason (optional)" className={FIELD} />
+          <button
+            type="submit"
+            className="self-start rounded-lg bg-gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
+          >
+            Add block
+          </button>
+        </form>
+      </Card>
     </div>
-  );
-}
-
-function AddTimeOffForm() {
-  return (
-    <form action={addTimeOffAction} className="space-y-3">
-      <p className="text-xs font-medium text-neutral-700">Add time off block</p>
-      <div className="flex gap-3">
-        <div className="flex-1">
-          <label className="mb-1 block text-xs text-neutral-500">From</label>
-          <input
-            type="date"
-            name="start_date"
-            required
-            className="w-full rounded-md border border-neutral-200 px-2 py-1.5 text-sm"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="mb-1 block text-xs text-neutral-500">To</label>
-          <input
-            type="date"
-            name="end_date"
-            required
-            className="w-full rounded-md border border-neutral-200 px-2 py-1.5 text-sm"
-          />
-        </div>
-      </div>
-      <input
-        type="text"
-        name="reason"
-        placeholder="Reason (optional)"
-        className="w-full rounded-md border border-neutral-200 px-2 py-1.5 text-sm"
-      />
-      <button
-        type="submit"
-        className="rounded-lg border border-neutral-300 px-4 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-      >
-        Add block
-      </button>
-    </form>
   );
 }

@@ -1,42 +1,47 @@
-﻿import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
+import { Card } from '@/components/ui/card';
 import { getMyScoreHistory } from '@/features/reliability/queries';
 
-const BAND_COLORS: Record<string, string> = {
-  trusted: 'bg-emerald-100 text-emerald-700',
-  good_standing: 'bg-blue-100 text-blue-700',
-  warning: 'bg-amber-100 text-amber-700',
-  probation: 'bg-orange-100 text-orange-700',
-  suspended: 'bg-red-100 text-red-700',
+const BAND_TONE: Record<string, string> = {
+  trusted: 'bg-success-light text-success-dark',
+  good_standing: 'bg-brand-50 text-brand-700',
+  warning: 'bg-warning-light text-warning-dark',
+  probation: 'bg-warning-light text-warning-dark',
+  suspended: 'bg-error-light text-error-dark',
 };
 
 export default async function CleanerScorePage() {
   const history = await getMyScoreHistory(30);
 
   return (
-    <div className="mx-auto max-w-xl">
-      <div className="mb-6">
-        <Link
-          href="/app/cleaner"
-          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
-        >
-          ← Dashboard
-        </Link>
-        <h1 className="text-xl font-semibold">Reliability score history</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          Your score is computed nightly from on-time arrivals, completions, ratings, and
-          cancellations over the last 90 days.
+    <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
+      <div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/app/cleaner"
+            className="flex-shrink-0 text-neutral-500 transition-colors hover:text-neutral-900"
+            aria-label="Back to dashboard"
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
+          </Link>
+          <h1 className="text-lg font-semibold text-neutral-900">Reliability score history</h1>
+        </div>
+        <p className="mt-2 text-sm text-neutral-500">
+          Computed nightly from on-time arrivals, completions, ratings, and cancellations over the
+          last 90 days.
         </p>
       </div>
 
       {history.length === 0 ? (
-        <div className="rounded-xl border border-neutral-100 bg-white px-6 py-12 text-center">
+        <Card elevation={1} className="border border-neutral-200 px-6 py-12 text-center">
           <p className="text-sm text-neutral-400">
             No score data yet. Check back after your first job.
           </p>
-        </div>
+        </Card>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-neutral-100 bg-white">
+        <Card elevation={1} className="overflow-hidden border border-neutral-200 p-0">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 text-xs text-neutral-400">
@@ -54,7 +59,7 @@ export default async function CleanerScorePage() {
                   <td className="px-5 py-3 text-right font-semibold text-neutral-900">{s.score}</td>
                   <td className="px-5 py-3 text-right">
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${BAND_COLORS[s.band] ?? BAND_COLORS.good_standing}`}
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${BAND_TONE[s.band] ?? BAND_TONE.good_standing}`}
                     >
                       {s.band.replace(/_/g, ' ')}
                     </span>
@@ -63,7 +68,7 @@ export default async function CleanerScorePage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </Card>
       )}
     </div>
   );
