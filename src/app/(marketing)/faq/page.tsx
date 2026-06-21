@@ -1,4 +1,7 @@
-﻿import type { Metadata } from 'next';
+import { ChevronDown } from 'lucide-react';
+import type { Metadata } from 'next';
+
+import { Card } from '@/components/ui/card';
 
 export const metadata: Metadata = {
   title: 'FAQ — PureTask',
@@ -90,22 +93,31 @@ export default function FaqPage() {
     <div className="px-6 py-20">
       <div className="mx-auto max-w-3xl">
         <div className="mb-16 text-center">
-          <h1 className="mb-4 text-4xl font-bold">Frequently asked questions</h1>
+          <h1 className="mb-4 text-4xl font-bold text-neutral-900">Frequently asked questions</h1>
           <p className="text-neutral-500">Everything you need to know before your first booking.</p>
         </div>
 
-        <div className="space-y-14">
+        <div className="flex flex-col gap-12">
           {FAQS.map((section) => (
             <section key={section.section}>
-              <h2 className="mb-6 text-xl font-bold text-neutral-900">{section.section}</h2>
-              <div className="divide-y divide-neutral-100">
+              <h2 className="mb-4 text-xl font-bold text-neutral-900">{section.section}</h2>
+              <Card
+                elevation={1}
+                className="divide-y divide-neutral-100 border border-neutral-200 p-0"
+              >
                 {section.items.map((item) => (
-                  <div key={item.q} className="py-5">
-                    <p className="mb-2 font-semibold text-neutral-900">{item.q}</p>
-                    <p className="text-sm leading-relaxed text-neutral-500">{item.a}</p>
-                  </div>
+                  <details key={item.q} className="group px-5">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm font-semibold text-neutral-900 [&::-webkit-details-marker]:hidden">
+                      {item.q}
+                      <ChevronDown
+                        className="h-4 w-4 flex-shrink-0 text-neutral-400 transition-transform group-open:rotate-180"
+                        strokeWidth={2}
+                      />
+                    </summary>
+                    <p className="pb-4 text-sm leading-relaxed text-neutral-500">{item.a}</p>
+                  </details>
                 ))}
-              </div>
+              </Card>
             </section>
           ))}
         </div>
