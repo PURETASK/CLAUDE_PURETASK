@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { notifyAdmins } from '@/features/notifications/dispatch';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { Json } from '@/types/database';
@@ -224,6 +225,14 @@ export const submitApplicationAction = async (): Promise<never> => {
     })
     .eq('user_id', user.id)
     .eq('state', 'draft');
+
+  // Alert admins there's a new application to review.
+  await notifyAdmins(
+    'announcement',
+    'New cleaner application',
+    'A cleaner submitted an application for review.',
+    { deepLink: '/admin/applications' },
+  );
 
   revalidatePath('/app/apply/status');
   redirect('/app/apply/status');

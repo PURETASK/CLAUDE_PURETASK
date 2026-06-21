@@ -1,3 +1,4 @@
+import { notifyBookingParty } from '@/features/notifications/dispatch';
 import { isStripeConfigured } from '@/lib/integrations';
 import { getStripe } from '@/lib/stripe/webhooks';
 import type { createSupabaseAdminClient } from '@/lib/supabase/admin';
@@ -91,6 +92,22 @@ export async function settleApprovedBooking(
       earned_at: now,
       currency: 'usd',
       is_instant: false,
+    });
+  }
+
+  // Notify both parties that the job settled (fire-and-forget).
+  void notifyBookingParty(bookingId, 'customer', {
+    type: 'payment_captured',
+    title: 'Payment processed',
+    body: `Your payment for booking ${booking.booking_number} was processed — thank you!`,
+    deepLink: `/app/bookings/${bookingId}`,
+  });
+  if (booking.cleaner_payout_cents > 0) {
+    void notifyBookingParty(bookingId, 'cleaner', {
+      type: 'job_approved',
+      title: 'Job approved — added to earnings',
+      body: `Booking ${booking.booking_number} was approved; $${(booking.cleaner_payout_cents / 100).toFixed(2)} added to your earnings.`,
+      deepLink: `/app/cleaner/earnings`,
     });
   }
 
