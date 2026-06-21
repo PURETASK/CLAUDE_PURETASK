@@ -20,7 +20,7 @@
   --color-foreground: var(--foreground);
 
   /* ── Brand palette ─────────────────────────────────────────────────────── */
-  --color-brand-50:  #eef8ff; /* Ultra-light tint — empty state bg, badge fill */
+  --color-brand-50: #eef8ff; /* Ultra-light tint — empty state bg, badge fill */
   --color-brand-100: #daeffe; /* Light tint — hover fill, subtle surface */
   --color-brand-200: #bae0fd; /* Border tint — badge border, divider */
   --color-brand-400: #56b4f8; /* Mid blue — muted icon, secondary indicator */
@@ -99,14 +99,50 @@ body {
 }
 
 /* ── Type scale roles (V2.1 spec) ──────────────────────────────────────────── */
-.type-display  { font-size: clamp(48px, 6vw, 64px); font-weight: 700; line-height: 1.02; letter-spacing: -0.02em; }
-.type-h1       { font-size: clamp(36px, 5vw, 44px);  font-weight: 700; line-height: 1.07; letter-spacing: -0.015em; }
-.type-h2       { font-size: clamp(28px, 4vw, 32px);  font-weight: 600; line-height: 1.1;  letter-spacing: -0.01em; }
-.type-h3       { font-size: clamp(22px, 3vw, 24px);  font-weight: 600; line-height: 1.15; }
-.type-body     { font-size: 16px; font-weight: 400; line-height: 1.5; }
-.type-label    { font-size: 14px; font-weight: 500; line-height: 1.35; }
-.type-helper   { font-size: 12px; font-weight: 400; line-height: 1.4; }
-.type-metric   { font-size: clamp(18px, 2.5vw, 28px); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.type-display {
+  font-size: clamp(48px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.type-h1 {
+  font-size: clamp(36px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1.07;
+  letter-spacing: -0.015em;
+}
+.type-h2 {
+  font-size: clamp(28px, 4vw, 32px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.type-h3 {
+  font-size: clamp(22px, 3vw, 24px);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.type-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.type-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.type-helper {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.type-metric {
+  font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
 
 /* ── Shared native form-field class ──────────────────────────────────────── */
 @layer components {
@@ -142,5 +178,16 @@ body {
   /* Confirmation glow: white core with cyan halo */
   .bg-gradient-glow {
     background: radial-gradient(circle at center, #ffffff 0%, #40e8e040 60%, transparent 100%);
+  }
+}
+
+/* Gentle float for the Dash mascot accent on the marketing hero. */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
   }
 }
