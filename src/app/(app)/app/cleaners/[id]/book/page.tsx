@@ -1,11 +1,24 @@
-import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
 import { BookingForm } from '@/features/booking/components/BookingForm';
 import { listServices } from '@/features/booking/queries';
-import { getCleanerProfile } from '@/features/discovery/queries';
 import { getUserAddresses } from '@/features/customer/queries';
+import { getCleanerProfile } from '@/features/discovery/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+
+/** Next 14 days, computed server-side so the client wizard hydrates deterministically. */
+function buildDateOptions() {
+  const today = new Date();
+  return Array.from({ length: 14 }, (_, i) => {
+    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    return {
+      value: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+      dow: d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase(),
+      day: d.getDate(),
+      month: d.toLocaleDateString('en-US', { month: 'short' }),
+    };
+  });
+}
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -37,19 +50,10 @@ const BookPage = async ({ params }: PageProps) => {
     );
   }
 
-  return (
-    <div className="flex max-w-lg flex-col gap-6">
-      <div className="flex items-center gap-2">
-        <Link
-          href={`/app/cleaners/${id}`}
-          className="text-sm text-neutral-500 hover:text-neutral-900"
-        >
-          {cleaner.full_name}
-        </Link>
-        <span className="text-neutral-300">/</span>
-        <h1 className="text-xl font-semibold">Book a cleaning</h1>
-      </div>
+  const dateOptions = buildDateOptions();
 
+  return (
+    <div className="mx-auto w-full max-w-lg">
       <BookingForm
         cleaner={{
           id: cleaner.id,
@@ -64,6 +68,7 @@ const BookPage = async ({ params }: PageProps) => {
           city: a.city,
           state: a.state,
         }))}
+        dateOptions={dateOptions}
       />
     </div>
   );
