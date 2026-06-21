@@ -1,5 +1,7 @@
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
 import { Badge, type BadgeVariant } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
 import { TrustCallout } from '@/components/ui/trust-callout';
 
 const STATE_LABELS: Record<string, { label: string; variant: BadgeVariant; desc: string }> = {
@@ -21,7 +23,7 @@ const STATE_LABELS: Record<string, { label: string; variant: BadgeVariant; desc:
   approved: {
     label: 'Approved',
     variant: 'success',
-    desc: 'Congratulations! Your application has been approved. Complete the steps below to start taking bookings.',
+    desc: 'Congratulations! Your application has been approved. Finish setting up your profile to start taking bookings.',
   },
   rejected: {
     label: 'Not approved',
@@ -80,24 +82,13 @@ export const ApplicationStatus = ({
       )}
 
       {state === 'approved' && (
-        <div className="flex flex-col gap-3">
-          <h2 className="font-semibold text-neutral-900">Next steps</h2>
-          <PlaceholderCard
-            title="Identity verification"
-            desc="Verify your government-issued ID via Stripe Identity."
-            badge="Coming soon"
-          />
-          <PlaceholderCard
-            title="Background check"
-            desc="We'll initiate a Checkr background check once identity is verified."
-            badge="Coming soon"
-          />
-          <PlaceholderCard
-            title="Payout setup"
-            desc="Connect your bank account to receive payments via Stripe Connect."
-            badge="Coming soon"
-          />
-        </div>
+        <Link
+          href="/app/cleaner/setup"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-brand px-6 py-3 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
+        >
+          Set up your profile
+          <ArrowRight className="h-4 w-4" strokeWidth={2} />
+        </Link>
       )}
 
       {submittedAt && (
@@ -108,23 +99,3 @@ export const ApplicationStatus = ({
     </div>
   );
 };
-
-const PlaceholderCard = ({
-  title,
-  desc,
-  badge,
-}: {
-  title: string;
-  desc: string;
-  badge: string;
-}) => (
-  <Card className="flex items-start justify-between gap-4 p-4">
-    <div>
-      <p className="text-sm font-semibold text-neutral-800">{title}</p>
-      <p className="mt-0.5 text-sm text-neutral-500">{desc}</p>
-    </div>
-    <Badge variant="neutral" className="shrink-0">
-      {badge}
-    </Badge>
-  </Card>
-);
