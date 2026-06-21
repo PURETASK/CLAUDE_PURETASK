@@ -19,7 +19,7 @@ const ApplyEntryPage = async () => {
   }
 
   return (
-    <div className="flex max-w-lg flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold text-neutral-900">Apply to be a PureTask cleaner</h1>
         <p className="mt-2 text-sm text-neutral-500">

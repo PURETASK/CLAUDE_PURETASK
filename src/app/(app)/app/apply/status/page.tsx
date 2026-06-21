@@ -16,7 +16,7 @@ const ApplyStatusPage = async () => {
   if (application.state === 'draft') redirect('/app/apply/step/1');
 
   return (
-    <div className="max-w-lg">
+    <div className="mx-auto w-full max-w-lg">
       <ApplicationStatus
         state={application.state}
         applicationNumber={application.application_number}

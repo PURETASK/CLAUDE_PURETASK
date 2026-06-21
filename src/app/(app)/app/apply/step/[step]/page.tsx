@@ -36,7 +36,7 @@ const ApplyStepPage = async ({ params }: PageProps) => {
   const d = (application.application_data ?? {}) as Record<string, unknown>;
 
   return (
-    <div className="flex max-w-xl flex-col gap-8">
+    <div className="mx-auto flex w-full max-w-xl flex-col gap-8">
       <StepIndicator current={Number(step)} />
 
       {step === '1' && (
