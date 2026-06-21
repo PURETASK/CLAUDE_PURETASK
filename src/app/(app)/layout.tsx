@@ -1,6 +1,6 @@
-import { getRecentNotifications } from '@/features/notifications/queries';
-import { AppBubbleShell } from '@/features/experience/components/AppBubbleShell';
+import { AppShell } from '@/components/app-shell/AppShell';
 import { ExperienceFonts } from '@/features/experience/components/ExperienceFonts';
+import { getRecentNotifications } from '@/features/notifications/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 const AppShellLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -14,9 +14,9 @@ const AppShellLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ExperienceFonts>
-      <AppBubbleShell role={role} userId={user?.id ?? null} notifications={notifications}>
+      <AppShell role={role} userId={user?.id ?? null} notifications={notifications}>
         {children}
-      </AppBubbleShell>
+      </AppShell>
     </ExperienceFonts>
   );
 };
