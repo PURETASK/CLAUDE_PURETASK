@@ -1,6 +1,9 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { Card } from '@/components/ui/card';
+import { EmptyState } from '@/components/ui/empty-state';
+import { StatusBadge } from '@/components/ui/status-badge';
 import { getMyRecurringSchedules } from '@/features/recurring/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -10,14 +13,6 @@ const CADENCE_LABELS: Record<string, string> = {
   every_4_weeks: 'Every 4 weeks',
   every_8_weeks: 'Every 8 weeks',
   every_12_weeks: 'Every 12 weeks',
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  active: 'bg-green-50 text-green-700',
-  paused: 'bg-amber-50 text-amber-700',
-  ended_by_customer: 'bg-neutral-100 text-neutral-500',
-  ended_by_cleaner: 'bg-neutral-100 text-neutral-500',
-  ended_by_platform: 'bg-neutral-100 text-neutral-500',
 };
 
 export default async function RecurringPage() {
@@ -30,48 +25,48 @@ export default async function RecurringPage() {
   const schedules = await getMyRecurringSchedules();
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold">Recurring Cleanings</h1>
-          <p className="text-sm text-neutral-500">Set-it-and-forget-it scheduled cleanings.</p>
+          <h1 className="text-2xl font-bold text-neutral-900">Recurring</h1>
+          <p className="text-sm text-neutral-500">Set-and-forget scheduled cleanings.</p>
         </div>
         <Link
           href="/app/cleaners"
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
+          className="flex-shrink-0 rounded-xl bg-gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
         >
-          + New schedule
+          New schedule
         </Link>
       </div>
 
       {schedules.length === 0 ? (
-        <div className="rounded-xl border border-neutral-200 bg-white p-8 text-center">
-          <p className="mb-3 text-sm text-neutral-500">No recurring schedules yet.</p>
-          <Link href="/app/cleaners" className="text-sm font-medium text-neutral-900 underline">
-            Browse cleaners to get started
-          </Link>
-        </div>
+        <Card elevation={1} className="border border-neutral-200">
+          <EmptyState
+            showDash
+            title="No recurring schedules yet"
+            description="Pick a cleaner you love and lock in a repeating slot."
+            action={{ label: 'Browse cleaners', href: '/app/cleaners' }}
+          />
+        </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {schedules.map((s) => (
             <Link
               key={s.id}
               href={`/app/recurring/${s.id}`}
-              className="block rounded-xl border border-neutral-200 bg-white p-4 hover:border-neutral-300 hover:shadow-sm transition-all"
+              className="block rounded-2xl border border-neutral-200 bg-white p-4 shadow-tier1 transition-all duration-card hover:-translate-y-0.5 hover:shadow-tier2"
             >
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="font-medium text-neutral-900">{s.cleaner_name}</p>
-                  <p className="text-sm text-neutral-500">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-neutral-900">
+                    {s.cleaner_name}
+                  </p>
+                  <p className="truncate text-xs text-neutral-500">
                     {s.service_display_name} · {CADENCE_LABELS[s.cadence] ?? s.cadence}
                   </p>
-                  <p className="mt-1 text-xs text-neutral-400">{s.address_street}</p>
+                  <p className="mt-0.5 truncate text-xs text-neutral-400">{s.address_street}</p>
                 </div>
-                <span
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${STATUS_COLORS[s.status] ?? 'bg-neutral-100 text-neutral-500'}`}
-                >
-                  {s.status.replace(/_/g, ' ')}
-                </span>
+                <StatusBadge status={s.status} />
               </div>
               <div className="mt-3 flex gap-4 text-xs text-neutral-400">
                 <span>{s.occurrences_completed_count} completed</span>

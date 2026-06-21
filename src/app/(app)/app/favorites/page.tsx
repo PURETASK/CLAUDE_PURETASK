@@ -1,14 +1,11 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { EmptyState } from '@/components/ui/empty-state';
-
-import { CleanerCard } from '@/features/discovery/components/CleanerCard';
 import { rankBrowseCleaners } from '@/features/discovery/browse-ranking';
+import { CleanerCard } from '@/features/discovery/components/CleanerCard';
 import { getCustomerDiscoveryAnchor, listFavorites } from '@/features/discovery/queries';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { ICONS } from '@/lib/assets';
 
 const FavoritesPage = async () => {
   const supabase = await createSupabaseServerClient();
@@ -26,23 +23,17 @@ const FavoritesPage = async () => {
   });
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-3">
-          <Image
-            src={ICONS.contacts}
-            alt=""
-            width={52}
-            height={52}
-            className="rounded-xl drop-shadow-md"
-          />
-          <div>
-            <h1 className="text-2xl font-bold text-neutral-900">Favorites</h1>
-            <p className="mt-0.5 text-sm text-neutral-500">Your saved cleaners, ready to rebook.</p>
-          </div>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-5">
+      <div className="flex items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-neutral-900">Favorites</h1>
+          <p className="mt-0.5 text-sm text-neutral-500">Your saved cleaners, ready to rebook.</p>
         </div>
-        <Link href="/app/cleaners" className="text-sm font-medium underline">
-          Browse cleaners
+        <Link
+          href="/app/cleaners"
+          className="flex-shrink-0 text-sm font-medium text-brand-600 transition-colors hover:text-brand-700"
+        >
+          Browse
         </Link>
       </div>
 
