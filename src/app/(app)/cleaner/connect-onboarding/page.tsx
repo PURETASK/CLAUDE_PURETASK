@@ -1,6 +1,8 @@
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { Card } from '@/components/ui/card';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 const STEPS = [
@@ -45,71 +47,67 @@ const ConnectOnboardingPage = async () => {
   const hasAccount = !!profile.stripe_connect_account_id;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
       <div>
-        <Link href="/cleaner/apply" className="text-sm text-brand-600 hover:underline">
-          ← Back to application
-        </Link>
-        <h1 className="mt-3 text-2xl font-bold text-neutral-900">Set Up Payouts</h1>
-        <p className="mt-1 text-neutral-500">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/app/cleaner/settings"
+            className="flex-shrink-0 text-neutral-500 transition-colors hover:text-neutral-900"
+            aria-label="Back"
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
+          </Link>
+          <h1 className="text-lg font-semibold text-neutral-900">Set up payouts</h1>
+        </div>
+        <p className="mt-2 text-sm text-neutral-500">
           Connect your bank account through Stripe to receive earnings from your cleanings.
         </p>
       </div>
 
       {isConnected ? (
-        <div className="rounded-2xl border border-green-200 bg-green-50 p-5">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">✅</span>
-            <div>
-              <p className="font-semibold text-green-900">Stripe account connected</p>
-              <p className="text-sm text-green-700">
-                Your payout account is set up and ready. Earnings will be deposited every Friday.
-              </p>
-            </div>
-          </div>
+        <div className="rounded-2xl border border-success/30 bg-success-light p-5">
+          <p className="font-semibold text-success-dark">Stripe account connected</p>
+          <p className="mt-1 text-sm text-success-dark/80">
+            Your payout account is set up and ready. Earnings will be deposited every Friday.
+          </p>
           <Link
             href="/app/cleaner/settings"
-            className="mt-4 inline-block rounded-lg border border-green-200 bg-white px-4 py-2 text-sm font-medium text-green-800 hover:bg-green-50"
+            className="mt-4 inline-block rounded-lg border border-success/30 bg-white px-4 py-2 text-sm font-medium text-success-dark hover:bg-success-light"
           >
             Manage payout preferences →
           </Link>
         </div>
       ) : hasAccount ? (
-        <div className="rounded-2xl border border-yellow-200 bg-yellow-50 p-5">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">⚠️</span>
-            <div>
-              <p className="font-semibold text-yellow-900">Setup incomplete</p>
-              <p className="text-sm text-yellow-700">
-                Your Stripe account was created but setup is not finished. Continue where you left
-                off.
-              </p>
-            </div>
-          </div>
+        <div className="rounded-2xl border border-warning/30 bg-warning-light p-5">
+          <p className="font-semibold text-warning-dark">Setup incomplete</p>
+          <p className="mt-1 text-sm text-warning-dark/80">
+            Your Stripe account was created but setup isn&apos;t finished. Continue where you left
+            off.
+          </p>
           <Link
             href="/cleaner/apply/step-7"
-            className="mt-4 inline-block rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+            className="mt-4 inline-block rounded-lg bg-gradient-brand px-4 py-2 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
           >
             Continue setup →
           </Link>
         </div>
       ) : (
-        <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
+        <Card elevation={1} className="border border-neutral-200 p-5">
           <p className="text-sm text-neutral-600">
-            You have not connected a payout account yet. This is required before you can accept
+            You haven&apos;t connected a payout account yet. This is required before you can accept
             bookings.
           </p>
           <Link
             href="/cleaner/apply/step-7"
-            className="mt-3 inline-block rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+            className="mt-3 inline-block rounded-xl bg-gradient-brand px-4 py-2.5 text-sm font-semibold text-white shadow-tier1 transition-all hover:brightness-110"
           >
             Connect with Stripe →
           </Link>
-        </div>
+        </Card>
       )}
 
-      <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
-        <h2 className="mb-4 font-semibold text-neutral-900">How it works</h2>
+      <Card elevation={1} className="border border-neutral-200 p-5">
+        <h2 className="mb-4 text-base font-semibold text-neutral-900">How it works</h2>
         <div className="space-y-4">
           {STEPS.map(({ step, title, desc }) => (
             <div key={step} className="flex gap-4">
@@ -123,15 +121,15 @@ const ConnectOnboardingPage = async () => {
             </div>
           ))}
         </div>
-      </div>
+      </Card>
 
-      <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
+      <Card elevation={1} className="border border-neutral-200 bg-neutral-50 p-4">
         <p className="text-xs text-neutral-500">
           Payouts are powered by Stripe Connect. Standard payouts arrive every Friday at no cost.
           Instant payouts (within 30 minutes) are available for a 5% fee after your first completed
           booking.
         </p>
-      </div>
+      </Card>
     </div>
   );
 };
