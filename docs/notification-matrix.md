@@ -65,22 +65,31 @@ Also pre-existing emails kept as-is: `awaiting_approval` (mark-complete).
 | Payout on the way                 | `payout_initiated`          | cleaner   | in-app/push/SMS + email | `requestInstantPayoutAction` |
 | Password changed                  | `password_changed`          | user      | in-app/push/SMS | `resetPasswordAction`            |
 
+### Wave 3 (cron + reliability engine)
+
+| Situation                       | Type                              | Recipient        | Channels        | Trigger                                  |
+| ------------------------------- | --------------------------------- | ---------------- | --------------- | ---------------------------------------- |
+| Cleaning is ~24h away           | `booking_imminent_reminder`       | customer + cleaner | in-app/push/SMS | `daily-reminders` cron (hourly, [24h,25h) window) |
+| Leave a review (24h post-job)   | `review_prompt`                   | customer         | in-app/push/SMS | `daily-reminders` cron (no review yet)   |
+| Weekly payout on the way        | `payout_initiated`                | cleaner          | in-app/push/SMS | `weekly-payout` cron                     |
+| Reliability standing changed    | `score_increased`/`score_decreased` | cleaner        | in-app/push/SMS | `nightly-reliability` cron (band change only) |
+
 ---
 
 ## Deferred (catalog types not yet wired)
 
-Tracked for the next notification wave — infrastructure supports them, just need trigger-site calls:
+Lower-value remainder — infrastructure supports them, just need trigger-site calls:
 
-- **Booking:** `booking_imminent_reminder` (T-24h cron), `cleaner_running_late`, `cleaner_eta_update`, reschedule (`reschedule_request_received/accepted/declined`).
-- **Money:** `charge_failed`, `payout_paid/failed`, weekly-cron `payout_initiated` (instant-payout path is wired; the weekly cron still email-only).
-- **Reviews/loyalty:** `review_prompt` (24h nudge), `rebook_nudge`, `tip_thank_you_prompt`.
+- **Booking:** `cleaner_running_late`, `cleaner_eta_update`, reschedule (`reschedule_request_received/accepted/declined`).
+- **Money:** `charge_failed`, `payout_paid/failed`.
+- **Reviews/loyalty:** `rebook_nudge`, `tip_thank_you_prompt`.
 - **Disputes:** `dispute_in_mediation`.
-- **Reliability:** `score_increased/decreased`, `tier_promoted/demoted`, `badge_earned`, `specialty_earned`, probation/suspension/appeal.
-- **Recurring:** `recurring_setup_confirmed`, `recurring_next_in_24hr`, `recurring_ending_in_14_days`.
+- **Reliability:** `tier_promoted/demoted`, `badge_earned`, `specialty_earned`, probation/suspension/appeal. (Score-band changes are wired; tier/badge are separate from the nightly score engine.)
+- **Recurring:** `recurring_setup_confirmed`, `recurring_next_in_24hr` (largely covered by `booking_imminent_reminder` on the generated booking), `recurring_ending_in_14_days`.
 - **Onboarding/trust:** `background_check_complete`, `insurance_*`, `account_verified`.
 - **Security:** `new_login_detected`.
 
-Most remaining items fire from crons or the reliability engine — each is a one-line `notify()` / `notifyBookingParty()` at the trigger site.
+Each is a one-line `notify()` / `notifyBookingParty()` at the trigger site.
 
 ---
 
