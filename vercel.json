@@ -1,5 +1,4 @@
 {
-  "$comment": "ACTIVE config for the Vercel Hobby plan (max 2 cron jobs, daily-or-less frequency). The 'nightly' umbrella runs auto-approve + daily-reminders + nightly-reliability in one daily slot. To get hourly schedules on Vercel Pro, replace this file's contents with vercel.pro.json. See docs/v1-launch-runbook.md.",
   "crons": [
     {
       "path": "/api/cron/nightly",
