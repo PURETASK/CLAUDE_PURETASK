@@ -530,6 +530,17 @@ export const cancelBookingAction = async (bookingId: string): Promise<BookingAct
     reason: `Customer cancelled (${policy.tier}: penalty ${policy.penaltyCents}¢, refund ${policy.refundCents}¢).`,
   });
 
+  // Notify the cancelling customer of their refund (the canceller is the customer).
+  if (policy.refundCents > 0) {
+    void notify({
+      recipientUserId: user.id,
+      type: 'refund_issued',
+      title: 'Cancellation refund issued',
+      body: `Your refund of $${(policy.refundCents / 100).toFixed(2)} is being processed.`,
+      deepLink: `/app/bookings/${bookingId}`,
+    });
+  }
+
   // Notify the assigned cleaner of the cancellation (fire-and-forget)
   void (async () => {
     const { data: fullBooking } = await admin
