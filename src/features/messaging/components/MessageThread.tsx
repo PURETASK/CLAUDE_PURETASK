@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 
@@ -25,6 +25,16 @@ const fmtExpiry = (iso: string) =>
     hour: 'numeric',
     minute: '2-digit',
   });
+
+const dayLabel = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+const QUICK_REPLIES = [
+  "I'll be home",
+  'Side door is unlocked',
+  'Running a little late',
+  'Thank you!',
+];
 
 export const MessageThread = ({
   initialMessages,
@@ -118,9 +128,21 @@ export const MessageThread = ({
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {messages.map((msg) => (
-                  <MessageBubble key={msg.id} message={msg} isOwn={msg.sender_role === userRole} />
-                ))}
+                {messages.map((msg, i) => {
+                  const prev = messages[i - 1];
+                  const showDivider =
+                    !prev || dayLabel(prev.created_at) !== dayLabel(msg.created_at);
+                  return (
+                    <Fragment key={msg.id}>
+                      {showDivider && (
+                        <div className="my-1 text-center text-[11px] text-neutral-400">
+                          {dayLabel(msg.created_at)}
+                        </div>
+                      )}
+                      <MessageBubble message={msg} isOwn={msg.sender_role === userRole} />
+                    </Fragment>
+                  );
+                })}
                 <div ref={bottomRef} />
               </div>
             )}
@@ -132,7 +154,7 @@ export const MessageThread = ({
             </p>
           </div>
 
-          <MessageInput bookingId={bookingId} disabled={isExpired} />
+          <MessageInput bookingId={bookingId} disabled={isExpired} quickReplies={QUICK_REPLIES} />
         </>
       )}
     </div>

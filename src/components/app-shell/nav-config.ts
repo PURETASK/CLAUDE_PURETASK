@@ -35,7 +35,7 @@ const CUSTOMER: RoleNav = {
   primary: [
     { label: 'Home', href: '/app/dashboard', icon: Home, exact: true },
     { label: 'Browse', href: '/app/cleaners', icon: Search },
-    { label: 'Inbox', href: '/app/notifications', icon: Inbox },
+    { label: 'Inbox', href: '/app/inbox', icon: Inbox },
     { label: 'Profile', href: '/app/settings', icon: User },
   ],
   secondary: [
