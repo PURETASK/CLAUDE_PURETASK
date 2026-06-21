@@ -1,5 +1,7 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import type { Metadata } from 'next';
+
+import { Card } from '@/components/ui/card';
 
 export const metadata: Metadata = {
   title: 'How PureTask Works — Book Verified Cleaners',
@@ -61,12 +63,27 @@ const CLEANER_STEPS = [
   },
 ];
 
+const DISPUTE_TIERS = [
+  {
+    tier: 'Direct',
+    desc: 'Cleaner offers re-clean, partial refund, or stands by their work. Customer accepts or escalates.',
+  },
+  {
+    tier: 'Mediation',
+    desc: "Admin reviews photo evidence and the conversation thread if direct resolution doesn't settle it.",
+  },
+  {
+    tier: 'Platform decision',
+    desc: 'Final rubric-based decision using photo coverage and work standard guidelines.',
+  },
+];
+
 export default function HowItWorksPage() {
   return (
     <div className="px-6 py-20">
       <div className="mx-auto max-w-4xl">
         <div className="mb-16 text-center">
-          <h1 className="mb-4 text-4xl font-bold">How PureTask works</h1>
+          <h1 className="mb-4 text-4xl font-bold text-neutral-900">How PureTask works</h1>
           <p className="text-lg text-neutral-500">
             A full-accountability loop — from booking to payment — for both sides of the
             marketplace.
@@ -75,24 +92,24 @@ export default function HowItWorksPage() {
 
         {/* Customer flow */}
         <section className="mb-20">
-          <h2 className="mb-8 text-2xl font-bold">For customers</h2>
+          <h2 className="mb-8 text-2xl font-bold text-neutral-900">For customers</h2>
           <div className="grid gap-5 md:grid-cols-2">
             {CUSTOMER_STEPS.map((s, i) => (
-              <div key={i} className="flex gap-4 rounded-xl border border-neutral-100 p-5">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-xs font-bold text-white">
+              <Card key={i} elevation={1} className="flex gap-4 border border-neutral-200 p-5">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-brand text-xs font-bold text-white shadow-tier1">
                   {i + 1}
                 </span>
                 <div>
                   <p className="mb-1 font-semibold text-neutral-900">{s.title}</p>
                   <p className="text-sm leading-relaxed text-neutral-500">{s.body}</p>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
           <div className="mt-6 text-center">
             <Link
               href="/auth/sign-up"
-              className="rounded-lg bg-neutral-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-neutral-700"
+              className="inline-block rounded-xl bg-gradient-brand px-6 py-2.5 text-sm font-semibold text-white shadow-tier1 transition-all hover:shadow-tier2 hover:brightness-110"
             >
               Book your first clean
             </Link>
@@ -101,24 +118,24 @@ export default function HowItWorksPage() {
 
         {/* Cleaner flow */}
         <section className="mb-16 rounded-2xl bg-neutral-50 p-8">
-          <h2 className="mb-8 text-2xl font-bold">For cleaners</h2>
+          <h2 className="mb-8 text-2xl font-bold text-neutral-900">For cleaners</h2>
           <div className="grid gap-5 md:grid-cols-2">
             {CLEANER_STEPS.map((s, i) => (
-              <div key={i} className="flex gap-4 rounded-xl border border-neutral-200 bg-white p-5">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-neutral-900">
+              <Card key={i} elevation={1} className="flex gap-4 border border-neutral-200 p-5">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700">
                   {i + 1}
                 </span>
                 <div>
                   <p className="mb-1 font-semibold text-neutral-900">{s.title}</p>
                   <p className="text-sm leading-relaxed text-neutral-500">{s.body}</p>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
           <div className="mt-6 text-center">
             <Link
               href="/for-cleaners"
-              className="rounded-lg bg-amber-400 px-6 py-2.5 text-sm font-semibold text-neutral-900 hover:bg-amber-300"
+              className="inline-block rounded-xl border border-brand-600 bg-white px-6 py-2.5 text-sm font-semibold text-brand-600 transition-all hover:bg-brand-50"
             >
               Learn about cleaner earnings →
             </Link>
@@ -127,23 +144,10 @@ export default function HowItWorksPage() {
 
         {/* Dispute */}
         <section className="rounded-2xl border border-neutral-200 p-8">
-          <h2 className="mb-4 text-xl font-bold">The 3-tier dispute system</h2>
+          <h2 className="mb-4 text-xl font-bold text-neutral-900">The 3-tier dispute system</h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                tier: 'Direct',
-                desc: 'Cleaner offers re-clean, partial refund, or stands by their work. Customer accepts or escalates.',
-              },
-              {
-                tier: 'Mediation',
-                desc: "Admin reviews photo evidence and the conversation thread if direct resolution doesn't settle it.",
-              },
-              {
-                tier: 'Platform decision',
-                desc: 'Final rubric-based decision using photo coverage and work standard guidelines.',
-              },
-            ].map((t) => (
-              <div key={t.tier} className="rounded-lg bg-neutral-50 p-4">
+            {DISPUTE_TIERS.map((t) => (
+              <div key={t.tier} className="rounded-xl bg-neutral-50 p-4">
                 <p className="mb-1 text-sm font-semibold text-neutral-700">{t.tier}</p>
                 <p className="text-sm text-neutral-500">{t.desc}</p>
               </div>
