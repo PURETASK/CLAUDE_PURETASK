@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { writeAdminAction } from '@/features/admin/lib/audit';
 import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
+import { notify, notifyAdmins } from '@/features/notifications/dispatch';
 import { sendEmail } from '@/lib/email/resend';
 import {
   awaitingApprovalEmail,
@@ -215,34 +216,42 @@ export const fileDisputeAction = async (
     triggered_state_change: true,
   });
 
-  // Notify cleaner a dispute was filed (fire-and-forget)
+  // Notify the cleaner (in-app + email) and alert admins (fire-and-forget)
   void (async () => {
-    const [{ data: cleanerProfile }, { data: custUser }] = await Promise.all([
+    const [{ data: cleanerProfile }, { data: custUser }, { data: bk }] = await Promise.all([
       admin.from('cleaner_profiles').select('user_id').eq('id', booking.cleaner_id!).single(),
       admin.from('users').select('full_name').eq('id', user.id).single(),
+      admin.from('bookings').select('booking_number').eq('id', parsed.data.booking_id).single(),
     ]);
-    const { data: cleanerUser } = await admin
-      .from('users')
-      .select('email, full_name')
-      .eq('id', cleanerProfile?.user_id ?? '')
-      .single();
-    if (cleanerUser?.email) {
-      const { data: bk } = await admin
-        .from('bookings')
-        .select('booking_number')
-        .eq('id', parsed.data.booking_id)
+    const bookingNumber = bk?.booking_number ?? '';
+    if (cleanerProfile?.user_id) {
+      const { data: cleanerUser } = await admin
+        .from('users')
+        .select('full_name')
+        .eq('id', cleanerProfile.user_id)
         .single();
-      await sendEmail({
-        to: cleanerUser.email,
-        ...disputeFiledEmail({
-          cleanerName: cleanerUser.full_name ?? 'Cleaner',
+      await notify({
+        recipientUserId: cleanerProfile.user_id,
+        type: 'dispute_filed',
+        title: 'A dispute was filed',
+        body: `A customer filed a dispute on booking ${bookingNumber}. Please respond.`,
+        deepLink: `/app/cleaner/bookings/${parsed.data.booking_id}/dispute`,
+        relatedBookingId: parsed.data.booking_id,
+        email: disputeFiledEmail({
+          cleanerName: cleanerUser?.full_name ?? 'Cleaner',
           customerName: custUser?.full_name ?? 'Customer',
-          bookingNumber: bk?.booking_number ?? '',
+          bookingNumber,
           issueCategory: parsed.data.issue_category.replace(/_/g, ' '),
           disputeBookingId: parsed.data.booking_id,
         }),
       });
     }
+    await notifyAdmins(
+      'dispute_filed',
+      'New dispute filed',
+      `A dispute was filed on booking ${bookingNumber}.`,
+      { deepLink: '/admin/disputes', relatedBookingId: parsed.data.booking_id },
+    );
   })();
 
   redirect(`/app/bookings/${parsed.data.booking_id}/dispute`);

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { notifyBookingParty } from '@/features/notifications/dispatch';
 import { env } from '@/lib/env';
 import { INTEGRATION_MESSAGES, isStripeConfigured } from '@/lib/integrations';
 import { sendEmail } from '@/lib/email/resend';
@@ -429,6 +430,13 @@ export const addTipAction = async (
     earned_at: now,
     currency: 'usd',
     is_instant: false,
+  });
+
+  void notifyBookingParty(bookingId, 'cleaner', {
+    type: 'tip_received',
+    title: 'You received a tip',
+    body: `A customer tipped you $${(amountCents / 100).toFixed(2)}.`,
+    deepLink: '/app/cleaner/earnings',
   });
 
   revalidatePath(`/app/bookings/${bookingId}`);

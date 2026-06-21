@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { notifyBookingParty } from '@/features/notifications/dispatch';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -98,6 +99,13 @@ export const submitReviewAction = async (
       .update({ average_rating: avg, review_count: stats.length })
       .eq('id', booking.cleaner_id);
   }
+
+  void notifyBookingParty(parsed.data.booking_id, 'cleaner', {
+    type: 'review_received',
+    title: 'New review',
+    body: `You received a ${parsed.data.stars}-star review.`,
+    deepLink: '/app/cleaner/score',
+  });
 
   revalidatePath(`/app/bookings/${parsed.data.booking_id}`);
   // After a positive review, offer an optional tip; otherwise return to the booking.

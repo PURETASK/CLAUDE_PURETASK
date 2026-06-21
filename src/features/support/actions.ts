@@ -7,6 +7,7 @@ import type { Database } from '@/types/database';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { createNotification } from '@/features/notifications/queries';
+import { notifyAdmins } from '@/features/notifications/dispatch';
 
 type SupportTicketCategory = Database['public']['Enums']['support_ticket_category'];
 
@@ -61,6 +62,14 @@ export const createTicketAction = async (
     body,
     is_internal_note: false,
   });
+
+  // Alert admins a new ticket is waiting.
+  await notifyAdmins(
+    'announcement',
+    priority === 'urgent' ? 'Urgent support ticket' : 'New support ticket',
+    `${subject} (${ticketNumber})`,
+    { deepLink: `/admin/support/${ticket.id}` },
+  );
 
   redirect(`/app/support/${ticket.id}`);
 };

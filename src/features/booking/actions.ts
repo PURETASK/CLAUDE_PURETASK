@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { sendEmail } from '@/lib/email/resend';
+import { notify } from '@/features/notifications/dispatch';
 import { bookingConfirmedEmail, newBookingRequestEmail } from '@/lib/email/templates';
 import { INTEGRATION_MESSAGES, isStripeConfigured } from '@/lib/integrations';
 import { getStripe } from '@/lib/stripe/webhooks';
@@ -184,27 +184,35 @@ export const createBookingAction = async (
     reason: 'Customer created booking request.',
   });
 
-  // Notify cleaner of new request (fire-and-forget)
+  // Notify cleaner of the new request — in-app + push + SMS + email (fire-and-forget)
   void (async () => {
+    const { data: cleanerProfile } = await admin
+      .from('cleaner_profiles')
+      .select('user_id')
+      .eq('id', cleaner.id)
+      .single();
+    if (!cleanerProfile?.user_id) return;
     const { data: cleanerUser } = await admin
       .from('users')
-      .select('email, full_name')
-      .eq(
-        'id',
-        (await admin.from('cleaner_profiles').select('user_id').eq('id', cleaner.id).single()).data
-          ?.user_id ?? '',
-      )
+      .select('full_name')
+      .eq('id', cleanerProfile.user_id)
       .single();
-    const { data: customerUser } = await supabase.auth.getUser();
     const { data: customerProfile2 } = await admin
       .from('users')
       .select('full_name')
       .eq('id', user.id)
       .single();
-    if (cleanerUser?.email) {
-      const tmpl = newBookingRequestEmail({
-        cleanerName: cleanerUser.full_name ?? 'Cleaner',
-        customerName: customerProfile2?.full_name ?? customerUser.user?.email ?? 'Customer',
+    const customerName = customerProfile2?.full_name ?? 'A customer';
+    await notify({
+      recipientUserId: cleanerProfile.user_id,
+      type: 'booking_request_sent',
+      title: 'New booking request',
+      body: `${customerName} requested a cleaning on ${startAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}.`,
+      deepLink: `/app/cleaner/bookings/${booking.id}`,
+      relatedBookingId: booking.id,
+      email: newBookingRequestEmail({
+        cleanerName: cleanerUser?.full_name ?? 'Cleaner',
+        customerName,
         bookingNumber,
         serviceDate: startAt.toLocaleDateString('en-US', {
           weekday: 'short',
@@ -212,9 +220,8 @@ export const createBookingAction = async (
           day: 'numeric',
         }),
         bookingId: booking.id,
-      });
-      await sendEmail({ to: cleanerUser.email, ...tmpl });
-    }
+      }),
+    });
   })();
 
   void piId;
@@ -281,22 +288,26 @@ export const acceptBookingAction = async (bookingId: string): Promise<BookingAct
         .eq('id', fullBooking.cleaner_id ?? '')
         .single(),
     ]);
+    if (!customerProfile?.user_id) return;
     const [{ data: customerUser }, { data: cleanerUser }] = await Promise.all([
-      admin
-        .from('users')
-        .select('email, full_name')
-        .eq('id', customerProfile?.user_id ?? '')
-        .single(),
+      admin.from('users').select('full_name').eq('id', customerProfile.user_id).single(),
       admin
         .from('users')
         .select('full_name')
         .eq('id', cleanerProfile?.user_id ?? '')
         .single(),
     ]);
-    if (customerUser?.email) {
-      const tmpl = bookingConfirmedEmail({
-        customerName: customerUser.full_name ?? 'Customer',
-        cleanerName: cleanerUser?.full_name ?? 'Your cleaner',
+    const cleanerName = cleanerUser?.full_name ?? 'Your cleaner';
+    await notify({
+      recipientUserId: customerProfile.user_id,
+      type: 'booking_request_accepted',
+      title: 'Booking confirmed',
+      body: `${cleanerName} accepted your cleaning (${fullBooking.booking_number}).`,
+      deepLink: `/app/bookings/${bookingId}`,
+      relatedBookingId: bookingId,
+      email: bookingConfirmedEmail({
+        customerName: customerUser?.full_name ?? 'Customer',
+        cleanerName,
         bookingNumber: fullBooking.booking_number,
         serviceDate: new Date(fullBooking.start_at).toLocaleDateString('en-US', {
           weekday: 'short',
@@ -304,9 +315,8 @@ export const acceptBookingAction = async (bookingId: string): Promise<BookingAct
           day: 'numeric',
         }),
         bookingId,
-      });
-      await sendEmail({ to: customerUser.email, ...tmpl });
-    }
+      }),
+    });
   })();
 
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
@@ -355,6 +365,30 @@ export const declineBookingAction = async (bookingId: string): Promise<BookingAc
     triggered_by_user_id: user.id,
     reason: 'Cleaner declined booking.',
   });
+
+  // Notify the customer their request was declined (fire-and-forget)
+  void (async () => {
+    const { data: fullBooking } = await admin
+      .from('bookings')
+      .select('booking_number, customer_id')
+      .eq('id', bookingId)
+      .single();
+    if (!fullBooking) return;
+    const { data: customerProfile } = await admin
+      .from('customer_profiles')
+      .select('user_id')
+      .eq('id', fullBooking.customer_id)
+      .single();
+    if (!customerProfile?.user_id) return;
+    await notify({
+      recipientUserId: customerProfile.user_id,
+      type: 'booking_request_declined',
+      title: 'Booking request declined',
+      body: `Your request ${fullBooking.booking_number} was declined — you can book another cleaner.`,
+      deepLink: `/app/bookings/${bookingId}`,
+      relatedBookingId: bookingId,
+    });
+  })();
 
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
   revalidatePath('/app/cleaner');
@@ -495,6 +529,30 @@ export const cancelBookingAction = async (bookingId: string): Promise<BookingAct
     triggered_by_user_id: user.id,
     reason: `Customer cancelled (${policy.tier}: penalty ${policy.penaltyCents}¢, refund ${policy.refundCents}¢).`,
   });
+
+  // Notify the assigned cleaner of the cancellation (fire-and-forget)
+  void (async () => {
+    const { data: fullBooking } = await admin
+      .from('bookings')
+      .select('booking_number, cleaner_id')
+      .eq('id', bookingId)
+      .single();
+    if (!fullBooking?.cleaner_id) return;
+    const { data: cleanerProfile } = await admin
+      .from('cleaner_profiles')
+      .select('user_id')
+      .eq('id', fullBooking.cleaner_id)
+      .single();
+    if (!cleanerProfile?.user_id) return;
+    await notify({
+      recipientUserId: cleanerProfile.user_id,
+      type: 'booking_cancelled_by_customer',
+      title: 'Booking cancelled',
+      body: `A customer cancelled booking ${fullBooking.booking_number}.`,
+      deepLink: `/app/cleaner/bookings/${bookingId}`,
+      relatedBookingId: bookingId,
+    });
+  })();
 
   revalidatePath(`/app/bookings/${bookingId}`);
   revalidatePath('/app/bookings');

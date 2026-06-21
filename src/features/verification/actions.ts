@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import { type BookingState } from '@/features/booking/lib/booking-states';
 import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
+import { notifyBookingParty } from '@/features/notifications/dispatch';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { Json } from '@/types/database.types';
@@ -106,6 +107,13 @@ export const startTransitAction = async (bookingId: string): Promise<Verificatio
     'Cleaner started transit.',
   );
 
+  void notifyBookingParty(bookingId, 'customer', {
+    type: 'cleaner_on_the_way',
+    title: 'Your cleaner is on the way',
+    body: 'Your cleaner has started heading to your address.',
+    deepLink: `/app/bookings/${bookingId}`,
+  });
+
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
   return { ok: true, error: null };
 };
@@ -162,6 +170,13 @@ export const markArrivedAction = async (
     'Geofence hit; cleaner marked arrived.',
     { latitude, longitude, distanceMeters },
   );
+
+  void notifyBookingParty(bookingId, 'customer', {
+    type: 'cleaner_arrived',
+    title: 'Your cleaner has arrived',
+    body: 'Your cleaner is at your address and starting soon.',
+    deepLink: `/app/bookings/${bookingId}`,
+  });
 
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
   return { ok: true, error: null };
@@ -310,6 +325,13 @@ export const clockOutAction = async (bookingId: string): Promise<VerificationAct
     'Cleaner clocked out; awaiting customer approval.',
     { auto_approval_due_at: dueAt.toISOString() },
   );
+
+  void notifyBookingParty(bookingId, 'customer', {
+    type: 'cleaning_complete',
+    title: 'Your cleaning is complete',
+    body: 'Review the photos and approve the work — payment is held until you approve (or auto-approves in 24h).',
+    deepLink: `/app/bookings/${bookingId}`,
+  });
 
   revalidatePath(`/app/cleaner/bookings/${bookingId}`);
   revalidatePath(`/app/bookings/${bookingId}`);
