@@ -1,0 +1,21 @@
+{
+  "$comment": "Vercel PRO config (NOT active). Pro allows up to 40 crons at any frequency, so each job runs on its own schedule — auto-approve and reminders hourly. To switch: upgrade the project to Pro, then copy these crons into vercel.json (replacing the Hobby umbrella) and redeploy. No code change needed; the umbrella route at /api/cron/nightly simply goes unused. See docs/v1-launch-runbook.md.",
+  "crons": [
+    {
+      "path": "/api/cron/auto-approve",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/daily-reminders",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/nightly-reliability",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-payout",
+      "schedule": "0 20 * * 5"
+    }
+  ]
+}

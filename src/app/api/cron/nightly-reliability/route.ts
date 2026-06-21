@@ -121,3 +121,21 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ processed: results.length, results });
 }
+
+/**
+ * Vercel Cron compatibility. Cron jobs are issued as GET with
+ * `Authorization: Bearer <CRON_SECRET>`, but the handler above authenticates via
+ * the `x-cron-secret` header. This GET bridges the two so the job fires from a
+ * Vercel cron (and from the nightly umbrella) without changing the POST contract.
+ */
+export async function GET(req: NextRequest) {
+  if (req.headers.get('authorization') !== `Bearer ${env.CRON_SECRET}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return POST(
+    new NextRequest(req.url, {
+      method: 'POST',
+      headers: { 'x-cron-secret': env.CRON_SECRET ?? '' },
+    }),
+  );
+}

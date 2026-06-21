@@ -1,6 +1,6 @@
 # V1 Launch Runbook — staging → private beta
 
-Concrete, ordered steps to stand up **staging** and get to a green E2E run. Pairs with [v1-staging-env-checklist.md](./v1-staging-env-checklist.md) (the env grid) and [v1-staging-e2e-checklist.md](./v1-staging-e2e-checklist.md) (the journeys). This runbook adds the *do-this-in-this-order* sequence + the exact SQL/commands.
+Concrete, ordered steps to stand up **staging** and get to a green E2E run. Pairs with [v1-staging-env-checklist.md](./v1-staging-env-checklist.md) (the env grid) and [v1-staging-e2e-checklist.md](./v1-staging-e2e-checklist.md) (the journeys). This runbook adds the _do-this-in-this-order_ sequence + the exact SQL/commands.
 
 > **Status going in:** all code-side P0s from [v1-p0-punchlist.md](./v1-p0-punchlist.md) are fixed; migrations through `0019` are applied to the current Supabase project. What's left is operational: vendor accounts + a staging environment + the manual E2E pass.
 
@@ -8,15 +8,15 @@ Concrete, ordered steps to stand up **staging** and get to a green E2E run. Pair
 
 ## 1. Vendor accounts (longest lead time — start first)
 
-| Vendor | What you need | Lead time |
-|---|---|---|
-| **Stripe** (platform) | Account in **test mode**; Secret + Publishable keys | minutes |
-| **Stripe Connect** (Express) | Connect enabled on the account | minutes (test) / 2–4 wk (live review) |
-| **Stripe Identity** | Identity enabled | minutes (test) |
-| **Checkr** | Sandbox account + API key | **4–6 wk** for production |
-| **Google Maps** | Geocoding API key | minutes |
-| **Resend** | API key + a verified from-address | ~1 day (domain verify) |
-| Insurance partner | Only needed for Phase 8c (post-beta) | 4–8 wk |
+| Vendor                       | What you need                                       | Lead time                             |
+| ---------------------------- | --------------------------------------------------- | ------------------------------------- |
+| **Stripe** (platform)        | Account in **test mode**; Secret + Publishable keys | minutes                               |
+| **Stripe Connect** (Express) | Connect enabled on the account                      | minutes (test) / 2–4 wk (live review) |
+| **Stripe Identity**          | Identity enabled                                    | minutes (test)                        |
+| **Checkr**                   | Sandbox account + API key                           | **4–6 wk** for production             |
+| **Google Maps**              | Geocoding API key                                   | minutes                               |
+| **Resend**                   | API key + a verified from-address                   | ~1 day (domain verify)                |
+| Insurance partner            | Only needed for Phase 8c (post-beta)                | 4–8 wk                                |
 
 For a **staging dry-run you can do today**, Stripe test mode + Checkr sandbox + a Maps key are enough; everything else degrades gracefully.
 
@@ -33,6 +33,7 @@ Set in Vercel (staging) and locally in `.env.local`. Full grid in [v1-staging-en
 `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_CONNECT_WEBHOOK_SECRET`, `STRIPE_IDENTITY_WEBHOOK_SECRET`, `CHECKR_API_KEY`, `CHECKR_WEBHOOK_SECRET`, `CRON_SECRET`, `TAX_ENCRYPTION_KEY`
 
 Generate the tax key once per environment:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
@@ -54,11 +55,11 @@ All migrations live in `db/migrations/` and apply in filename order (`0001` → 
 
 Base = `NEXT_PUBLIC_SITE_URL`.
 
-| Provider | Endpoint | Secret env | Key events |
-|---|---|---|---|
-| Stripe (platform) | `/api/webhooks/stripe-connect` | `STRIPE_CONNECT_WEBHOOK_SECRET` | `account.updated`, `payment_intent.*`, `charge.refunded` |
-| Stripe Identity | `/api/webhooks/stripe-identity` | `STRIPE_IDENTITY_WEBHOOK_SECRET` | `identity.verification_session.*` |
-| Checkr | `/api/webhooks/checkr` | `CHECKR_WEBHOOK_SECRET` | `report.completed`, `report.*` |
+| Provider          | Endpoint                        | Secret env                       | Key events                                               |
+| ----------------- | ------------------------------- | -------------------------------- | -------------------------------------------------------- |
+| Stripe (platform) | `/api/webhooks/stripe-connect`  | `STRIPE_CONNECT_WEBHOOK_SECRET`  | `account.updated`, `payment_intent.*`, `charge.refunded` |
+| Stripe Identity   | `/api/webhooks/stripe-identity` | `STRIPE_IDENTITY_WEBHOOK_SECRET` | `identity.verification_session.*`                        |
+| Checkr            | `/api/webhooks/checkr`          | `CHECKR_WEBHOOK_SECRET`          | `report.completed`, `report.*`                           |
 
 For local dev: `stripe listen --forward-to localhost:3000/api/webhooks/stripe-connect`.
 
@@ -66,7 +67,20 @@ For local dev: `stripe listen --forward-to localhost:3000/api/webhooks/stripe-co
 
 ## 5. Cron
 
-Registered automatically from `vercel.json` on deploy (`/api/cron/auto-approve` hourly, `weekly-payout` Fri 12pm PT, `nightly-reliability` daily). All require `CRON_SECRET`. After the first deploy, confirm them under **Vercel → Project → Cron Jobs**.
+Registered automatically from `vercel.json` on deploy. All require `CRON_SECRET`. After the first deploy, confirm the jobs under **Vercel → Project → Cron Jobs**. Vercel Cron always sends `GET` with `Authorization: Bearer <CRON_SECRET>` — every cron route is reachable that way (the `weekly-payout` and `nightly-reliability` routes also keep a `POST` + `x-cron-secret` entrypoint for manual/internal calls).
+
+### Plan toggle: Hobby (active) ↔ Pro
+
+Vercel **Hobby** allows only **2 cron jobs at daily-or-less frequency**. The repo ships two configs:
+
+| File                          | Plan  | Crons                                                                                                   |
+| ----------------------------- | ----- | ------------------------------------------------------------------------------------------------------- |
+| `vercel.json` (**active**)    | Hobby | `nightly` (daily 08:00 UTC) + `weekly-payout` (Fri 20:00 UTC)                                           |
+| `vercel.pro.json` (reference) | Pro   | `auto-approve` hourly · `daily-reminders` hourly · `nightly-reliability` daily · `weekly-payout` weekly |
+
+`/api/cron/nightly` is an umbrella that runs **auto-approve + daily-reminders + nightly-reliability** in sequence, so all jobs still run on Hobby — just batched once a day instead of hourly. The individual cron routes are unchanged and still work standalone.
+
+**To switch to Pro** (restores hourly auto-approve + reminders): upgrade the project to Pro, then copy the `crons` array from `vercel.pro.json` into `vercel.json` and redeploy. No code change — the `nightly` umbrella simply goes unused. The trade-off on Hobby: a booking auto-approves and review/imminent reminders fire in the daily 08:00 UTC sweep rather than within the hour.
 
 ---
 
