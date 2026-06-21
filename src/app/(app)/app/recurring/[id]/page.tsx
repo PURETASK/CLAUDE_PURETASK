@@ -1,6 +1,8 @@
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
+import { StatusBadge } from '@/components/ui/status-badge';
 import {
   endScheduleAction,
   pauseScheduleAction,
@@ -73,17 +75,18 @@ export default async function RecurringDetailPage({ params }: PageProps) {
     .reverse();
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <div className="mb-8">
+    <div className="mx-auto w-full max-w-2xl">
+      <div className="mb-6">
         <Link
           href="/app/recurring"
-          className="mb-1 block text-xs text-neutral-400 hover:text-neutral-600"
+          className="mb-3 inline-flex items-center gap-1.5 text-sm text-neutral-500 transition-colors hover:text-neutral-900"
         >
-          ← Recurring cleanings
+          <ArrowLeft className="h-4 w-4" strokeWidth={1.8} />
+          Recurring
         </Link>
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-xl font-semibold">{schedule.cleaner_name}</h1>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="text-xl font-semibold text-neutral-900">{schedule.cleaner_name}</h1>
             <p className="text-sm text-neutral-500">
               {schedule.service_display_name} ·{' '}
               {CADENCE_LABELS[schedule.cadence] ?? schedule.cadence}
@@ -95,17 +98,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
               /session
             </p>
           </div>
-          <span
-            className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${
-              isActive
-                ? 'bg-green-50 text-green-700'
-                : isPaused
-                  ? 'bg-amber-50 text-amber-700'
-                  : 'bg-neutral-100 text-neutral-500'
-            }`}
-          >
-            {schedule.status.replace(/_/g, ' ')}
-          </span>
+          <StatusBadge status={schedule.status} />
         </div>
       </div>
 
@@ -136,7 +129,7 @@ export default async function RecurringDetailPage({ params }: PageProps) {
             >
               <button
                 type="submit"
-                className="rounded-lg bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-neutral-700"
+                className="rounded-lg bg-gradient-brand px-3 py-1.5 text-sm font-medium text-white shadow-tier1 transition-all hover:brightness-110"
               >
                 Resume schedule
               </button>

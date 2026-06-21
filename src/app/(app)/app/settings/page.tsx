@@ -1,104 +1,114 @@
-﻿import Link from 'next/link';
+import { LogOut } from 'lucide-react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import type { ReactNode } from 'react';
 
-import { ExperienceSoundToggle } from '@/features/experience/components/ExperienceSoundToggle';
-import { ProfileHeader } from '@/features/customer/components/ProfileHeader';
-import { SettingsLayout } from '@/features/customer/components/SettingsLayout';
+import { Card } from '@/components/ui/card';
+import { ListRow } from '@/components/ui/list-row';
+import { signOutAction } from '@/features/auth/actions';
 import { getCurrentUser } from '@/features/customer/queries';
-import { ICONS } from '@/lib/assets';
+
+const Group = ({ label, children }: { label: string; children: ReactNode }) => (
+  <section className="flex flex-col gap-2">
+    <p className="px-1 text-xs font-semibold uppercase tracking-wide text-neutral-400">{label}</p>
+    <Card elevation={1} className="divide-y divide-neutral-100 border border-neutral-200">
+      {children}
+    </Card>
+  </section>
+);
 
 const SettingsLandingPage = async () => {
   const user = await getCurrentUser();
   if (!user) redirect('/auth/sign-in');
 
+  const memberSince = user.created_at
+    ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+    : null;
+  const initial = (user.full_name ?? user.email ?? '?').charAt(0).toUpperCase();
+
   return (
-    <SettingsLayout
-      title="Customer Settings"
-      subtitle="Manage your account profile, service addresses, and privacy preferences."
-      icon={ICONS.settings}
-    >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <ProfileHeader fullName={user.full_name} email={user.email} createdAt={user.created_at} />
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-6">
+      <h1 className="text-2xl font-bold text-neutral-900">Settings</h1>
 
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-neutral-900">Service Addresses</h3>
-          <p className="mt-2 text-sm text-neutral-700">
-            Add, edit, and choose a default address for future bookings.
-          </p>
+      {/* Profile */}
+      <Card elevation={1} className="border border-neutral-200 p-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-neutral-100 text-base font-semibold text-neutral-400">
+            {initial}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-neutral-900">
+              {user.full_name ?? 'Your account'}
+            </p>
+            <p className="truncate text-xs text-neutral-500">
+              {user.email}
+              {memberSince ? ` · Member since ${memberSince}` : ''}
+            </p>
+          </div>
           <Link
-            href="/app/settings/addresses"
-            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+            href="/app/settings/profile"
+            className="flex-shrink-0 text-sm font-medium text-brand-600 transition-colors hover:text-brand-700"
           >
-            Manage addresses
+            Edit
           </Link>
         </div>
+      </Card>
 
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-neutral-900">Notifications</h3>
-          <p className="mt-2 text-sm text-neutral-700">
-            Email notification preferences for bookings and disputes.
-          </p>
-          <Link
-            href="/app/settings/notifications"
-            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
-          >
-            Manage notifications
-          </Link>
-        </div>
+      <Group label="Account">
+        <ListRow href="/app/settings/profile" title="Personal info" subtitle="Name, email, phone" />
+        <ListRow
+          href="/app/settings/addresses"
+          title="Saved addresses"
+          subtitle="Service locations for booking"
+        />
+        <ListRow
+          href="/app/settings/payment-methods"
+          title="Payment methods"
+          subtitle="Cards used for bookings"
+        />
+        <ListRow
+          href="/app/settings/security"
+          title="Sign-in & security"
+          subtitle="Password, 2FA, sessions"
+        />
+      </Group>
 
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-neutral-900">Payment Methods</h3>
-          <p className="mt-2 text-sm text-neutral-700">Add and manage cards for booking.</p>
-          <Link
-            href="/app/settings/payment-methods"
-            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
-          >
-            Manage cards
-          </Link>
-        </div>
-        <div className="md:col-span-2">
-          <ExperienceSoundToggle />
-        </div>
+      <Group label="Preferences">
+        <ListRow
+          href="/app/settings/privacy"
+          title="Privacy & photos"
+          subtitle="Photo policy, room exclusions"
+        />
+        <ListRow
+          href="/app/settings/notifications"
+          title="Notifications"
+          subtitle="Bookings, messages, marketing"
+        />
+        <ListRow
+          href="/app/settings/integrations"
+          title="Integrations"
+          subtitle="Server service status"
+        />
+      </Group>
 
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-neutral-900">Integrations</h3>
-          <p className="mt-2 text-sm text-neutral-700">
-            See which payment and ops services are configured on this server.
-          </p>
-          <Link
-            href="/app/settings/integrations"
-            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
-          >
-            View status
-          </Link>
-        </div>
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-neutral-900">Security</h3>
-          <p className="mt-2 text-sm text-neutral-700">
-            Enable two-factor authentication to protect your account.
-          </p>
-          <Link
-            href="/app/settings/security"
-            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
-          >
-            Manage security
-          </Link>
-        </div>
+      <Group label="Support & legal">
+        <ListRow href="/app/support" title="Contact support" />
+        <ListRow href="/help" title="Help center" />
+        <ListRow href="/legal/photography-policy" title="Photography & privacy policy" />
+      </Group>
 
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-neutral-900">Privacy + Data</h3>
-          <p className="mt-2 text-sm text-neutral-700">
-            Configure photo handling and review privacy-related controls.
-          </p>
-          <Link
-            href="/app/settings/privacy"
-            className="mt-3 inline-block rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
-          >
-            Open privacy settings
-          </Link>
-        </div>
-      </div>
-    </SettingsLayout>
+      <form action={signOutAction}>
+        <button
+          type="submit"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm font-medium text-error transition-colors hover:bg-error-light"
+        >
+          <LogOut className="h-4 w-4" strokeWidth={1.8} />
+          Sign out
+        </button>
+      </form>
+
+      <p className="text-center text-xs text-neutral-400">PureTask v1.0.0</p>
+    </div>
   );
 };
 
