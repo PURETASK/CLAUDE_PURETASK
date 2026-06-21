@@ -45,7 +45,7 @@ const AdminBookingsPage = async ({ searchParams }: Props) => {
   });
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-4 py-8">
+    <div>
       <div className="mx-auto max-w-5xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-neutral-900">Bookings</h1>

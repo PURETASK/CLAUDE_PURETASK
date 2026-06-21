@@ -65,7 +65,7 @@ const AdminCleanerDetailPage = async ({ params }: Props) => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-4 py-8">
+    <div>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <Link href="/admin" className="text-sm text-brand-600 hover:underline">

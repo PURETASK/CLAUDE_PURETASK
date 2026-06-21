@@ -8,7 +8,7 @@ export default async function AdminDisputesPage() {
   const disputes = await getOpenDisputesForAdmin();
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <div className="mx-auto max-w-4xl">
       <h1 className="mb-6 text-2xl font-bold text-neutral-900">Disputes</h1>
 
       {disputes.length === 0 ? (

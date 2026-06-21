@@ -42,7 +42,7 @@ const AdminRefundPage = async ({ params }: Props) => {
   if (!charge) redirect('/admin/bookings');
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-4 py-8">
+    <div>
       <div className="mx-auto max-w-md space-y-6">
         <div>
           <Link href={`/admin/bookings`} className="text-sm text-brand-600 hover:underline">
