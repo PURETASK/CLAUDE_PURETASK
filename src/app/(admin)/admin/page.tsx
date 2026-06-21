@@ -127,23 +127,21 @@ const AdminDashboardPage = async () => {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-4 py-8">
-      <div className="mx-auto max-w-5xl space-y-6">
-        <h1 className="text-2xl font-bold text-neutral-900">Admin Dashboard</h1>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-neutral-900">Dashboard</h1>
 
-        <KpiGrid
-          bookingsToday={bookingsTodayRes.count ?? 0}
-          gmvTodayCents={gmvTodayCents}
-          newApplications={applicationsRes.count ?? 0}
-          openDisputes={disputesRes.count ?? 0}
-        />
+      <KpiGrid
+        bookingsToday={bookingsTodayRes.count ?? 0}
+        gmvTodayCents={gmvTodayCents}
+        newApplications={applicationsRes.count ?? 0}
+        openDisputes={disputesRes.count ?? 0}
+      />
 
-        <GmvSparkline data={sparklineData} />
+      <GmvSparkline data={sparklineData} />
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <NeedsAttention items={attentionItems} />
-          <ActivityFeed events={allActivity} />
-        </div>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <NeedsAttention items={attentionItems} />
+        <ActivityFeed events={allActivity} />
       </div>
     </div>
   );
