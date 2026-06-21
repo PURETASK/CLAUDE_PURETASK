@@ -28,46 +28,51 @@ Dash poses (`dash-hummingbird/front/side/celebrate/silhouette/icon-framed`), her
 ## Waves
 
 ### Wave 0 — proof (small)
+
 Port **one screen 1:1** so you can see/approve the direction before the big commit.
+
 - **Chosen screen: marketing home (`/`)** — public, highly visible (it's the page you were looking at), low-risk (mostly static), and it exercises the asset pipeline + the "merge" look. Mirrors `pure-task-trust/src/pages/Index.tsx`: photo hero + proof bar + "why safer" + 4-step process, with a subtle bubble accent + Dash.
 
 ### Wave 1 — shell + feel (medium)
+
 - New **app shell**: `BottomTabBar` (mobile, 5 role-aware tabs) + `AppSidebar` (desktop), replacing the top-header bubble shell. Re-tune `AppBubbleShell` into this.
 - Settle the **merged bubble**: soften pop, sound off by default, Dash placement.
 - Align **display fonts** (Poppins/Outfit for headings, Inter body).
 - Ship the Wave 0 home + re-skin the other marketing pages (pricing, for-cleaners, how-it-works).
 
 ### Wave 2 — core flows (large)
+
 - **6-step booking flow** (Service → When/Where → Scope → Cleaner → Review → Payment) using the FlowShell pattern, wired to our booking server actions + Stripe.
 - **State-rich customer dashboard** (`UpcomingCleaningCard` with empty/future/on-the-way/in-progress/awaiting-approval/urgent states, quick-rebook carousel, wallet snapshot).
 - **Discover** grid + **CleanerProfileV2** (availability calendar, reviews, specialties, service-area map).
 - **Cleaner dashboard** polish (score cards, tier progress, earnings).
 
 ### Wave 3 — breadth (incremental)
+
 Segment landing pages (Families/Airbnb/Retirees/Pros), Cost & Earnings calculators, wallet, loyalty/gamification/referral, help center, admin re-skin.
 
 ---
 
 ## Screen-by-screen mapping
 
-| `pure-task-trust` screen | → CLAUDE_PURETASK route | Action | Wave | Effort |
-|---|---|---|---|---|
-| `Index` (home) | `(marketing)/page.tsx` | Re-skin to photo-hero + proof bar + why-safer + steps | 0 | S |
-| App shell (bottom-tabs + sidebar) | `(app)/layout.tsx`, new `BottomTabBar`/`AppSidebar` | Replace top-header shell | 1 | M |
-| `Auth` | `auth/sign-in`, `auth/sign-up` | Re-skin split-hero auth | 1 | S |
-| Marketing: pricing/for-cleaners/how-it-works | `(marketing)/*` | Re-skin | 1 | M |
-| `Dashboard` (client) | `(app)/app/dashboard` | Rebuild state-rich `UpcomingCleaningCard` + quick-rebook + wallet | 2 | L |
-| `Book` (6-step) | `(app)/app/cleaners/[id]/book` (+ new `/app/book`) | Build FlowShell 6-step, wire to actions+Stripe | 2 | L |
-| `Discover` | `(app)/app/cleaners` | Re-skin grid, ZIP bar, filters, favorite hearts | 2 | M |
-| `CleanerProfileV2` | `(app)/app/cleaners/[id]` | Calendar picker, reviews, specialties, map | 2 | L |
-| Cleaner `Dashboard`/`Jobs`/`Earnings`/`Score` | `(app)/app/cleaner/*` | Re-skin to design | 2 | L |
-| `MyCleanings`/`BookingStatus`/`Job` | `(app)/app/bookings/[id]` | Re-skin timeline + actions | 2 | M |
-| `Wallet` | `(app)/app/settings/payment-methods` (+ wallet view) | Build wallet snapshot/escrow view | 3 | M |
-| Segment landings (Families/Airbnb/Retirees/Pros) | new `(marketing)/for-*` | Build from design + heroes | 3 | M |
-| Calculators (Cost/Earnings) | new `(marketing)/*` | Build | 3 | S each |
-| Loyalty / gamification / referral | new `(app)/app/*` | Build | 3 | M |
-| Help center | `(marketing)/help/*` | Re-skin | 3 | M |
-| Admin (25+ dashboards) | `admin/*` | Re-skin to design (keep our data) | 3 | L |
+| `pure-task-trust` screen                         | → CLAUDE_PURETASK route                              | Action                                                            | Wave | Effort |
+| ------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------------------------- | ---- | ------ |
+| `Index` (home)                                   | `(marketing)/page.tsx`                               | Re-skin to photo-hero + proof bar + why-safer + steps             | 0    | S      |
+| App shell (bottom-tabs + sidebar)                | `(app)/layout.tsx`, new `BottomTabBar`/`AppSidebar`  | Replace top-header shell                                          | 1    | M      |
+| `Auth`                                           | `auth/sign-in`, `auth/sign-up`                       | Re-skin split-hero auth                                           | 1    | S      |
+| Marketing: pricing/for-cleaners/how-it-works     | `(marketing)/*`                                      | Re-skin                                                           | 1    | M      |
+| `Dashboard` (client)                             | `(app)/app/dashboard`                                | Rebuild state-rich `UpcomingCleaningCard` + quick-rebook + wallet | 2    | L      |
+| `Book` (6-step)                                  | `(app)/app/cleaners/[id]/book` (+ new `/app/book`)   | Build FlowShell 6-step, wire to actions+Stripe                    | 2    | L      |
+| `Discover`                                       | `(app)/app/cleaners`                                 | Re-skin grid, ZIP bar, filters, favorite hearts                   | 2    | M      |
+| `CleanerProfileV2`                               | `(app)/app/cleaners/[id]`                            | Calendar picker, reviews, specialties, map                        | 2    | L      |
+| Cleaner `Dashboard`/`Jobs`/`Earnings`/`Score`    | `(app)/app/cleaner/*`                                | Re-skin to design                                                 | 2    | L      |
+| `MyCleanings`/`BookingStatus`/`Job`              | `(app)/app/bookings/[id]`                            | Re-skin timeline + actions                                        | 2    | M      |
+| `Wallet`                                         | `(app)/app/settings/payment-methods` (+ wallet view) | Build wallet snapshot/escrow view                                 | 3    | M      |
+| Segment landings (Families/Airbnb/Retirees/Pros) | new `(marketing)/for-*`                              | Build from design + heroes                                        | 3    | M      |
+| Calculators (Cost/Earnings)                      | new `(marketing)/*`                                  | Build                                                             | 3    | S each |
+| Loyalty / gamification / referral                | new `(app)/app/*`                                    | Build                                                             | 3    | M      |
+| Help center                                      | `(marketing)/help/*`                                 | Re-skin                                                           | 3    | M      |
+| Admin (25+ dashboards)                           | `admin/*`                                            | Re-skin to design (keep our data)                                 | 3    | L      |
 
 Effort key: **S** ≈ a focused sitting · **M** ≈ a session · **L** ≈ multi-session. The backend already exists for most of these — effort is UI + data wiring, not new business logic.
 
@@ -76,6 +81,7 @@ Effort key: **S** ≈ a focused sitting · **M** ≈ a session · **L** ≈ mult
 ## Data rewiring notes
 
 `pure-task-trust` reads through Lovable Cloud hooks (`useCleanersByZip`, `useFavoriteActions`, availability blocks, etc.). When porting each screen, swap those for `CLAUDE_PURETASK`'s equivalents:
+
 - Lovable data hooks → our **server actions** / `createSupabaseServerClient` queries.
 - Lovable auth → our Supabase auth + `(app)` layout role-gating.
 - Lovable storage → our `booking-photos` bucket + storage helpers.
