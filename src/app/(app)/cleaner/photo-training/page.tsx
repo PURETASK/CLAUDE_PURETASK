@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -63,13 +64,19 @@ const PhotoTrainingPage = async () => {
   if (!user) redirect('/auth/sign-in');
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <div>
-        <Link href="/cleaner/apply" className="text-sm text-brand-600 hover:underline">
-          ← Back to application
-        </Link>
-        <h1 className="mt-3 text-2xl font-bold text-neutral-900">Photo Etiquette Training</h1>
-        <p className="mt-1 text-neutral-500">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/cleaner/apply"
+            className="flex-shrink-0 text-neutral-500 transition-colors hover:text-neutral-900"
+            aria-label="Back to application"
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
+          </Link>
+          <h1 className="text-lg font-semibold text-neutral-900">Photo etiquette training</h1>
+        </div>
+        <p className="mt-2 text-sm text-neutral-500">
           Read each section carefully. You must acknowledge completion before continuing.
         </p>
       </div>
