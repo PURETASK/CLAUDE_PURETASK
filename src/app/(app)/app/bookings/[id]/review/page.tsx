@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 
 import { getMyCustomerProfileId } from '@/features/booking/queries';
+import { Card } from '@/components/ui/card';
 import { getReviewForBooking, getActiveTraits } from '@/features/reviews/queries';
 import { ReviewForm } from '@/features/reviews/components/ReviewForm';
 import { getBookingById } from '@/features/booking/queries';
@@ -29,12 +30,18 @@ export default async function ReviewPage({ params }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-10">
-      <h1 className="mb-1 text-xl font-semibold">Leave a review</h1>
-      <p className="mb-6 text-sm text-neutral-500">
-        Booking {booking.booking_number} · {booking.service_display_name}
-      </p>
-      <ReviewForm bookingId={id} traits={traits} />
+    <div className="mx-auto w-full max-w-lg">
+      <div className="mb-6 text-center">
+        <h1 className="text-xl font-semibold text-neutral-900">
+          How was {booking.other_party_name}?
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500">
+          {booking.service_display_name} · #{booking.booking_number}
+        </p>
+      </div>
+      <Card elevation={1} className="border border-neutral-200 p-6">
+        <ReviewForm bookingId={id} traits={traits} />
+      </Card>
     </div>
   );
 }

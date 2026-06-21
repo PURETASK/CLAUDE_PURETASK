@@ -33,19 +33,23 @@ export default async function TipPage({ params }: PageProps) {
   const cleanerName = booking.other_party_name ?? 'your cleaner';
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
-      <div className="rounded-2xl border border-neutral-200 bg-white p-8 text-center shadow-sm">
-        <div className="mb-4 text-4xl">⭐</div>
-        <h1 className="mb-2 text-xl font-semibold">Leave a tip for {cleanerName}?</h1>
-        <p className="mb-8 text-sm text-neutral-500">
-          100% of your tip goes directly to your cleaner.
+    <div className="mx-auto w-full max-w-md">
+      <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-center shadow-tier1">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 text-lg font-semibold text-neutral-400">
+          {cleanerName.charAt(0)}
+        </div>
+        <h1 className="text-xl font-semibold text-neutral-900">
+          Show {cleanerName} some appreciation
+        </h1>
+        <p className="mb-6 mt-1 text-sm text-neutral-500">
+          {booking.service_display_name} · tips are voluntary and 100% go to your cleaner.
         </p>
 
         <TipForm bookingId={id} />
 
         <Link
           href={`/app/bookings/${id}/receipt`}
-          className="mt-4 block text-xs text-neutral-400 hover:text-neutral-600"
+          className="mt-4 block text-xs text-neutral-400 transition-colors hover:text-neutral-600"
         >
           Skip, no tip
         </Link>
