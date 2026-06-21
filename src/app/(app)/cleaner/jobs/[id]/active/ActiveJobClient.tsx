@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { Check, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState, useTransition } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { SectionHeader } from '@/components/ui/section-header';
 import { clockIn, clockOut, submitRoomPhotos } from '@/features/booking/actions/job-flow';
-import { Button } from '@/components/ui';
-import { BubbleModal } from '@/features/experience/components/BubbleModal';
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
+import { cn } from '@/lib/utils/cn';
 
 interface Booking {
   id: string;
@@ -33,7 +36,7 @@ export const ActiveJobClient = ({
   const [elapsed, setElapsed] = useState(0);
   const [uploadedRooms, setUploadedRooms] = useState(initialUploaded);
   const [uploadingRoom, setUploadingRoom] = useState<string | null>(null);
-  const [showClockOut, setShowClockOut] = useState(false);
+  const [confirmingClockOut, setConfirmingClockOut] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeRoomRef = useRef<string>('');
   const supabase = createSupabaseBrowserClient();
@@ -118,148 +121,161 @@ export const ActiveJobClient = ({
     });
   };
 
-  const allRoomsUploaded = requiredRooms.every((r) => uploadedRooms.has(r));
+  const doneCount = requiredRooms.filter((r) => uploadedRooms.has(r)).length;
+  const allRoomsUploaded = doneCount === requiredRooms.length;
 
   return (
-    <div className="min-h-screen bg-neutral-50 pb-32">
-      <div className="sticky top-0 z-10 border-b border-neutral-200 bg-white px-4 py-4">
-        <div className="mx-auto flex max-w-lg items-center justify-between">
-          <div>
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-5">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span
+            className={cn(
+              'h-2.5 w-2.5 rounded-full',
+              isInProgress ? 'animate-pulse bg-warning' : 'bg-brand-400',
+            )}
+          />
+          <div className="min-w-0">
             <p className="text-xs text-neutral-500">Active job</p>
-            <p className="font-semibold text-neutral-900">{booking.customer_name}</p>
-            <p className="text-xs text-neutral-400">{booking.address}</p>
-          </div>
-          {isInProgress && clockedInAt && (
-            <div className="text-right">
-              <p className="text-xs text-neutral-500">Time elapsed</p>
-              <p className="font-mono text-xl font-bold text-brand-600">{formatElapsed(elapsed)}</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-lg space-y-6 px-4 pt-6">
-        {!isInProgress && (
-          <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-center shadow-tier1">
-            <p className="mb-4 text-neutral-600">
-              Confirm you&apos;ve arrived and are ready to start.
+            <p className="truncate text-sm font-semibold text-neutral-900">
+              {booking.customer_name}
             </p>
-            <Button size="lg" className="w-full" onClick={handleClockIn} disabled={isPending}>
-              Clock in — start job
-            </Button>
+          </div>
+        </div>
+        {isInProgress && clockedInAt && (
+          <div className="text-right">
+            <p className="text-xs text-neutral-400">Elapsed</p>
+            <p className="font-mono text-lg font-bold tabular-nums text-brand-600">
+              {formatElapsed(elapsed)}
+            </p>
           </div>
         )}
+      </div>
 
-        {isInProgress && (
-          <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-tier1">
-            <h2 className="mb-1 font-semibold text-neutral-900">Room photos</h2>
-            <p className="mb-4 text-sm text-neutral-500">Take before/after photos of each room.</p>
-            <div className="space-y-2">
+      {!isInProgress ? (
+        <Card elevation={1} className="border border-neutral-200 p-6 text-center">
+          <p className="mb-1 text-sm text-neutral-600">{booking.address}</p>
+          <p className="mb-4 text-sm text-neutral-500">
+            Confirm you&apos;ve arrived and are ready to start.
+          </p>
+          <Button size="lg" className="w-full" onClick={handleClockIn} disabled={isPending}>
+            {isPending ? 'Starting…' : 'Clock in — start job'}
+          </Button>
+        </Card>
+      ) : (
+        <>
+          {clockedInAt && (
+            <Card elevation={1} className="border border-neutral-200 px-4 py-3">
+              <p className="text-xs text-neutral-500">
+                Clocked in at{' '}
+                {clockedInAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} ·
+                Working
+              </p>
+            </Card>
+          )}
+
+          <section className="flex flex-col gap-3">
+            <SectionHeader title={`Photo documentation · ${doneCount}/${requiredRooms.length}`} />
+            <div className="grid grid-cols-2 gap-2">
               {requiredRooms.map((room) => {
                 const done = uploadedRooms.has(room);
                 const uploading = uploadingRoom === room;
                 return (
                   <div
                     key={room}
-                    className={`flex items-center justify-between rounded-xl border px-4 py-3 transition-colors ${
+                    className={cn(
+                      'rounded-xl border p-3',
                       done
-                        ? 'border-success/30 bg-success-light'
-                        : 'border-neutral-200 bg-neutral-50'
-                    }`}
+                        ? 'border-success/40 bg-success-light'
+                        : 'border-dashed border-neutral-300 bg-white',
+                    )}
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`flex h-6 w-6 items-center justify-center rounded-full ${
-                          done ? 'bg-success' : 'border-2 border-neutral-300'
-                        }`}
-                      >
-                        {done && (
-                          <svg
-                            className="h-3.5 w-3.5 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={3}
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </div>
-                      <span
-                        className={`text-sm font-medium ${done ? 'text-success-dark' : 'text-neutral-700'}`}
-                      >
-                        {room}
-                      </span>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="truncate text-sm font-medium text-neutral-900">{room}</p>
+                      {done && (
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-success">
+                          <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                        </span>
+                      )}
                     </div>
+                    <p className="mt-0.5 text-[11px] text-neutral-500">
+                      Required · {done ? 'Done' : 'Pending'}
+                    </p>
                     {!done && (
                       <button
                         type="button"
                         onClick={() => handlePhotoUpload(room)}
                         disabled={!!uploadingRoom}
-                        className="text-xs font-semibold text-brand-600 hover:underline disabled:opacity-50"
+                        className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-600 transition-colors hover:bg-neutral-100 disabled:opacity-50"
                       >
-                        {uploading ? 'Uploading…' : 'Add photos'}
+                        {uploading ? (
+                          'Uploading…'
+                        ) : (
+                          <>
+                            <Plus className="h-3.5 w-3.5" strokeWidth={2} />
+                            Add photos
+                          </>
+                        )}
                       </button>
                     )}
                   </div>
                 );
               })}
             </div>
-          </div>
-        )}
+          </section>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          capture="environment"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-      </div>
-
-      {isInProgress && (
-        <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-200 bg-white p-4">
-          <div className="mx-auto max-w-lg">
+          {/* Clock out */}
+          <div className="flex flex-col gap-2">
             {!allRoomsUploaded && (
-              <p className="mb-3 text-center text-xs text-neutral-400">
-                Upload photos for all rooms to enable clock out.
+              <p className="text-center text-xs text-neutral-400">
+                Complete all required photos to clock out.
               </p>
             )}
-            <Button
-              size="lg"
-              className="w-full"
-              onClick={() => setShowClockOut(true)}
-              disabled={!allRoomsUploaded || isPending}
-            >
-              Clock out — job complete
-            </Button>
+            {!confirmingClockOut ? (
+              <Button
+                size="lg"
+                className="w-full"
+                onClick={() => setConfirmingClockOut(true)}
+                disabled={!allRoomsUploaded || isPending}
+              >
+                Clock out — job complete
+              </Button>
+            ) : (
+              <Card elevation={1} className="border border-neutral-200 p-4">
+                <p className="text-sm font-medium text-neutral-900">Clock out?</p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Time logged{' '}
+                  <span className="font-semibold text-neutral-700">{formatElapsed(elapsed)}</span>.
+                  The customer will be notified to approve your work.
+                </p>
+                <div className="mt-3 flex gap-2">
+                  <Button
+                    variant="secondary"
+                    className="flex-1"
+                    onClick={() => setConfirmingClockOut(false)}
+                    disabled={isPending}
+                  >
+                    Back
+                  </Button>
+                  <Button className="flex-1" onClick={handleClockOut} disabled={isPending}>
+                    {isPending ? 'Clocking out…' : 'Confirm'}
+                  </Button>
+                </div>
+              </Card>
+            )}
           </div>
-        </div>
+        </>
       )}
 
-      <BubbleModal
-        open={showClockOut}
-        onClose={() => setShowClockOut(false)}
-        title="Clock out?"
-        description="The customer will be notified to approve your work."
-        footer={
-          <div className="flex gap-3">
-            <Button variant="ghost" className="flex-1" onClick={() => setShowClockOut(false)}>
-              Back
-            </Button>
-            <Button className="flex-1" onClick={handleClockOut} disabled={isPending}>
-              {isPending ? 'Clocking out…' : 'Confirm clock out'}
-            </Button>
-          </div>
-        }
-      >
-        <p className="text-sm text-neutral-600">
-          Time logged:{' '}
-          <span className="font-semibold text-neutral-900">{formatElapsed(elapsed)}</span>
-        </p>
-      </BubbleModal>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        capture="environment"
+        className="hidden"
+        onChange={handleFileChange}
+      />
     </div>
   );
 };
