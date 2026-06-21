@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { writeAdminAction } from '@/features/admin/lib/audit';
 import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
-import { notify, notifyAdmins } from '@/features/notifications/dispatch';
+import { notify, notifyAdmins, notifyBookingParty } from '@/features/notifications/dispatch';
 import { sendEmail } from '@/lib/email/resend';
 import {
   awaitingApprovalEmail,
@@ -344,6 +344,14 @@ export const cleanerRespondAction = async (
     }
   })();
 
+  // In-app/push/SMS to the customer (the email above is the rich channel).
+  void notifyBookingParty(dispute.booking_id, 'customer', {
+    type: 'dispute_response_received',
+    title: 'Cleaner responded to your dispute',
+    body: 'Open the dispute to review the response and accept or escalate.',
+    deepLink: `/app/bookings/${dispute.booking_id}/dispute`,
+  });
+
   revalidatePath(`/app/cleaner/bookings/${dispute.booking_id}/dispute`);
   return { ok: true, error: null };
 };
@@ -391,6 +399,13 @@ export const customerAcceptResolutionAction = async (
     .update({ state: 'dispute_resolved' })
     .eq('id', dispute.booking_id);
 
+  void notifyBookingParty(dispute.booking_id, 'cleaner', {
+    type: 'dispute_resolved',
+    title: 'Dispute resolved',
+    body: 'The customer accepted your resolution. The dispute is now closed.',
+    deepLink: `/app/cleaner/bookings/${dispute.booking_id}/dispute`,
+  });
+
   revalidatePath(`/app/bookings/${dispute.booking_id}/dispute`);
   return { ok: true, error: null };
 };
@@ -424,6 +439,19 @@ export const customerRejectResolutionAction = async (
     .eq('id', disputeId);
 
   if (error) return { ok: false, error: error.message };
+
+  void notifyAdmins(
+    'dispute_escalated',
+    'Dispute escalated to mediation',
+    'A customer rejected the cleaner response — admin review needed.',
+    { deepLink: `/admin/disputes/${disputeId}` },
+  );
+  void notifyBookingParty(dispute.booking_id, 'cleaner', {
+    type: 'dispute_escalated',
+    title: 'Dispute escalated',
+    body: 'The customer escalated this dispute. Our team will review it.',
+    deepLink: `/app/cleaner/bookings/${dispute.booking_id}/dispute`,
+  });
 
   revalidatePath(`/app/bookings/${dispute.booking_id}/dispute`);
   return { ok: true, error: null };
@@ -540,6 +568,28 @@ export const adminResolveDisputeAction = async (
       refundCents,
     },
   });
+
+  // Notify both parties of the admin decision (awaited — the action redirects).
+  await notifyBookingParty(dispute.booking_id, 'customer', {
+    type: 'dispute_resolved',
+    title: 'Your dispute was resolved',
+    body: 'An admin reviewed and resolved your dispute. Open it for details.',
+    deepLink: `/app/bookings/${dispute.booking_id}/dispute`,
+  });
+  await notifyBookingParty(dispute.booking_id, 'cleaner', {
+    type: 'dispute_resolved',
+    title: 'Dispute resolved by admin',
+    body: 'An admin reviewed and resolved the dispute. Open it for details.',
+    deepLink: `/app/cleaner/bookings/${dispute.booking_id}/dispute`,
+  });
+  if (refundCents > 0) {
+    await notifyBookingParty(dispute.booking_id, 'customer', {
+      type: 'refund_issued',
+      title: 'Refund issued',
+      body: `A refund of $${(refundCents / 100).toFixed(2)} was issued for your booking.`,
+      deepLink: `/app/bookings/${dispute.booking_id}`,
+    });
+  }
 
   revalidatePath('/admin/disputes');
   revalidatePath(`/admin/disputes/${parsed.data.dispute_id}`);

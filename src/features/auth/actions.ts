@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { notify } from '@/features/notifications/dispatch';
 import { env } from '@/lib/env';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
@@ -165,6 +166,19 @@ export const resetPasswordAction = async (
       ok: false,
       error: error.message,
     };
+  }
+
+  // Security notice — alert the user their password changed.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    void notify({
+      recipientUserId: user.id,
+      type: 'password_changed',
+      title: 'Your password was changed',
+      body: 'If you did not make this change, contact support immediately.',
+    });
   }
 
   return {

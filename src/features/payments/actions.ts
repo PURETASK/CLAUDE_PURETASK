@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { notifyBookingParty } from '@/features/notifications/dispatch';
+import { notify, notifyBookingParty } from '@/features/notifications/dispatch';
 import { env } from '@/lib/env';
 import { INTEGRATION_MESSAGES, isStripeConfigured } from '@/lib/integrations';
 import { sendEmail } from '@/lib/email/resend';
@@ -307,6 +307,18 @@ export const requestInstantPayoutAction = async (): Promise<PaymentActionState> 
       });
     }
   })();
+
+  // In-app/push/SMS to the cleaner (email above is the rich channel).
+  void notify({
+    recipientUserId: user.id,
+    type: 'payout_initiated',
+    title: 'Payout on the way',
+    body: `Your instant payout of ${new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(netCents / 100)} is being processed.`,
+    deepLink: '/app/cleaner/earnings',
+  });
 
   revalidatePath('/app/cleaner/earnings');
   return { ok: true, error: null };

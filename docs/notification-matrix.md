@@ -50,7 +50,20 @@ What each user is notified about, on which channels, from which trigger. Source 
 | New / urgent support ticket         | `announcement`            | in-app/push/SMS | `createTicketAction`              |
 | Support ticket reply (to submitter) | `support_ticket_response` | in-app/push/SMS | `adminReplyAction` (pre-existing) |
 
-Also pre-existing emails kept as-is: `awaiting_approval` (mark-complete), `dispute_response_received`.
+Also pre-existing emails kept as-is: `awaiting_approval` (mark-complete).
+
+### Wave 2 (added)
+
+| Situation                         | Type                        | Recipient | Channels        | Trigger                          |
+| --------------------------------- | --------------------------- | --------- | --------------- | -------------------------------- |
+| Cleaner responded to your dispute | `dispute_response_received` | customer  | in-app/push/SMS | `cleanerRespondAction`           |
+| Dispute resolved (mutual)         | `dispute_resolved`          | cleaner   | in-app/push/SMS | `customerAcceptResolutionAction` |
+| Dispute escalated to mediation    | `dispute_escalated`         | cleaner + **admins** | in-app/push/SMS | `customerRejectResolutionAction` |
+| Dispute resolved by admin         | `dispute_resolved`          | both      | in-app/push/SMS | `adminResolveAction`             |
+| Refund issued (dispute)           | `refund_issued`             | customer  | in-app/push/SMS | `adminResolveAction`             |
+| Refund issued (cancellation)      | `refund_issued`             | customer  | in-app/push/SMS | `cancelBookingAction`            |
+| Payout on the way                 | `payout_initiated`          | cleaner   | in-app/push/SMS + email | `requestInstantPayoutAction` |
+| Password changed                  | `password_changed`          | user      | in-app/push/SMS | `resetPasswordAction`            |
 
 ---
 
@@ -59,15 +72,15 @@ Also pre-existing emails kept as-is: `awaiting_approval` (mark-complete), `dispu
 Tracked for the next notification wave — infrastructure supports them, just need trigger-site calls:
 
 - **Booking:** `booking_imminent_reminder` (T-24h cron), `cleaner_running_late`, `cleaner_eta_update`, reschedule (`reschedule_request_received/accepted/declined`).
-- **Money:** `charge_failed`, `payout_paid/failed`, `refund_issued` (on cancellation/dispute refund).
+- **Money:** `charge_failed`, `payout_paid/failed`, weekly-cron `payout_initiated` (instant-payout path is wired; the weekly cron still email-only).
 - **Reviews/loyalty:** `review_prompt` (24h nudge), `rebook_nudge`, `tip_thank_you_prompt`.
-- **Disputes:** `dispute_response_received` (convert to unified), `dispute_escalated`, `dispute_resolved`, `dispute_in_mediation`.
+- **Disputes:** `dispute_in_mediation`.
 - **Reliability:** `score_increased/decreased`, `tier_promoted/demoted`, `badge_earned`, `specialty_earned`, probation/suspension/appeal.
 - **Recurring:** `recurring_setup_confirmed`, `recurring_next_in_24hr`, `recurring_ending_in_14_days`.
 - **Onboarding/trust:** `background_check_complete`, `insurance_*`, `account_verified`.
-- **Security:** `new_login_detected`, `password_changed`.
+- **Security:** `new_login_detected`.
 
-Most of these fire from crons or events that already exist — each is a one-line `notify()` / `notifyBookingParty()` at the trigger site.
+Most remaining items fire from crons or the reliability engine — each is a one-line `notify()` / `notifyBookingParty()` at the trigger site.
 
 ---
 
