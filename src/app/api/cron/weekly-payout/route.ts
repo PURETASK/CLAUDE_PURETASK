@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { notify } from '@/features/notifications/dispatch';
 import { env } from '@/lib/env';
 import { isStripeConfigured } from '@/lib/integrations';
 import { getStripe } from '@/lib/stripe/webhooks';
@@ -51,7 +52,7 @@ export async function POST(req: NextRequest) {
     try {
       const { data: profile } = await admin
         .from('cleaner_profiles')
-        .select('stripe_connect_account_id')
+        .select('stripe_connect_account_id, user_id')
         .eq('id', cleanerId)
         .single();
 
@@ -103,6 +104,17 @@ export async function POST(req: NextRequest) {
 
       // Link line items to payout
       await admin.from('payout_line_items').update({ payout_id: payout.id }).in('id', ids);
+
+      // Notify the cleaner their weekly payout is on the way.
+      if (profile.user_id) {
+        await notify({
+          recipientUserId: profile.user_id,
+          type: 'payout_initiated',
+          title: 'Weekly payout on the way',
+          body: `Your weekly payout of $${(totalCents / 100).toFixed(2)} is being transferred.`,
+          deepLink: '/app/cleaner/earnings',
+        });
+      }
 
       results.push({ cleanerId, status: 'success', amount: totalCents });
     } catch (err) {
