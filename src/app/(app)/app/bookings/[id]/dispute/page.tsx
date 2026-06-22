@@ -6,10 +6,15 @@ import { Card } from '@/components/ui/card';
 import { ApproveWorkButton } from '@/features/booking/components/ApproveWorkButton';
 import { getBookingById, getMyCustomerProfileId } from '@/features/booking/queries';
 import { CustomerResolutionButtons } from '@/features/disputes/components/CustomerResolutionButtons';
+import { DisputePhotos } from '@/features/disputes/components/DisputePhotos';
 import { DisputeStateBadge } from '@/features/disputes/components/DisputeStateBadge';
 import { DisputeThread } from '@/features/disputes/components/DisputeThread';
 import { FileDisputeForm } from '@/features/disputes/components/FileDisputeForm';
-import { getDisputeForBooking, getDisputeMessages } from '@/features/disputes/queries';
+import {
+  getBookingPhotosForDispute,
+  getDisputeForBooking,
+  getDisputeMessages,
+} from '@/features/disputes/queries';
 import {
   DESIRED_OUTCOME_LABELS,
   ISSUE_CATEGORY_LABELS,
@@ -30,6 +35,7 @@ export default async function CustomerDisputePage({ params }: Props) {
 
   const dispute = await getDisputeForBooking(id);
   const messages = dispute ? await getDisputeMessages(dispute.id) : [];
+  const photos = await getBookingPhotosForDispute(id);
   const canFileDispute = !dispute && ['approved', 'auto_approved', 'paid'].includes(booking.state);
   const awaitingApproval = booking.state === 'awaiting_approval';
 
@@ -60,6 +66,8 @@ export default async function CustomerDisputePage({ params }: Props) {
           <ApproveWorkButton bookingId={id} />
         </Card>
       )}
+
+      <DisputePhotos photos={photos} />
 
       {dispute ? (
         <>

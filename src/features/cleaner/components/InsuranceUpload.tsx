@@ -42,7 +42,7 @@ export const InsuranceUpload = () => {
           <ul className="space-y-1.5 pl-1">
             {[
               'General liability insurance',
-              'Minimum $100,000 coverage',
+              'Minimum $300,000 coverage',
               'Valid Certificate of Insurance (COI)',
             ].map((req) => (
               <li key={req} className="flex items-center gap-2">
