@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { getBookingById, getMyCleanerProfileId } from '@/features/booking/queries';
 import { CleanerResponseForm } from '@/features/disputes/components/CleanerResponseForm';
+import { DisputeEvidenceUpload } from '@/features/disputes/components/DisputeEvidenceUpload';
 import { DisputePhotos } from '@/features/disputes/components/DisputePhotos';
 import { DisputeStateBadge } from '@/features/disputes/components/DisputeStateBadge';
 import { DisputeThread } from '@/features/disputes/components/DisputeThread';
@@ -42,6 +43,14 @@ export default async function CleanerDisputePage({ params }: Props) {
     'in_mediation',
   ].includes(dispute.state);
 
+  const disputeActive = [
+    'open',
+    'cleaner_responded',
+    'awaiting_customer',
+    'escalated',
+    'in_mediation',
+  ].includes(dispute.state);
+
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
       <div className="flex items-center gap-3">
@@ -73,6 +82,8 @@ export default async function CleanerDisputePage({ params }: Props) {
       </Card>
 
       <DisputePhotos photos={photos} />
+
+      {disputeActive && <DisputeEvidenceUpload bookingId={id} />}
 
       <div>
         <h2 className="mb-3 text-sm font-semibold text-neutral-900">Conversation</h2>
