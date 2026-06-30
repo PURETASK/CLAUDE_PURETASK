@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { ApproveWorkButton } from '@/features/booking/components/ApproveWorkButton';
 import { getBookingById, getMyCustomerProfileId } from '@/features/booking/queries';
 import { CustomerResolutionButtons } from '@/features/disputes/components/CustomerResolutionButtons';
+import { DisputeEvidenceUpload } from '@/features/disputes/components/DisputeEvidenceUpload';
 import { DisputePhotos } from '@/features/disputes/components/DisputePhotos';
 import { DisputeStateBadge } from '@/features/disputes/components/DisputeStateBadge';
 import { DisputeThread } from '@/features/disputes/components/DisputeThread';
@@ -38,6 +39,11 @@ export default async function CustomerDisputePage({ params }: Props) {
   const photos = await getBookingPhotosForDispute(id);
   const canFileDispute = !dispute && ['approved', 'auto_approved', 'paid'].includes(booking.state);
   const awaitingApproval = booking.state === 'awaiting_approval';
+  const disputeActive =
+    !!dispute &&
+    ['open', 'cleaner_responded', 'awaiting_customer', 'escalated', 'in_mediation'].includes(
+      dispute.state,
+    );
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
@@ -68,6 +74,8 @@ export default async function CustomerDisputePage({ params }: Props) {
       )}
 
       <DisputePhotos photos={photos} />
+
+      {disputeActive && <DisputeEvidenceUpload bookingId={id} />}
 
       {dispute ? (
         <>

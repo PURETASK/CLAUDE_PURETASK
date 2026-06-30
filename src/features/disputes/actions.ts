@@ -125,6 +125,111 @@ export const approveBookingAction = async (bookingId: string): Promise<DisputeAc
   redirect(`/app/bookings/${bookingId}/tip`);
 };
 
+/** Dispute states during which either party may still add evidence. */
+const ACTIVE_DISPUTE_STATES = [
+  'open',
+  'cleaner_responded',
+  'awaiting_customer',
+  'escalated',
+  'in_mediation',
+];
+
+const MAX_EVIDENCE_BYTES = 10 * 1024 * 1024; // 10 MB
+const ALLOWED_EVIDENCE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
+
+/**
+ * Upload a new evidence photo to an active dispute. The uploader's role on the
+ * booking (customer vs cleaner) decides the photo purpose, so the existing
+ * `DisputePhotos` gallery files it under the correct side automatically.
+ *
+ * Reuses the same private `booking-photos` bucket + `booking_photos` table as
+ * the clock-out documentation pipeline; on a DB failure the just-uploaded
+ * object is removed so storage never drifts from the table.
+ */
+export const uploadDisputeEvidenceAction = async (
+  bookingId: string,
+  file: File,
+): Promise<DisputeActionState> => {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: 'Not authenticated.' };
+
+  if (!file || file.size === 0) return { ok: false, error: 'No file selected.' };
+  if (file.size > MAX_EVIDENCE_BYTES)
+    return { ok: false, error: 'Image must be 10 MB or smaller.' };
+  if (!ALLOWED_EVIDENCE_TYPES.includes(file.type))
+    return { ok: false, error: 'Upload a JPEG, PNG, WebP, or HEIC image.' };
+
+  const admin = createSupabaseAdminClient();
+  const { data: booking } = await admin
+    .from('bookings')
+    .select('id, customer_id, cleaner_id')
+    .eq('id', bookingId)
+    .single();
+  if (!booking) return { ok: false, error: 'Booking not found.' };
+
+  // Resolve the uploader's role on this booking → evidence purpose.
+  const [{ data: customer }, { data: cleaner }] = await Promise.all([
+    admin
+      .from('customer_profiles')
+      .select('id')
+      .eq('user_id', user.id)
+      .is('deleted_at', null)
+      .maybeSingle(),
+    admin
+      .from('cleaner_profiles')
+      .select('id')
+      .eq('user_id', user.id)
+      .is('deleted_at', null)
+      .maybeSingle(),
+  ]);
+  let purpose: 'dispute_evidence_customer' | 'dispute_evidence_cleaner';
+  if (customer && booking.customer_id === customer.id) purpose = 'dispute_evidence_customer';
+  else if (cleaner && booking.cleaner_id === cleaner.id) purpose = 'dispute_evidence_cleaner';
+  else return { ok: false, error: 'Not your booking.' };
+
+  // Evidence can only be attached while a dispute is actually open.
+  const { data: dispute } = await admin
+    .from('disputes')
+    .select('state')
+    .eq('booking_id', bookingId)
+    .maybeSingle();
+  if (!dispute) return { ok: false, error: 'No dispute is open for this booking.' };
+  if (!ACTIVE_DISPUTE_STATES.includes(dispute.state))
+    return { ok: false, error: 'This dispute is closed; evidence can no longer be added.' };
+
+  const ext = file.name.includes('.') ? file.name.split('.').pop() : 'jpg';
+  const photoId = crypto.randomUUID();
+  const storageKey = `bookings/${bookingId}/dispute/${photoId}.${ext}`;
+
+  const upload = await admin.storage
+    .from('booking-photos')
+    .upload(storageKey, file, { contentType: file.type, upsert: false });
+  if (upload.error) return { ok: false, error: `Storage upload failed: ${upload.error.message}` };
+
+  const deleteAfterAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
+  const { error: insertError } = await admin.from('booking_photos').insert({
+    id: photoId,
+    booking_id: bookingId,
+    uploaded_by_user_id: user.id,
+    purpose,
+    storage_key: storageKey,
+    file_size_bytes: file.size,
+    mime_type: file.type,
+    delete_after_at: deleteAfterAt,
+  });
+  if (insertError) {
+    await admin.storage.from('booking-photos').remove([storageKey]);
+    return { ok: false, error: `Failed to record photo: ${insertError.message}` };
+  }
+
+  revalidatePath(`/app/bookings/${bookingId}/dispute`);
+  revalidatePath(`/app/cleaner/bookings/${bookingId}/dispute`);
+  return { ok: true, error: null };
+};
+
 export const fileDisputeAction = async (
   _prevState: DisputeActionState,
   formData: FormData,

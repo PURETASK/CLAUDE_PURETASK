@@ -182,12 +182,32 @@ export const getBookingPhotosForDispute = async (bookingId: string): Promise<Dis
   const admin = createSupabaseAdminClient();
   const { data } = await admin
     .from('booking_photos')
-    .select('id, purpose, cdn_url, thumbnail_url, room_label, uploaded_at')
+    .select('id, purpose, storage_key, cdn_url, thumbnail_url, room_label, uploaded_at')
     .eq('booking_id', bookingId)
     .in('purpose', ['after_clock_out', 'dispute_evidence_customer', 'dispute_evidence_cleaner'])
     .is('deleted_at', null)
     .order('uploaded_at', { ascending: true });
-  return (data ?? []) as DisputePhoto[];
+
+  const rows = data ?? [];
+  if (rows.length === 0) return [];
+
+  // `booking-photos` is a private bucket and `cdn_url` is not persisted, so mint
+  // a short-lived signed URL per object for display (falling back to any stored
+  // cdn_url if one ever exists).
+  const { data: signed } = await admin.storage.from('booking-photos').createSignedUrls(
+    rows.map((r) => r.storage_key as string),
+    60 * 10,
+  );
+  const urlByKey = new Map((signed ?? []).map((s) => [s.path, s.signedUrl]));
+
+  return rows.map((r) => ({
+    id: r.id as string,
+    purpose: r.purpose as string,
+    cdn_url: (r.cdn_url as string | null) ?? urlByKey.get(r.storage_key as string) ?? null,
+    thumbnail_url: r.thumbnail_url as string | null,
+    room_label: r.room_label as string | null,
+    uploaded_at: r.uploaded_at as string,
+  })) as DisputePhoto[];
 };
 
 export const getOpenDisputesForAdmin = async (): Promise<AdminDisputeListItem[]> => {
