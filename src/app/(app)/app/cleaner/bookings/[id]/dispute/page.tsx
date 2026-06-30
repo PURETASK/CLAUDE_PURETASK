@@ -5,9 +5,14 @@ import { notFound } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { getBookingById, getMyCleanerProfileId } from '@/features/booking/queries';
 import { CleanerResponseForm } from '@/features/disputes/components/CleanerResponseForm';
+import { DisputePhotos } from '@/features/disputes/components/DisputePhotos';
 import { DisputeStateBadge } from '@/features/disputes/components/DisputeStateBadge';
 import { DisputeThread } from '@/features/disputes/components/DisputeThread';
-import { getDisputeForBooking, getDisputeMessages } from '@/features/disputes/queries';
+import {
+  getBookingPhotosForDispute,
+  getDisputeForBooking,
+  getDisputeMessages,
+} from '@/features/disputes/queries';
 import { DESIRED_OUTCOME_LABELS, ISSUE_CATEGORY_LABELS } from '@/features/disputes/validation';
 
 type Props = { params: Promise<{ id: string }> };
@@ -26,6 +31,7 @@ export default async function CleanerDisputePage({ params }: Props) {
   if (!dispute) notFound();
 
   const messages = await getDisputeMessages(dispute.id);
+  const photos = await getBookingPhotosForDispute(id);
 
   const resolvedLike = [
     'cleaner_responded',
@@ -65,6 +71,8 @@ export default async function CleanerDisputePage({ params }: Props) {
           </dd>
         </dl>
       </Card>
+
+      <DisputePhotos photos={photos} />
 
       <div>
         <h2 className="mb-3 text-sm font-semibold text-neutral-900">Conversation</h2>
