@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 
 import { type BookingState } from '@/features/booking/lib/booking-states';
-import { settleApprovedBooking } from '@/features/booking/lib/settle-approval';
 import { notifyBookingParty } from '@/features/notifications/dispatch';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
@@ -19,10 +18,6 @@ const asState = (s: string): BookingState => s as BookingState;
 type User = { id: string };
 
 type RequireCleanerCtx = { ok: false; error: string } | { ok: true; user: User; cleanerId: string };
-
-type RequireCustomerCtx =
-  | { ok: false; error: string }
-  | { ok: true; user: User; customerId: string };
 
 const requireUserAndCleaner = async (): Promise<RequireCleanerCtx> => {
   const supabase = await createSupabaseServerClient();
@@ -40,24 +35,6 @@ const requireUserAndCleaner = async (): Promise<RequireCleanerCtx> => {
   if (!cleaner) return { ok: false, error: 'Cleaner profile not found.' };
 
   return { ok: true, user, cleanerId: cleaner.id };
-};
-
-const requireUserAndCustomer = async (): Promise<RequireCustomerCtx> => {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { ok: false, error: 'Not authenticated.' };
-
-  const { data: customer } = await supabase
-    .from('customer_profiles')
-    .select('id')
-    .eq('user_id', user.id)
-    .is('deleted_at', null)
-    .single();
-  if (!customer) return { ok: false, error: 'Customer profile not found.' };
-
-  return { ok: true, user, customerId: customer.id };
 };
 
 const recordTransition = async (
@@ -338,68 +315,8 @@ export const clockOutAction = async (bookingId: string): Promise<VerificationAct
   return { ok: true, error: null };
 };
 
-export const approveBookingAction = async (bookingId: string): Promise<VerificationActionState> => {
-  const ctx = await requireUserAndCustomer();
-  if (!ctx.ok) return { ok: false, error: ctx.error };
-
-  const admin = createSupabaseAdminClient();
-  const { data: booking } = await admin
-    .from('bookings')
-    .select('id, state, customer_id')
-    .eq('id', bookingId)
-    .single();
-  if (!booking) return { ok: false, error: 'Booking not found.' };
-  if (booking.customer_id !== ctx.customerId) return { ok: false, error: 'Not your booking.' };
-
-  // Funnel through the shared settler so this approval path also captures the
-  // payment and creates the cleaner payout (previously it was state-only).
-  const result = await settleApprovedBooking(admin, {
-    bookingId,
-    newState: 'paid',
-    actorUserId: ctx.user.id,
-    reason: 'Customer approved the cleaning.',
-  });
-  if (!result.ok) return { ok: false, error: result.error };
-
-  revalidatePath(`/app/bookings/${bookingId}`);
-  return { ok: true, error: null };
-};
-
-export const disputeBookingAction = async (
-  bookingId: string,
-  reason: string,
-): Promise<VerificationActionState> => {
-  const ctx = await requireUserAndCustomer();
-  if (!ctx.ok) return { ok: false, error: ctx.error };
-  if (reason.trim().length < 10) {
-    return { ok: false, error: 'Please provide at least 10 characters explaining the issue.' };
-  }
-
-  const admin = createSupabaseAdminClient();
-  const { data: booking } = await admin
-    .from('bookings')
-    .select('id, state, customer_id')
-    .eq('id', bookingId)
-    .single();
-  if (!booking) return { ok: false, error: 'Booking not found.' };
-  if (booking.customer_id !== ctx.customerId) return { ok: false, error: 'Not your booking.' };
-  if (!['awaiting_approval', 'paid'].includes(booking.state)) {
-    return { ok: false, error: 'Booking cannot be disputed in its current state.' };
-  }
-
-  await admin
-    .from('bookings')
-    .update({ state: asState('disputed') })
-    .eq('id', bookingId);
-  await recordTransition(
-    bookingId,
-    asState(booking.state),
-    asState('disputed'),
-    ctx.user.id,
-    `Customer filed dispute: ${reason}`,
-    { reason },
-  );
-
-  revalidatePath(`/app/bookings/${bookingId}`);
-  return { ok: true, error: null };
-};
+// NOTE: customer approve / dispute actions live in the booking + disputes
+// features (`ApproveWorkButton` → `disputes/actions.ts`, job tracker →
+// `booking/actions/job-flow.ts`), both of which capture payment via
+// `settleApprovedBooking`. The duplicate copies that used to live here were
+// removed (P0-13) — they were only wired to an orphaned component.
